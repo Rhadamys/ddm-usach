@@ -1,0 +1,68 @@
+@startuml
+hide footbox
+title Colocar una trampa en el terreno
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant VistaTrampa as visTram
+participant ControladorTrampa as contTram
+participant Jugador as jug
+participant Trampa as tram
+
+contBat -> contTram : getTrampas(Jugador jugador)
+activate contTram
+
+contTram -> jug : getTrampas()
+activate jug
+
+jug --> contTram : Trampa[] trampas
+deactivate jug
+
+contTram -> visTram : new VistaTrampa(Trampa[] trampas)
+activate visTram
+
+visTram --> contTram
+deactivate visTram
+
+contTram -> visTram : mostrar()
+activate visTram
+
+loop Hasta que se ubique la trampa en el terreno
+activate j
+j -> visTram : Elige una trampa
+visTram -> contTram : setTrampa(Trampa trampa)
+deactivate visTram
+
+contTram --> contBat : Trampa trampa
+activate contBat
+deactivate contTram
+
+contBat --> visBat
+activate visBat
+
+j -> visBat : Selecciona posición
+visBat -> contBat : posicionarTrampa(Trampa trampa, Posicion posicion)
+contBat -> tram : posicionarTrampa(Posicion posicion)
+activate tram
+
+alt Si posición está disponible
+tram --> contBat : Respuesta.TRAMPA_POSICIONADA
+contBat --> visBat : mensaje(Respuesta.TRAMPA_POSICIONADA)
+visBat --> j : Mostrar mensaje
+
+else Posici�n no disponible
+tram --> contBat : Respuesta.TRAMPA_NO_POSICIONADA
+deactivate tram
+
+contBat --> visBat : mensaje(Respuesta.TRAMPA_NO_POSICIONADA)
+deactivate contBat
+
+visBat --> j : Mostrar mensaje
+deactivate visBat
+
+end
+
+end
+@enduml

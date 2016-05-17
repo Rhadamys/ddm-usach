@@ -1,0 +1,39 @@
+@startuml
+hide footbox
+title Mover criatura
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Accion as m
+participant Posicion as p
+
+loop Todas las veces que quiera mover o hasta agotar puntos de movimiento
+activate j
+j -> visBat : Elige criatura aliada
+activate visBat
+
+visBat -> contBat : setCriatura(Criatura criatura)
+activate contBat
+
+contBat -> m : setCriatura(Criatura criatura)
+activate m
+
+m --> contBat
+deactivate m
+
+contBat --> visBat
+j -> visBat : Selecciona posición
+visBat -> contBat : setPosicion(Posicion posicion)
+contBat -> m : setPosicion(Posicion posicion)
+activate m
+
+m --> contBat
+deactivate m
+
+contBat -> p : disponibilidad()
+
+end
+
+@enduml

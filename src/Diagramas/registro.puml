@@ -1,0 +1,110 @@
+@startuml
+hide footbox
+title Registro de usuarios
+
+actor Jugador as j
+
+participant VistaRegistro as visReg
+participant ControladorRegistro as contReg
+participant Humano as hum
+participant Dado as d
+participant VistaSeleccionJefe as visSJ
+participant ControladorSeleccionJefe as contSJ
+participant JefeDeTerreno as jef
+participant Jugador as jug
+
+j -> visReg : Click botón\nregistrarse
+activate visReg
+
+visReg -> contReg: registrar(String usuario, String pass,\nString passConf)
+activate contReg
+
+contReg -> hum : registrar(String usuario, String pass,\nString passConf)
+activate hum
+
+alt Usuario no registrado
+
+alt Si datos son correctos
+
+hum --> contReg : Respuesta.USUARIO_REGISTRADO
+
+contReg -> contSJ : seleccionarJefe()
+activate contSJ
+
+contSJ -> jef : getJefes()
+activate jef
+
+jef --> contSJ : JefeDeTerreno[]
+deactivate jef
+
+contSJ -> visSJ : new VistaSeleccionJefe(JefeDeTerreno[])
+activate visSJ
+
+visSJ --> contSJ
+deactivate visSJ
+
+contSJ -> visSJ : mostrar()
+activate visSJ
+
+visSJ -> j : Solicitar jefe de terreno
+j --> visSJ : Jefe de terreno seleccionado
+visSJ --> contSJ : setJefe(JefeDeTerreno jefe)
+deactivate visSJ
+
+contSJ -> jug : setJefe(JefeDeTerreno jefe)
+activate jug
+
+jug --> contSJ
+deactivate jug
+
+contSJ --> contReg
+deactivate contSJ
+
+contReg -> contReg : getDado()
+activate contReg
+
+contReg -> d : getDado()
+activate d
+
+d --> contReg : Dado
+deactivate d
+deactivate contReg
+
+contReg -> hum : registrarPuzle(Dado[] dados)
+hum --> contReg
+contReg -> visReg : mensaje(Respuesta.REGISTRO_EXITOSO)
+visReg --> j : Mostrar mensaje
+
+else Contraseñas no coinciden
+
+hum --> contReg : Respuesta.PASS_DISTINTAS
+contReg -> visReg : mensaje(Respuesta.PASS_DISTINTAS)
+visReg --> j : Mostrar mensaje
+
+else Los campos no se ajustan al formato
+
+hum --> contReg : Respuesta.FORMATO_INCORRECTO
+contReg -> visReg : mensaje(Respuesta.FORMATO_INCORRECTO)
+visReg --> j : Mostrar mensaje
+
+else Falta algún campo
+
+hum --> contReg : Respuesta.CAMPO_VACIO
+deactivate hum
+
+contReg -> visReg : mensaje(Respuesta.CAMPO_VACIO)
+deactivate contReg
+
+visReg --> j : Mostrar mensaje
+
+end
+
+else Usuario ya registrado
+
+hum --> contReg : Respuesta.USUARIO_EXISTE
+contReg -> visReg : mensaje(Respuesta.USUARIO_EXISTE)
+visReg --> j : Mostrar mensaje
+
+end
+
+@enduml

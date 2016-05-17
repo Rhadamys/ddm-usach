@@ -1,0 +1,59 @@
+@startuml
+hide footbox
+
+title Activar magia
+
+actor Jugador as j
+
+participant ControladorBatalla as contBat
+participant VistaMagia as visMag
+participant ControladorMagia as contMag
+participant Batalla as b
+participant Magia as mag
+
+contBat -> contMag : magia()
+activate contMag
+
+contMag -> b : getMagias()
+activate b
+
+b --> contMag : Magia[] magias
+deactivate b
+
+contMag -> visMag : new VistaMagia(Magia[] magias)
+activate visMag
+
+visMag --> contMag
+deactivate visMag
+
+contMag -> visMag : mostrar()
+activate visMag
+deactivate contMag
+
+activate j
+j -> visMag : Elige una magia
+j -> visMag : Activar magia
+visMag -> contMag : activarMagia(Magia magia)
+activate contMag
+
+contMag -> mag : realizarAccion()
+activate mag
+
+alt Si el jugador tiene los puntos de magia necesarios
+mag --> contMag : Respuesta.MAGIA_ACTIVADA
+contMag --> visMag : mensaje(MAGIA_ACTIVADA)
+visMag --> j : Mostrar mensaje
+
+else
+
+mag --> contMag : Respuesta.PUNTOS_MAGIA_INSUFICIENTES
+deactivate mag
+
+contMag --> visMag : mensaje(PUNTOS_MAGIA_INSUFICIENTES)
+deactivate contMag
+
+visMag --> j : Mostrar mensaje
+
+end
+
+@enduml

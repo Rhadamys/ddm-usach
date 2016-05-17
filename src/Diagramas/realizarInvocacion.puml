@@ -1,0 +1,61 @@
+@startuml
+hide footbox
+title Realizar invocación
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Posicion as pos
+participant Tablero as tab
+participant Dado as d
+participant Accion as i
+
+activate visBat
+activate contBat
+contBat -> pos : disponibilidad()
+activate pos
+
+alt Si posicion está disponible
+pos --> contBat : Respuesta.POSICION_DISPONIBLE
+contBat -> tab : comprobarDespliegue(Terreno despliegue)
+activate tab
+
+alt Si es posible realizar el despliegue
+tab --> contBat : Respuesta.DESPLIEGUE_CORRECTO
+contBat -> d : getCriatura()
+activate d
+
+d --> contBat : Criatura criatura
+deactivate d
+
+contBat -> i : invocar(Criatura criatura,\nPosicion posicion)
+activate i
+
+i --> contBat : Respuesta.INVOCACION_CORRECTA
+deactivate i
+
+contBat --> visBat : mensaje(Respuesta.INVOCACION_CORRECTA)
+visBat --> j : Mostrar mensaje
+
+else No es posible desplegar el dado
+tab --> contBat : Respuesta.DESPLIEGUE_INCORRECTO
+deactivate tab
+
+contBat --> visBat : mensaje(Respuesta.DESPLIEGUE_INCORRECTO)
+visBat --> j : Mostrar mensaje
+
+end
+
+else Posición no disponible
+pos --> contBat : Respuesta.POSICION_NO_DISPONIBLE
+deactivate pos
+
+contBat --> visBat : mensaje(Respuesta.POSICION_NO_DISPONIBLE)
+deactivate contBat
+
+visBat --> j : Mostrar mensaje
+deactivate visBat
+
+end
+@enduml

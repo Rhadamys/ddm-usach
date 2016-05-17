@@ -1,0 +1,20 @@
+@startuml
+hide footbox
+title Elegir acciones
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Turno as t
+participant Jugador as jug
+
+j -> visBat : Selecciona guardar puntos
+activate visBat
+
+visBat -> contBat : guardarPuntos(Char[] caras)
+activate contBat
+
+contBat -> jug : guardarPuntos(Char[] caras)
+
+@enduml

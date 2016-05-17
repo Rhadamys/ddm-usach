@@ -1,0 +1,28 @@
+@startuml
+hide footbox
+
+title Atacar
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Acccion as ac
+
+loop Todas las veces que quiera atacar o hasta agotar puntos de ataque
+
+activate j
+j -> visBat : Selecciona criatura aliada
+activate visBat
+
+visBat -> contBat : setAtacante(Criatura criatura)
+activate contBat
+
+contBat --> visBat
+j -> visBat : Selecciona objetivo
+visBat -> contBat : setObjetivo(ElementoEnCampo objetivo)
+contBat -> ac : realizarAccion(Criatura criaturaAliada,\nElementoEnCampo objetivoEnemigo)
+
+end
+
+@enduml

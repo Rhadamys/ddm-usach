@@ -1,0 +1,83 @@
+@startuml
+hide footbox
+title Lanzamiento de dados
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant VistaSeleccionarDados as visDado
+participant ControladorSeleccionarDados as contDado
+participant Jugador as jug
+participant PuzleDeDados as puzle
+participant Dado as dado
+participant Turno as t
+
+activate visBat
+activate contBat
+contBat -> contDado : seleccionarDados(Jugador jugador)
+activate contDado
+
+contDado -> jug : jugador.getPuzle()
+activate jug
+
+jug --> contDado : PuzleDeDados puzle
+deactivate jug
+
+contDado -> puzle : puzle.getDados()
+activate puzle
+
+puzle --> contDado : Dado[] dados
+deactivate puzle
+
+contDado -> visDado :  new VistaSeleccionarDados(Dado[] dados)
+activate visDado
+
+visDado --> contDado
+deactivate visDado
+
+contDado -> visDado : mostrar()
+activate visDado
+deactivate contDado
+
+visDado --> j : SolicitarDados
+activate j
+
+loop Hasta que seleccione una cantidad correcta de dados
+
+j -> visDado : Selecciona dados
+visDado -> contDado : comprobarDados(Dado[] dados)
+activate contDado
+deactivate visDado
+
+alt Si seleccionó por lo menos un dado
+
+contDado -> contDado : getCara(int cara)
+activate contDado
+contDado -> dado : getCara(int cara)
+activate dado
+
+dado --> contDado : Char (Cara)
+deactivate dado
+deactivate contDado
+
+contDado -> t : puntosTurno(Char[] caras)
+activate t
+
+t --> contDado
+deactivate t
+
+contDado -> contBat : mostrarRepresentaciones\n(Char[] caras)
+deactivate contDado
+
+contBat -> visBat : mostrarRepresentaciones\n(Char[] caras)
+deactivate contBat
+
+visBat --> j : Mostrar representaciones\nde dados
+deactivate visBat
+
+end
+
+end
+
+@enduml

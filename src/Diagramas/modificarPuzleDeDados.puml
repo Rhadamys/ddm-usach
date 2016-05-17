@@ -1,0 +1,64 @@
+@startuml
+hide footbox
+title Modificar puzle de dados
+
+actor Jugador as j
+
+participant ControladorNuevaBatalla as contNB
+participant VistaCambiarPuzle as visCP
+participant ControladorCambiarPuzle as contCP
+participant Jugador as jug
+participant PuzleDeDados as puz
+
+contNB -> contCP : modificarPuzle(Jugador jugador)
+activate contCP
+
+contCP -> jug : getPuzle()
+activate jug
+
+puz --> contCP : PuzleDeDados puzle
+deactivate jug
+
+contCP -> jug : getDados()
+activate jug
+
+puz --> contCP : Dado[] dados
+deactivate jug
+
+contCP -> visCP : new VistaCambiarPuzle\n(PuzleDeDados puzle, Dado[] dados)
+activate visCP
+
+visCP --> contCP
+deactivate visCP
+
+contCP ->visCP : mostrar()
+deactivate contCP
+
+activate visCP
+loop Se quiera cambiar un dado
+activate j
+
+j -> visCP : Selecciona dado a sacar e ingresar
+visCP -> contCP : setDados(Dado[] dados)
+activate contCP
+
+contCP -> puz : setDados(Dado[] dados)
+activate puz
+
+alt Si dados seleccionados son del mismo nivel
+puz --> contCP : Respuesta.PUZLE_GUARDADO
+contCP --> visCP : mensaje(Respuesta.PUZLE_GUARDADO)
+visCP --> j : Mostrar mensaje
+
+else Dados seleccionados no son del mismo nivel
+puz --> contCP : Respuesta.DADOS_DISTINTO_NIVEL
+deactivate puz
+
+contCP --> visCP : mensaje(Respuesta.DADOS_DISTINTO_NIVEL)
+deactivate contCP
+
+visCP --> j : Mostrar mensaje
+deactivate visCP
+
+end
+@enduml

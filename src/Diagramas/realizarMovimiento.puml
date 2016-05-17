@@ -1,0 +1,65 @@
+@startuml
+hide footbox
+title Realizar movimiento
+
+actor Jugador as j
+
+participant VistaMovimiento as visMov
+participant ControladorMovimientor as contMov
+participant Posicion as p
+participant Tablero as t
+participant Accion as ac
+
+activate visMov
+activate contMov
+contMov -> p : disponibilidad()
+activate p
+
+alt Si posición está disponible
+p --> contMov : Respuesta.POSICION_DISPONIBLE
+contMov -> t : comprobarTrayectoria(Posicion posicionCriatura,\nPosicion posicionFinal)
+activate t
+
+alt Si no hay obstáculos en la trayectoria
+ac --> contMov : Respuesta.TRAYECTORIA_DISPONIBLE 
+contMov -> ac : mover(Criatura criatura,\nPosicion posicion)
+activate ac
+
+alt Si en el camino, la criatura pasa por una casilla en la cual hay una trampa
+ac --> contMov : Respuesta.TRAMPA_EN_POSICION
+contMov -> ac : activarTrampa(Trampa trampa)
+
+...Se realizan las acciones de la trampa...
+
+ac --> contMov : Respuesta.TRAMPA_ACTIVADA
+contMov --> visMov : mensaje(Respuesta.TRAMPA_ACTIVADA)
+visMov --> j : Mostrar mensaje
+
+else Se llega al destino
+ac --> contMov : Respuesta.MOVIMIENTO_REALIZADO
+deactivate ac
+
+contMov --> visMov : mensaje(Respuesta.MOVIMIENTO_REALIZADO)
+visMov --> j : Mostrar mensaje
+end
+
+else Hay algún obstáculo en la trayectoria
+t --> contMov : Respuesta.TRAYECTORIA_NO_DISPONIBLE
+deactivate t
+
+contMov --> visMov : mensaje(Respuesta.TRAYECTORIA_NO_DISPONIBLE)
+visMov --> j : Mostrar mensaje
+
+end
+
+else Posición no disponible
+p --> contMov : Respuesta.POSICION_NO_DISPONIBLE
+deactivate p
+
+contMov --> visMov : mensaje(Respuesta.POSICION_NO_DISPONIBLE)
+deactivate contMov
+
+visMov --> j : Mostrar mensaje
+deactivate visMov
+end
+@enduml

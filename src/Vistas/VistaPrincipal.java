@@ -23,19 +23,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
      */
     public VistaPrincipal() {
         initComponents();
-        
-    try {
-        //create the font to use. Specify the size!
-        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\Fuentes\\pixel.ttf")).deriveFont(14f);
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        //register the font
-        ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src\\Fuentes\\pixel.ttf")));
-        this.setFont(customFont);
-    }catch(IOException | FontFormatException e){
-        e.printStackTrace();
-    }
-    
-    this.setIconImage(new ImageIcon(getClass().getResource("/Imagenes/icono.png")).getImage());
     }
 
     /**
@@ -75,7 +62,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     public void agregarVista(JInternalFrame vista){
-        this.contenedor.add(vista);
+        this.contenedor.add(vista, 0);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

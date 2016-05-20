@@ -27,7 +27,7 @@ public final class BotonImagen extends JButton {
      * @param imagen String - Nombre del archivo.
      */
     public BotonImagen(String imagen){
-        //Inicializar panel de fondo
+        //Inicializar panel de fondo        
         imagenMouseFuera = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();

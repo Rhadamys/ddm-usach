@@ -29,4 +29,9 @@ public class PanelImagen extends JPanel {
         setOpaque(false);
         super.paint(g);
     }
+    
+    public void setImagen(String imagen){
+        this.imagen = new ImageIcon(getClass().getResource(imagen)).getImage();
+        this.repaint();
+    }
 }

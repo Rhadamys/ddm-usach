@@ -5,9 +5,11 @@
  */
 package Vistas;
 import Otros.BotonImagen;
+import Otros.CajaPassImagen;
+import Otros.CajaTextoImagen;
+import Otros.PanelImagen;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import javax.swing.JButton;
+import java.awt.Font;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -15,34 +17,86 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaRegistro extends javax.swing.JInternalFrame {
-    private VistaPrincipal vistaPrincipal;
     private BotonImagen registrarse;
+    private BotonImagen volver;
+    private BotonImagen seleccionarJefe;
+    private PanelImagen iconoJefe;
+    private CajaTextoImagen usuario;
+    private CajaPassImagen pass;
+    private CajaPassImagen repitePass;
     
     /**
      * Creates new form VistaRegistro
+     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
      */
-    public VistaRegistro() {
-        initComponents();
-    }
-    
-    /**
-     * Inicializar VistaLogin
-     * @param vistaPrincipal Vista principal que contiene a este JInternalFrame
-     */
-    public VistaRegistro(VistaPrincipal vistaPrincipal){
-        this.vistaPrincipal = vistaPrincipal;
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+    public VistaRegistro(Font fuentePersonalizada) {
         initComponents();
         
-        this.registrarse = new BotonImagen("/Imagenes/boton.png");
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);        
+        this.registrarse = new BotonImagen("/Imagenes/Botones/boton.png");
         this.add(this.registrarse);
-        this.registrarse.setImagenSobre("/Imagenes/boton_mouse_sobre.png");
-        this.registrarse.setImagenPresionado("/Imagenes/boton_presionado.png");
-        this.registrarse.setLocation(290, 390);
-        this.registrarse.setSize(230, 40);
+        this.registrarse.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.registrarse.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
+        this.registrarse.setLocation(270, 535);
+        this.registrarse.setSize(270, 40);
         this.registrarse.setText("Registrarse");
-        this.registrarse.setFont(vistaPrincipal.getFont());
+        this.registrarse.setFont(fuentePersonalizada);
         this.registrarse.setForeground(Color.white);
+        
+        this.volver = new BotonImagen("/Imagenes/Botones/atras.png");
+        this.add(this.volver);
+        this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
+        this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
+        this.volver.setLocation(20, 20);
+        this.volver.setSize(50, 50);
+        
+        this.seleccionarJefe = new BotonImagen("/Imagenes/Botones/boton_2.png");
+        this.add(seleccionarJefe);
+        this.seleccionarJefe.setImagenSobre("/Imagenes/Botones/boton_2_sobre.png");
+        this.seleccionarJefe.setImagenPresionado("/Imagenes/Botones/boton_2_presionado.png");
+        this.seleccionarJefe.setLocation(230, 475);
+        this.seleccionarJefe.setSize(80, 40);
+        this.seleccionarJefe.setText("Jefe");
+        this.seleccionarJefe.setFont(fuentePersonalizada);
+        this.seleccionarJefe.setForeground(Color.white);
+        
+        this.mensaje.setFont(fuentePersonalizada);
+        this.L1.setFont(fuentePersonalizada);
+        this.L2.setFont(fuentePersonalizada);
+        this.L3.setFont(fuentePersonalizada);
+        
+        iconoJefe = new PanelImagen("/Imagenes/vacio.png");
+        this.add(iconoJefe);
+        iconoJefe.setSize(40, 40);
+        iconoJefe.setLocation(330, 475);
+        
+        usuario = new CajaTextoImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        this.add(usuario);
+        usuario.setLocation(230, 435);
+        usuario.setSize(140, 30);
+        usuario.setFont(fuentePersonalizada);
+        usuario.setForeground(Color.white);
+        
+        pass = new CajaPassImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        this.add(pass);
+        pass.setLocation(500, 435);
+        pass.setSize(140, 30);
+        pass.setFont(fuentePersonalizada);
+        pass.setForeground(Color.white);
+        
+        repitePass = new CajaPassImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        this.add(repitePass);
+        repitePass.setLocation(500, 485);
+        repitePass.setSize(140, 30);
+        repitePass.setFont(fuentePersonalizada);
+        repitePass.setForeground(Color.white);
+                
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_registro.png");
+        this.add(panelFondo);
+        panelFondo.setLocation(0, 0);
+        panelFondo.setSize(this.getSize());
+        
+        this.setMensaje("");
     }
 
     /**
@@ -54,66 +108,86 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Mensaje = new javax.swing.JLabel();
+        mensaje = new javax.swing.JLabel();
         L1 = new javax.swing.JLabel();
         L2 = new javax.swing.JLabel();
-        Usuario = new javax.swing.JTextField();
         L3 = new javax.swing.JLabel();
-        Pass = new javax.swing.JPasswordField();
-        RepitePass = new javax.swing.JPasswordField();
-        volver = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(102, 102, 102));
         setBorder(null);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(810, 608));
-        setMinimumSize(new java.awt.Dimension(810, 608));
-        setPreferredSize(new java.awt.Dimension(810, 608));
+        setMaximumSize(new java.awt.Dimension(800, 600));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 600));
         getContentPane().setLayout(null);
 
-        Mensaje.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        Mensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Mensaje.setText("Mensaje");
-        getContentPane().add(Mensaje);
-        Mensaje.setBounds(290, 240, 230, 14);
-        Mensaje.setFont(vistaPrincipal.getFont());
+        mensaje.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        mensaje.setForeground(new java.awt.Color(255, 255, 255));
+        mensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mensaje.setText("Mensaje");
+        getContentPane().add(mensaje);
+        mensaje.setBounds(150, 410, 490, 17);
 
+        L1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        L1.setForeground(new java.awt.Color(255, 255, 255));
+        L1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         L1.setText("Usuario:");
         getContentPane().add(L1);
-        L1.setBounds(290, 270, 90, 20);
+        L1.setBounds(150, 440, 70, 20);
 
+        L2.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        L2.setForeground(new java.awt.Color(255, 255, 255));
+        L2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         L2.setText("Pass:");
         getContentPane().add(L2);
-        L2.setBounds(290, 310, 90, 20);
-        getContentPane().add(Usuario);
-        Usuario.setBounds(380, 270, 140, 20);
+        L2.setBounds(380, 440, 110, 20);
 
+        L3.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        L3.setForeground(new java.awt.Color(255, 255, 255));
+        L3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         L3.setText("Repetir pass:");
         getContentPane().add(L3);
-        L3.setBounds(290, 350, 90, 20);
-        getContentPane().add(Pass);
-        Pass.setBounds(380, 310, 140, 20);
-        getContentPane().add(RepitePass);
-        RepitePass.setBounds(380, 350, 140, 20);
-
-        volver.setLabel("<");
-        getContentPane().add(volver);
-        volver.setBounds(20, 10, 50, 40);
+        L3.setBounds(380, 490, 110, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public JButton getVolver() {
+    public BotonImagen getVolver() {
         return volver;
+    }
+    
+    public BotonImagen getSeleccionarJefe() {
+        return seleccionarJefe;
+    }
+    
+    public BotonImagen getRegistrarse() {
+        return registrarse;
+    }
+    
+    public void setIconoJefe(String imagen){
+        this.iconoJefe.setImagen(imagen);
+    }
+    
+    public String getUsuario(){
+        return this.usuario.getText();
+    }
+    
+    public String getPass(){
+        return String.valueOf(this.pass.getPassword());
+    }
+    
+    public String getPassRepetida(){
+        return String.valueOf(this.repitePass.getPassword());
+    }
+    
+    public void setMensaje(String mensaje){
+        this.mensaje.setText(mensaje);
     }
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel L1;
     private javax.swing.JLabel L2;
     private javax.swing.JLabel L3;
-    private javax.swing.JLabel Mensaje;
-    private javax.swing.JPasswordField Pass;
-    private javax.swing.JPasswordField RepitePass;
-    private javax.swing.JTextField Usuario;
-    private javax.swing.JButton volver;
+    private javax.swing.JLabel mensaje;
     // End of variables declaration//GEN-END:variables
 }

@@ -17,40 +17,45 @@ import java.awt.event.MouseEvent;
  * @author mam28
  */
 public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
-    private VistaPrincipal vistaPrincipal;
+    private BotonImagen nuevaPartida = new BotonImagen("/Imagenes/Botones/partida.png");
+    private BotonImagen nuevoTorneo = new BotonImagen("/Imagenes/Botones/torneo.png");
+    private BotonImagen salir = new BotonImagen("/Imagenes/Botones/salir.png");
     
     /**
      * Creates new form VistaMenuPrincipal
+     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
      */
-    public VistaMenuPrincipal() {
-        initComponents();
-    }
-    
-    public VistaMenuPrincipal(VistaPrincipal vistaPrincipal){
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        this.vistaPrincipal = vistaPrincipal;
+    public VistaMenuPrincipal(Font fuentePersonalizada) {
         initComponents();
         
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
+        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, salir};
         int cantidadCompoenentes = 3;
         int separacion = (this.getSize().width - 200 * cantidadCompoenentes) 
                 / (cantidadCompoenentes + 1);
-        String[] imagenBoton = {"/Imagenes/partida.png", "/Imagenes/torneo.png", "/Imagenes/torneo.png"};
-        String[] imagenBotonSobre = {"/Imagenes/partida_sobre.png", 
-            "/Imagenes/torneo_sobre.png", "/Imagenes/torneo_sobre.png"};
-        String[] imagenBotonPresionado = {"/Imagenes/partida_presionado.png", 
-            "/Imagenes/torneo_presionado.png", "/Imagenes/torneo_presionado.png"};
-        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Opcion 3"};
+        
+        String[] imagenBotonSobre = {
+            "/Imagenes/Botones/partida_sobre.png", 
+            "/Imagenes/Botones/torneo_sobre.png", 
+            "/Imagenes/Botones/salir_sobre.png"};
+        
+        String[] imagenBotonPresionado = {
+            "/Imagenes/Botones/partida_presionado.png", 
+            "/Imagenes/Botones/torneo_presionado.png", 
+            "/Imagenes/Botones/salir_presionado.png"};
+        
+        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Salir"};
         
         for (int i = 0; i < cantidadCompoenentes; i ++){
             final int index = i;
             int posicionX = 200 * i + separacion * (i + 1);
             
-            BotonImagen boton = new BotonImagen(imagenBoton[i]);
-            boton.setSize(200, 320);
-            boton.setLocation(posicionX, 140);
-            boton.setImagenSobre(imagenBotonSobre[i]);
-            boton.setImagenPresionado(imagenBotonPresionado[i]);
-            boton.addMouseListener(new MouseAdapter(){
+            botones[i].setSize(200, 320);
+            botones[i].setLocation(posicionX, 140);
+            botones[i].setImagenSobre(imagenBotonSobre[i]);
+            botones[i].setImagenPresionado(imagenBotonPresionado[i]);
+            botones[i].addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseEntered(MouseEvent e){
                     mensaje.setText(mensajeBoton[index]);
@@ -61,22 +66,31 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
                     mensaje.setText("");
                 }
             });
-            this.add(boton);
+            this.add(botones[i]);
             
-            PanelImagen panel = new PanelImagen("/Imagenes/cajon_menu.png");
-            panel.setSize(boton.getSize());
+            PanelImagen panel = new PanelImagen("/Imagenes/Fondos/cajon_menu.png");
+            panel.setSize(botones[i].getSize());
             panel.setLocation(posicionX, 140);
             this.add(panel);
         }
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/fondo_menu_principal.png");
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_menu_principal.png");
         panelFondo.setSize(this.getSize());
         this.add(panelFondo);
         
-        mensaje.setFont(new Font(vistaPrincipal.getFont().getName(), 
+        this.mensaje.setText("");
+        this.mensaje.setFont(new Font(fuentePersonalizada.getName(), 
                 Font.TRUETYPE_FONT, 36));
-        
-        mensaje.setText("");
+        this.mensajeBienvenida.setFont(new Font(fuentePersonalizada.getName(), 
+                Font.TRUETYPE_FONT, 24));
+    }
+    
+    /**
+     * Inicializa una nueva instancia de esta vista. Crea los controles en tiempo
+     * de ejecución.
+     * @param vistaPrincipal JFrame principal que contiene a esta vista.
+     */
+    public VistaMenuPrincipal(VistaPrincipal vistaPrincipal){
     }
 
     /**
@@ -89,6 +103,7 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         mensaje = new javax.swing.JLabel();
+        mensajeBienvenida = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setBorder(null);
@@ -104,11 +119,34 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         getContentPane().add(mensaje);
         mensaje.setBounds(410, 540, 360, 40);
 
+        mensajeBienvenida.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        mensajeBienvenida.setForeground(new java.awt.Color(255, 255, 255));
+        mensajeBienvenida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        mensajeBienvenida.setText("Bienvenida");
+        getContentPane().add(mensajeBienvenida);
+        mensajeBienvenida.setBounds(420, 20, 360, 30);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public BotonImagen getNuevaPartida() {
+        return nuevaPartida;
+    }
+
+    public BotonImagen getNuevoTorneo() {
+        return nuevoTorneo;
+    }
+    
+    public BotonImagen getSalir(){
+        return salir;
+    }
+    
+    public void setMensajeBienvenida(String nombreUsuario){
+        this.mensajeBienvenida.setText("¡Bienvenid@ " + nombreUsuario + "!");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel mensaje;
+    private javax.swing.JLabel mensajeBienvenida;
     // End of variables declaration//GEN-END:variables
 }

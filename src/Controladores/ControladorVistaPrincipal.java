@@ -6,18 +6,24 @@
 package Controladores;
 
 import Vistas.VistaPrincipal;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
 /**
  *
  * @author mam28
  */
-public class ControladorVistaPrincipal {
+public final class ControladorVistaPrincipal {
     private VistaPrincipal visPrin;
     
     public ControladorVistaPrincipal(){
         this.visPrin = new VistaPrincipal();
+        this.crearVistaPrincipal();
         visPrin.setVisible(true);
+    }
+    
+    public void crearVistaPrincipal(){
+        this.visPrin.setIconImage(new ImageIcon(getClass().getResource("/Imagenes/icono.png")).getImage());
     }
     
     public void agregarVista(JInternalFrame vista){

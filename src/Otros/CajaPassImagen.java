@@ -21,10 +21,13 @@ public class CajaPassImagen extends JPasswordField {
     private Image imagenCorrecto;
     private Image imagen;
     
-    public CajaPassImagen(String imagen){
-        this.imagenNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
-        this.imagenIncorrecto = new ImageIcon(getClass().getResource(imagen)).getImage();
-        this.imagenCorrecto = new ImageIcon(getClass().getResource(imagen)).getImage();
+    public CajaPassImagen(){
+        this.imagenNormal = new ImageIcon(getClass().getResource(
+                "/Imagenes/Otros/fondo_caja_texto.png")).getImage();
+        this.imagenCorrecto = new ImageIcon(getClass().getResource(
+                "/Imagenes/Otros/fondo_caja_texto_correcto.png")).getImage();
+        this.imagenIncorrecto = new ImageIcon(getClass().getResource(
+                "/Imagenes/Otros/fondo_caja_texto_incorrecto.png")).getImage();
         this.imagen = this.imagenNormal;
         this.setBorder(new EmptyBorder(0, 10, 0, 10));
         this.setEchoChar('*');
@@ -49,6 +52,18 @@ public class CajaPassImagen extends JPasswordField {
 
     public void setImagenCorrecto(Image imagenCorrecto) {
         this.imagenCorrecto = imagenCorrecto;
+    }
+    
+    public void setImagenActual(int i){
+        switch(i){
+            case 0: this.imagen = this.imagenNormal;
+                    break;
+            case 1: this.imagen = this.imagenCorrecto;
+                    break;
+            case 2: this.imagen = this.imagenIncorrecto;
+                    break;
+        }
+        this.repaint();
     }
     
 }

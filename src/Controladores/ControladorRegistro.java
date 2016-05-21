@@ -29,6 +29,10 @@ public class ControladorRegistro {
     private VistaRegistro visReg;
     private JefeDeTerreno jefe;
     
+    /**
+     * Inicializa una nueva instancia de controlador de registro.
+     * @param contPrin Controlador principal para comunicarse con otros controladores.
+     */
     public ControladorRegistro(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
@@ -37,6 +41,10 @@ public class ControladorRegistro {
         this.agregarListenersVistaRegistro();
     }
 
+    /**
+     * Método que devuelve la vista de registro generada en este controlador.
+     * @return Vista de registro del controlador.
+     */
     public VistaRegistro getVisReg() {
         return visReg;
     }
@@ -116,11 +124,25 @@ public class ControladorRegistro {
         //this.visReg.setVisible(false);
         this.visReg.dispose();
     }
-
+    
+    /**
+     * Establece el jefe de terreno elegido por el usuario en la vista de
+     * selección de jefe para realizar el registro.
+     * @param jefe Jefe de terreno seleccionado.
+     */
     public void setJefe(JefeDeTerreno jefe) {
         this.jefe = jefe;
     }
     
+    /**
+     * Proceso de registro de usuario. Realiza comprobaciones previas, como que
+     * se hayan completado los campos, y que las contraseñas coincidan.
+     * @param usuario Usuario ingresado.
+     * @param pass Contraseña ingresada.
+     * @param passRepetida Confirmación de contraseña.
+     * @param jefe Jefe de terreno seleccionado.
+     * @throws IOException Ignorará las excepciones de tipo IOException.
+     */
     public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) throws IOException{
         if(!"".equals(usuario) && !"".equals(pass) && !"".equals(passRepetida)){
             if(Usuario.existe(usuario) == null){
@@ -128,12 +150,7 @@ public class ControladorRegistro {
                     if(pass.equals(passRepetida)){
                         File archivoUsuario = new File("src\\Otros\\usuarios.txt");
                         PrintWriter escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
-
-                        escritor.println("<nuevo>");
-                        escritor.println(usuario);
-                        escritor.println(pass);
-                        escritor.println(jefe.getClave());
-
+                        escritor.println(usuario + ";" + pass + ";" + jefe.getClave());
                         escritor.close();
 
                         JOptionPane.showMessageDialog(null, "Registro exitoso.");

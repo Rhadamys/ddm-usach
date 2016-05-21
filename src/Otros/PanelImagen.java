@@ -17,6 +17,10 @@ import javax.swing.JPanel;
 public class PanelImagen extends JPanel {
     private Image imagen;
     
+    public PanelImagen(){
+        this.imagen = new ImageIcon(getClass().getResource("/Imagenes/vacio.png")).getImage();
+    }
+    
     public PanelImagen(String imagen){
         this.imagen = new ImageIcon(getClass().getResource(imagen)).getImage();
     }

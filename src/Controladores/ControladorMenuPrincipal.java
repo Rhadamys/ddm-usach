@@ -87,7 +87,7 @@ public final class ControladorMenuPrincipal {
      * confirme si desea salir de la aplicación.
      * @return Opcion elegida por el usuario en el JOptionPane. 
      */
-    public int preguntarSalir(){
+    public int preguntarSalir(){        
         int opcion = JOptionPane.showConfirmDialog(
                 null, 
                 "¿Estás seguro que deseas salir?",

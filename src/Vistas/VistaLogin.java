@@ -34,14 +34,14 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
-        usuario = new CajaTextoImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        usuario = new CajaTextoImagen();
         this.add(usuario);
         usuario.setSize(190, 30);
         usuario.setLocation(350, 435);
         usuario.setFont(fuentePersonalizada);
         usuario.setForeground(Color.white);
         
-        pass = new CajaPassImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        pass = new CajaPassImagen();
         this.add(pass);
         pass.setSize(190, 30);
         pass.setLocation(350, 475);
@@ -137,6 +137,14 @@ public class VistaLogin extends javax.swing.JInternalFrame {
     public BotonImagen getIngresar() {
         return ingresar;
     }
+    
+    public CajaTextoImagen getCajaUsuario(){
+        return this.usuario;
+    }
+    
+    public CajaPassImagen getCajaPass(){
+        return this.pass;
+    }
 
     public JLabel getL1() {
         return L1;
@@ -154,20 +162,12 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         return mensaje;
     }
     
-    public JTextField getUsuario(){
-        return usuario;
+    public String getUsuario(){
+        return this.usuario.getText();
     }
     
-    public JPasswordField getPass(){
-        return pass;
-    }
-    
-    public void setUsuario(String texto){
-        usuario.setText(texto);
-    }
-    
-    public void setPass(String texto){
-        pass.setText(texto);
+    public String getPass(){
+        return String.valueOf(this.pass.getPassword());
     }
     
     public void setMensaje(String mensaje){

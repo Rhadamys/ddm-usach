@@ -16,11 +16,18 @@ import javax.swing.JButton;
  *
  * @author mam28
  */
-public final class BotonImagen extends JButton {
+public class BotonImagen extends JButton {
     private Image imagen;
     private Image imagenMouseFuera;
     private Image imagenMouseSobre;
     private Image imagenMousePresionado;
+    
+    public BotonImagen(){
+        this.setContentAreaFilled(false);
+        this.setBorder(null);
+        repaint();
+        agregarListeners();
+    }
     
     /**
      * Inicializar un botón con imagen de fondo.
@@ -35,37 +42,33 @@ public final class BotonImagen extends JButton {
         this.setContentAreaFilled(false);
         this.setBorder(null);
         repaint();
-        agregarEventos();
+        agregarListeners();
     }
     
     /**
      * Especifíca el comportamiento del botón (cambiar imagen) cuando se
      * producen eventos de mouse.
      */
-    public void agregarEventos(){
+    public void agregarListeners(){
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e){
-                imagen = imagenMouseSobre;
-                repaint();
+                setImagenActual(1);
             }
             
             @Override
             public void mouseExited(MouseEvent e){
-                imagen = imagenMouseFuera;
-                repaint();
+                setImagenActual(0);
             }
             
             @Override
             public void mousePressed(MouseEvent e){
-                imagen = imagenMousePresionado;
-                repaint();
+                setImagenActual(2);
             }
             
             @Override
             public void mouseReleased(MouseEvent e){
-                imagen = imagenMouseSobre;
-                repaint();
+                setImagenActual(1);
             }
         });
     }
@@ -127,5 +130,17 @@ public final class BotonImagen extends JButton {
      */
     public void setImagenPresionado(String imagen){
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
+    }
+    
+    public void setImagenActual(int i){
+        switch(i){
+            case 0: this.imagen = this.imagenMouseFuera;
+                    break;
+            case 1: this.imagen = this.imagenMouseSobre;
+                    break;
+            case 2: this.imagen = this.imagenMousePresionado;
+                    break;
+        }
+        this.repaint();
     }
 }

@@ -7,7 +7,6 @@ package Controladores;
 
 import Modelos.Usuario;
 import Otros.BotonImagen;
-import Otros.Respuesta;
 import Vistas.VistaLogin;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -29,6 +28,10 @@ public final class ControladorLogin {
     private final VistaLogin visLog;
     private Usuario usuario;
     
+    /**
+     * Inicializa una nueva instancia de ControladorLogin.
+     * @param contPrin Controlador principal para comunicarse con otros controladores.
+     */
     public ControladorLogin(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
@@ -70,9 +73,7 @@ public final class ControladorLogin {
             @Override
             public void mouseClicked(MouseEvent e){
                 try {
-                    iniciarSesion(
-                            visLog.getUsuario().getText(), 
-                            String.valueOf(visLog.getPass().getPassword()));
+                    iniciarSesion(visLog.getUsuario(), visLog.getPass());
                 } catch (IOException ex) {
                     Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -80,7 +81,7 @@ public final class ControladorLogin {
         });
         
         // Obtiene la caja de texto de "Usuario"
-        JTextField usuarioCampo = this.visLog.getUsuario();
+        JTextField usuarioCampo = this.visLog.getCajaUsuario();
         
         /*
         * Agrega un KeyListener a la caja de texto "Usuario", así se podrán
@@ -92,9 +93,7 @@ public final class ControladorLogin {
                 // Si se presiona la tecla ENTER
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     try {
-                        iniciarSesion(
-                                visLog.getUsuario().getText(),
-                                String.valueOf(visLog.getPass().getPassword()));
+                        iniciarSesion(visLog.getUsuario(), visLog.getPass());
                     } catch (IOException ex) {
                         Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -103,7 +102,7 @@ public final class ControladorLogin {
         });
         
         // Obtiene la caja de texto de "Pass"
-        JPasswordField pass = this.visLog.getPass();
+        JPasswordField pass = this.visLog.getCajaPass();
         
         /*
         * Agrega un KeyListener a la caja de texto "Pass", así se podrán
@@ -115,9 +114,7 @@ public final class ControladorLogin {
                 // Si se presiona la tecla ENTER
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     try {
-                        iniciarSesion(
-                                visLog.getUsuario().getText(),
-                                String.valueOf(visLog.getPass().getPassword()));
+                        iniciarSesion(visLog.getUsuario(), visLog.getPass());
                     } catch (IOException ex) {
                         Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -126,10 +123,17 @@ public final class ControladorLogin {
         });
     }
     
+    /**
+     * Se hace visible la vista en el JDesktopPane de la vista principal.
+     */
     public void mostrarVistaLogin() {
         this.visLog.setVisible(true);
     }
     
+    /**
+     * Elimina la vista de este controlador. Esto provocará tmabién que el
+     * controlador sea eliminado de la memoria.
+     */
     public void eliminarVistaLogin() {
         this.visLog.dispose();
     }
@@ -140,7 +144,7 @@ public final class ControladorLogin {
      * @param passText Contraseña ingresada en el campo de contraseña.
      */
     public void iniciarSesion(String usuarioText, String passText) throws IOException {
-        if (!"".equals(usuarioText) && !"".equals(passText)){
+        if (comprobarCampos()){
             Usuario consultaUsuario = Usuario.existe(usuarioText);
             if (consultaUsuario != null){
                 this.usuario = consultaUsuario;
@@ -148,31 +152,71 @@ public final class ControladorLogin {
                     this.contPrin.setUsuarioActivo(this.usuario);
                     this.contPrin.crearControladorMenuPrincipal();
                     this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+                    this.eliminarVistaLogin();
                 }else{
-                    this.setMensaje(Respuesta.PASS_INCORRECTA.getText());
+                    this.usuarioCorrecto();
+                    this.passErronea();
+                    this.setMensaje("Contraseña incorrecta.");
                 }
             }else{
-                this.setMensaje(Respuesta.USUARIO_NO_EXISTE.getText());
+                this.usuarioErroneo();
+                this.passErronea();
+                this.setMensaje("Usuario no existe.");
             }
         }else{
-            this.setMensaje(Respuesta.CAMPOS_VACIOS.getText());
+            this.setMensaje("Completa todos los campos.");
         }
     }
     
-    public VistaLogin getVisLog() {
-        return visLog;
+    /**
+     * Comprueba que se hayan llenado todos los campos requeridos.
+     * @return True si los campos se han llenado, false en caso contrario.
+     */
+    public boolean comprobarCampos(){
+        if("".equals(this.visLog.getUsuario())){
+            this.usuarioErroneo();
+        }else{
+            this.visLog.getCajaUsuario().setImagenActual(0);
+        }
+
+        if("".equals(this.visLog.getPass())){
+            this.passErronea();
+        }
+        
+        return !"".equals(this.visLog.getUsuario()) && !"".equals(this.visLog.getPass());
     }
     
+    /**
+     * Pinta de rojo el fondo de la caja de texto de usuario, indicando que se debe
+     * ingresar un usuario en el campo.
+     */
+    public void usuarioErroneo(){
+        this.visLog.getCajaUsuario().setImagenActual(2);
+    }
+    
+    /**
+     * Pinta de verde el fondo de la caja de texto de usuario, indicando que el
+     * usuario ingresado existe en los registros.
+     */
+    public void usuarioCorrecto(){
+        this.visLog.getCajaUsuario().setImagenActual(1);
+    }
+    
+    /**
+     * Pinta de rojo el fondo de la caja de contraseña, indicando que la contraseña
+     * ingresada es incorrecta para el usuario o no se ha ingresado una contraseña
+     * válida.
+     */
+    public void passErronea(){
+        this.visLog.getCajaPass().setImagenActual(2);
+    }
+    
+    /**
+     * Establece el texto del JLabel mensaje indicando, por ejemplo, que se
+     * deben ingresar todos los campos requeridos.
+     * @param mensaje Mensaje que se mostrará en el JLabel.
+     */
     public void setMensaje(String mensaje){
         this.visLog.setMensaje(mensaje);
-    }
-    
-    public void reiniciarCampos(){
-        this.visLog.setUsuario("");
-        this.visLog.setPass("");
-    }
-    
-    public Usuario getUsuario() {
-        return this.usuario;
     }
 }

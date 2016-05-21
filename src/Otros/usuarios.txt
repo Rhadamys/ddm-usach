@@ -1,4 +1,3 @@
-<nuevo>
-metodos
-usach
-jefe1
+metodos;usach;jefe2
+mario;asd123;jefe4
+metodos2;usach;jefe1

@@ -10,9 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** @pdOid 5fdf1593-9417-4518-a690-8bb149f077b5 */
 public class Usuario extends Jugador {
@@ -29,12 +26,11 @@ public class Usuario extends Jugador {
             
             String linea = lector.readLine();
             while(linea != null){
-                if(linea.equals(usuario)){
-                    String pass = lector.readLine();
-                    
+                if(linea.contains(usuario + ";")){
+                    String[] infoUsuario = linea.split(";");
                     lector.close();
                     archivo.close();
-                    return new Usuario(linea, pass);
+                    return new Usuario(infoUsuario[0], infoUsuario[1]);
                 }    
                 
                 linea = lector.readLine();           

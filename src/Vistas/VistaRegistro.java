@@ -70,21 +70,21 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
         iconoJefe.setSize(40, 40);
         iconoJefe.setLocation(330, 475);
         
-        usuario = new CajaTextoImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        usuario = new CajaTextoImagen();
         this.add(usuario);
         usuario.setLocation(230, 435);
         usuario.setSize(140, 30);
         usuario.setFont(fuentePersonalizada);
         usuario.setForeground(Color.white);
         
-        pass = new CajaPassImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        pass = new CajaPassImagen();
         this.add(pass);
         pass.setLocation(500, 435);
         pass.setSize(140, 30);
         pass.setFont(fuentePersonalizada);
         pass.setForeground(Color.white);
         
-        repitePass = new CajaPassImagen("/Imagenes/Otros/fondo_caja_texto.png");
+        repitePass = new CajaPassImagen();
         this.add(repitePass);
         repitePass.setLocation(500, 485);
         repitePass.setSize(140, 30);

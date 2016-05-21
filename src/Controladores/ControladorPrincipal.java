@@ -6,6 +6,7 @@
 package Controladores;
 
 import Modelos.Usuario;
+import Vistas.VistaBatalla;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -39,6 +40,9 @@ public class ControladorPrincipal {
         contPrin.contVisPrin = new ControladorVistaPrincipal();
         contPrin.crearControladorLogin();
         contPrin.contLog.mostrarVistaLogin();
+        
+//        ControladorBatalla cb = new ControladorBatalla(contPrin);
+//        cb.mostrarVistaBatalla();
     }
      
     public void crearFuentePersonalizada(){

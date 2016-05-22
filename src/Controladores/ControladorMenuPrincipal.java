@@ -57,7 +57,7 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                salir();
+                contPrin.getContVisPrin().salir();
             }
         });
     }
@@ -73,28 +73,6 @@ public final class ControladorMenuPrincipal {
         this.contPrin.crearControladorNuevaPartida();
         this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
         this.visMenuPrin.setVisible(false);
-    }
-    
-    public void salir(){
-        int opcion = this.preguntarSalir();
-        if (opcion == JOptionPane.YES_OPTION){
-            this.contPrin.getContVisPrin().getVisPrin().dispose();
-        }
-    }
-    
-    /**
-     * Muestra un mensaje con las opciones si / no solicitando al usuario que
-     * confirme si desea salir de la aplicación.
-     * @return Opcion elegida por el usuario en el JOptionPane. 
-     */
-    public int preguntarSalir(){        
-        int opcion = JOptionPane.showConfirmDialog(
-                null, 
-                "¿Estás seguro que deseas salir?",
-                "Salir",
-                JOptionPane.YES_NO_OPTION);
-        
-        return opcion;
     }
     
 }

@@ -7,16 +7,18 @@ package Vistas;
 
 import Otros.BotonImagen;
 import Otros.PanelImagen;
+import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaSeleccionarJefe extends javax.swing.JInternalFrame {
+public class VistaSeleccionarJefe extends JInternalFrame {
     private VistaPrincipal visPrin;
     private ArrayList<BotonImagen> botones = new ArrayList();
     private ArrayList<HashMap<String, String>> jefes;
@@ -30,17 +32,21 @@ public class VistaSeleccionarJefe extends javax.swing.JInternalFrame {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
+        this.setOpaque(false);
+        this.setBackground(new Color(0,0,0,0));
+        
         this.jefes = jefes;
         
         int filas = 2;
         int columnas = 3;
-        int lado = 120;
+        int lado = 100;
         int numJefes = jefes.size();
-        int separacionHorizontal = (800 - lado * columnas) / (columnas + 1);
-        int separacionVertical = (450 - lado * filas) / (filas + 1);
+        int separacionHorizontal = (640 - lado * columnas) / (columnas + 1);
+        int separacionVertical = (400 - lado * filas) / (filas + 1);
+        int aumentoMarco = 20;
         
         for (int i = 0; i < numJefes; i++){
-            System.out.println(jefes.get(i).get("Clave"));
             PanelImagen iconoJefe = new PanelImagen("/Imagenes/Jefes/"
                     + jefes.get(i).get("Clave") + ".png");
             
@@ -48,16 +54,14 @@ public class VistaSeleccionarJefe extends javax.swing.JInternalFrame {
             
             this.add(marco);
             this.add(iconoJefe);
-            
-            int aumentoMarco = 20;
             iconoJefe.setSize(lado, lado);
             marco.setSize(lado + aumentoMarco, lado + aumentoMarco);
-            iconoJefe.setLocation(
-                    (separacionHorizontal + lado) * (i % columnas) + separacionHorizontal, 
-                    (separacionVertical + lado) * (i / columnas) + separacionVertical);
-            marco.setLocation(
-                    (separacionHorizontal + lado) * (i % columnas) + separacionHorizontal - aumentoMarco / 2, 
-                    (separacionVertical + lado) * (i / columnas) + separacionVertical - aumentoMarco / 2);
+            
+            int x = 90 + (separacionHorizontal + lado) * (i % columnas) + separacionHorizontal;
+            int y = 60 + (separacionVertical + lado) * (i / columnas) + separacionVertical;
+            
+            iconoJefe.setLocation(x, y);
+            marco.setLocation(x - aumentoMarco / 2, y - aumentoMarco / 2);
             
             marco.setName(String.valueOf(i));
             marco.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
@@ -65,9 +69,8 @@ public class VistaSeleccionarJefe extends javax.swing.JInternalFrame {
             botones.add(marco);
         }
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion.png");
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
         this.add(panelFondo);
-        panelFondo.setLocation(0, 0);
         panelFondo.setSize(this.getSize());
         
         this.nombre.setFont(new Font(fuentePersonalizada.getName(), Font.TRUETYPE_FONT, 36));
@@ -98,16 +101,16 @@ public class VistaSeleccionarJefe extends javax.swing.JInternalFrame {
         getContentPane().setLayout(null);
 
         habilidad.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
-        habilidad.setForeground(new java.awt.Color(255, 255, 255));
+        habilidad.setForeground(new java.awt.Color(204, 0, 0));
         habilidad.setText("Habilidad");
         getContentPane().add(habilidad);
-        habilidad.setBounds(40, 540, 670, 29);
+        habilidad.setBounds(110, 490, 610, 29);
 
         nombre.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
         nombre.setForeground(new java.awt.Color(255, 255, 255));
         nombre.setText("Nombre");
         getContentPane().add(nombre);
-        nombre.setBounds(40, 490, 670, 29);
+        nombre.setBounds(110, 445, 610, 29);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

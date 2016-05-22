@@ -4,11 +4,8 @@
  * and open the template in the editor.
  */
 package Vistas;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.GraphicsEnvironment;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
@@ -23,6 +20,10 @@ public class VistaPrincipal extends javax.swing.JFrame {
      */
     public VistaPrincipal() {
         initComponents();
+        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setIconImage(new ImageIcon(getClass().getResource("/Imagenes/icono.png")).getImage());
     }
 
     /**
@@ -36,8 +37,9 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         contenedor = new javax.swing.JDesktopPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Yu-Gi-Oh!  - Dungeon Dice Monsters");
+        setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(806, 629));
         setMinimumSize(new java.awt.Dimension(806, 629));
         setPreferredSize(new java.awt.Dimension(806, 629));

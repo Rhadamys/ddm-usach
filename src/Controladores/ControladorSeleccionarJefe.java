@@ -30,7 +30,7 @@ public class ControladorSeleccionarJefe {
                 JefeDeTerreno.getJefes());
         this.agregarListenersVistaSeleccionarJefe();
         
-        this.contPrin.getContVisPrin().agregarVista(this.visSelJef);
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visSelJef);
     }
     
     public void agregarListenersVistaSeleccionarJefe(){

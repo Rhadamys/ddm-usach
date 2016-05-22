@@ -88,35 +88,39 @@ public class CompTablero extends PanelImagen{
         
         ArrayList<CompPosicion> despliegue = new ArrayList();
         
-        switch(direccion){
-            case 0: despliegue.add(this.posiciones[fila - 1][columna + 1]);
-                    despliegue.add(this.posiciones[fila][columna + 1]);
-                    despliegue.add(this.posiciones[fila + 1][columna]);
-                    despliegue.add(this.posiciones[fila + 1][columna - 1]);
-                    despliegue.add(this.posiciones[fila + 2][columna - 1]);
-                    despliegue.add(this.posiciones[fila][columna]);
-                    break;
-            case 1: despliegue.add(this.posiciones[fila + 1][columna + 1]);
-                    despliegue.add(this.posiciones[fila + 1][columna]);
-                    despliegue.add(this.posiciones[fila][columna - 1]);
-                    despliegue.add(this.posiciones[fila - 1][columna - 1]);
-                    despliegue.add(this.posiciones[fila - 1][columna - 2]);
-                    despliegue.add(this.posiciones[fila][columna]);
-                    break;
-            case 2: despliegue.add(this.posiciones[fila + 1][columna + 1]);
-                    despliegue.add(this.posiciones[fila][columna + 1]);
-                    despliegue.add(this.posiciones[fila - 1][columna]);
-                    despliegue.add(this.posiciones[fila - 1][columna - 1]);
-                    despliegue.add(this.posiciones[fila - 2][columna - 1]);
-                    despliegue.add(this.posiciones[fila][columna]);
-                    break;
-            case 3: despliegue.add(this.posiciones[fila + 1][columna - 1]);
-                    despliegue.add(this.posiciones[fila + 1][columna]);
-                    despliegue.add(this.posiciones[fila][columna + 1]);
-                    despliegue.add(this.posiciones[fila - 1][columna + 1]);
-                    despliegue.add(this.posiciones[fila - 1][columna + 2]);
-                    despliegue.add(this.posiciones[fila][columna]);
-                    break;
+        try{
+            switch(direccion){
+                case 0: despliegue.add(this.posiciones[fila - 1][columna + 1]);
+                        despliegue.add(this.posiciones[fila][columna + 1]);
+                        despliegue.add(this.posiciones[fila + 1][columna]);
+                        despliegue.add(this.posiciones[fila + 1][columna - 1]);
+                        despliegue.add(this.posiciones[fila + 2][columna - 1]);
+                        despliegue.add(this.posiciones[fila][columna]);
+                        break;
+                case 1: despliegue.add(this.posiciones[fila + 1][columna + 1]);
+                        despliegue.add(this.posiciones[fila + 1][columna]);
+                        despliegue.add(this.posiciones[fila][columna - 1]);
+                        despliegue.add(this.posiciones[fila - 1][columna - 1]);
+                        despliegue.add(this.posiciones[fila - 1][columna - 2]);
+                        despliegue.add(this.posiciones[fila][columna]);
+                        break;
+                case 2: despliegue.add(this.posiciones[fila + 1][columna + 1]);
+                        despliegue.add(this.posiciones[fila][columna + 1]);
+                        despliegue.add(this.posiciones[fila - 1][columna]);
+                        despliegue.add(this.posiciones[fila - 1][columna - 1]);
+                        despliegue.add(this.posiciones[fila - 2][columna - 1]);
+                        despliegue.add(this.posiciones[fila][columna]);
+                        break;
+                case 3: despliegue.add(this.posiciones[fila + 1][columna - 1]);
+                        despliegue.add(this.posiciones[fila + 1][columna]);
+                        despliegue.add(this.posiciones[fila][columna + 1]);
+                        despliegue.add(this.posiciones[fila - 1][columna + 1]);
+                        despliegue.add(this.posiciones[fila - 1][columna + 2]);
+                        despliegue.add(this.posiciones[fila][columna]);
+                        break;
+            }
+        }catch(Exception e){
+            return null;
         }
         
         return despliegue;

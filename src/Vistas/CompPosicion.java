@@ -14,6 +14,7 @@ import Otros.BotonImagen;
 public class CompPosicion extends BotonImagen {
     private int fila;
     private int columna;
+    private int dueno = 0;
     
     public CompPosicion(int fila, int columna){
         setImagenFuera("/Imagenes/Botones/casilla.png");
@@ -37,5 +38,12 @@ public class CompPosicion extends BotonImagen {
     public int getColumna() {
         return columna;
     }
-    
+
+    public int getDueno() {
+        return dueno;
+    }
+
+    public void setDueno(int dueno) {
+        this.dueno = dueno;
+    }
 }

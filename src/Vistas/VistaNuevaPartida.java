@@ -58,6 +58,9 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public BotonImagen getAgregar() {
+        return agregar;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

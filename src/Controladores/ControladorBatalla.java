@@ -5,7 +5,9 @@
  */
 package Controladores;
 
+import Otros.BotonImagen;
 import Vistas.CompPosicion;
+import Vistas.CompSelDesp;
 import Vistas.CompTablero;
 import Vistas.VistaBatalla;
 import java.awt.event.KeyAdapter;
@@ -22,7 +24,7 @@ import javax.swing.JOptionPane;
 public class ControladorBatalla {
     private final ControladorPrincipal contPrin;
     private VistaBatalla visBat;
-    private int accion = 1;
+    private int accion = 0;
     private int direccion = 0;
     private int despliegue = 0;
     private int turnoActual = 1;
@@ -33,6 +35,10 @@ public class ControladorBatalla {
         this.visBat = new VistaBatalla(this.contPrin.getFuentePersonalizada());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visBat);
         this.agregarTablero();
+        this.agregarListenersVistaBatalla();
+        
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisSelDesp());
+        this.agregarListenersVistaSeleccionarDespliegue();
     }
     
     public void agregarTablero(){
@@ -49,7 +55,7 @@ public class ControladorBatalla {
         
         tablero.setPosiciones(posiciones);
         this.visBat.setTablero(tablero);
-        this.visBat.add(this.visBat.getTablero());
+        this.visBat.add(this.visBat.getTablero(), 0);
         this.visBat.getTablero().setLocation(150, 50);
     }
     
@@ -101,25 +107,50 @@ public class ControladorBatalla {
                                         break;
                     case KeyEvent.VK_4: turnoActual = 4;
                                         break;
-                    case KeyEvent.VK_5: despliegue = 0;
-                                        break;
-                    case KeyEvent.VK_6: despliegue = 1;
-                                        break;
-                    case KeyEvent.VK_7: despliegue = 2;
-                                        break;
-                    case KeyEvent.VK_8: despliegue = 3;
-                                        break;
-                    case KeyEvent.VK_9: despliegue = 4;
-                                        break;
-                    case KeyEvent.VK_0: despliegue = 5;
-                                        break;
                 }
             }
         });
     }
     
+    public void agregarListenersVistaBatalla(){
+        this.visBat.getInvocacion().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                mostrarVistaSeleccionarDespliegue();
+            }
+        });
+    }
+    
+    public void agregarListenersVistaSeleccionarDespliegue(){
+        ArrayList<BotonImagen> botonesDespliegue = this.visBat.getVisSelDesp().getBotonesDespliegue();
+        
+        for(BotonImagen botonDespliegue: botonesDespliegue){
+            botonDespliegue.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    cambiarDespliegue(Integer.parseInt(e.getComponent().getName()));
+                    ocultarVistaSeleccionarDespliegue();
+                }
+            });
+        }
+    }
+    
     public void mostrarVistaBatalla(){
         this.visBat.setVisible(true);
+    }
+    
+    public void mostrarVistaSeleccionarDespliegue(){
+        this.visBat.getVisSelDesp().setVisible(true);
+    }
+    
+    public void ocultarVistaSeleccionarDespliegue(){
+        this.visBat.getVisSelDesp().setVisible(false);
+    }
+    
+    public void cambiarDespliegue(int numDespliegue){
+        this.accion = 1;
+        this.despliegue = numDespliegue;
+        this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
     }
     
     public ArrayList<CompPosicion> getDespliegue(int numDespliegue, CompPosicion botonActual){
@@ -137,8 +168,17 @@ public class ControladorBatalla {
     public void mostrarDespliegue(int numDespliegue, CompPosicion botonActual, int direccion, int jugador){
         ArrayList<CompPosicion> despliegue = getDespliegue(numDespliegue, botonActual);
         if(despliegue != null){
+            // Comprobar
             for(CompPosicion casilla: despliegue){
-                casilla.setImagenSobre("/Imagenes/Botones/casilla_j" + jugador + ".png");
+                if(casilla.getDueno() == 0){
+                    casilla.setImagenSobre("/Imagenes/Botones/casilla_j" + jugador + ".png");
+                }else{
+                    casilla.setImagenSobre("/Imagenes/Botones/casilla_error.png");
+                }
+            }
+            
+            // Pintar
+            for(CompPosicion casilla: despliegue){
                 casilla.setImagenActual(1);
             }
         }else{
@@ -147,8 +187,26 @@ public class ControladorBatalla {
     }
     
     public void asignarCasillas(ArrayList<CompPosicion> casillas, int jugador){
-        for(CompPosicion casilla: casillas){
-            casilla.setImagenFuera("/Imagenes/Botones/casilla_j" + jugador + ".png");
+        // Comprobar
+        if(casillas != null){
+            boolean sePuedeAsignar = true;
+            for(CompPosicion casilla: casillas){
+                if(casilla.getDueno() != 0){
+                    this.visBat.setMensaje("Casilla ocupada por jugador " + casilla.getDueno());
+                    sePuedeAsignar = false;
+                    break;
+                }
+            }
+
+            // Asignar
+            if(sePuedeAsignar){
+                for(CompPosicion casilla: casillas){
+                    casilla.setImagenFuera("/Imagenes/Botones/casilla_j" + jugador + ".png");
+                    casilla.setDueno(jugador);
+                }
+            }
+        }else{
+            this.visBat.setMensaje("No se pudo invocar. Elige una posición válida.");
         }
     }
 }

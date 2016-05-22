@@ -32,8 +32,6 @@ public class CompJugador extends PanelImagen{
         this.setLayout(null);
         this.setSize(140, 190);
         
-        this.setImagen("/Imagenes/Fondos/fondo_jugador.png");
-        
         this.etiqueta = new JLabel("Nombre jugador");
         this.iconoJugador = new PanelImagen("/Imagenes/Jefes/jefe1.png");
         this.vidaJugador = new JProgressBar();

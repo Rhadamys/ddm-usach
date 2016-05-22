@@ -6,7 +6,6 @@
 package Controladores;
 
 import Modelos.Usuario;
-import Vistas.VistaBatalla;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -24,6 +23,7 @@ public class ControladorPrincipal {
     private ControladorMenuPrincipal contMenuPrin;
     private ControladorSeleccionarJefe contSelJef;
     private ControladorNuevaPartida contNuePar;
+    private ControladorBatalla contBat;
     private Usuario usuarioActivo;
     private Font fuentePersonalizada;
     
@@ -37,12 +37,9 @@ public class ControladorPrincipal {
         contPrin.crearFuentePersonalizada();
         
         // Se instancian los otros controladores
-        contPrin.contVisPrin = new ControladorVistaPrincipal();
+        contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
         contPrin.crearControladorLogin();
         contPrin.contLog.mostrarVistaLogin();
-        
-//        ControladorBatalla cb = new ControladorBatalla(contPrin);
-//        cb.mostrarVistaBatalla();
     }
      
     public void crearFuentePersonalizada(){
@@ -60,7 +57,7 @@ public class ControladorPrincipal {
 
     public Font getFuentePersonalizada() {
         return fuentePersonalizada;
-    }    
+    }
     
     public void crearControladorLogin() {
         this.contLog = new ControladorLogin(this);
@@ -85,7 +82,11 @@ public class ControladorPrincipal {
     public void crearControladorNuevaPartida(){
         this.contNuePar = new ControladorNuevaPartida(this);
     }
-
+    
+    public void crearControladorBatalla(){
+        this.contBat = new ControladorBatalla(this);
+    }
+    
     public ControladorVistaPrincipal getContVisPrin() {
         return contVisPrin;
     }
@@ -108,6 +109,10 @@ public class ControladorPrincipal {
 
     public ControladorNuevaPartida getContNuePar() {
         return contNuePar;
+    }
+
+    public ControladorBatalla getContBat() {
+        return contBat;
     }
     
     public Usuario getUsuarioActivo() {

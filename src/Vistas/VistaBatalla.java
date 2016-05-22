@@ -5,7 +5,10 @@
  */
 package Vistas;
 
+import Otros.BotonImagen;
+import Otros.PanelImagen;
 import java.awt.Font;
+import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -14,6 +17,13 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class VistaBatalla extends javax.swing.JInternalFrame {
     private CompTablero tablero;
+    private BotonImagen ataque;
+    private BotonImagen invocacion;
+    private BotonImagen magia;
+    private BotonImagen movimiento;
+    private BotonImagen trampa;
+    private CompJugador[] vistasJugador;
+    private CompSelDesp visSelDesp;
     
     /**
      * Creates new form VistaBatalla
@@ -24,12 +34,66 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
+        this.visSelDesp = new CompSelDesp();
+        this.vistasJugador = new CompJugador[4];
+        
         int[][] posiciones = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
         for(int i = 0; i < 4; i++){
-            CompJugador cp = new CompJugador(fuentePersonalizada);
-            this.add(cp);
-            cp.setLocation(posiciones[i][0], posiciones[i][1]);
+            CompJugador resumenJugador = new CompJugador(fuentePersonalizada);
+            
+            if(i == 0){
+                resumenJugador.setImagen("/Imagenes/Fondos/fondo_jugador.png");
+            }else{
+                resumenJugador.setImagen("/Imagenes/Fondos/fondo_jugador_inactivo.png");
+            }
+            
+            this.add(resumenJugador);
+            resumenJugador.setLocation(posiciones[i][0], posiciones[i][1]);
+            vistasJugador[i] = resumenJugador;
         }
+        
+        this.ataque = new BotonImagen("/Imagenes/Botones/ataque.png");
+        this.invocacion = new BotonImagen("/Imagenes/Botones/invocacion.png");
+        this.magia = new BotonImagen("/Imagenes/Botones/magia.png");
+        this.movimiento = new BotonImagen("/Imagenes/Botones/movimiento.png");
+        this.trampa = new BotonImagen("/Imagenes/Botones/trampa.png");
+        
+        this.add(ataque);
+        this.add(invocacion);
+        this.add(magia);
+        this.add(movimiento);
+        this.add(trampa);
+        
+        this.ataque.setSize(30, 30);
+        this.invocacion.setSize(30, 30);
+        this.magia.setSize(30, 30);
+        this.movimiento.setSize(30, 30);
+        this.trampa.setSize(30, 30);
+        
+        this.ataque.setLocation(170, 560);
+        this.invocacion.setLocation(210, 560);
+        this.magia.setLocation(250, 560);
+        this.movimiento.setLocation(290, 560);
+        this.trampa.setLocation(330, 560);
+        
+        this.ataque.setImagenSobre("/Imagenes/Botones/ataque_sobre.png");
+        this.invocacion.setImagenSobre("/Imagenes/Botones/invocacion_sobre.png");
+        this.magia.setImagenSobre("/Imagenes/Botones/magia_sobre.png");
+        this.movimiento.setImagenSobre("/Imagenes/Botones/movimiento_sobre.png");
+        this.trampa.setImagenSobre("/Imagenes/Botones/trampa_sobre.png");
+        
+        this.ataque.setImagenPresionado("/Imagenes/Botones/ataque_presionado.png");
+        this.invocacion.setImagenPresionado("/Imagenes/Botones/invocacion_presionado.png");
+        this.magia.setImagenPresionado("/Imagenes/Botones/magia_presionado.png");
+        this.movimiento.setImagenPresionado("/Imagenes/Botones/movimiento_presionado.png");
+        this.trampa.setImagenPresionado("/Imagenes/Botones/trampa_presionado.png");
+        
+        mensaje.setText("");
+        mensaje.setFont(new Font(fuentePersonalizada.getName(), Font.TRUETYPE_FONT, 16));
+        
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_batalla.png");
+        this.add(panelFondo);
+        panelFondo.setSize(this.getSize());
     }
 
     /**
@@ -62,6 +126,38 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
 
     public CompTablero getTablero() {
         return tablero;
+    }
+
+    public BotonImagen getAtaque() {
+        return ataque;
+    }
+
+    public BotonImagen getInvocacion() {
+        return invocacion;
+    }
+
+    public BotonImagen getMagia() {
+        return magia;
+    }
+
+    public BotonImagen getMovimiento() {
+        return movimiento;
+    }
+
+    public BotonImagen getTrampa() {
+        return trampa;
+    }
+
+    public CompJugador[] getVistasJugador() {
+        return vistasJugador;
+    }
+
+    public JLabel getMensaje() {
+        return mensaje;
+    }
+
+    public CompSelDesp getVisSelDesp() {
+        return visSelDesp;
     }
 
     public void setTablero(CompTablero tablero) {

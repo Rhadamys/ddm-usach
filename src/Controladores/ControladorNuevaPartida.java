@@ -6,6 +6,8 @@
 package Controladores;
 
 import Vistas.VistaNuevaPartida;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -20,10 +22,22 @@ public class ControladorNuevaPartida {
         
         this.visNuePar = new VistaNuevaPartida(this.contPrin.getFuentePersonalizada());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar);
+        this.agregarListenersVistaNuevaPartida();
     }
     
     public void mostrarVistaNuevaPartida(){
         this.visNuePar.setVisible(true);
+    }
+    
+    public void agregarListenersVistaNuevaPartida(){
+        this.visNuePar.getAgregar().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                contPrin.crearControladorBatalla();
+                contPrin.getContBat().mostrarVistaBatalla();
+                visNuePar.dispose();
+            }
+        });
     }
     
 }

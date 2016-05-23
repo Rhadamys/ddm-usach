@@ -145,27 +145,35 @@ public class ControladorRegistro {
      */
     public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) throws IOException{
         if(!"".equals(usuario) && !"".equals(pass) && !"".equals(passRepetida)){
-            if(Usuario.existe(usuario) == null){
-                if(jefe != null){
-                    if(pass.equals(passRepetida)){
-                        File archivoUsuario = new File("src\\Otros\\usuarios.txt");
-                        PrintWriter escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
-                        escritor.println(usuario + ";" + pass + ";" + jefe.getClave());
-                        escritor.close();
+            if(usuario.length() >= 5){
+                if(pass.length() >= 5){
+                    if(Usuario.existe(usuario) == null){
+                        if(jefe != null){
+                            if(pass.equals(passRepetida)){
+                                File archivoUsuario = new File("src\\Otros\\usuarios.txt");
+                                PrintWriter escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
+                                escritor.println(usuario + ";" + pass + ";" + jefe.getClave());
+                                escritor.close();
 
-                        JOptionPane.showMessageDialog(null, "Registro exitoso.");
+                                JOptionPane.showMessageDialog(null, "Registro exitoso.");
 
-                        this.contPrin.crearControladorLogin();
-                        this.contPrin.getContLog().mostrarVistaLogin();
-                        this.eliminarVistaRegistro();
+                                this.contPrin.crearControladorLogin();
+                                this.contPrin.getContLog().mostrarVistaLogin();
+                                this.eliminarVistaRegistro();
+                            }else{
+                                this.visReg.setMensaje("Las contraseñas no coinciden.");
+                            }
+                        }else{
+                            this.visReg.setMensaje("Selecciona un jefe de terreno.");
+                        }
                     }else{
-                        this.visReg.setMensaje("Las contraseñas no coinciden.");
+                        this.visReg.setMensaje("Usuario ya existe");
                     }
                 }else{
-                    this.visReg.setMensaje("Selecciona un jefe de terreno.");
+                     this.visReg.setMensaje("La contraseña debe tener por lo menos 5 caracteres.");
                 }
             }else{
-                this.visReg.setMensaje("Usuario ya existe");
+                this.visReg.setMensaje("El usuario debe tener por lo menos 5 caracteres.");
             }
         }else{
             this.visReg.setMensaje("Completa todos los campos.");

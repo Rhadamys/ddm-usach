@@ -7,15 +7,14 @@ package Controladores;
 
 import Otros.BotonImagen;
 import Vistas.CompPosicion;
-import Vistas.CompSelDesp;
 import Vistas.CompTablero;
 import Vistas.VistaBatalla;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,6 +62,7 @@ public class ControladorBatalla {
         posicion.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e){
+                visBat.setMensaje("");
                 switch(accion){
                     case 0: break;
                     case 1: visBat.getTablero().reiniciarCasillas();
@@ -113,10 +113,22 @@ public class ControladorBatalla {
     }
     
     public void agregarListenersVistaBatalla(){
+        this.visBat.addMouseMotionListener(new MouseMotionAdapter(){
+            @Override
+            public void mouseMoved(MouseEvent e){
+                visBat.setMensaje("");
+            }
+        });
+        
         this.visBat.getInvocacion().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
                 mostrarVistaSeleccionarDespliegue();
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                visBat.setMensaje("Invocar criatura");
             }
         });
     }

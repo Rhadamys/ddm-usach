@@ -38,7 +38,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         contenedor = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Yu-Gi-Oh!  - Dungeon Dice Monsters");
+        setTitle("Dungeon Dice Monsters");
         setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(806, 629));
         setMinimumSize(new java.awt.Dimension(806, 629));

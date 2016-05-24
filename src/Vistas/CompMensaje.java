@@ -19,32 +19,24 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class CompMensaje {
+public class CompMensaje extends Thread{
     public static int mostrarMensaje(String mensaje, String textoBoton, ControladorPrincipal contPrin){
         VistaMensaje visMen = new VistaMensaje(mensaje, textoBoton);
         contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
         
-        synchronized(visMen){
-            while(visMen.isVisible()){
-                try {
-                    visMen.wait();
-                } catch (InterruptedException ex) {
-                    // Nada
-                }
-            }
-        }
+        // Pasa un tiempo
         
         visMen.dispose();
         return visMen.getRespuesta();
     }
 }
 
-class VistaMensaje extends JInternalFrame{
+class VistaMensaje extends JInternalFrame {
     private BotonImagen boton1;
     private BotonImagen boton2;
     private JLabel labelMensaje;
-    private int respuesta;
+    private int respuesta = 10;
     
     public VistaMensaje(String mensaje, String textoBoton){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -80,6 +72,16 @@ class VistaMensaje extends JInternalFrame{
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
+        
+        synchronized(this){
+            while(this.isVisible()){
+                try {
+                    this.wait();
+                } catch (InterruptedException ex) {
+                    // Nada
+                }
+            }
+        }
     }
     
     public void setRespuesta(int respuesta){

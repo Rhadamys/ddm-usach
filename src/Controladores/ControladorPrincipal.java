@@ -6,6 +6,7 @@
 package Controladores;
 
 import Modelos.Usuario;
+import Vistas.CompMensaje;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -49,11 +50,12 @@ public class ControladorPrincipal {
      * @return Opcion elegida por el usuario en el JOptionPane. 
      */
     public int salir(){
-        return JOptionPane.showConfirmDialog(
-                null,
-                "¿Estás seguro que deseas salir?",
-                "Salir",
-                JOptionPane.YES_NO_OPTION);
+//        return JOptionPane.showConfirmDialog(
+//                null,
+//                "¿Estás seguro que deseas salir?",
+//                "Salir",
+//                JOptionPane.YES_NO_OPTION);
+        return CompMensaje.mostrarMensaje("Hola", "Adiós", this);
     }
      
     public void crearFuentePersonalizada(){

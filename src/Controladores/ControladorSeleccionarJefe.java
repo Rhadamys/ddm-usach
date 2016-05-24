@@ -21,13 +21,16 @@ import java.util.HashMap;
 public class ControladorSeleccionarJefe {
     private final ControladorPrincipal contPrin;
     private final VistaSeleccionarJefe visSelJef;
+    private final ArrayList<JefeDeTerreno> jefes;
     
     public ControladorSeleccionarJefe(ControladorPrincipal contPrin) throws IOException{
-        this.contPrin = contPrin;
+        this.contPrin = contPrin;        
+        this.jefes = JefeDeTerreno.getJefes();
         
         this.visSelJef = new VistaSeleccionarJefe(
                 this.contPrin.getFuentePersonalizada(),
-                JefeDeTerreno.getJefes());
+                this.jefes);
+        
         this.agregarListenersVistaSeleccionarJefe();
         
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visSelJef);
@@ -39,9 +42,9 @@ public class ControladorSeleccionarJefe {
             boton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e){
-                    HashMap<String, String> jefe = visSelJef.getJefe(Integer.parseInt(boton.getName()));
-                    visSelJef.setNombre(jefe.get("Nombre"));
-                    visSelJef.setHabilidad(jefe.get("Habilidad"));
+                    JefeDeTerreno jefe = jefes.get(Integer.parseInt(boton.getName()));
+                    visSelJef.setNombre(jefe.getNombre());
+                    visSelJef.setHabilidad(jefe.getHabilidad());
                 }
                 
                 @Override
@@ -52,14 +55,10 @@ public class ControladorSeleccionarJefe {
                 
                 @Override
                 public void mouseClicked(MouseEvent e){
-                    HashMap<String, String> jefe = visSelJef.getJefe(Integer.parseInt(boton.getName()));
-                    contPrin.getContReg().setJefe(new JefeDeTerreno(
-                            jefe.get("Clave"),
-                            jefe.get("Nombre"),
-                            jefe.get("Habilidad"), 
-                            Integer.parseInt(jefe.get("Puntos de vida"))));
+                    JefeDeTerreno jefe = jefes.get(Integer.parseInt(boton.getName()));
+                    contPrin.getContReg().setJefe(jefe);
                     contPrin.getContReg().getVisReg().setIconoJefe("/Imagenes/Jefes/" 
-                            + jefe.get("Clave") + ".png");
+                            + jefe.getClave() + ".png");
                     visSelJef.dispose();
                 }
             });

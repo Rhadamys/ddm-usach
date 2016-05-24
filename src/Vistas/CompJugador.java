@@ -111,4 +111,9 @@ public class CompJugador extends PanelImagen{
         this.vidaJugador.setForeground(Color.green);
         this.vidaJugador.setBackground(Color.yellow);
     }
+
+    public JProgressBar getVidaJugador() {
+        return vidaJugador;
+    }
+    
 }

@@ -9,4 +9,25 @@ import java.util.*;
 
 /** @pdOid cbe19438-3292-497c-bc58-a1da1e9c38b6 */
 public abstract class Jugador {
+    protected ArrayList<Dado> dados;
+    protected String nombreJugador;
+    protected String tipoJugador;
+    protected JefeDeTerreno jefeDeTerreno;
+
+    public ArrayList<Dado> getDados() {
+        return dados;
+    }
+
+    public String getNombreJugador() {
+        return nombreJugador;
+    }
+
+    public String getTipoJugador() {
+        return tipoJugador;
+    }
+
+    public JefeDeTerreno getJefeDeTerreno() {
+        return jefeDeTerreno;
+    }
+    
 }

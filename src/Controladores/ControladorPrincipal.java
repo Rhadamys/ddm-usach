@@ -11,6 +11,7 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,6 +41,19 @@ public class ControladorPrincipal {
         contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
         contPrin.crearControladorLogin();
         contPrin.contLog.mostrarVistaLogin();
+    }
+    
+    /**
+     * Muestra un mensaje con las opciones si / no solicitando al usuario que
+     * confirme si desea salir de la aplicación.
+     * @return Opcion elegida por el usuario en el JOptionPane. 
+     */
+    public int salir(){
+        return JOptionPane.showConfirmDialog(
+                null,
+                "¿Estás seguro que deseas salir?",
+                "Salir",
+                JOptionPane.YES_NO_OPTION);
     }
      
     public void crearFuentePersonalizada(){

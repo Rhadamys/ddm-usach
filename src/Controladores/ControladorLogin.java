@@ -72,11 +72,7 @@ public final class ControladorLogin {
         ingresar.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                try {
-                    iniciarSesion(visLog.getUsuario(), visLog.getPass());
-                } catch (IOException ex) {
-                    Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                iniciarSesion(visLog.getUsuario(), visLog.getPass());
             }
         });
         
@@ -92,11 +88,7 @@ public final class ControladorLogin {
             public void keyPressed(KeyEvent e){
                 // Si se presiona la tecla ENTER
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    try {
-                        iniciarSesion(visLog.getUsuario(), visLog.getPass());
-                    } catch (IOException ex) {
-                        Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    iniciarSesion(visLog.getUsuario(), visLog.getPass());
                 }
             }
         });
@@ -113,11 +105,7 @@ public final class ControladorLogin {
             public void keyPressed(KeyEvent e){
                 // Si se presiona la tecla ENTER
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    try {
-                        iniciarSesion(visLog.getUsuario(), visLog.getPass());
-                    } catch (IOException ex) {
-                        Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    iniciarSesion(visLog.getUsuario(), visLog.getPass());
                 }
             }
         });
@@ -143,25 +131,29 @@ public final class ControladorLogin {
      * @param usuarioText Nombre de usuario ingresado en el campo de texto.
      * @param passText Contraseña ingresada en el campo de contraseña.
      */
-    public void iniciarSesion(String usuarioText, String passText) throws IOException {
+    public void iniciarSesion(String usuarioText, String passText) {
         if (comprobarCampos()){
-            Usuario consultaUsuario = Usuario.existe(usuarioText);
-            if (consultaUsuario != null){
-                this.usuario = consultaUsuario;
-                if (this.usuario.validar(usuarioText, passText)){
-                    this.contPrin.setUsuarioActivo(this.usuario);
-                    this.contPrin.crearControladorMenuPrincipal();
-                    this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
-                    this.eliminarVistaLogin();
+            try {
+                Usuario consultaUsuario = Usuario.existe(usuarioText);
+                if (consultaUsuario != null){
+                    this.usuario = consultaUsuario;
+                    if (this.usuario.validar(usuarioText, passText)){
+                        this.contPrin.setUsuarioActivo(this.usuario);
+                        this.contPrin.crearControladorMenuPrincipal();
+                        this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+                        this.eliminarVistaLogin();
+                    }else{
+                        this.usuarioCorrecto();
+                        this.passErronea();
+                        this.setMensaje("Contraseña incorrecta.");
+                    }
                 }else{
-                    this.usuarioCorrecto();
+                    this.usuarioErroneo();
                     this.passErronea();
-                    this.setMensaje("Contraseña incorrecta.");
+                    this.setMensaje("Usuario no existe.");
                 }
-            }else{
-                this.usuarioErroneo();
-                this.passErronea();
-                this.setMensaje("Usuario no existe.");
+            } catch (IOException ex) {
+                Logger.getLogger(ControladorLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else{
             this.setMensaje("Completa todos los campos.");

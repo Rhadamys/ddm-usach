@@ -83,6 +83,7 @@ public class ControladorBatalla {
                             despliegue,
                             (CompPosicion) e.getComponent()),
                             turnoActual);
+                            visBat.getVistasJugador()[0].getVidaJugador().setValue(visBat.getVistasJugador()[0].getVidaJugador().getValue() - 10);
                 }
             }
         });

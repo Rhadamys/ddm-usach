@@ -30,24 +30,11 @@ public final class ControladorVistaPrincipal {
         this.visPrin.addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent e){
-                if(salir() == JOptionPane.YES_OPTION){
+                if(contPrin.salir() == JOptionPane.YES_OPTION){
                     e.getWindow().dispose();
                 }
             }
         });
-    }
-    
-    /**
-     * Muestra un mensaje con las opciones si / no solicitando al usuario que
-     * confirme si desea salir de la aplicación.
-     * @return Opcion elegida por el usuario en el JOptionPane. 
-     */
-    public int salir(){
-        return JOptionPane.showConfirmDialog(
-                null,
-                "¿Estás seguro que deseas salir?",
-                "Salir",
-                JOptionPane.YES_NO_OPTION);
     }
 
     public VistaPrincipal getVisPrin() {

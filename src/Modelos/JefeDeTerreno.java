@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** @pdOid ba01c964-70b9-429b-9412-0cfa461bb9c0 */
 public class JefeDeTerreno extends ElementoEnCampo {
@@ -31,28 +33,65 @@ public class JefeDeTerreno extends ElementoEnCampo {
         this.puntosVida = puntosVida;
     }
     
-    public static ArrayList getJefes() throws FileNotFoundException, IOException {
-        ArrayList<HashMap<String, String>> jefes = new ArrayList();
-        
+    public static ArrayList getJefes() {
         File archivoJefes = new File("src\\Otros\\jefes.txt");
-        FileReader archivo = new FileReader(archivoJefes);
-        BufferedReader lector = new BufferedReader(archivo);
-        
-        String linea = lector.readLine();
-        while (linea != null){
-            if(linea.equals("<nuevo>")){
-                HashMap<String, String> jefe = new HashMap<>();
-                jefe.put("Clave", lector.readLine());
-                jefe.put("Nombre", lector.readLine());
-                jefe.put("Habilidad", lector.readLine());
-                jefe.put("Puntos de vida", lector.readLine());
-                jefes.add(jefe);
+        FileReader archivo;
+        try {
+            archivo = new FileReader(archivoJefes);
+            BufferedReader lector = new BufferedReader(archivo);
+            try {
+                String linea = lector.readLine();
                 
-                linea = lector.readLine();
+                ArrayList<JefeDeTerreno> jefes = new ArrayList();
+                while (linea != null){
+                    String[] infoJefe = linea.split(";");
+                    jefes.add(new JefeDeTerreno(
+                            infoJefe[0],
+                            infoJefe[1],
+                            infoJefe[2],
+                            Integer.parseInt(infoJefe[3])));
+                    
+                    linea = lector.readLine();
+                }
+                
+                return jefes;
+            } catch (IOException ex) {
+                return null;
             }
+        } catch (FileNotFoundException ex) {
+            return null;
+        }
+    }
+    
+    public static JefeDeTerreno getJefe(String claveJefe){
+        File archivoJefes = new File("src\\Otros\\jefes.txt");
+        FileReader archivo;
+        try {
+            archivo = new FileReader(archivoJefes);
+            BufferedReader lector = new BufferedReader(archivo);
+            try {
+                String linea = lector.readLine();
+                while (linea != null){
+                    if(linea.startsWith(claveJefe + ";")){
+                        String[] infoJefe = linea.split(";");
+                        
+                        return new JefeDeTerreno(
+                            infoJefe[0],
+                            infoJefe[1],
+                            infoJefe[2],
+                            Integer.parseInt(infoJefe[3]));
+                    }
+                    
+                    linea = lector.readLine();
+                }
+            } catch (IOException ex) {
+                return null;
+            }
+        } catch (FileNotFoundException ex) {
+            return null;
         }
         
-        return jefes;
+        return null;
     }
 
     public String getClave() {

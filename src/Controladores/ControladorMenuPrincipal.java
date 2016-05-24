@@ -57,7 +57,9 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                contPrin.getContVisPrin().salir();
+                if(contPrin.salir() == JOptionPane.YES_OPTION){
+                    contPrin.getContVisPrin().getVisPrin().dispose();
+                }
             }
         });
     }

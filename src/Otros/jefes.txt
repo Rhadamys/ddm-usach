@@ -1,30 +1,6 @@
-<nuevo>
-jefe1
-Jefe 1
-Habilidad jefe 1
-100
-<nuevo>
-jefe2
-Jefe 2
-Habilidad jefe 2
-140
-<nuevo>
-jefe3
-Jefe 3
-Habilidad jefe 3
-130
-<nuevo>
-jefe4
-Jefe 4
-Habilidad jefe 4
-120
-<nuevo>
-jefe5
-Jefe 5
-Habilidad jefe 5
-110
-<nuevo>
-jefe6
-Jefe 6
-Habilidad jefe 6
-140
+jefe1;Jefe 1;Habilidad jefe 1;100
+jefe2;Jefe 2;Habilidad jefe 2;140
+jefe3;Jefe 3;Habilidad jefe 3;130
+jefe4;Jefe 4;Habilidad jefe 4;120
+jefe5;Jefe 5;Habilidad jefe 5;110
+jefe6;Jefe 6;Habilidad jefe 6;140

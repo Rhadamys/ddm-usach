@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Modelos.Dado;
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
 import Otros.BotonImagen;
@@ -15,6 +16,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -97,15 +100,11 @@ public class ControladorRegistro {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                try {
-                    registrarUsuario(
+                registrarUsuario(
                             visReg.getUsuario(), 
                             visReg.getPass(), 
                             visReg.getPassRepetida(),
                             jefe);
-                } catch (IOException ex) {
-                    Logger.getLogger(ControladorRegistro.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         });
     }
@@ -141,33 +140,44 @@ public class ControladorRegistro {
      * @param pass Contraseña ingresada.
      * @param passRepetida Confirmación de contraseña.
      * @param jefe Jefe de terreno seleccionado.
-     * @throws IOException Ignorará las excepciones de tipo IOException.
      */
-    public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) throws IOException{
+    public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) {
         if(!"".equals(usuario) && !"".equals(pass) && !"".equals(passRepetida)){
             if(usuario.length() >= 5){
                 if(pass.length() >= 5){
-                    if(Usuario.existe(usuario) == null){
-                        if(jefe != null){
-                            if(pass.equals(passRepetida)){
-                                File archivoUsuario = new File("src\\Otros\\usuarios.txt");
-                                PrintWriter escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
-                                escritor.println(usuario + ";" + pass + ";" + jefe.getClave());
-                                escritor.close();
-
-                                JOptionPane.showMessageDialog(null, "Registro exitoso.");
-
-                                this.contPrin.crearControladorLogin();
-                                this.contPrin.getContLog().mostrarVistaLogin();
-                                this.eliminarVistaRegistro();
+                    try {
+                        if(Usuario.existe(usuario) == null){
+                            if(jefe != null){
+                                if(pass.equals(passRepetida)){
+                                    File archivoUsuario = new File("src\\Otros\\usuarios.txt");
+                                    PrintWriter escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
+                                    
+                                    ArrayList<Dado> dados = this.asignarDados();
+                                    String lineaDados = "";
+                                    for(Dado dado: dados){
+                                        lineaDados += ";" + dado.getClave();
+                                    }
+                                    
+                                    escritor.println(usuario + ";" + pass + ";" + jefe.getClave() + lineaDados);
+                                    
+                                    escritor.close();
+                                    
+                                    JOptionPane.showMessageDialog(null, "Registro exitoso.");
+                                    
+                                    this.contPrin.crearControladorLogin();
+                                    this.contPrin.getContLog().mostrarVistaLogin();
+                                    this.eliminarVistaRegistro();
+                                }else{
+                                    this.visReg.setMensaje("Las contraseñas no coinciden.");
+                                }
                             }else{
-                                this.visReg.setMensaje("Las contraseñas no coinciden.");
+                                this.visReg.setMensaje("Selecciona un jefe de terreno.");
                             }
                         }else{
-                            this.visReg.setMensaje("Selecciona un jefe de terreno.");
+                            this.visReg.setMensaje("Usuario ya existe");
                         }
-                    }else{
-                        this.visReg.setMensaje("Usuario ya existe");
+                    } catch (IOException ex) {
+                        Logger.getLogger(ControladorRegistro.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }else{
                      this.visReg.setMensaje("La contraseña debe tener por lo menos 5 caracteres.");
@@ -178,5 +188,26 @@ public class ControladorRegistro {
         }else{
             this.visReg.setMensaje("Completa todos los campos.");
         }
+    }
+    
+    public ArrayList<Dado> asignarDados(){
+        ArrayList<Dado> dados = new ArrayList();
+        int nivelCriatura = 1;
+        
+        for(int i = 0; i < 15; i++){
+            dados.add(Dado.getDado(nivelCriatura));
+            
+            if(i < 8){
+                nivelCriatura = 1;
+            }else if(i < 12){
+                nivelCriatura = 2;
+            }else if(i < 14){
+                nivelCriatura = 3;
+            }else{
+                nivelCriatura = 4;
+            }
+        }
+        
+        return dados;
     }
 }

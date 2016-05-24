@@ -1,0 +1,5 @@
+criatura1;1;100;20;30
+criatura2;1;120;10;20
+criatura3;2;200;30;25
+criatura4;3;280;50;40
+criatura5;4;500;100;75

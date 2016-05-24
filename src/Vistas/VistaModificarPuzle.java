@@ -5,40 +5,20 @@
  */
 package Vistas;
 
-import Otros.BotonImagen;
-import Otros.PanelImagen;
-import java.awt.Color;
 import java.awt.Font;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaNuevaPartida extends javax.swing.JInternalFrame {
-    private BotonImagen agregar;
-    
+public class VistaModificarPuzle extends javax.swing.JInternalFrame {
+
     /**
-     * Creates new form VistaNuevaPartida
+     * Creates new form VistaModificarPuzle
      * @param fuentePersonalizada Fuente que se utilizará en esta vista.
      */
-    public VistaNuevaPartida(Font fuentePersonalizada) {
+    public VistaModificarPuzle(Font fuentePersonalizada) {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.agregar = new BotonImagen("/Imagenes/Botones/boton_cuadrado.png");
-        this.add(agregar);
-        
-        agregar.setImagenSobre("/Imagenes/Botones/boton_cuadrado_sobre.png");
-        agregar.setImagenPresionado("/Imagenes/Botones/boton_cuadrado_presionado.png");
-        agregar.setSize(100, 100);
-        agregar.setLocation(40, 475);
-        agregar.setForeground(Color.orange);
-        
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
     }
 
     /**
@@ -55,14 +35,21 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(null);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 806, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 602, Short.MAX_VALUE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public BotonImagen getAgregar() {
-        return agregar;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

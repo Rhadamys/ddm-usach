@@ -5,6 +5,7 @@
  */
 package Vistas;
 
+import Modelos.JefeDeTerreno;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
@@ -21,22 +22,19 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 public class VistaSeleccionarJefe extends JInternalFrame {
     private VistaPrincipal visPrin;
     private ArrayList<BotonImagen> botones = new ArrayList();
-    private ArrayList<HashMap<String, String>> jefes;
         
     /**
      * Inicializa una nueva instancia de esta vista.
      * @param fuentePersonalizada Fuente que se utilizará en esta vista.
      * @param jefes Lista de jefes de terreno.
      */
-    public VistaSeleccionarJefe(Font fuentePersonalizada, ArrayList<HashMap<String, String>> jefes){
+    public VistaSeleccionarJefe(Font fuentePersonalizada, ArrayList<JefeDeTerreno> jefes){
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.setOpaque(false);
         this.setBackground(new Color(0,0,0,0));
-        
-        this.jefes = jefes;
         
         int filas = 2;
         int columnas = 3;
@@ -48,7 +46,7 @@ public class VistaSeleccionarJefe extends JInternalFrame {
         
         for (int i = 0; i < numJefes; i++){
             PanelImagen iconoJefe = new PanelImagen("/Imagenes/Jefes/"
-                    + jefes.get(i).get("Clave") + ".png");
+                    + jefes.get(i).getClave() + ".png");
             
             BotonImagen marco = new BotonImagen("/Imagenes/vacio.png");
             
@@ -117,10 +115,6 @@ public class VistaSeleccionarJefe extends JInternalFrame {
 
     public ArrayList<BotonImagen> getBotones() {
         return botones;
-    }
-    
-    public HashMap<String, String> getJefe(int i) {
-        return this.jefes.get(i);
     }
     
     public void setNombre(String nombre){

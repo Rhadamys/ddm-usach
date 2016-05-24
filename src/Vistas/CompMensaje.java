@@ -25,7 +25,15 @@ public class CompMensaje extends Thread{
         contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
         
-        // Pasa un tiempo
+        synchronized(visMen){
+            while(visMen.isVisible()){
+                try {
+                    visMen.wait(0);
+                } catch (InterruptedException ex) {
+                    // Nada
+                }
+            }
+        }
         
         visMen.dispose();
         return visMen.getRespuesta();
@@ -72,16 +80,6 @@ class VistaMensaje extends JInternalFrame {
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
-        
-        synchronized(this){
-            while(this.isVisible()){
-                try {
-                    this.wait();
-                } catch (InterruptedException ex) {
-                    // Nada
-                }
-            }
-        }
     }
     
     public void setRespuesta(int respuesta){

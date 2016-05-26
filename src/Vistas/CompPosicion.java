@@ -18,8 +18,6 @@ public class CompPosicion extends BotonImagen {
     
     public CompPosicion(int fila, int columna){
         setImagenNormal("/Imagenes/Botones/casilla.png");
-        setImagenSobre("/Imagenes/Botones/casilla_j1.png");
-        setImagenPresionado("/Imagenes/Botones/boton_cuadrado_presionado.png");
         setImagenActual(0);
         
         this.fila = fila;
@@ -45,5 +43,6 @@ public class CompPosicion extends BotonImagen {
 
     public void setDueno(int dueno) {
         this.dueno = dueno;
+        this.setImagenNormal("/Imagenes/Botones/casilla_j" + dueno + ".png");
     }
 }

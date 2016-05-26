@@ -56,6 +56,8 @@ public class ControladorBatalla {
         
         this.visBat.add(this.visBat.getTablero(), 0);
         this.visBat.getTablero().setLocation(150, 50);
+        
+        this.visBat.getTablero().getPosiciones()[0][7].setDueno(1);
     }
     
     public void agregarListenersPosicion(int fila, int columna){
@@ -84,8 +86,6 @@ public class ControladorBatalla {
                             tablero.getDespliegue(),
                             visBat.getTablero().getBotonActual()),
                             tablero.getTurnoActual());
-                            visBat.getVistasJugador()[0].getVidaJugador().setValue(
-                                    visBat.getVistasJugador()[0].getVidaJugador().getValue() - 10);
                 }
             }
         });
@@ -159,12 +159,22 @@ public class ControladorBatalla {
         this.visBat.getVisSelDesp().setVisible(false);
     }
     
+    /**
+     * Cambia el valor del despliegue a mostrar en el tablero.
+     * @param numDespliegue Número de despliegue a mostrar.
+     */
     public void cambiarDespliegue(int numDespliegue){
         this.tablero.setAccion(1);
         this.tablero.setDespliegue(numDespliegue);
         this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
     }
     
+    /**
+     * Devuelve la forma del despliegue indicado por "numDespliegue".
+     * @param numDespliegue Número del despliegue a obtener.
+     * @param botonActual Botón actual sobre el que se encuentra el mouse.
+     * @return 
+     */
     public ArrayList<CompPosicion> getDespliegue(int numDespliegue, CompPosicion botonActual){
         switch(numDespliegue){
             case 0: return this.visBat.getTablero().getDespliegueCruz(botonActual, this.tablero.getDireccion());
@@ -177,6 +187,14 @@ public class ControladorBatalla {
         return null;
     }
     
+    /**
+     * Pinta los botones que conforman el despliegue de dados en la posición indicada
+     * por el botón actual sobre el que se encuentra el mouse.
+     * @param numDespliegue Número del despliegue a mostrar.
+     * @param botonActual Botón actual sobre el que se encuentra el mouse.
+     * @param direccion Dirección del despliegue.
+     * @param turno Turno actual.
+     */
     public void mostrarDespliegue(int numDespliegue, CompPosicion botonActual, int direccion, int turno){
         if(getDespliegue(numDespliegue, botonActual) != null){
             // Comprobar
@@ -197,24 +215,28 @@ public class ControladorBatalla {
         }
     }
     
+    /**
+     * Marca las casillas del despliegue como propiedad del jugador del turno actual.
+     * @param casillas Casillas que conforman el despliegue.
+     * @param turno Turno actual.
+     */
     public void asignarCasillas(ArrayList<CompPosicion> casillas, int turno){
+        int jugador = ++turno;
+        
         // Comprobar
         if(casillas != null){
-            boolean sePuedeAsignar = true;
-            for(CompPosicion casilla: casillas){
-                if(casilla.getDueno() != 0){
-                    this.visBat.setMensaje("Casilla ocupada por jugador " + casilla.getDueno());
-                    sePuedeAsignar = false;
-                    break;
-                }
-            }
 
             // Asignar
-            if(sePuedeAsignar){
-                for(CompPosicion casilla: casillas){
-                    casilla.setImagenNormal("/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
-                    casilla.setDueno(turno + 1);
+            if(this.visBat.getTablero().estaDisponible(casillas)){
+                if(this.visBat.getTablero().estaConectadoAlTerreno(casillas, jugador)){
+                    for(CompPosicion casilla: casillas){
+                        casilla.setDueno(jugador);
+                    }
+                }else{
+                    this.visBat.setMensaje("No está conectado a tu terreno.");
                 }
+            }else{
+                this.visBat.setMensaje("Casilla ocupada por otro jugador.");
             }
         }else{
             this.visBat.setMensaje("No se pudo invocar. Elige una posición válida.");

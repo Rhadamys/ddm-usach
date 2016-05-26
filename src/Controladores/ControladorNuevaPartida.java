@@ -5,12 +5,9 @@
  */
 package Controladores;
 
-import Vistas.CompInfoJug;
 import Vistas.VistaNuevaPartida;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,17 +16,13 @@ import javax.swing.JOptionPane;
 public class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
     private VistaNuevaPartida visNuePar;
-    private ArrayList<CompInfoJug> vistasInfoJug;
-    private int[][] posicionesInfoJug = {{50, 50}, {410, 50}, {50, 240}, {410, 240}};
     
     ControladorNuevaPartida(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;
-        
+               
         this.visNuePar = new VistaNuevaPartida(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar);
         this.agregarListenersVistaNuevaPartida();
-        
-        this.vistasInfoJug = new ArrayList();
     }
     
     public void mostrarVistaNuevaPartida(){
@@ -43,31 +36,9 @@ public class ControladorNuevaPartida {
                 contPrin.crearControladorBatalla();
                 contPrin.getContBat().mostrarVistaBatalla();
                 visNuePar.dispose();
-//               agregarVistaInfoJugador();
+//                visNuePar.agregarVistaInfoJugador(contPrin.getUsuarioActivo());
             }
         });
-    }
-    
-    public void agregarListenersVistaInfoJugador(CompInfoJug visInfoJug){
-        visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                
-            }
-        });
-    }
-    
-    public void agregarVistaInfoJugador(){
-        if(vistasInfoJug.size() < 4){
-            CompInfoJug visInfoJug = new CompInfoJug(contPrin.getUsuarioActivo(), contPrin.getFuente());
-            vistasInfoJug.add(visInfoJug);
-            visNuePar.add(visInfoJug, 0);
-            visInfoJug.setLocation(posicionesInfoJug[vistasInfoJug.size() - 1][0], 
-                    posicionesInfoJug[vistasInfoJug.size() - 1][1]);
-            visInfoJug.setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(null, "Máximo 4 jugadores");
-        }
     }
     
 }

@@ -5,10 +5,16 @@
  */
 package Vistas;
 
+import Modelos.Jugador;
+import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -16,16 +22,23 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaNuevaPartida extends javax.swing.JInternalFrame {
+    private ArrayList<CompInfoJug> vistasInfoJug;
     private BotonImagen agregar;
+    private Font fuente;
+    private int[][] posicionesInfoJug = {{50, 70}, {410, 70}, {50, 260}, {410, 260}};
+    private JLabel mensaje;
     
     /**
      * Creates new form VistaNuevaPartida
-     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
+     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public VistaNuevaPartida(Font fuentePersonalizada) {
+    public VistaNuevaPartida(Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
+        this.vistasInfoJug = new ArrayList();
+        this.fuente = fuente;
         
         this.agregar = new BotonImagen("/Imagenes/Botones/boton_cuadrado.png");
         this.add(agregar);
@@ -36,9 +49,20 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         agregar.setLocation(40, 475);
         agregar.setForeground(Color.orange);
         
+        this.mensaje = new JLabel("");
+        this.add(mensaje);
+        this.mensaje.setFont(fuente);
+        this.mensaje.setForeground(Color.white);
+        this.mensaje.setSize(800, 20);
+        this.mensaje.setLocation(0, 40);
+        this.mensaje.setHorizontalAlignment(JLabel.CENTER);
+        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
+        
+        this.agregarVistaInfoJugador(Usuario.getUsuario("metodos2"));
+        this.agregarVistaInfoJugador(Usuario.getUsuario("metodos4"));
     }
 
     /**
@@ -60,8 +84,51 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    public void agregarVistaInfoJugador(Jugador jugador){
+        if(vistasInfoJug.size() < 4){
+            CompInfoJug visInfoJug = new CompInfoJug(jugador, this.fuente);
+            vistasInfoJug.add(visInfoJug);
+            this.add(visInfoJug, 0);
+            this.agregarListenersVistaInfoJugador(vistasInfoJug.get(vistasInfoJug.size() - 1));
+            this.actualizarVista();
+        }else{
+            this.setMensaje("Máximo 4 jugadores.");
+        }
+    }
+    
+    public void agregarListenersVistaInfoJugador(CompInfoJug visInfoJug){
+        visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                if(vistasInfoJug.size() > 2){
+                    vistasInfoJug.remove(vistasInfoJug.indexOf((CompInfoJug) e.getComponent().getParent()));
+                    ((CompInfoJug) e.getComponent().getParent()).setVisible(false);
+                    actualizarVista();
+                }else{
+                    setMensaje("Mínimo 2 jugadores.");
+                }
+            }
+        });
+    }
+    
+    public void actualizarVista(){
+        for(CompInfoJug infoJug: vistasInfoJug){
+            infoJug.setLocation(posicionesInfoJug[vistasInfoJug.indexOf(infoJug)][0], 
+                    posicionesInfoJug[vistasInfoJug.indexOf(infoJug)][1]);
+        }
+    }
+    
     public BotonImagen getAgregar() {
         return agregar;
+    }
+
+    public ArrayList<CompInfoJug> getVistasInfoJug() {
+        return vistasInfoJug;
+    }
+    
+    public void setMensaje(String mensaje){
+        this.mensaje.setText(mensaje);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

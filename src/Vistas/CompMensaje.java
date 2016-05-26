@@ -20,64 +20,39 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class CompMensaje {    
-    private final VistaMensaje visMen;
-//    public static int mostrarMensaje(String mensaje, String textoBoton, ControladorPrincipal contPrin){
-//        CompMensaje compMensaje = new CompMensaje(mensaje, textoBoton, contPrin);
-//        
-//        synchronized(compMensaje.visMen){
-//            while(compMensaje.visMen.getRespuesta() == 0){
-//                try {
-//                    compMensaje.visMen.wait();
-//                } catch (InterruptedException ex) {
-//                    // Nada
-//                }
-//            }
-//        }
-//        
-//        return compMensaje.visMen.getRespuesta();
-//    }
-//    
-//    public static int mostrarMensaje(String mensaje, String textoBoton1, String textoBoton2, ControladorPrincipal contPrin){
-//        CompMensaje compMensaje = new CompMensaje(mensaje, textoBoton1, textoBoton2, contPrin);
-//        
-//        synchronized(compMensaje.visMen){
-//            while(compMensaje.visMen.isVisible()){
-//                try {
-//                    compMensaje.visMen.wait();
-//                } catch (InterruptedException ex) {
-//                    // Nada
-//                }
-//            }
-//        }
-//        
-//        return compMensaje.visMen.getRespuesta();
-//    }
-//    
-    public CompMensaje(String mensaje, String textoBoton, ControladorPrincipal contPrin){
-        this.visMen = new VistaMensaje(mensaje, textoBoton, contPrin.getFuente());
+public class CompMensaje extends JInternalFrame{    
+    public static int mostrarMensaje(String mensaje, String textoBoton, ControladorPrincipal contPrin){
+        CompMensaje visMen = new CompMensaje(mensaje, textoBoton, contPrin.getFuente());
         contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
+        
+        synchronized(visMen){
+            while(visMen.getRespuesta() == 0){
+                try {
+                    visMen.wait();
+                } catch (InterruptedException ex) {
+                    // Nada
+                }
+            }
+        }
+        
+        return visMen.getRespuesta();
     }
     
-    public CompMensaje(String mensaje, String textoBoton1, String textoBoton2, ControladorPrincipal contPrin){
-        this.visMen = new VistaMensaje(mensaje, textoBoton1, textoBoton2, contPrin.getFuente());
+    public static int mostrarMensaje(String mensaje, String textoBoton1, String textoBoton2, ControladorPrincipal contPrin){
+        CompMensaje visMen = new CompMensaje(mensaje, textoBoton1, textoBoton2, contPrin.getFuente());
         contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
+        
+        return visMen.getRespuesta();
     }
     
-    public int getRespuesta(){
-        return this.visMen.getRespuesta();
-    }
-}
-
-class VistaMensaje extends JInternalFrame {
     private BotonImagen boton1;
     private BotonImagen boton2;
     private JLabel labelMensaje;
     private int respuesta;
     
-    public VistaMensaje(String mensaje, String textoBoton, Font fuentePersonalizada){
+    public CompMensaje(String mensaje, String textoBoton, Font fuentePersonalizada){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(null);
         this.setOpaque(false);
@@ -117,7 +92,7 @@ class VistaMensaje extends JInternalFrame {
         panelFondo.setSize(this.getSize());
     }
     
-    public VistaMensaje(String mensaje, String textoBoton1, String textoBoton2, Font fuentePersonalizada){
+    public CompMensaje(String mensaje, String textoBoton1, String textoBoton2, Font fuentePersonalizada){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(null);
         this.setOpaque(false);
@@ -174,14 +149,19 @@ class VistaMensaje extends JInternalFrame {
         panelFondo.setSize(this.getSize());
     }
     
-    public void setRespuesta(int respuesta){
-        synchronized(this){
-            this.respuesta = respuesta;
-            this.notify();
-        }
+    public synchronized void setRespuesta(int respuesta){
+        this.respuesta = respuesta;
+        this.notify();
     }
     
-    public int getRespuesta(){
+    public synchronized int getRespuesta(){
+        if(Integer.valueOf(0).equals(this.respuesta)){
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+            }
+        }
+        
         return this.respuesta;
     }
 }

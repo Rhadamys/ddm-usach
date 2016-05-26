@@ -121,7 +121,7 @@ public final class ControladorLogin {
      */
     public void iniciarSesion(String usuarioText, String passText) {
         // Se comprueba que los campos estén completos
-        if (comprobarCampos()){
+        if (this.visLog.comprobarCampos()){
             // Se comprubea si el usuario existe llamando al método estático de Usuario
             if (Usuario.existe(usuarioText)){ // Si existe
                 // Se obtiene la instancia de Usuario del usuario ingresado
@@ -137,62 +137,18 @@ public final class ControladorLogin {
                     // Se elimina la vista de login
                     this.eliminarVistaLogin();
                 }else{
-                    this.usuarioCorrecto();
-                    this.passErronea();
+                    this.visLog.usuarioCorrecto();
+                    this.visLog.passErronea();
                     this.visLog.setMensaje("Contraseña incorrecta.");
                 }
             }else{
-                this.usuarioErroneo();
-                this.passErronea();
+                this.visLog.usuarioErroneo();
+                this.visLog.passErronea();
                 this.visLog.setMensaje("Usuario no existe.");
             }
         }else{
             this.visLog.setMensaje("Completa todos los campos.");
         }
-    }
-    
-    /**
-     * Comprueba que se hayan llenado todos los campos requeridos.
-     * @return True si los campos se han llenado, false en caso contrario.
-     */
-    public boolean comprobarCampos(){
-        if("".equals(this.visLog.getUsuario())){
-            this.usuarioErroneo();
-        }else{
-            this.visLog.getCajaUsuario().setImagenActual(0);
-        }
-
-        if("".equals(this.visLog.getPass())){
-            this.passErronea();
-        }
-        
-        // Retorna verdadero si ambos campos están completos (escritos)
-        return !"".equals(this.visLog.getUsuario()) && !"".equals(this.visLog.getPass());
-    }
-    
-    /**
-     * Pinta de rojo el fondo de la caja de texto de usuario, indicando que se debe
-     * ingresar un usuario en el campo.
-     */
-    public void usuarioErroneo(){
-        this.visLog.getCajaUsuario().setImagenActual(2);
-    }
-    
-    /**
-     * Pinta de verde el fondo de la caja de texto de usuario, indicando que el
-     * usuario ingresado existe en los registros.
-     */
-    public void usuarioCorrecto(){
-        this.visLog.getCajaUsuario().setImagenActual(1);
-    }
-    
-    /**
-     * Pinta de rojo el fondo de la caja de contraseña, indicando que la contraseña
-     * ingresada es incorrecta para el usuario o no se ha ingresado una contraseña
-     * válida.
-     */
-    public void passErronea(){
-        this.visLog.getCajaPass().setImagenActual(2);
     }
     
 }

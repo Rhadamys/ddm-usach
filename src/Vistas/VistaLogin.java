@@ -10,7 +10,6 @@ import Otros.CajaPassImagen;
 import Otros.CajaTextoImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -128,7 +127,52 @@ public class VistaLogin extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-   
+    
+    
+    /**
+     * Comprueba que se hayan llenado todos los campos requeridos.
+     * @return True si los campos se han llenado, false en caso contrario.
+     */
+    public boolean comprobarCampos(){
+        if("".equals(this.getUsuario())){
+            this.usuarioErroneo();
+        }else{
+            this.usuarioErroneo();
+        }
+
+        if("".equals(this.getPass())){
+            this.passErronea();
+        }
+        
+        // Retorna verdadero si ambos campos están completos (escritos)
+        return !"".equals(this.getUsuario()) && !"".equals(this.getPass());
+    }
+    
+    /**
+     * Pinta de rojo el fondo de la caja de texto de usuario, indicando que se debe
+     * ingresar un usuario en el campo.
+     */
+    public void usuarioErroneo(){
+        this.usuario.setImagenActual(2);
+    }
+    
+    /**
+     * Pinta de verde el fondo de la caja de texto de usuario, indicando que el
+     * usuario ingresado existe en los registros.
+     */
+    public void usuarioCorrecto(){
+        this.usuario.setImagenActual(1);
+    }
+    
+    /**
+     * Pinta de rojo el fondo de la caja de contraseña, indicando que la contraseña
+     * ingresada es incorrecta para el usuario o no se ha ingresado una contraseña
+     * válida.
+     */
+    public void passErronea(){
+        this.pass.setImagenActual(2);
+    }
+    
     public JLabel getRegistrarse() {
         return registrarse;
     }
@@ -143,22 +187,6 @@ public class VistaLogin extends javax.swing.JInternalFrame {
     
     public CajaPassImagen getCajaPass(){
         return this.pass;
-    }
-
-    public JLabel getL1() {
-        return L1;
-    }
-
-    public JLabel getL2() {
-        return L2;
-    }
-
-    public JLabel getL3() {
-        return L3;
-    }
-
-    public JLabel getMensaje() {
-        return mensaje;
     }
     
     public String getUsuario(){

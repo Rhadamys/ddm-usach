@@ -9,6 +9,7 @@ import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -90,7 +91,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         
         mensaje.setText("");
         mensaje.setFont(new Font(fuentePersonalizada.getName(), Font.TRUETYPE_FONT, 16));
-        
+                        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_batalla.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
@@ -123,7 +124,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     public CompTablero getTablero() {
         return tablero;
     }

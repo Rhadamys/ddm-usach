@@ -40,7 +40,7 @@ public class ControladorPrincipal {
         // Se instancian los otros controladores
         contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
         contPrin.crearControladorLogin();
-        contPrin.contLog.mostrarVistaLogin();
+        contPrin.contLog.mostrarVistaLogin();;
     }
     
     /**
@@ -50,11 +50,12 @@ public class ControladorPrincipal {
     public void salir(){
         if (JOptionPane.showConfirmDialog(
                 null,
-                "¿Estás seguro que deseas salir?",
+                "¿Deseas salir de la aplicación?",
                 "Salir",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             this.contVisPrin.getVisPrin().dispose();
         }
+     
     }
     
     /**

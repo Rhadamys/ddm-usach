@@ -45,7 +45,7 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
             "/Imagenes/Botones/torneo_presionado.png", 
             "/Imagenes/Botones/salir_presionado.png"};
         
-        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Salir"};
+        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Cerrar sesión"};
         
         for (int i = 0; i < cantidadCompoenentes; i ++){
             final int index = i;

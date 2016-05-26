@@ -8,6 +8,7 @@ package Controladores;
 import Vistas.VistaMenuPrincipal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,7 +52,7 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                contPrin.salir();
+                logOut();
             }
         });
     }
@@ -67,6 +68,19 @@ public final class ControladorMenuPrincipal {
         this.contPrin.crearControladorNuevaPartida();
         this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
         this.visMenuPrin.setVisible(false);
+    }
+    
+    public void logOut(){
+        if(JOptionPane.showConfirmDialog(
+                null,
+                "¿Deseas cerrar sesión?",
+                "Cerrar sesión",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            
+            this.contPrin.crearControladorLogin();
+            this.contPrin.getContLog().mostrarVistaLogin();
+            this.visMenuPrin.dispose();
+        }
     }
     
 }

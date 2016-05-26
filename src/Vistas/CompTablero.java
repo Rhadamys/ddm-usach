@@ -15,8 +15,10 @@ import java.util.ArrayList;
  */
 public class CompTablero extends PanelImagen{
     private CompPosicion[][] posiciones;
+    private CompPosicion botonActual;
     
     public CompTablero(){
+        this.posiciones = new CompPosicion[15][15];
         this.setSize(500, 500);
         this.setLayout(new GridLayout(15, 15));
         this.setBorder(null);
@@ -24,8 +26,16 @@ public class CompTablero extends PanelImagen{
 
     public CompPosicion[][] getPosiciones() {
         return posiciones;
+    }    
+
+    public CompPosicion getBotonActual() {
+        return botonActual;
     }
 
+    public void setBotonActual(CompPosicion botonActual) {
+        this.botonActual = botonActual;
+    }
+    
     public void setPosiciones(CompPosicion[][] posiciones) {
         this.posiciones = posiciones;
     }

@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Modelos.Tablero;
 import Otros.BotonImagen;
 import Vistas.CompPosicion;
 import Vistas.CompTablero;
@@ -22,93 +23,93 @@ import java.util.ArrayList;
  */
 public class ControladorBatalla {
     private final ControladorPrincipal contPrin;
-    private VistaBatalla visBat;
-    private int accion = 0;
-    private int direccion = 0;
-    private int despliegue = 0;
-    private int turnoActual = 1;
+    private final VistaBatalla visBat;
+    private Tablero tablero;
     
     public ControladorBatalla(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visBat = new VistaBatalla(this.contPrin.getFuentePersonalizada());
+        // Instancia y agrega la vista de batalla
+        this.visBat = new VistaBatalla(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visBat);
+        // Instancia y agrega el tablero a la vista batalla
         this.agregarTablero();
+        // Agrega los listeners a los componentes de la vista batalla
         this.agregarListenersVistaBatalla();
         
+        // Agregar la vista para seleccionar el despliegue de dado
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisSelDesp());
         this.agregarListenersVistaSeleccionarDespliegue();
     }
     
     public void agregarTablero(){
-        CompPosicion[][] posiciones = new CompPosicion[15][15];
-        CompTablero tablero = new CompTablero();
+        this.tablero = new Tablero();
+        this.visBat.setTablero(new CompTablero());
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                posiciones[i][j] = new CompPosicion(i, j);
-                tablero.add(posiciones[i][j]);
-                this.agregarListenersPosicion(posiciones[i][j]);
+                this.visBat.getTablero().getPosiciones()[i][j] = new CompPosicion(i, j);
+                this.visBat.getTablero().add(this.visBat.getTablero().getPosiciones()[i][j]);
+                this.agregarListenersPosicion(i, j);
             }
         }
         
-        tablero.setPosiciones(posiciones);
-        this.visBat.setTablero(tablero);
         this.visBat.add(this.visBat.getTablero(), 0);
         this.visBat.getTablero().setLocation(150, 50);
     }
     
-    public void agregarListenersPosicion(CompPosicion posicion){
-        posicion.addMouseListener(new MouseAdapter(){
+    public void agregarListenersPosicion(int fila, int columna){
+        this.visBat.getTablero().getPosiciones()[fila][columna].addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e){
                 visBat.setMensaje("");
-                switch(accion){
+                switch(tablero.getAccion()){
                     case 0: break;
                     case 1: visBat.getTablero().reiniciarCasillas();
+                            visBat.getTablero().setBotonActual((CompPosicion) e.getComponent());
                             mostrarDespliegue(
-                                    despliegue,
-                                    (CompPosicion) e.getComponent(),
-                                    direccion,
-                                    turnoActual);
+                                    tablero.getDespliegue(),
+                                    visBat.getTablero().getBotonActual(),
+                                    tablero.getDireccion(),
+                                    tablero.getTurnoActual());
                             break;
                 }
             }
             
             @Override
             public void mouseClicked(MouseEvent e){
-                switch(accion){
+                switch(tablero.getAccion()){
                     case 0: break;
                     case 1: asignarCasillas(getDespliegue(
-                            despliegue,
-                            (CompPosicion) e.getComponent()),
-                            turnoActual);
-                            visBat.getVistasJugador()[0].getVidaJugador().setValue(visBat.getVistasJugador()[0].getVidaJugador().getValue() - 10);
+                            tablero.getDespliegue(),
+                            visBat.getTablero().getBotonActual()),
+                            tablero.getTurnoActual());
+                            visBat.getVistasJugador()[0].getVidaJugador().setValue(
+                                    visBat.getVistasJugador()[0].getVidaJugador().getValue() - 10);
                 }
             }
         });
         
-        posicion.addKeyListener(new KeyAdapter(){
+        this.visBat.getTablero().getPosiciones()[fila][columna].addKeyListener(new KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent e){
                 switch(e.getKeyCode()){
-                    case KeyEvent.VK_W: direccion = 0;
+                    case KeyEvent.VK_W: tablero.setDireccion(0);
                                         break;
-                    case KeyEvent.VK_A: direccion = 1;
+                    case KeyEvent.VK_A: tablero.setDireccion(1);
                                         break;
-                    case KeyEvent.VK_S: direccion = 2;
+                    case KeyEvent.VK_S: tablero.setDireccion(2);
                                         break;
-                    case KeyEvent.VK_D: direccion = 3;
-                                        break;
-                    case KeyEvent.VK_1: turnoActual = 1;
-                                        break;
-                    case KeyEvent.VK_2: turnoActual = 2;
-                                        break;
-                    case KeyEvent.VK_3: turnoActual = 3;
-                                        break;
-                    case KeyEvent.VK_4: turnoActual = 4;
+                    case KeyEvent.VK_D: tablero.setDireccion(3);
                                         break;
                 }
+                
+                visBat.getTablero().reiniciarCasillas();
+                mostrarDespliegue(
+                        tablero.getDespliegue(),
+                        visBat.getTablero().getBotonActual(),
+                        tablero.getDireccion(),
+                        tablero.getTurnoActual());
             }
         });
     }
@@ -134,10 +135,8 @@ public class ControladorBatalla {
         });
     }
     
-    public void agregarListenersVistaSeleccionarDespliegue(){
-        ArrayList<BotonImagen> botonesDespliegue = this.visBat.getVisSelDesp().getBotonesDespliegue();
-        
-        for(BotonImagen botonDespliegue: botonesDespliegue){
+    public void agregarListenersVistaSeleccionarDespliegue(){        
+        for(BotonImagen botonDespliegue: this.visBat.getVisSelDesp().getBotonesDespliegue()){
             botonDespliegue.addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseClicked(MouseEvent e){
@@ -161,37 +160,36 @@ public class ControladorBatalla {
     }
     
     public void cambiarDespliegue(int numDespliegue){
-        this.accion = 1;
-        this.despliegue = numDespliegue;
+        this.tablero.setAccion(1);
+        this.tablero.setDespliegue(numDespliegue);
         this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
     }
     
     public ArrayList<CompPosicion> getDespliegue(int numDespliegue, CompPosicion botonActual){
         switch(numDespliegue){
-            case 0: return this.visBat.getTablero().getDespliegueCruz(botonActual, direccion);
-            case 1: return this.visBat.getTablero().getDespliegueEscalera(botonActual, direccion);
-            case 2: return this.visBat.getTablero().getDespliegueT(botonActual, direccion);
-            case 3: return this.visBat.getTablero().getDespliegueS(botonActual, direccion);
-            case 4: return this.visBat.getTablero().getDespliegue4(botonActual, direccion);
-            case 5: return this.visBat.getTablero().getDespliegueR(botonActual, direccion);
+            case 0: return this.visBat.getTablero().getDespliegueCruz(botonActual, this.tablero.getDireccion());
+            case 1: return this.visBat.getTablero().getDespliegueEscalera(botonActual, this.tablero.getDireccion());
+            case 2: return this.visBat.getTablero().getDespliegueT(botonActual, this.tablero.getDireccion());
+            case 3: return this.visBat.getTablero().getDespliegueS(botonActual, this.tablero.getDireccion());
+            case 4: return this.visBat.getTablero().getDespliegue4(botonActual, this.tablero.getDireccion());
+            case 5: return this.visBat.getTablero().getDespliegueR(botonActual, this.tablero.getDireccion());
         }
         return null;
     }
     
-    public void mostrarDespliegue(int numDespliegue, CompPosicion botonActual, int direccion, int jugador){
-        ArrayList<CompPosicion> despliegue = getDespliegue(numDespliegue, botonActual);
-        if(despliegue != null){
+    public void mostrarDespliegue(int numDespliegue, CompPosicion botonActual, int direccion, int turno){
+        if(getDespliegue(numDespliegue, botonActual) != null){
             // Comprobar
-            for(CompPosicion casilla: despliegue){
+            for(CompPosicion casilla: getDespliegue(numDespliegue, botonActual)){
                 if(casilla.getDueno() == 0){
-                    casilla.setImagenSobre("/Imagenes/Botones/casilla_j" + jugador + ".png");
+                    casilla.setImagenSobre("/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
                 }else{
                     casilla.setImagenSobre("/Imagenes/Botones/casilla_error.png");
                 }
             }
             
             // Pintar
-            for(CompPosicion casilla: despliegue){
+            for(CompPosicion casilla: getDespliegue(numDespliegue, botonActual)){
                 casilla.setImagenActual(1);
             }
         }else{
@@ -199,7 +197,7 @@ public class ControladorBatalla {
         }
     }
     
-    public void asignarCasillas(ArrayList<CompPosicion> casillas, int jugador){
+    public void asignarCasillas(ArrayList<CompPosicion> casillas, int turno){
         // Comprobar
         if(casillas != null){
             boolean sePuedeAsignar = true;
@@ -214,12 +212,13 @@ public class ControladorBatalla {
             // Asignar
             if(sePuedeAsignar){
                 for(CompPosicion casilla: casillas){
-                    casilla.setImagenFuera("/Imagenes/Botones/casilla_j" + jugador + ".png");
-                    casilla.setDueno(jugador);
+                    casilla.setImagenNormal("/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
+                    casilla.setDueno(turno + 1);
                 }
             }
         }else{
             this.visBat.setMensaje("No se pudo invocar. Elige una posición válida.");
         }
     }
+    
 }

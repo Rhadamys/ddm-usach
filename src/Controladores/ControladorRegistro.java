@@ -8,7 +8,6 @@ package Controladores;
 import Modelos.Dado;
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
-import Otros.BotonImagen;
 import Vistas.VistaRegistro;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,10 +16,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -39,7 +34,7 @@ public class ControladorRegistro {
     public ControladorRegistro(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visReg = new VistaRegistro(this.contPrin.getFuentePersonalizada());
+        this.visReg = new VistaRegistro(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visReg);
         this.agregarListenersVistaRegistro();
     }
@@ -57,49 +52,45 @@ public class ControladorRegistro {
      * específica las acciones que deben realizar al activarse dichos eventos.
      */
     public void agregarListenersVistaRegistro(){
-        // Obtiene el botón de "Volver atrás"
-        JButton volverReg = this.visReg.getVolver();
-        
         /*
         * Agrega un MouseListener al botón "Volver atrás", así se podrán
         * capturar los evento de mouse.
         */
-        volverReg.addMouseListener(new MouseAdapter(){
-            // Cuando se haga clic sobre el label "Volver atrás".
+        this.visReg.getVolver().addMouseListener(new MouseAdapter(){
+            // Cuando se haga clic sobre el botón "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
+                // Se instancia el controlador de login
                 contPrin.crearControladorLogin();
+                // Se muestra la vista de login
                 contPrin.getContLog().mostrarVistaLogin();
+                // Se elimina la vista de registro
                 eliminarVistaRegistro();
             }
         });
-        
-        // Obtiene el botón de "Seleccionar jefe de terreno".
-        BotonImagen seleccionarJefe = this.visReg.getSeleccionarJefe();
         
         /*
         * Agrega un MouseListener al botón "Seleccionar jefe", así se podrán
         * capturar los evento de mouse.
         */
-        seleccionarJefe.addMouseListener(new MouseAdapter(){
-            // Cuando se haga clic sobre el label "Volver atrás".
+        this.visReg.getSeleccionarJefe().addMouseListener(new MouseAdapter(){
+            // Cuando se haga clic sobre el botón "Jefe"
             @Override
             public void mouseClicked(MouseEvent e){
-                try {
-                    contPrin.crearControladorSeleccionarJefe();
-                } catch (IOException ex) {
-                    Logger.getLogger(ControladorRegistro.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                // Se instancia el controlador seleccionar jefe de terreno
+                contPrin.crearControladorSeleccionarJefe();
             }
         });
         
-        // Obtiene el botón de "Registrarse"
-        BotonImagen registrarse = this.visReg.getRegistrarse();
-        
-        registrarse.addMouseListener(new MouseAdapter(){
+        /*
+        * Agrega un MouseListener al botón de "Registrarse", así se podrán
+        * capturar los evento de mouse.
+        */
+        this.visReg.getRegistrarse().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
+                // Se inicia el proceso de registro de usuario
                 registrarUsuario(
                             visReg.getUsuario(), 
                             visReg.getPass(), 
@@ -142,42 +133,56 @@ public class ControladorRegistro {
      * @param jefe Jefe de terreno seleccionado.
      */
     public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) {
+        // Se comprueba que los campos estén completos (escritos)
         if(!"".equals(usuario) && !"".equals(pass) && !"".equals(passRepetida)){
+            // Se comprueba que el largo del nombre de usuario sea por lo menos de 5 caracteres
             if(usuario.length() >= 5){
+                // Se comprueba que el largo de la contraseña sea por lo menos de 5 caracteres
                 if(pass.length() >= 5){
-                    try {
-                        if(Usuario.existe(usuario) == null){
-                            if(jefe != null){
-                                if(pass.equals(passRepetida)){
+                    // Se comprueba que el usuario no exista previamente en los registros
+                    if(!Usuario.existe(usuario)){
+                        // Se comprueba que el usuario haya elegido un jefe de terreno
+                        if(jefe != null){
+                            // Finalmente, se comprueba que ambas contraseñas calcen
+                            if(pass.equals(passRepetida)){
+                                try {
                                     File archivoUsuario = new File("src\\Otros\\usuarios.txt");
-                                    PrintWriter escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
-                                    
+                                    PrintWriter escritor;
+                                    escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
+
+                                    // Se asignan los dados al jugador (aleatoriamente)
                                     ArrayList<Dado> dados = this.asignarDados();
+
+                                    // Esto es para agregar a los registros del archivo
                                     String lineaDados = "";
                                     for(Dado dado: dados){
                                         lineaDados += ";" + dado.getClave();
                                     }
-                                    
+
+                                    // Se registra al usuario en el archivo
                                     escritor.println(usuario + ";" + pass + ";" + jefe.getClave() + lineaDados);
-                                    
+
                                     escritor.close();
-                                    
+
                                     JOptionPane.showMessageDialog(null, "Registro exitoso.");
-                                    
+
+                                    // Se instancia el controlador de login
                                     this.contPrin.crearControladorLogin();
+                                    // Se muestra la vista de login
                                     this.contPrin.getContLog().mostrarVistaLogin();
+                                    // Se elimina la vista de registro
                                     this.eliminarVistaRegistro();
-                                }else{
-                                    this.visReg.setMensaje("Las contraseñas no coinciden.");
+                                } catch (IOException ex) {
+                                    this.visReg.setMensaje("Error interno de la aplicación.");
                                 }
                             }else{
-                                this.visReg.setMensaje("Selecciona un jefe de terreno.");
+                                this.visReg.setMensaje("Las contraseñas no coinciden.");
                             }
                         }else{
-                            this.visReg.setMensaje("Usuario ya existe");
+                            this.visReg.setMensaje("Selecciona un jefe de terreno.");
                         }
-                    } catch (IOException ex) {
-                        Logger.getLogger(ControladorRegistro.class.getName()).log(Level.SEVERE, null, ex);
+                    }else{
+                        this.visReg.setMensaje("Usuario ya existe");
                     }
                 }else{
                      this.visReg.setMensaje("La contraseña debe tener por lo menos 5 caracteres.");

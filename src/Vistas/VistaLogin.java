@@ -10,10 +10,9 @@ import Otros.CajaPassImagen;
 import Otros.CajaTextoImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -27,9 +26,9 @@ public class VistaLogin extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form VistaLogin
-     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
+     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public VistaLogin(Font fuentePersonalizada) {
+    public VistaLogin(Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -38,14 +37,14 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         this.add(usuario);
         usuario.setSize(190, 30);
         usuario.setLocation(350, 435);
-        usuario.setFont(fuentePersonalizada);
+        usuario.setFont(fuente);
         usuario.setForeground(Color.white);
         
         pass = new CajaPassImagen();
         this.add(pass);
         pass.setSize(190, 30);
         pass.setLocation(350, 475);
-        pass.setFont(fuentePersonalizada);
+        pass.setFont(fuente);
         pass.setForeground(Color.white);
                 
         this.ingresar = new BotonImagen("/Imagenes/Botones/boton.png");
@@ -55,16 +54,16 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         this.ingresar.setForeground(Color.white);
         this.ingresar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.ingresar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.ingresar.setFont(fuentePersonalizada);
+        this.ingresar.setFont(fuente);
         this.add(this.ingresar);
         
-        this.L1.setFont(fuentePersonalizada);
-        this.L2.setFont(fuentePersonalizada);
-        this.L3.setFont(fuentePersonalizada);
-        this.mensaje.setFont(fuentePersonalizada);
-        this.usuario.setFont(fuentePersonalizada);
-        this.pass.setFont(fuentePersonalizada);
-        this.registrarse.setFont(fuentePersonalizada);
+        this.L1.setFont(fuente);
+        this.L2.setFont(fuente);
+        this.L3.setFont(fuente);
+        this.mensaje.setFont(fuente);
+        this.usuario.setFont(fuente);
+        this.pass.setFont(fuente);
+        this.registrarse.setFont(fuente);
         
         this.mensaje.setText("");
         

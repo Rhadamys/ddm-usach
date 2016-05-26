@@ -19,20 +19,21 @@ import javax.swing.JLabel;
  * @author mam28
  */
 public class CompInfoJug extends PanelImagen {
-    private final Jugador jugador;
-    private final JLabel nombreJugador;
-    private final JLabel tipoJugador;
-    private final PanelImagen iconoJugador;
-    private final ArrayList<Dado> dadosJugador;
-    private final BotonImagen modificarPuzle;
-    private final BotonImagen eliminar;
+    private Jugador jugador;
+    private JLabel nombreJugador;
+    private JLabel tipoJugador;
+    private PanelImagen iconoJugador;
+    private ArrayList<Dado> dadosJugador;
+    private BotonImagen modificarPuzle;
+    private BotonImagen cambiarJugador;
+    private BotonImagen eliminar;
     
     public CompInfoJug(Jugador jugador, Font fuentePersonalizada){
         initComponents();
         
         this.setLayout(null);
         this.setBorder(null);
-        this.setSize(350, 180);
+        this.setSize(340, 170);
         
         this.jugador = jugador;
         this.dadosJugador = jugador.getDados();
@@ -41,35 +42,55 @@ public class CompInfoJug extends PanelImagen {
         this.tipoJugador = new JLabel(jugador.getTipoJugador());
         this.iconoJugador = new PanelImagen("/Imagenes/Jefes/" +
                 jugador.getJefeDeTerreno().getClave() + ".png");
+        this.cambiarJugador = new BotonImagen("/Imagenes/Botones/boton.png");
         this.modificarPuzle = new BotonImagen("/Imagenes/Botones/boton.png");
         this.eliminar = new BotonImagen("/Imagenes/Botones/boton_cuadrado.png");
         
         this.add(nombreJugador);
         this.add(tipoJugador);
         this.add(iconoJugador);
+        this.add(cambiarJugador);
         this.add(modificarPuzle);
         this.add(eliminar);
         
         this.iconoJugador.setSize(120, 120);
-        this.iconoJugador.setLocation(0, 0);
+        this.iconoJugador.setLocation(20, 25);
         
         this.nombreJugador.setSize(200, 20);
-        this.nombreJugador.setLocation(130, 0);
+        this.nombreJugador.setLocation(150, 25);
         this.nombreJugador.setForeground(Color.white);
         this.nombreJugador.setFont(new Font(fuentePersonalizada.getName(), 
                 Font.TRUETYPE_FONT, 20));
         
-        this.tipoJugador.setSize(200, 20);
-        this.tipoJugador.setLocation(130,30);
+        this.tipoJugador.setSize(200, 10);
+        this.tipoJugador.setLocation(150,50);
         this.tipoJugador.setForeground(Color.white);
         this.tipoJugador.setFont(fuentePersonalizada);
         
-        this.modificarPuzle.setText("Modificar puzle");
-        this.modificarPuzle.setSize(200, 30);
-        this.modificarPuzle.setLocation(130, 60);
+        this.cambiarJugador.setText("Cambiar jugador  ");
+        this.cambiarJugador.setHorizontalAlignment(JLabel.RIGHT);
+        this.cambiarJugador.setSize(180, 30);
+        this.cambiarJugador.setLocation(150, 75);
+        this.cambiarJugador.setForeground(Color.white);
+        this.cambiarJugador.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.cambiarJugador.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
+        this.cambiarJugador.setFont(fuentePersonalizada);
+        
+        this.modificarPuzle.setText("Modificar puzle  ");
+        this.modificarPuzle.setHorizontalAlignment(JLabel.RIGHT);
+        this.modificarPuzle.setSize(180, 30);
+        this.modificarPuzle.setLocation(150, 115);
         this.modificarPuzle.setForeground(Color.white);
         this.modificarPuzle.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.modificarPuzle.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
+        this.modificarPuzle.setFont(fuentePersonalizada);
+        
+        this.eliminar.setSize(30, 30);
+        this.eliminar.setLocation(290, 20);
+        this.eliminar.setImagenSobre("/Imagenes/Botones/boton_cuadrado_sobre.png");
+        this.eliminar.setImagenPresionado("/Imagenes/Botones/boton_cuadrado_presionado.png");
+        
+        this.setImagen("/Imagenes/Fondos/fondo_azul_transparente.png");
     }
 
     /**
@@ -93,6 +114,45 @@ public class CompInfoJug extends PanelImagen {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void actualizarInforJug(Jugador jugador){
+        this.jugador = jugador;
+        this.dadosJugador = jugador.getDados();
+        
+        this.nombreJugador.setText(jugador.getNombreJugador());
+        this.tipoJugador.setText(jugador.getTipoJugador());
+    }
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    public JLabel getNombreJugador() {
+        return nombreJugador;
+    }
+
+    public JLabel getTipoJugador() {
+        return tipoJugador;
+    }
+
+    public PanelImagen getIconoJugador() {
+        return iconoJugador;
+    }
+
+    public ArrayList<Dado> getDadosJugador() {
+        return dadosJugador;
+    }
+
+    public BotonImagen getModificarPuzle() {
+        return modificarPuzle;
+    }
+
+    public BotonImagen getCambiarJugador() {
+        return cambiarJugador;
+    }
+
+    public BotonImagen getEliminar() {
+        return eliminar;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

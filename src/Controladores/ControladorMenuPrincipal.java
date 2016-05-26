@@ -5,11 +5,9 @@
  */
 package Controladores;
 
-import Otros.BotonImagen;
 import Vistas.VistaMenuPrincipal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,7 +20,7 @@ public final class ControladorMenuPrincipal {
     public ControladorMenuPrincipal(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visMenuPrin = new VistaMenuPrincipal(this.contPrin.getFuentePersonalizada());
+        this.visMenuPrin = new VistaMenuPrincipal(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visMenuPrin);
         this.setMensajeBienvenida(this.contPrin.getUsuarioActivo().getUsername());
         this.agregarListenersVistaMenuPrincipal();
@@ -41,9 +39,7 @@ public final class ControladorMenuPrincipal {
      * y específica las acciones que deben realizar al activarse dichos eventos.
      */
     public void agregarListenersVistaMenuPrincipal(){
-        // Obtiene el botón "Nueva partida"
-        BotonImagen nuevaPartida = this.visMenuPrin.getNuevaPartida();
-        nuevaPartida.addMouseListener(new MouseAdapter(){
+        this.visMenuPrin.getNuevaPartida().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
@@ -51,15 +47,11 @@ public final class ControladorMenuPrincipal {
             }
         });
         
-        // Obtiene el botón "Salir"
-        BotonImagen salir = this.visMenuPrin.getSalir();
-        salir.addMouseListener(new MouseAdapter(){
+        this.visMenuPrin.getSalir().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                if(contPrin.salir() == JOptionPane.YES_OPTION){
-                    contPrin.getContVisPrin().getVisPrin().dispose();
-                }
+                contPrin.salir();
             }
         });
     }

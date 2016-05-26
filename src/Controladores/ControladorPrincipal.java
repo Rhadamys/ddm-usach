@@ -6,7 +6,6 @@
 package Controladores;
 
 import Modelos.Usuario;
-import Vistas.CompMensaje;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -27,7 +26,7 @@ public class ControladorPrincipal {
     private ControladorNuevaPartida contNuePar;
     private ControladorBatalla contBat;
     private Usuario usuarioActivo;
-    private Font fuentePersonalizada;
+    private Font fuente;
     
     /**
      * @param args the command line arguments
@@ -36,7 +35,7 @@ public class ControladorPrincipal {
         // TODO code application logic here
         // Instancia a este controlador
         ControladorPrincipal contPrin = new ControladorPrincipal();
-        contPrin.crearFuentePersonalizada();
+        contPrin.elementosPersonalizados();
         
         // Se instancian los otros controladores
         contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
@@ -47,94 +46,152 @@ public class ControladorPrincipal {
     /**
      * Muestra un mensaje con las opciones si / no solicitando al usuario que
      * confirme si desea salir de la aplicación.
-     * @return Opcion elegida por el usuario en el JOptionPane. 
      */
-    public int salir(){
-//        return JOptionPane.showConfirmDialog(
-//                null,
-//                "¿Estás seguro que deseas salir?",
-//                "Salir",
-//                JOptionPane.YES_NO_OPTION);
-        return CompMensaje.mostrarMensaje("Hola", "Adiós", this);
+    public void salir(){
+        if (JOptionPane.showConfirmDialog(
+                null,
+                "¿Estás seguro que deseas salir?",
+                "Salir",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            this.contVisPrin.getVisPrin().dispose();
+        }
     }
-     
-    public void crearFuentePersonalizada(){
+    
+    /**
+     * Define la fuente personalizada que se utilizará en la aplicación
+     */
+    public void elementosPersonalizados(){
         try {
             //create the font to use. Specify the size!
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\Fuentes\\pixel.ttf")).deriveFont(14f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src\\Fuentes\\pixel.ttf")));
-            this.fuentePersonalizada = customFont;
+            this.fuente = customFont;
         }catch(IOException | FontFormatException e){
             e.printStackTrace();
         }
+        
     }
 
-    public Font getFuentePersonalizada() {
-        return fuentePersonalizada;
+    /**
+     * Devuelve la fuente personalizada de la aplicación
+     * @return Tipografía personalizada
+     */
+    public Font getFuente() {
+        return fuente;
     }
     
+    /**
+     * Crea una nueva instancia del controlador login
+     */
     public void crearControladorLogin() {
         this.contLog = new ControladorLogin(this);
     }
     
+    /**
+     * Crea una nueva instancia del controlador registro
+     */
     public void crearControladorRegistro(){
         this.contReg = new ControladorRegistro(this);
     }
     
     /**
-     * Crea una nueva instancia del controlador de menú principal en el
-     * controlador principal.
+     * Crea una nueva instancia del controlador de menú principal
      */
     public void crearControladorMenuPrincipal(){
         this.contMenuPrin = new ControladorMenuPrincipal(this);
     }
     
-    public void crearControladorSeleccionarJefe() throws IOException{
+    /**
+     * Crea una nueva instancia del controlador seleccionar jefe de terreno
+     */
+    public void crearControladorSeleccionarJefe() {
         this.contSelJef = new ControladorSeleccionarJefe(this);
     }
     
+    /**
+     * Crea una nueva instancia del controlador nueva partida
+     */
     public void crearControladorNuevaPartida(){
         this.contNuePar = new ControladorNuevaPartida(this);
     }
     
+    /**
+     * Crea una nueva instancia del controlador batalla
+     */
     public void crearControladorBatalla(){
         this.contBat = new ControladorBatalla(this);
     }
     
+    /**
+     * Devuelve el controlador de vista principal
+     * @return Controlador de vista principal
+     */
     public ControladorVistaPrincipal getContVisPrin() {
         return contVisPrin;
     }
 
+    /**
+     * Devuelve el controlador de login
+     * @return Controlador de login
+     */
     public ControladorLogin getContLog() {
         return contLog;
     }
 
+    /**
+     * Devuelve el controlador de registro
+     * @return Controlador de registro
+     */
     public ControladorRegistro getContReg() {
         return contReg;
     }
 
+    /**
+     * Devuelve el controlador de menú principal
+     * @return Controlador de menú principal
+     */
     public ControladorMenuPrincipal getContMenuPrin() {
         return contMenuPrin;
     }
 
+    /**
+     * Devuelve el controlador de selección de jefe de terreno
+     * @return Controlador de selección de jefe de terreno
+     */
     public ControladorSeleccionarJefe getContSelJef() {
         return contSelJef;
     }
 
+    /**
+     * Devuelve el controlador de nueva partida
+     * @return Controlador de nueva partida
+     */
     public ControladorNuevaPartida getContNuePar() {
         return contNuePar;
     }
 
+    /**
+     * Devuelve el controlador de batalla
+     * @return Controlador de batalla
+     */
     public ControladorBatalla getContBat() {
         return contBat;
     }
     
+    /**
+     * Devuelve el usuario activo de la aplicación (logueado)
+     * @return Usuario activo de la aplicación
+     */
     public Usuario getUsuarioActivo() {
         return usuarioActivo;
     }
 
+    /**
+     * Define el usuario activo de la aplicación (logueado)
+     * @param usuarioActivo Instancia de usuario
+     */
     public void setUsuarioActivo(Usuario usuarioActivo) {
         this.usuarioActivo = usuarioActivo;
     }    

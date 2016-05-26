@@ -17,7 +17,7 @@ public class CompPosicion extends BotonImagen {
     private int dueno = 0;
     
     public CompPosicion(int fila, int columna){
-        setImagenFuera("/Imagenes/Botones/casilla.png");
+        setImagenNormal("/Imagenes/Botones/casilla.png");
         setImagenSobre("/Imagenes/Botones/casilla_j1.png");
         setImagenPresionado("/Imagenes/Botones/boton_cuadrado_presionado.png");
         setImagenActual(0);

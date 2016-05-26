@@ -11,8 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** @pdOid ba01c964-70b9-429b-9412-0cfa461bb9c0 */
 public class JefeDeTerreno extends ElementoEnCampo {

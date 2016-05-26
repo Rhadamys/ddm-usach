@@ -1,2 +1,3 @@
 metodos;usach;jefe1;dado14;dado15;dado11;dado12;dado1;dado11;dado12;dado1;dado5;dado13;dado7;dado7;dado3;dado6;dado6
 metodos2;usach;jefe5;dado15;dado15;dado1;dado4;dado12;dado15;dado11;dado1;dado5;dado7;dado3;dado9;dado3;dado10;dado10
+metodos3;usach;jefe1;dado12;dado12;dado4;dado12;dado2;dado1;dado12;dado11;dado1;dado9;dado9;dado3;dado3;dado6;dado6

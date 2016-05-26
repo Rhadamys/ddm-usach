@@ -20,12 +20,12 @@ public class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
     private VistaNuevaPartida visNuePar;
     private ArrayList<CompInfoJug> vistasInfoJug;
-    private int[][] posiciones = {{50, 50}, {400, 50}, {50, 230}, {400, 230}};
+    private int[][] posicionesInfoJug = {{50, 50}, {410, 50}, {50, 240}, {410, 240}};
     
     ControladorNuevaPartida(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;
         
-        this.visNuePar = new VistaNuevaPartida(this.contPrin.getFuentePersonalizada());
+        this.visNuePar = new VistaNuevaPartida(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar);
         this.agregarListenersVistaNuevaPartida();
         
@@ -48,13 +48,22 @@ public class ControladorNuevaPartida {
         });
     }
     
+    public void agregarListenersVistaInfoJugador(CompInfoJug visInfoJug){
+        visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                
+            }
+        });
+    }
+    
     public void agregarVistaInfoJugador(){
         if(vistasInfoJug.size() < 4){
-            CompInfoJug visInfoJug = new CompInfoJug(contPrin.getUsuarioActivo(), contPrin.getFuentePersonalizada());
+            CompInfoJug visInfoJug = new CompInfoJug(contPrin.getUsuarioActivo(), contPrin.getFuente());
             vistasInfoJug.add(visInfoJug);
             visNuePar.add(visInfoJug, 0);
-            visInfoJug.setLocation(posiciones[vistasInfoJug.size() - 1][0], 
-                    posiciones[vistasInfoJug.size() - 1][1]);
+            visInfoJug.setLocation(posicionesInfoJug[vistasInfoJug.size() - 1][0], 
+                    posicionesInfoJug[vistasInfoJug.size() - 1][1]);
             visInfoJug.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null, "Máximo 4 jugadores");

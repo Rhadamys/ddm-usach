@@ -30,9 +30,7 @@ public final class ControladorVistaPrincipal {
         this.visPrin.addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent e){
-                if(contPrin.salir() == JOptionPane.YES_OPTION){
-                    e.getWindow().dispose();
-                }
+                contPrin.salir();
             }
         });
     }

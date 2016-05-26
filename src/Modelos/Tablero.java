@@ -5,12 +5,53 @@
  ***********************************************************************/
 package Modelos;
 
-import java.util.*;
+import Vistas.CompPosicion;
+import Vistas.CompTablero;
 
-/** @pdOid 0680c7f0-1e23-4c63-882e-9a047dddc72e */
 public class Tablero {
-    private Posicion[][] posiciones;
+    private CompTablero tablero;
+    private CompPosicion[][] posiciones;
+    private int turnoActual;
+    private int accion;
+    private int direccion;
+    private int despliegue;
     
     public Tablero(){
+        this.turnoActual = 0;
+        this.accion = 0;
     }
+
+    public int getTurnoActual() {
+        return turnoActual;
+    }
+
+    public int getAccion() {
+        return accion;
+    }
+
+    public int getDireccion() {
+        return direccion;
+    }
+
+    public int getDespliegue() {
+        return despliegue;
+    }
+
+    public void setTurnoActual(int turnoActual) {
+        this.turnoActual = turnoActual;
+    }
+
+    public void setAccion(int accion) {
+        this.accion = accion;
+    }
+
+    public void setDireccion(int direccion) {
+        this.direccion = direccion;
+    }
+
+    public void setDespliegue(int despliegue) {
+        this.despliegue = despliegue;
+    }
+    
+    
 }

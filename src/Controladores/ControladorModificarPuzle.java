@@ -18,7 +18,7 @@ public class ControladorModificarPuzle {
     public ControladorModificarPuzle(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visModPuz = new VistaModificarPuzle(contPrin.getFuentePersonalizada());
+        this.visModPuz = new VistaModificarPuzle(contPrin.getFuente());
     }
     
     public void mostrarVistaModificarPuzle(){

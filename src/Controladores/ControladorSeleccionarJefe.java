@@ -10,9 +10,7 @@ import Otros.BotonImagen;
 import Vistas.VistaSeleccionarJefe;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
@@ -23,12 +21,12 @@ public class ControladorSeleccionarJefe {
     private final VistaSeleccionarJefe visSelJef;
     private final ArrayList<JefeDeTerreno> jefes;
     
-    public ControladorSeleccionarJefe(ControladorPrincipal contPrin) throws IOException{
+    public ControladorSeleccionarJefe(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;        
         this.jefes = JefeDeTerreno.getJefes();
         
         this.visSelJef = new VistaSeleccionarJefe(
-                this.contPrin.getFuentePersonalizada(),
+                this.contPrin.getFuente(),
                 this.jefes);
         
         this.agregarListenersVistaSeleccionarJefe();
@@ -37,8 +35,7 @@ public class ControladorSeleccionarJefe {
     }
     
     public void agregarListenersVistaSeleccionarJefe(){
-        ArrayList<BotonImagen> botones = this.visSelJef.getBotones();
-        for(BotonImagen boton: botones){
+        for(BotonImagen boton: this.visSelJef.getBotones()){
             boton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e){

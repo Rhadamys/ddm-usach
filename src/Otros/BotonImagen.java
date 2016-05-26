@@ -18,7 +18,7 @@ import javax.swing.JButton;
  */
 public class BotonImagen extends JButton {
     private Image imagen;
-    private Image imagenMouseFuera;
+    private Image imagenMouseNormal;
     private Image imagenMouseSobre;
     private Image imagenMousePresionado;
     
@@ -35,7 +35,7 @@ public class BotonImagen extends JButton {
      */
     public BotonImagen(String imagen){
         //Inicializar panel de fondo        
-        imagenMouseFuera = new ImageIcon(getClass().getResource(imagen)).getImage();
+        imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
         this.imagen = imagenMouseSobre;
@@ -94,8 +94,8 @@ public class BotonImagen extends JButton {
      * Entrega la imagen que se mostrará cuando el mouse salga del botón.
      * @return Image - Imagen cuando el mouse sale del botón
      */
-    public Image getImagenFuera(){
-        return imagenMouseFuera;
+    public Image getImagenNormal(){
+        return imagenMouseNormal;
     }
     
     /**
@@ -120,8 +120,8 @@ public class BotonImagen extends JButton {
      * Define la imagen que se mostrará cuando el mouse salga del botón.
      * @param imagen String - Nombre del archivo
      */
-    public void setImagenFuera(String imagen){
-        imagenMouseFuera = new ImageIcon(getClass().getResource(imagen)).getImage();
+    public void setImagenNormal(String imagen){
+        imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
     /**
@@ -134,7 +134,7 @@ public class BotonImagen extends JButton {
     
     public void setImagenActual(int i){
         switch(i){
-            case 0: this.imagen = this.imagenMouseFuera;
+            case 0: this.imagen = this.imagenMouseNormal;
                     break;
             case 1: this.imagen = this.imagenMouseSobre;
                     break;

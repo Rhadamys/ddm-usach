@@ -5,9 +5,11 @@
  */
 package Vistas;
 
+import Modelos.Jugador;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -17,41 +19,30 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaBatalla extends javax.swing.JInternalFrame {
+    private Font fuente;
     private CompTablero tablero;
     private BotonImagen ataque;
     private BotonImagen invocacion;
     private BotonImagen magia;
     private BotonImagen movimiento;
     private BotonImagen trampa;
-    private CompJugador[] vistasJugador;
+    private ArrayList<CompJugador> vistasJugador;
     private CompSelDesp visSelDesp;
+    private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
+    private final int[][] posJefTer = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
     
     /**
      * Creates new form VistaBatalla
-     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
+     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public VistaBatalla(Font fuentePersonalizada) {
+    public VistaBatalla(Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
+        this.fuente = fuente;
         this.visSelDesp = new CompSelDesp();
-        this.vistasJugador = new CompJugador[4];
-        
-        int[][] posiciones = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
-        for(int i = 0; i < 4; i++){
-            CompJugador resumenJugador = new CompJugador(fuentePersonalizada);
-            
-            if(i == 0){
-                resumenJugador.setImagen("/Imagenes/Fondos/fondo_jugador.png");
-            }else{
-                resumenJugador.setImagen("/Imagenes/Fondos/fondo_jugador_inactivo.png");
-            }
-            
-            this.add(resumenJugador);
-            resumenJugador.setLocation(posiciones[i][0], posiciones[i][1]);
-            vistasJugador[i] = resumenJugador;
-        }
+        this.vistasJugador = new ArrayList();
         
         this.ataque = new BotonImagen("/Imagenes/Botones/ataque.png");
         this.invocacion = new BotonImagen("/Imagenes/Botones/invocacion.png");
@@ -90,7 +81,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.trampa.setImagenPresionado("/Imagenes/Botones/trampa_presionado.png");
         
         mensaje.setText("");
-        mensaje.setFont(new Font(fuentePersonalizada.getName(), Font.TRUETYPE_FONT, 16));
+        mensaje.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 16));
                         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_batalla.png");
         this.add(panelFondo);
@@ -125,6 +116,29 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    public void agregarJugador(Jugador jug){
+        this.vistasJugador.add(new CompJugador(this.fuente));
+        int i = this.vistasJugador.size() - 1;
+        
+        this.vistasJugador.get(i).setImagen(
+                "/Imagenes/Fondos/fondo_j" + (i + 1) + ".png");
+        
+        this.vistasJugador.get(i).setLocation(posInfoJug[i][0], posInfoJug[i][1]);
+        this.vistasJugador.get(i).setNombreJugador(jug.getNombreJugador());
+        
+        this.vistasJugador.get(i).setIconoJugador("/Imagenes/Jefes/" +
+                jug.getJefeDeTerreno().getClave() + ".png");
+        
+        this.tablero.getPosiciones()[posJefTer[i][0]][posJefTer[i][1]].setImagenNormal(
+        "/Imagenes/Botones/casilla_j" + (i + 1) + ".png");
+        
+        this.tablero.getPosiciones()[posJefTer[i][0]][posJefTer[i][1]].setDueno(i + 1);
+        
+        this.tablero.reiniciarCasillas();
+        
+        this.add(this.vistasJugador.get(i), 0);
+    }
+    
     public CompTablero getTablero() {
         return tablero;
     }
@@ -149,7 +163,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return trampa;
     }
 
-    public CompJugador[] getVistasJugador() {
+    public ArrayList<CompJugador> getVistasJugador() {
         return vistasJugador;
     }
 

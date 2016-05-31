@@ -134,64 +134,44 @@ public class ControladorRegistro {
      */
     public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) {
         // Se comprueba que los campos estén completos (escritos)
-        if(!"".equals(usuario) && !"".equals(pass) && !"".equals(passRepetida)){
-            // Se comprueba que el largo del nombre de usuario sea por lo menos de 5 caracteres
-            if(usuario.length() >= 5){
-                // Se comprueba que el largo de la contraseña sea por lo menos de 5 caracteres
-                if(pass.length() >= 5){
-                    // Se comprueba que el usuario no exista previamente en los registros
-                    if(!Usuario.existe(usuario)){
-                        // Se comprueba que el usuario haya elegido un jefe de terreno
-                        if(jefe != null){
-                            // Finalmente, se comprueba que ambas contraseñas calcen
-                            if(pass.equals(passRepetida)){
-                                try {
-                                    File archivoUsuario = new File("src\\Otros\\usuarios.txt");
-                                    PrintWriter escritor;
-                                    escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
+        if(this.visReg.comprobarCampos()){
+            // Se comprueba que el usuario no exista previamente.
+            if(!Usuario.existe(usuario)){
+                this.visReg.usuarioCorrecto();
+                try {
+                    File archivoUsuario = new File("src\\Otros\\usuarios.txt");
+                    PrintWriter escritor;
+                    escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
 
-                                    // Se asignan los dados al jugador (aleatoriamente)
-                                    ArrayList<Dado> dados = this.asignarDados();
+                    // Se asignan los dados al jugador (aleatoriamente)
+                    ArrayList<Dado> dados = this.asignarDados();
 
-                                    // Esto es para agregar a los registros del archivo
-                                    String lineaDados = "";
-                                    for(Dado dado: dados){
-                                        lineaDados += ";" + dado.getClave();
-                                    }
-
-                                    // Se registra al usuario en el archivo
-                                    escritor.println(usuario + ";" + pass + ";" + jefe.getClave() + lineaDados);
-
-                                    escritor.close();
-
-                                    JOptionPane.showMessageDialog(null, "Registro exitoso.");
-
-                                    // Se instancia el controlador de login
-                                    this.contPrin.crearControladorLogin();
-                                    // Se muestra la vista de login
-                                    this.contPrin.getContLog().mostrarVistaLogin();
-                                    // Se elimina la vista de registro
-                                    this.eliminarVistaRegistro();
-                                } catch (IOException ex) {
-                                    this.visReg.setMensaje("Error interno de la aplicación.");
-                                }
-                            }else{
-                                this.visReg.setMensaje("Las contraseñas no coinciden.");
-                            }
-                        }else{
-                            this.visReg.setMensaje("Selecciona un jefe de terreno.");
-                        }
-                    }else{
-                        this.visReg.setMensaje("Usuario ya existe");
+                    // Esto es para agregar a los registros del archivo
+                    String lineaDados = "";
+                    for(Dado dado: dados){
+                        lineaDados += ";" + dado.getClave();
                     }
-                }else{
-                     this.visReg.setMensaje("La contraseña debe tener por lo menos 5 caracteres.");
+
+                    // Se registra al usuario en el archivo
+                    escritor.println(usuario + ";" + pass + ";" + jefe.getClave() + lineaDados);
+
+                    escritor.close();
+
+                    JOptionPane.showMessageDialog(null, "Registro exitoso.");
+
+                    // Se instancia el controlador de login
+                    this.contPrin.crearControladorLogin();
+                    // Se muestra la vista de login
+                    this.contPrin.getContLog().mostrarVistaLogin();
+                    // Se elimina la vista de registro
+                    this.eliminarVistaRegistro();
+                } catch (IOException ex) {
+                    this.visReg.setMensaje("Error interno de la aplicación.");
                 }
             }else{
-                this.visReg.setMensaje("El usuario debe tener por lo menos 5 caracteres.");
+                this.visReg.setMensaje("Usuario ya existe");
+                this.visReg.usuarioErroneo();
             }
-        }else{
-            this.visReg.setMensaje("Completa todos los campos.");
         }
     }
     

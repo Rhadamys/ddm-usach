@@ -5,12 +5,14 @@
  */
 package Controladores;
 
+import Modelos.Jugador;
 import Modelos.Usuario;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -120,9 +122,10 @@ public class ControladorPrincipal {
     
     /**
      * Crea una nueva instancia del controlador batalla
+     * @param jugadores Jugadores de la partida
      */
-    public void crearControladorBatalla(){
-        this.contBat = new ControladorBatalla(this);
+    public void crearControladorBatalla(ArrayList<Jugador> jugadores){
+        this.contBat = new ControladorBatalla(this, jugadores);
     }
     
     /**

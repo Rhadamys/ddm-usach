@@ -38,4 +38,5 @@ public class PanelImagen extends JPanel {
         this.imagen = new ImageIcon(getClass().getResource(imagen)).getImage();
         this.repaint();
     }
+    
 }

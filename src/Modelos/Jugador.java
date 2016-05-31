@@ -13,6 +13,7 @@ public abstract class Jugador {
     protected String nombreJugador;
     protected String tipoJugador;
     protected JefeDeTerreno jefeDeTerreno;
+    protected int equipo;
 
     public ArrayList<Dado> getDados() {
         return dados;
@@ -28,6 +29,10 @@ public abstract class Jugador {
 
     public JefeDeTerreno getJefeDeTerreno() {
         return jefeDeTerreno;
+    }
+
+    public void setEquipo(int equipo) {
+        this.equipo = equipo;
     }
     
 }

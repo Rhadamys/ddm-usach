@@ -6,13 +6,11 @@
 package Vistas;
 
 import Modelos.Jugador;
-import Modelos.Usuario;
+import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -22,10 +20,14 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaNuevaPartida extends javax.swing.JInternalFrame {
+    private CompSelEquipos visSelEq;
     private ArrayList<CompInfoJug> vistasInfoJug;
     private BotonImagen agregar;
+    private BotonCheckImagen enEquipos;
+    private BotonImagen volver;
+    private BotonImagen comenzar;
     private Font fuente;
-    private int[][] posicionesInfoJug = {{50, 70}, {410, 70}, {50, 260}, {410, 260}};
+    private int[][] posicionesInfoJug = {{50, 90}, {410, 90}, {50, 275}, {410, 275}};
     private JLabel mensaje;
     
     /**
@@ -40,29 +42,68 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         this.vistasInfoJug = new ArrayList();
         this.fuente = fuente;
         
-        this.agregar = new BotonImagen("/Imagenes/Botones/boton_cuadrado.png");
+        this.agregar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
         this.add(agregar);
         
-        agregar.setImagenSobre("/Imagenes/Botones/boton_cuadrado_sobre.png");
-        agregar.setImagenPresionado("/Imagenes/Botones/boton_cuadrado_presionado.png");
+        agregar.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
+        agregar.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
         agregar.setSize(100, 100);
         agregar.setLocation(40, 475);
-        agregar.setForeground(Color.orange);
+        agregar.setLayout(null);
+        
+        PanelImagen iconoAgregar = new PanelImagen("/Imagenes/Otros/cruz.png");
+        agregar.add(iconoAgregar);
+        iconoAgregar.setSize(agregar.getWidth() / 2, agregar.getHeight() / 2);
+        iconoAgregar.setLocation((agregar.getWidth() - iconoAgregar.getWidth()) / 2, 
+                (agregar.getHeight() - iconoAgregar.getHeight()) / 2);
+        
+        this.enEquipos = new BotonCheckImagen("/Imagenes/Botones/boton_redondo.png");
+        this.add(enEquipos);
+        
+        enEquipos.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
+        enEquipos.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
+        enEquipos.setImagenSelNormal("/Imagenes/Botones/boton_redondo_sel.png");
+        enEquipos.setImagenSelSobre("/Imagenes/Botones/boton_redondo_sel_sobre.png");
+        enEquipos.setImagenSelPresionado("/Imagenes/Botones/boton_redondo_sel_presionado.png");
+        enEquipos.setSize(100, 100);
+        enEquipos.setLocation(160, 475);
+        enEquipos.setLayout(null);
+        
+        PanelImagen iconoEnEquipos = new PanelImagen("/Imagenes/Otros/equipo.png");
+        enEquipos.add(iconoEnEquipos);
+        iconoEnEquipos.setSize(enEquipos.getWidth() / 2, enEquipos.getHeight() / 2);
+        iconoEnEquipos.setLocation((enEquipos.getWidth() - iconoEnEquipos.getWidth()) / 2, 
+                (enEquipos.getHeight() - iconoEnEquipos.getHeight()) / 2);
+                
+        this.volver = new BotonImagen("/Imagenes/Botones/atras.png");
+        this.add(this.volver);
+        this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
+        this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
+        this.volver.setLocation(35, 35);
+        this.volver.setSize(40, 40);     
+                
+        this.comenzar = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.add(this.comenzar);
+        this.comenzar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.comenzar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
+        this.comenzar.setLocation(85, 35);
+        this.comenzar.setSize(160, 40);     
+        this.comenzar.setText("Comenzar partida");
+        this.comenzar.setForeground(Color.white);
+        this.comenzar.setFont(fuente);
         
         this.mensaje = new JLabel("");
         this.add(mensaje);
         this.mensaje.setFont(fuente);
         this.mensaje.setForeground(Color.white);
-        this.mensaje.setSize(800, 20);
-        this.mensaje.setLocation(0, 40);
+        this.mensaje.setSize(520, 40);
+        this.mensaje.setLocation(245, 35);
         this.mensaje.setHorizontalAlignment(JLabel.CENTER);
+        this.mensaje.setVerticalAlignment(JLabel.CENTER);
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
-        
-        this.agregarVistaInfoJugador(Usuario.getUsuario("metodos2"));
-        this.agregarVistaInfoJugador(Usuario.getUsuario("metodos4"));
     }
 
     /**
@@ -90,26 +131,20 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
             CompInfoJug visInfoJug = new CompInfoJug(jugador, this.fuente);
             vistasInfoJug.add(visInfoJug);
             this.add(visInfoJug, 0);
-            this.agregarListenersVistaInfoJugador(vistasInfoJug.get(vistasInfoJug.size() - 1));
             this.actualizarVista();
         }else{
             this.setMensaje("Máximo 4 jugadores.");
         }
     }
     
-    public void agregarListenersVistaInfoJugador(CompInfoJug visInfoJug){
-        visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                if(vistasInfoJug.size() > 2){
-                    vistasInfoJug.remove(vistasInfoJug.indexOf((CompInfoJug) e.getComponent().getParent()));
-                    ((CompInfoJug) e.getComponent().getParent()).setVisible(false);
-                    actualizarVista();
-                }else{
-                    setMensaje("Mínimo 2 jugadores.");
-                }
-            }
-        });
+    public void eliminarVisInfoJug(int i){
+        if(vistasInfoJug.size() > 2){
+            vistasInfoJug.get(i).setVisible(false);
+            vistasInfoJug.remove(i);
+            actualizarVista();
+        }else{
+            setMensaje("Mínimo 2 jugadores.");
+        }
     }
     
     public void actualizarVista(){
@@ -123,8 +158,28 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         return agregar;
     }
 
+    public BotonCheckImagen getEnEquipos() {
+        return enEquipos;
+    }
+
+    public BotonImagen getVolver() {
+        return volver;
+    }
+
+    public BotonImagen getComenzar() {
+        return comenzar;
+    }
+
     public ArrayList<CompInfoJug> getVistasInfoJug() {
         return vistasInfoJug;
+    }
+
+    public CompSelEquipos getVisSelEq() {
+        return visSelEq;
+    }
+
+    public void setVisSelEq(CompSelEquipos visSelEq) {
+        this.visSelEq = visSelEq;
     }
     
     public void setMensaje(String mensaje){

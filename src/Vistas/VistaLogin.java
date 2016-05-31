@@ -5,6 +5,7 @@
  */
 package Vistas;
 
+import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
 import Otros.CajaPassImagen;
 import Otros.CajaTextoImagen;
@@ -47,8 +48,8 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         pass.setForeground(Color.white);
                 
         this.ingresar = new BotonImagen("/Imagenes/Botones/boton.png");
-        this.ingresar.setLocation(270, 515);
-        this.ingresar.setSize(270, 40);
+        this.ingresar.setLocation(310, 515);
+        this.ingresar.setSize(190, 40);
         this.ingresar.setText("Ingresar");
         this.ingresar.setForeground(Color.white);
         this.ingresar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");

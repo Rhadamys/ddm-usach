@@ -44,7 +44,7 @@ public class CompInfoJug extends PanelImagen {
                 jugador.getJefeDeTerreno().getClave() + ".png");
         this.cambiarJugador = new BotonImagen("/Imagenes/Botones/boton.png");
         this.modificarPuzle = new BotonImagen("/Imagenes/Botones/boton.png");
-        this.eliminar = new BotonImagen("/Imagenes/Botones/boton_cuadrado.png");
+        this.eliminar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
         
         this.add(nombreJugador);
         this.add(tipoJugador);
@@ -67,19 +67,17 @@ public class CompInfoJug extends PanelImagen {
         this.tipoJugador.setForeground(Color.white);
         this.tipoJugador.setFont(fuentePersonalizada);
         
-        this.cambiarJugador.setText("Cambiar jugador  ");
-        this.cambiarJugador.setHorizontalAlignment(JLabel.RIGHT);
-        this.cambiarJugador.setSize(180, 30);
-        this.cambiarJugador.setLocation(150, 75);
+        this.cambiarJugador.setText("Cambiar jugador");
+        this.cambiarJugador.setSize(160, 30);
+        this.cambiarJugador.setLocation(160, 75);
         this.cambiarJugador.setForeground(Color.white);
         this.cambiarJugador.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.cambiarJugador.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         this.cambiarJugador.setFont(fuentePersonalizada);
         
-        this.modificarPuzle.setText("Modificar puzle  ");
-        this.modificarPuzle.setHorizontalAlignment(JLabel.RIGHT);
-        this.modificarPuzle.setSize(180, 30);
-        this.modificarPuzle.setLocation(150, 115);
+        this.modificarPuzle.setText("Modificar puzle");
+        this.modificarPuzle.setSize(160, 30);
+        this.modificarPuzle.setLocation(160, 115);
         this.modificarPuzle.setForeground(Color.white);
         this.modificarPuzle.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.modificarPuzle.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
@@ -87,8 +85,15 @@ public class CompInfoJug extends PanelImagen {
         
         this.eliminar.setSize(30, 30);
         this.eliminar.setLocation(290, 20);
-        this.eliminar.setImagenSobre("/Imagenes/Botones/boton_cuadrado_sobre.png");
-        this.eliminar.setImagenPresionado("/Imagenes/Botones/boton_cuadrado_presionado.png");
+        this.eliminar.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
+        this.eliminar.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
+        this.eliminar.setLayout(null);
+        
+        PanelImagen iconoEliminar = new PanelImagen("/Imagenes/Otros/eliminar.png");
+        eliminar.add(iconoEliminar);
+        iconoEliminar.setSize(eliminar.getWidth() / 2, eliminar.getHeight() / 2);
+        iconoEliminar.setLocation((eliminar.getWidth() - iconoEliminar.getWidth()) / 2, 
+                (eliminar.getHeight() - iconoEliminar.getHeight()) / 2);
         
         this.setImagen("/Imagenes/Fondos/fondo_azul_transparente.png");
     }

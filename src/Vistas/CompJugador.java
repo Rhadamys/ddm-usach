@@ -17,7 +17,7 @@ import javax.swing.JProgressBar;
  */
 public class CompJugador extends PanelImagen{
     private PanelImagen iconoJugador;
-    private JLabel etiqueta;
+    private JLabel nombreJugador;
     private JProgressBar vidaJugador;
     private PanelImagen ataque;
     private PanelImagen magia;
@@ -32,8 +32,8 @@ public class CompJugador extends PanelImagen{
         this.setLayout(null);
         this.setSize(140, 190);
         
-        this.etiqueta = new JLabel("Nombre jugador");
-        this.iconoJugador = new PanelImagen("/Imagenes/Jefes/jefe1.png");
+        this.nombreJugador = new JLabel();
+        this.iconoJugador = new PanelImagen();
         this.vidaJugador = new JProgressBar();
         
         this.ataque = new PanelImagen("/Imagenes/Botones/ataque.png");
@@ -46,7 +46,7 @@ public class CompJugador extends PanelImagen{
         this.puntosMovimiento = new JLabel("0");
         this.puntosTrampa = new JLabel("0");
         
-        this.add(etiqueta);
+        this.add(nombreJugador);
         this.add(iconoJugador);
         this.add(vidaJugador);
         this.add(ataque);
@@ -58,7 +58,7 @@ public class CompJugador extends PanelImagen{
         this.add(puntosMovimiento);
         this.add(puntosTrampa);
         
-        this.etiqueta.setSize(140, 30);
+        this.nombreJugador.setSize(140, 30);
         this.iconoJugador.setSize(80, 80);
         this.vidaJugador.setSize(80, 10);
         this.ataque.setSize(25, 25);
@@ -101,10 +101,10 @@ public class CompJugador extends PanelImagen{
         this.puntosTrampa.setForeground(Color.white);
         this.puntosTrampa.setFont(fuentePersonalizada);
         
-        this.etiqueta.setHorizontalAlignment(JLabel.CENTER);
-        this.etiqueta.setVerticalAlignment(JLabel.CENTER);
-        this.etiqueta.setForeground(Color.white);
-        this.etiqueta.setFont(fuentePersonalizada);
+        this.nombreJugador.setHorizontalAlignment(JLabel.CENTER);
+        this.nombreJugador.setVerticalAlignment(JLabel.CENTER);
+        this.nombreJugador.setForeground(Color.white);
+        this.nombreJugador.setFont(fuentePersonalizada);
         
         this.vidaJugador.setBorder(null);
         this.vidaJugador.setValue(50);
@@ -116,4 +116,11 @@ public class CompJugador extends PanelImagen{
         return vidaJugador;
     }
     
+    public void setNombreJugador(String nombre){
+        this.nombreJugador.setText(nombre);
+    }
+    
+    public void setIconoJugador(String imagen){
+        this.iconoJugador.setImagen(imagen);
+    }
 }

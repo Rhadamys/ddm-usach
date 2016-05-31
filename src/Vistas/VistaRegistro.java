@@ -10,6 +10,8 @@ import Otros.CajaTextoImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -17,13 +19,13 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaRegistro extends javax.swing.JInternalFrame {
-    private BotonImagen registrarse;
-    private BotonImagen volver;
-    private BotonImagen seleccionarJefe;
-    private PanelImagen iconoJefe;
-    private CajaTextoImagen usuario;
-    private CajaPassImagen pass;
-    private CajaPassImagen repitePass;
+    private final BotonImagen registrarse;
+    private final BotonImagen volver;
+    private final BotonImagen seleccionarJefe;
+    private final PanelImagen iconoJefe;
+    private final CajaTextoImagen usuario;
+    private final CajaPassImagen pass;
+    private final CajaPassImagen repitePass;
     
     /**
      * Creates new form VistaRegistro
@@ -32,13 +34,14 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
     public VistaRegistro(Font fuentePersonalizada) {
         initComponents();
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);        
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);    
+        
         this.registrarse = new BotonImagen("/Imagenes/Botones/boton.png");
         this.add(this.registrarse);
         this.registrarse.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.registrarse.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.registrarse.setLocation(270, 535);
-        this.registrarse.setSize(270, 40);
+        this.registrarse.setLocation(330, 535);
+        this.registrarse.setSize(170, 40);
         this.registrarse.setText("Registrarse");
         this.registrarse.setFont(fuentePersonalizada);
         this.registrarse.setForeground(Color.white);
@@ -50,13 +53,13 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
         this.volver.setLocation(20, 20);
         this.volver.setSize(50, 50);
         
-        this.seleccionarJefe = new BotonImagen("/Imagenes/Botones/boton_2.png");
+        this.seleccionarJefe = new BotonImagen("/Imagenes/Botones/boton.png");
         this.add(seleccionarJefe);
-        this.seleccionarJefe.setImagenSobre("/Imagenes/Botones/boton_2_sobre.png");
-        this.seleccionarJefe.setImagenPresionado("/Imagenes/Botones/boton_2_presionado.png");
-        this.seleccionarJefe.setLocation(230, 475);
-        this.seleccionarJefe.setSize(80, 40);
-        this.seleccionarJefe.setText("Jefe");
+        this.seleccionarJefe.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.seleccionarJefe.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
+        this.seleccionarJefe.setLocation(150, 475);
+        this.seleccionarJefe.setSize(170, 40);
+        this.seleccionarJefe.setText("Seleccionar jefe");
         this.seleccionarJefe.setFont(fuentePersonalizada);
         this.seleccionarJefe.setForeground(Color.white);
         
@@ -69,6 +72,8 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
         this.add(iconoJefe);
         iconoJefe.setSize(40, 40);
         iconoJefe.setLocation(330, 475);
+        iconoJefe.setBorder(new LineBorder(Color.darkGray, 2));
+        iconoJefe.setToolTipText("");
         
         usuario = new CajaTextoImagen();
         this.add(usuario);
@@ -152,6 +157,110 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void usuarioNormal(){
+        this.usuario.setImagenActual(0);
+    }
+    
+    public void usuarioCorrecto(){
+        this.usuario.setImagenActual(1);
+    }
+    
+    public void usuarioErroneo(){
+        this.usuario.setImagenActual(2);
+    }
+    
+    public void passNormal(){
+        this.pass.setImagenActual(0);
+    }
+    
+    public void passCorrecta(){
+        this.pass.setImagenActual(1);
+    }
+    
+    public void passErronea(){
+        this.pass.setImagenActual(2);
+    }
+    
+    public void passRepetidaNormal(){
+        this.repitePass.setImagenActual(0);
+    }
+    
+    public void passRepetidaCorrecta(){
+        this.repitePass.setImagenActual(1);
+    }
+    
+    public void passRepetidaErronea(){
+        this.repitePass.setImagenActual(2);
+    }
+    
+    public void jefeNormal(){
+        this.iconoJefe.setBorder(new LineBorder(Color.darkGray, 2));
+    }
+    
+    public void jefeCorrecto(){
+        this.iconoJefe.setBorder(new LineBorder(Color.green, 2));
+    }
+    
+    public void jefeErroneo(){
+        this.iconoJefe.setBorder(new LineBorder(Color.red, 2));
+    }
+    
+    public boolean comprobarCampos(){
+        boolean estado = true;
+        boolean sePuedeMensaje = true;
+        
+        if(this.getUsuario().length() < 5){
+            if(sePuedeMensaje){
+                this.setMensaje("El usuario debe tener por lo menos 5 caracteres.");
+                sePuedeMensaje = false;
+            }
+            
+            this.usuarioErroneo();
+            estado = false;
+        }else{
+            this.usuarioNormal();
+        }
+        
+        if(this.getPass().length() < 5){
+            if(sePuedeMensaje){
+                this.setMensaje("La contraseña debe tener por lo menos 5 caracteres.");
+                sePuedeMensaje = false;
+            }
+            
+            this.passErronea();
+            estado = false;
+        }else{
+            this.passCorrecta();
+        }
+        
+        if(this.getPassRepetida().length() < 5 ||
+                !this.getPassRepetida().equals(this.getPass())){
+            if(sePuedeMensaje){
+                this.setMensaje("Las contraseñas no coinciden.");
+                sePuedeMensaje = false;
+            }
+            this.passErronea();
+            this.passRepetidaErronea();
+            estado = false;
+        }else{
+            this.passRepetidaCorrecta();
+        }
+        
+        if(this.iconoJefe.getToolTipText().equals("")){
+            if(sePuedeMensaje){
+                this.setMensaje("Selecciona un jefe de terreno.");
+                sePuedeMensaje = false;
+            }
+            
+            this.jefeErroneo();
+            estado = false;
+        }else{
+            this.jefeCorrecto();
+        }
+        
+        return estado;
+    }
+    
     public BotonImagen getVolver() {
         return volver;
     }
@@ -164,8 +273,8 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
         return registrarse;
     }
     
-    public void setIconoJefe(String imagen){
-        this.iconoJefe.setImagen(imagen);
+    public PanelImagen getIconoJefe() {
+        return iconoJefe;
     }
     
     public String getUsuario(){

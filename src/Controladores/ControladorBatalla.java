@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Modelos.Jugador;
 import Modelos.Tablero;
 import Otros.BotonImagen;
 import Vistas.CompPosicion;
@@ -26,7 +27,10 @@ public class ControladorBatalla {
     private final VistaBatalla visBat;
     private Tablero tablero;
     
-    public ControladorBatalla(ControladorPrincipal contPrin){
+    public ControladorBatalla(
+            ControladorPrincipal contPrin,
+            ArrayList<Jugador> jugadores){
+        
         this.contPrin = contPrin;
         
         // Instancia y agrega la vista de batalla
@@ -40,6 +44,9 @@ public class ControladorBatalla {
         // Agregar la vista para seleccionar el despliegue de dado
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisSelDesp());
         this.agregarListenersVistaSeleccionarDespliegue();
+        
+        this.tablero.setJugadores(jugadores);
+        this.agregarVistasInfoJug(jugadores);
     }
     
     public void agregarTablero(){
@@ -56,8 +63,12 @@ public class ControladorBatalla {
         
         this.visBat.add(this.visBat.getTablero(), 0);
         this.visBat.getTablero().setLocation(150, 50);
-        
-        this.visBat.getTablero().getPosiciones()[0][7].setDueno(1);
+    }
+    
+    public void agregarVistasInfoJug(ArrayList<Jugador> jugPartida){
+        for(Jugador jug: jugPartida){
+            this.visBat.agregarJugador(jug);
+        }
     }
     
     public void agregarListenersPosicion(int fila, int columna){
@@ -241,6 +252,10 @@ public class ControladorBatalla {
         }else{
             this.visBat.setMensaje("No se pudo invocar. Elige una posición válida.");
         }
+    }
+
+    public Tablero getTablero() {
+        return tablero;
     }
     
 }

@@ -7,10 +7,12 @@ package Modelos;
 
 import Vistas.CompPosicion;
 import Vistas.CompTablero;
+import java.util.ArrayList;
 
 public class Tablero {
     private CompTablero tablero;
     private CompPosicion[][] posiciones;
+    private ArrayList<Jugador> jugadores;
     private int turnoActual;
     private int accion;
     private int direccion;
@@ -35,6 +37,14 @@ public class Tablero {
 
     public int getDespliegue() {
         return despliegue;
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(ArrayList<Jugador> jugadores) {
+        this.jugadores = jugadores;
     }
 
     public void setTurnoActual(int turnoActual) {

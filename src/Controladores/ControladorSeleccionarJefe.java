@@ -54,8 +54,9 @@ public class ControladorSeleccionarJefe {
                 public void mouseClicked(MouseEvent e){
                     JefeDeTerreno jefe = jefes.get(Integer.parseInt(boton.getName()));
                     contPrin.getContReg().setJefe(jefe);
-                    contPrin.getContReg().getVisReg().setIconoJefe("/Imagenes/Jefes/" 
+                    contPrin.getContReg().getVisReg().getIconoJefe().setImagen("/Imagenes/Jefes/" 
                             + jefe.getClave() + ".png");
+                    contPrin.getContReg().getVisReg().getIconoJefe().setToolTipText(jefe.getNombre());
                     visSelJef.dispose();
                 }
             });

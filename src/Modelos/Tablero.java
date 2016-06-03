@@ -5,13 +5,9 @@
  ***********************************************************************/
 package Modelos;
 
-import Vistas.CompPosicion;
-import Vistas.CompTablero;
 import java.util.ArrayList;
 
 public class Tablero {
-    private CompTablero tablero;
-    private CompPosicion[][] posiciones;
     private ArrayList<Jugador> jugadores;
     private int turnoActual;
     private int accion;

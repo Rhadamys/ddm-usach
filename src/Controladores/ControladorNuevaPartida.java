@@ -22,7 +22,7 @@ public class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
     private VistaNuevaPartida visNuePar;
     private ArrayList<Jugador> jugadores;
-    private String[] prueba = {"mario", "metodos4", "metodos2", "usuario3"};
+    private String[] prueba = {"mario", "metodos4", "metodos2", "usuario3", ""};
     
     ControladorNuevaPartida(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;
@@ -37,10 +37,17 @@ public class ControladorNuevaPartida {
         this.agregarJugador(Usuario.getUsuario(prueba[1]));
     }
     
+    /**
+     * Muestra la vista de nueva partida instanciada en este controlador.
+     */
     public void mostrarVistaNuevaPartida(){
         this.visNuePar.setVisible(true);
     }
     
+    /**
+     * Agrega los listeners a los componentes de la vista de nueva partida y
+     * define las acciones a realizar.
+     */
     public void agregarListenersVistaNuevaPartida(){
         this.visNuePar.getAgregar().addMouseListener(new MouseAdapter(){
             @Override
@@ -71,6 +78,11 @@ public class ControladorNuevaPartida {
         });
     }
     
+    /**
+     * Agrega los listeners a los componentes de la vista de información de jugador
+     * en la vista de nueva partida y define las acciones a realizar.
+     * @param visInfoJug Vista a la que se agregarán los listeners.
+     */
     public void agregarListenersVistaInfoJugador(CompInfoJug visInfoJug){
         visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
             @Override
@@ -81,21 +93,33 @@ public class ControladorNuevaPartida {
         });
     }
     
+    /**
+     * Agrega un jugador a la partida.
+     * @param jug Jugador que se agregará.
+     */
     public void agregarJugador(Jugador jug){
-        this.jugadores.add(jug);
-        this.visNuePar.agregarVistaInfoJugador(jug);
-        this.agregarListenersVistaInfoJugador(this.visNuePar.getVistasInfoJug()
-                .get(this.visNuePar.getVistasInfoJug().size() - 1));
-        
-        try{
-            this.visNuePar.getVisSelEq().agregarJugador(jug);
-            this.agregarListenersVistaSeleccionEquipos(
-                    this.visNuePar.getVisSelEq().getIconosJugadores().size() - 1);
-        }catch(Exception e){
-            // Nada
+        if(this.visNuePar.getVistasInfoJug().size() < 4){
+            this.jugadores.add(jug);
+            this.visNuePar.agregarVistaInfoJugador(jug);
+            this.agregarListenersVistaInfoJugador(this.visNuePar.getVistasInfoJug()
+                    .get(this.visNuePar.getVistasInfoJug().size() - 1));
+
+            try{
+                this.visNuePar.getVisSelEq().agregarJugador(jug);
+                this.agregarListenersVistaSeleccionEquipos(
+                        this.visNuePar.getVisSelEq().getIconosJugadores().size() - 1);
+            }catch(Exception e){
+                // Nada
+            }
+        }else{
+            this.visNuePar.setMensaje("Máximo 4 jugadores.");
         }
     }
     
+    /**
+     * Se elimina un jugador de la partida.
+     * @param i Índice del jugador a eliminar.
+     */
     public void eliminarJugador(int i){
         if(this.visNuePar.getVistasInfoJug().size() > 2){
             this.jugadores.remove(i);
@@ -111,6 +135,10 @@ public class ControladorNuevaPartida {
         }
     }
     
+    /**
+     * Crea la "vista" de selección de equipos y le agrega los jugadores que se
+     * encuentran actualmente en la vista de nueva partida.
+     */
     public void crearVistaSeleccionEquipos(){
         this.visNuePar.setVisSelEq(new CompSelEquipos());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar.getVisSelEq());
@@ -124,6 +152,10 @@ public class ControladorNuevaPartida {
         }
     }
     
+    /**
+     * Agrega los listeners a un jugador en la vista de selección de equipos.
+     * @param i Índice del componente al que se agregarán los listeners.
+     */
     public void agregarListenersVistaSeleccionEquipos(int i){
         this.visNuePar.getVisSelEq().getIconosJugadores().get(i).addMouseListener(new MouseAdapter(){
             @Override
@@ -132,13 +164,11 @@ public class ControladorNuevaPartida {
             }
         });
     }
-
-    public void volver(){
-        this.visNuePar.dispose();
-        contPrin.crearControladorMenuPrincipal();
-        contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
-    }
     
+    /**
+     * Cambia el estado actual de la partida, determinando si la partida es o no
+     * en equipos.
+     */
     public void enEquipos(){
         try{
             this.visNuePar.getVisSelEq().dispose();
@@ -151,7 +181,19 @@ public class ControladorNuevaPartida {
             this.crearVistaSeleccionEquipos();
         }
     }
+
+    /**
+     * Vuelve a la vista de menú principal.
+     */
+    public void volver(){
+        this.visNuePar.dispose();
+        contPrin.crearControladorMenuPrincipal();
+        contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+    }
     
+    /**
+     * Comienza la partida con los jugadores agregados en la vista de nueva partida.
+     */
     public void comenzarPartida(){
         this.contPrin.crearControladorBatalla(this.jugadores);
         this.contPrin.getContBat().mostrarVistaBatalla();

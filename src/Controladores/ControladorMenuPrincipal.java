@@ -52,6 +52,14 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
+                contPrin.salir();
+            }
+        });
+        
+        this.visMenuPrin.getCerrarSesion().addMouseListener(new MouseAdapter(){
+            // Cuando se haga clic sobre el label "Volver atrás".
+            @Override
+            public void mouseClicked(MouseEvent e){
                 logOut();
             }
         });

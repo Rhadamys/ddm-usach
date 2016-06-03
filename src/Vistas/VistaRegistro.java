@@ -10,7 +10,6 @@ import Otros.CajaTextoImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 

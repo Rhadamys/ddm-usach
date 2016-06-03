@@ -5,7 +5,6 @@
  */
 package Vistas;
 
-import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
 import Otros.CajaPassImagen;
 import Otros.CajaTextoImagen;
@@ -20,9 +19,9 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaLogin extends javax.swing.JInternalFrame {
-    private BotonImagen ingresar;
-    private CajaTextoImagen usuario;
-    private CajaPassImagen pass;
+    private final BotonImagen ingresar;
+    private final CajaTextoImagen usuario;
+    private final CajaPassImagen pass;
     
     /**
      * Creates new form VistaLogin

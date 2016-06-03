@@ -11,7 +11,6 @@ import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 

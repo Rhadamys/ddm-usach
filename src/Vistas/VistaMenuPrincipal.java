@@ -17,9 +17,10 @@ import java.awt.event.MouseEvent;
  * @author mam28
  */
 public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
-    private BotonImagen nuevaPartida = new BotonImagen("/Imagenes/Botones/partida.png");
-    private BotonImagen nuevoTorneo = new BotonImagen("/Imagenes/Botones/torneo.png");
-    private BotonImagen salir = new BotonImagen("/Imagenes/Botones/salir.png");
+    private final BotonImagen nuevaPartida;
+    private final BotonImagen nuevoTorneo;
+    private final BotonImagen salir;
+    private final BotonImagen cerrarSesion;
     
     /**
      * Creates new form VistaMenuPrincipal
@@ -29,6 +30,10 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
+        this.nuevaPartida = new BotonImagen("/Imagenes/Botones/partida.png");
+        this.nuevoTorneo = new BotonImagen("/Imagenes/Botones/torneo.png");
+        this.salir = new BotonImagen("/Imagenes/Botones/salir.png");
         
         BotonImagen[] botones = {nuevaPartida, nuevoTorneo, salir};
         int cantidadCompoenentes = 3;
@@ -45,7 +50,7 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
             "/Imagenes/Botones/torneo_presionado.png", 
             "/Imagenes/Botones/salir_presionado.png"};
         
-        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Cerrar sesión"};
+        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Salir"};
         
         for (int i = 0; i < cantidadCompoenentes; i ++){
             final int index = i;
@@ -74,6 +79,32 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
             this.add(panel);
         }
         
+        this.cerrarSesion = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
+        this.add(cerrarSesion);
+        this.cerrarSesion.setSize(60, 60);
+        this.cerrarSesion.setLocation(730, 10);
+        this.cerrarSesion.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
+        this.cerrarSesion.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
+        this.cerrarSesion.setLayout(null);
+        this.cerrarSesion.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    mensaje.setText("Cerrar sesión");
+                }
+                
+                @Override
+                public void mouseExited(MouseEvent e){
+                    mensaje.setText("");
+                }
+            });
+        
+        PanelImagen iconoCerrarSesion = new PanelImagen("/Imagenes/Otros/cerrar_sesion.png");
+        this.cerrarSesion.add(iconoCerrarSesion);
+        iconoCerrarSesion.setSize(this.cerrarSesion.getWidth() / 2, this.cerrarSesion.getHeight() / 2);
+        iconoCerrarSesion.setLocation(
+                (this.cerrarSesion.getWidth() - iconoCerrarSesion.getWidth()) / 2,
+                (this.cerrarSesion.getHeight() - iconoCerrarSesion.getHeight()) / 2);
+        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_menu_principal.png");
         panelFondo.setSize(this.getSize());
         this.add(panelFondo);
@@ -82,7 +113,7 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         this.mensaje.setFont(new Font(fuentePersonalizada.getName(), 
                 Font.TRUETYPE_FONT, 36));
         this.mensajeBienvenida.setFont(new Font(fuentePersonalizada.getName(), 
-                Font.TRUETYPE_FONT, 24));
+                Font.TRUETYPE_FONT | Font.ITALIC, 24));
     }
     
     /**
@@ -116,7 +147,7 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         mensajeBienvenida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         mensajeBienvenida.setText("Bienvenida");
         getContentPane().add(mensajeBienvenida);
-        mensajeBienvenida.setBounds(420, 20, 360, 30);
+        mensajeBienvenida.setBounds(350, 20, 360, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -131,6 +162,10 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
     
     public BotonImagen getSalir(){
         return salir;
+    }
+
+    public BotonImagen getCerrarSesion() {
+        return cerrarSesion;
     }
     
     public void setMensajeBienvenida(String nombreUsuario){

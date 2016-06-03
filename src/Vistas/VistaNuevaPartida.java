@@ -26,9 +26,9 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
     private BotonCheckImagen enEquipos;
     private BotonImagen volver;
     private BotonImagen comenzar;
+    private JLabel mensaje;
     private Font fuente;
     private int[][] posicionesInfoJug = {{50, 90}, {410, 90}, {50, 275}, {410, 275}};
-    private JLabel mensaje;
     
     /**
      * Creates new form VistaNuevaPartida
@@ -125,7 +125,11 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    /**
+     * Agrega una "vista" de información de jugador a la vista de nueva partida.
+     * Esta vista es un resumen del jugador.
+     * @param jugador Jugador para el cual se crea la vista.
+     */    
     public void agregarVistaInfoJugador(Jugador jugador){
         if(vistasInfoJug.size() < 4){
             CompInfoJug visInfoJug = new CompInfoJug(jugador, this.fuente);
@@ -137,6 +141,10 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         }
     }
     
+    /**
+     * Elimina una vista de información de jugador.
+     * @param i Índice de la vista a eliminar.
+     */
     public void eliminarVisInfoJug(int i){
         if(vistasInfoJug.size() > 2){
             vistasInfoJug.get(i).setVisible(false);
@@ -147,6 +155,10 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         }
     }
     
+    /**
+     * Actualiza esta vista para reordenar los elementos en ella de acuerdo a la
+     * cantidad de jugadores actual definidos para la partida.
+     */
     public void actualizarVista(){
         for(CompInfoJug infoJug: vistasInfoJug){
             infoJug.setLocation(posicionesInfoJug[vistasInfoJug.indexOf(infoJug)][0], 

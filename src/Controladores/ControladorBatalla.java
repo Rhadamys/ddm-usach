@@ -11,12 +11,14 @@ import Otros.BotonImagen;
 import Vistas.CompPosicion;
 import Vistas.CompTablero;
 import Vistas.VistaBatalla;
+import Vistas.CompPausaBatalla;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 public class ControladorBatalla {
     private final ControladorPrincipal contPrin;
     private final VistaBatalla visBat;
+    private final CompPausaBatalla visPausBat;
     private Tablero tablero;
     
     public ControladorBatalla(
@@ -37,7 +40,7 @@ public class ControladorBatalla {
         this.visBat = new VistaBatalla(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visBat);
         // Instancia y agrega el tablero a la vista batalla
-        this.agregarTablero();
+        this.crearTablero();
         // Agrega los listeners a los componentes de la vista batalla
         this.agregarListenersVistaBatalla();
         
@@ -47,9 +50,18 @@ public class ControladorBatalla {
         
         this.tablero.setJugadores(jugadores);
         this.agregarVistasInfoJug(jugadores);
+        
+        this.visPausBat = new CompPausaBatalla(this.contPrin.getFuente());
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visPausBat);
+        this.agregarListenersVistaPausaBatalla();
     }
     
-    public void agregarTablero(){
+    /**
+     * Instancia una nueva "vista" de tablero y la agrega a la vista de batalla
+     * instanciada en este controlador. Además, crea una nueva instancia del modelo
+     * Tablero y la almacena en este controlador.
+     */
+    public void crearTablero(){
         this.tablero = new Tablero();
         this.visBat.setTablero(new CompTablero());
         
@@ -65,12 +77,11 @@ public class ControladorBatalla {
         this.visBat.getTablero().setLocation(150, 50);
     }
     
-    public void agregarVistasInfoJug(ArrayList<Jugador> jugPartida){
-        for(Jugador jug: jugPartida){
-            this.visBat.agregarJugador(jug);
-        }
-    }
-    
+    /**
+     * Agrega los listeners a una de las posiciones dentro de la "vista" tablero.
+     * @param fila Fila de la posición dentro del tablero.
+     * @param columna Columna de la posición dentro del tablero.
+     */
     public void agregarListenersPosicion(int fila, int columna){
         this.visBat.getTablero().getPosiciones()[fila][columna].addMouseListener(new MouseAdapter(){
             @Override
@@ -125,6 +136,9 @@ public class ControladorBatalla {
         });
     }
     
+    /**
+     * Agrega los listeners a los componentes de la vista de batalla.
+     */
     public void agregarListenersVistaBatalla(){
         this.visBat.addMouseMotionListener(new MouseMotionAdapter(){
             @Override
@@ -144,8 +158,18 @@ public class ControladorBatalla {
                 visBat.setMensaje("Invocar criatura");
             }
         });
+        
+        this.visBat.getPausa().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                cambiarVisibilidadVistaPausaBatalla();
+            }
+        });
     }
     
+    /**
+     * Agrega los listeners a la "vista" de selección de despliegue de dados.
+     */
     public void agregarListenersVistaSeleccionarDespliegue(){        
         for(BotonImagen botonDespliegue: this.visBat.getVisSelDesp().getBotonesDespliegue()){
             botonDespliegue.addMouseListener(new MouseAdapter(){
@@ -155,6 +179,18 @@ public class ControladorBatalla {
                     ocultarVistaSeleccionarDespliegue();
                 }
             });
+        }
+    }
+    
+    /**
+     * Agrega las vistas de resumen de información de jugador para los jugadores
+     * que conforman esta partida.
+     * @param jugPartida Jugadores de la partida para los cuales se crearán las
+     * vistas.
+     */
+    public void agregarVistasInfoJug(ArrayList<Jugador> jugPartida){
+        for(Jugador jug: jugPartida){
+            this.visBat.agregarJugador(jug);
         }
     }
     
@@ -254,8 +290,45 @@ public class ControladorBatalla {
         }
     }
 
-    public Tablero getTablero() {
-        return tablero;
+    public void agregarListenersVistaPausaBatalla(){
+        this.visPausBat.getContinuarPartida().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                cambiarVisibilidadVistaPausaBatalla();
+            }
+        });
+        
+        this.visPausBat.getVolverMenuPrincipal().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                volverMenuPrincipal();
+            }
+        });
+        
+        this.visPausBat.getSalirAplicacion().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                contPrin.salir();
+            }
+        });
+    }
+    
+    public void cambiarVisibilidadVistaPausaBatalla(){
+        this.visPausBat.setVisible(!this.visPausBat.isVisible());
+    }
+    
+    public void volverMenuPrincipal(){
+        if(JOptionPane.showConfirmDialog(
+                null,
+                "¿Deseas volver al menú principal? Se perderá el progreso actual de la partida.",
+                "Volver al menú principal",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+            
+            this.contPrin.crearControladorMenuPrincipal();
+            this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+            this.visPausBat.dispose();
+            this.visBat.dispose();
+        }
     }
     
 }

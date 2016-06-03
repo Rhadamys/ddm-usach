@@ -11,7 +11,6 @@ import Otros.PanelImagen;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -19,15 +18,16 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaBatalla extends javax.swing.JInternalFrame {
-    private Font fuente;
+    private final Font fuente;
     private CompTablero tablero;
-    private BotonImagen ataque;
-    private BotonImagen invocacion;
-    private BotonImagen magia;
-    private BotonImagen movimiento;
-    private BotonImagen trampa;
-    private ArrayList<CompJugador> vistasJugador;
-    private CompSelDesp visSelDesp;
+    private final BotonImagen ataque;
+    private final BotonImagen invocacion;
+    private final BotonImagen magia;
+    private final BotonImagen movimiento;
+    private final BotonImagen trampa;
+    private final BotonImagen pausa;
+    private final ArrayList<CompJugador> vistasJugador;
+    private final CompSelDesp visSelDesp;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
     private final int[][] posJefTer = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
     
@@ -49,36 +49,42 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.magia = new BotonImagen("/Imagenes/Botones/magia.png");
         this.movimiento = new BotonImagen("/Imagenes/Botones/movimiento.png");
         this.trampa = new BotonImagen("/Imagenes/Botones/trampa.png");
+        this.pausa = new BotonImagen("/Imagenes/Botones/pausa.png");
         
         this.add(ataque);
         this.add(invocacion);
         this.add(magia);
         this.add(movimiento);
         this.add(trampa);
+        this.add(pausa);
         
         this.ataque.setSize(30, 30);
         this.invocacion.setSize(30, 30);
         this.magia.setSize(30, 30);
         this.movimiento.setSize(30, 30);
         this.trampa.setSize(30, 30);
+        this.pausa.setSize(30, 30);
         
         this.ataque.setLocation(170, 560);
         this.invocacion.setLocation(210, 560);
         this.magia.setLocation(250, 560);
         this.movimiento.setLocation(290, 560);
         this.trampa.setLocation(330, 560);
+        this.pausa.setLocation(600, 560);
         
         this.ataque.setImagenSobre("/Imagenes/Botones/ataque_sobre.png");
         this.invocacion.setImagenSobre("/Imagenes/Botones/invocacion_sobre.png");
         this.magia.setImagenSobre("/Imagenes/Botones/magia_sobre.png");
         this.movimiento.setImagenSobre("/Imagenes/Botones/movimiento_sobre.png");
         this.trampa.setImagenSobre("/Imagenes/Botones/trampa_sobre.png");
+        this.pausa.setImagenSobre("/Imagenes/Botones/pausa_sobre.png");
         
         this.ataque.setImagenPresionado("/Imagenes/Botones/ataque_presionado.png");
         this.invocacion.setImagenPresionado("/Imagenes/Botones/invocacion_presionado.png");
         this.magia.setImagenPresionado("/Imagenes/Botones/magia_presionado.png");
         this.movimiento.setImagenPresionado("/Imagenes/Botones/movimiento_presionado.png");
         this.trampa.setImagenPresionado("/Imagenes/Botones/trampa_presionado.png");
+        this.pausa.setImagenPresionado("/Imagenes/Botones/pausa_presionado.png");
         
         mensaje.setText("");
         mensaje.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 16));
@@ -116,6 +122,10 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    /**
+     * Agrega una vista de información de jugador a la vista de batalla.
+     * @param jug Jugador para el cual se creará la vista.
+     */
     public void agregarJugador(Jugador jug){
         this.vistasJugador.add(new CompJugador(this.fuente));
         int i = this.vistasJugador.size() - 1;
@@ -163,6 +173,10 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return trampa;
     }
 
+    public BotonImagen getPausa() {
+        return pausa;
+    }
+    
     public ArrayList<CompJugador> getVistasJugador() {
         return vistasJugador;
     }

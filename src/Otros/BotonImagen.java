@@ -17,7 +17,7 @@ import javax.swing.JButton;
  * @author mam28
  */
 public class BotonImagen extends JButton {
-    private Image imagen;
+    private Image imagenActual;
     private Image imagenMouseNormal;
     private Image imagenMouseSobre;
     private Image imagenMousePresionado;
@@ -38,7 +38,7 @@ public class BotonImagen extends JButton {
         imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
-        this.imagen = imagenMouseSobre;
+        this.imagenActual = imagenMouseSobre;
         this.setContentAreaFilled(false);
         this.setBorder(null);
         repaint();
@@ -75,7 +75,7 @@ public class BotonImagen extends JButton {
     
     @Override
     public void paint(Graphics g) {
-        g.drawImage(imagen, 0, 0, getWidth(), getHeight(),
+        g.drawImage(imagenActual, 0, 0, getWidth(), getHeight(),
                         this);
         
         super.paint(g);
@@ -159,11 +159,11 @@ public class BotonImagen extends JButton {
     
     public void setImagenActual(int i){
         switch(i){
-            case 0: this.imagen = this.imagenMouseNormal;
+            case 0: this.imagenActual = this.imagenMouseNormal;
                     break;
-            case 1: this.imagen = this.imagenMouseSobre;
+            case 1: this.imagenActual = this.imagenMouseSobre;
                     break;
-            case 2: this.imagen = this.imagenMousePresionado;
+            case 2: this.imagenActual = this.imagenMousePresionado;
                     break;
         }
         this.repaint();

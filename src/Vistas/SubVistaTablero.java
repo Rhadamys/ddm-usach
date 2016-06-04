@@ -13,30 +13,30 @@ import java.util.ArrayList;
  *
  * @author mam28
  */
-public class CompTablero extends PanelImagen{
-    private CompPosicion[][] posiciones;
-    private CompPosicion botonActual;
+public class SubVistaTablero extends PanelImagen{
+    private SubVistaPosicion[][] posiciones;
+    private SubVistaPosicion botonActual;
     
-    public CompTablero(){
-        this.posiciones = new CompPosicion[15][15];
+    public SubVistaTablero(){
+        this.posiciones = new SubVistaPosicion[15][15];
         this.setSize(500, 500);
         this.setLayout(new GridLayout(15, 15));
         this.setBorder(null);
     }
 
-    public CompPosicion[][] getPosiciones() {
+    public SubVistaPosicion[][] getPosiciones() {
         return posiciones;
     }    
 
-    public CompPosicion getBotonActual() {
+    public SubVistaPosicion getBotonActual() {
         return botonActual;
     }
 
-    public void setBotonActual(CompPosicion botonActual) {
+    public void setBotonActual(SubVistaPosicion botonActual) {
         this.botonActual = botonActual;
     }
     
-    public void setPosiciones(CompPosicion[][] posiciones) {
+    public void setPosiciones(SubVistaPosicion[][] posiciones) {
         this.posiciones = posiciones;
     }
     
@@ -57,13 +57,13 @@ public class CompTablero extends PanelImagen{
      * @param direccion Dirección del despliegue.
      * @return Despliegue cruz.
      */
-    public ArrayList<CompPosicion> getDespliegueCruz(CompPosicion botonActual, int direccion){
+    public ArrayList<SubVistaPosicion> getDespliegueCruz(SubVistaPosicion botonActual, int direccion){
         int columna = botonActual.getColumna();
         int fila = botonActual.getFila();
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
-        ArrayList<CompPosicion> despliegue = new ArrayList();
+        ArrayList<SubVistaPosicion> despliegue = new ArrayList();
         
         try{
             switch(direccion){
@@ -97,13 +97,13 @@ public class CompTablero extends PanelImagen{
      * @param direccion Dirección del despliegue.
      * @return Despliegue escalera.
      */
-    public ArrayList<CompPosicion> getDespliegueEscalera(CompPosicion botonActual, int direccion){
+    public ArrayList<SubVistaPosicion> getDespliegueEscalera(SubVistaPosicion botonActual, int direccion){
         int columna = botonActual.getColumna();
         int fila = botonActual.getFila();
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
-        ArrayList<CompPosicion> despliegue = new ArrayList();
+        ArrayList<SubVistaPosicion> despliegue = new ArrayList();
         
         try{
             switch(direccion){
@@ -137,13 +137,13 @@ public class CompTablero extends PanelImagen{
      * @param direccion Dirección del despliegue.
      * @return Despliegue T.
      */
-    public ArrayList<CompPosicion> getDespliegueT(CompPosicion botonActual, int direccion){
+    public ArrayList<SubVistaPosicion> getDespliegueT(SubVistaPosicion botonActual, int direccion){
         int columna = botonActual.getColumna();
         int fila = botonActual.getFila();
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
-        ArrayList<CompPosicion> despliegue = new ArrayList();
+        ArrayList<SubVistaPosicion> despliegue = new ArrayList();
         
         try{
             switch(direccion){
@@ -177,13 +177,13 @@ public class CompTablero extends PanelImagen{
      * @param direccion Dirección del despliegue.
      * @return Despliegue S.
      */
-    public ArrayList<CompPosicion> getDespliegueS(CompPosicion botonActual, int direccion){
+    public ArrayList<SubVistaPosicion> getDespliegueS(SubVistaPosicion botonActual, int direccion){
         int columna = botonActual.getColumna();
         int fila = botonActual.getFila();
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
-        ArrayList<CompPosicion> despliegue = new ArrayList();
+        ArrayList<SubVistaPosicion> despliegue = new ArrayList();
         
         try{
             switch(direccion){
@@ -229,13 +229,13 @@ public class CompTablero extends PanelImagen{
      * @param direccion Dirección del despliegue.
      * @return Despliegue 4.
      */
-    public ArrayList<CompPosicion> getDespliegue4(CompPosicion botonActual, int direccion){
+    public ArrayList<SubVistaPosicion> getDespliegue4(SubVistaPosicion botonActual, int direccion){
         int columna = botonActual.getColumna();
         int fila = botonActual.getFila();
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
-        ArrayList<CompPosicion> despliegue = new ArrayList();
+        ArrayList<SubVistaPosicion> despliegue = new ArrayList();
         
         try{
             switch(direccion){
@@ -269,13 +269,13 @@ public class CompTablero extends PanelImagen{
      * @param direccion Dirección del despliegue.
      * @return Despliegue R.
      */
-    public ArrayList<CompPosicion> getDespliegueR(CompPosicion botonActual, int direccion){
+    public ArrayList<SubVistaPosicion> getDespliegueR(SubVistaPosicion botonActual, int direccion){
         int columna = botonActual.getColumna();
         int fila = botonActual.getFila();
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
-        ArrayList<CompPosicion> despliegue = new ArrayList();
+        ArrayList<SubVistaPosicion> despliegue = new ArrayList();
         
         try{
             switch(direccion){
@@ -308,8 +308,8 @@ public class CompTablero extends PanelImagen{
      * @param despliegue Despliegue de dados.
      * @return Verdadedo o falso dependiendo de si está disponible el terreno.
      */
-    public boolean estaDisponible(ArrayList<CompPosicion> despliegue){
-        for(CompPosicion casilla: despliegue){
+    public boolean estaDisponible(ArrayList<SubVistaPosicion> despliegue){
+        for(SubVistaPosicion casilla: despliegue){
             if(casilla.getDueno() != 0){
                 return false;
             }
@@ -325,8 +325,8 @@ public class CompTablero extends PanelImagen{
      * @param jugador Jugador que está intentando invocar.
      * @return Verdadero o falso indicando si está conectado al terreno.
      */
-    public boolean estaConectadoAlTerreno(ArrayList<CompPosicion> despliegue, int jugador){
-        for(CompPosicion posicion: despliegue){
+    public boolean estaConectadoAlTerreno(ArrayList<SubVistaPosicion> despliegue, int jugador){
+        for(SubVistaPosicion posicion: despliegue){
             int x = posicion.getFila();
             int y = posicion.getColumna();
             

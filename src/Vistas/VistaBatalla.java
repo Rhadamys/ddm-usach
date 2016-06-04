@@ -19,15 +19,15 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class VistaBatalla extends javax.swing.JInternalFrame {
     private final Font fuente;
-    private CompTablero tablero;
+    private SubVistaTablero tablero;
     private final BotonImagen ataque;
     private final BotonImagen invocacion;
     private final BotonImagen magia;
     private final BotonImagen movimiento;
     private final BotonImagen trampa;
     private final BotonImagen pausa;
-    private final ArrayList<CompJugador> vistasJugador;
-    private final CompSelDesp visSelDesp;
+    private final ArrayList<SubVistaInfoJugadorBatalla> vistasJugador;
+    private final SubVistaSeleccionDespliegue visSelDesp;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
     private final int[][] posJefTer = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
     
@@ -41,7 +41,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.fuente = fuente;
-        this.visSelDesp = new CompSelDesp();
+        this.visSelDesp = new SubVistaSeleccionDespliegue();
         this.vistasJugador = new ArrayList();
         
         this.ataque = new BotonImagen("/Imagenes/Botones/ataque.png");
@@ -127,7 +127,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
      * @param jug Jugador para el cual se creará la vista.
      */
     public void agregarJugador(Jugador jug){
-        this.vistasJugador.add(new CompJugador(this.fuente));
+        this.vistasJugador.add(new SubVistaInfoJugadorBatalla(this.fuente));
         int i = this.vistasJugador.size() - 1;
         
         this.vistasJugador.get(i).setImagen(
@@ -149,7 +149,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.add(this.vistasJugador.get(i), 0);
     }
     
-    public CompTablero getTablero() {
+    public SubVistaTablero getTablero() {
         return tablero;
     }
 
@@ -177,7 +177,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return pausa;
     }
     
-    public ArrayList<CompJugador> getVistasJugador() {
+    public ArrayList<SubVistaInfoJugadorBatalla> getVistasJugador() {
         return vistasJugador;
     }
 
@@ -185,11 +185,11 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return mensaje;
     }
 
-    public CompSelDesp getVisSelDesp() {
+    public SubVistaSeleccionDespliegue getVisSelDesp() {
         return visSelDesp;
     }
 
-    public void setTablero(CompTablero tablero) {
+    public void setTablero(SubVistaTablero tablero) {
         this.tablero = tablero;
     }
     

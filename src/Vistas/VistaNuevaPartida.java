@@ -20,15 +20,17 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class VistaNuevaPartida extends javax.swing.JInternalFrame {
-    private CompSelEquipos visSelEq;
-    private ArrayList<CompInfoJug> vistasInfoJug;
-    private BotonImagen agregar;
-    private BotonCheckImagen enEquipos;
-    private BotonImagen volver;
-    private BotonImagen comenzar;
-    private JLabel mensaje;
-    private Font fuente;
-    private int[][] posicionesInfoJug = {{50, 90}, {410, 90}, {50, 275}, {410, 275}};
+    private SubVistaSeleccionEquipos visSelEq;
+    private final ArrayList<SubVistaResumenJugador> vistasResJug;
+    private final BotonImagen agregar;
+    private final BotonCheckImagen enEquipos;
+    private final BotonImagen volver;
+    private final BotonImagen registrar;
+    private final BotonImagen comenzar;
+    private final JLabel mensaje;
+    private final Font fuente;
+    private final int[][] posVisResJug = 
+    {{50, 90}, {410, 90}, {50, 275}, {410, 275}};
     
     /**
      * Creates new form VistaNuevaPartida
@@ -39,7 +41,7 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
-        this.vistasInfoJug = new ArrayList();
+        this.vistasResJug = new ArrayList();
         this.fuente = fuente;
         
         this.agregar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
@@ -80,13 +82,23 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
         this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
         this.volver.setLocation(35, 35);
-        this.volver.setSize(40, 40);     
+        this.volver.setSize(40, 40);   
+                
+        this.registrar = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.add(this.registrar);
+        this.registrar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.registrar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
+        this.registrar.setLocation(85, 35);
+        this.registrar.setSize(160, 40);     
+        this.registrar.setText("Registrar jugador");
+        this.registrar.setForeground(Color.white);
+        this.registrar.setFont(fuente);
                 
         this.comenzar = new BotonImagen("/Imagenes/Botones/boton.png");
         this.add(this.comenzar);
         this.comenzar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.comenzar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.comenzar.setLocation(85, 35);
+        this.comenzar.setLocation(255, 35);
         this.comenzar.setSize(160, 40);     
         this.comenzar.setText("Comenzar partida");
         this.comenzar.setForeground(Color.white);
@@ -131,9 +143,9 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
      * @param jugador Jugador para el cual se crea la vista.
      */    
     public void agregarVistaInfoJugador(Jugador jugador){
-        if(vistasInfoJug.size() < 4){
-            CompInfoJug visInfoJug = new CompInfoJug(jugador, this.fuente);
-            vistasInfoJug.add(visInfoJug);
+        if(vistasResJug.size() < 4){
+            SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jugador, this.fuente);
+            vistasResJug.add(visInfoJug);
             this.add(visInfoJug, 0);
             this.actualizarVista();
         }else{
@@ -146,9 +158,9 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
      * @param i Índice de la vista a eliminar.
      */
     public void eliminarVisInfoJug(int i){
-        if(vistasInfoJug.size() > 2){
-            vistasInfoJug.get(i).setVisible(false);
-            vistasInfoJug.remove(i);
+        if(vistasResJug.size() > 2){
+            vistasResJug.get(i).setVisible(false);
+            vistasResJug.remove(i);
             actualizarVista();
         }else{
             setMensaje("Mínimo 2 jugadores.");
@@ -160,9 +172,9 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
      * cantidad de jugadores actual definidos para la partida.
      */
     public void actualizarVista(){
-        for(CompInfoJug infoJug: vistasInfoJug){
-            infoJug.setLocation(posicionesInfoJug[vistasInfoJug.indexOf(infoJug)][0], 
-                    posicionesInfoJug[vistasInfoJug.indexOf(infoJug)][1]);
+        for(SubVistaResumenJugador infoJug: vistasResJug){
+            infoJug.setLocation(posVisResJug[vistasResJug.indexOf(infoJug)][0], 
+                    posVisResJug[vistasResJug.indexOf(infoJug)][1]);
         }
     }
     
@@ -178,19 +190,23 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         return volver;
     }
 
+    public BotonImagen getRegistrar() {
+        return registrar;
+    }
+
     public BotonImagen getComenzar() {
         return comenzar;
     }
 
-    public ArrayList<CompInfoJug> getVistasInfoJug() {
-        return vistasInfoJug;
+    public ArrayList<SubVistaResumenJugador> getVistasInfoJug() {
+        return vistasResJug;
     }
 
-    public CompSelEquipos getVisSelEq() {
+    public SubVistaSeleccionEquipos getVisSelEq() {
         return visSelEq;
     }
 
-    public void setVisSelEq(CompSelEquipos visSelEq) {
+    public void setVisSelEq(SubVistaSeleccionEquipos visSelEq) {
         this.visSelEq = visSelEq;
     }
     

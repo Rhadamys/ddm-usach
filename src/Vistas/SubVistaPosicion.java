@@ -11,12 +11,12 @@ import Otros.BotonImagen;
  *
  * @author mam28
  */
-public class CompPosicion extends BotonImagen {
+public class SubVistaPosicion extends BotonImagen {
     private int fila;
     private int columna;
     private int dueno = 0;
     
-    public CompPosicion(int fila, int columna){
+    public SubVistaPosicion(int fila, int columna){
         setImagenNormal("/Imagenes/Botones/casilla.png");
         setImagenActual(0);
         

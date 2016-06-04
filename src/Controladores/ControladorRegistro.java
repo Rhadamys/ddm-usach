@@ -8,6 +8,9 @@ package Controladores;
 import Modelos.Dado;
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
+import Otros.BotonImagen;
+import Vistas.SubVistaSeleccionarJefe;
+import Vistas.VistaLogin;
 import Vistas.VistaRegistro;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,27 +28,31 @@ import javax.swing.JOptionPane;
  */
 public class ControladorRegistro {
     private final ControladorPrincipal contPrin;
-    private VistaRegistro visReg;
+    private final JInternalFrame quienLlama;
+    private final VistaRegistro visReg;
+    private final SubVistaSeleccionarJefe visSelJef;
     private JefeDeTerreno jefe;
     
     /**
      * Inicializa una nueva instancia de controlador de registro.
      * @param contPrin Controlador principal para comunicarse con otros controladores.
+     * @param quienLlama Vista que llama a este controlador.
      */
-    public ControladorRegistro(ControladorPrincipal contPrin){
+    public ControladorRegistro(ControladorPrincipal contPrin, JInternalFrame quienLlama){
         this.contPrin = contPrin;
         
         this.visReg = new VistaRegistro(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visReg);
         this.agregarListenersVistaRegistro();
-    }
-
-    /**
-     * Método que devuelve la vista de registro generada en este controlador.
-     * @return Vista de registro del controlador.
-     */
-    public VistaRegistro getVisReg() {
-        return visReg;
+        
+        this.visSelJef = new SubVistaSeleccionarJefe(this.contPrin.getFuente());
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visSelJef);
+        
+        for(int i = 0; i < this.visSelJef.getPanelesJefes().size(); i++){
+            this.agregarListenersVistaSeleccionarJefe(i);
+        }
+        
+        this.quienLlama = quienLlama;
     }
     
     /**
@@ -74,11 +82,12 @@ public class ControladorRegistro {
         * capturar los evento de mouse.
         */
         this.visReg.getSeleccionarJefe().addMouseListener(new MouseAdapter(){
-            // Cuando se haga clic sobre el botón "Jefe"
+            // Cuando se haga clic sobre el botón "Seleccionar jefe"
             @Override
             public void mouseClicked(MouseEvent e){
-                // Se instancia el controlador seleccionar jefe de terreno
-                contPrin.crearControladorSeleccionarJefe();
+                // Se muestra la vista de selección de jefe de terreno
+                visSelJef.toFront();
+                visSelJef.setVisible(true);
             }
         });
         
@@ -115,6 +124,26 @@ public class ControladorRegistro {
         this.visReg.dispose();
     }
     
+    public void agregarListenersVistaSeleccionarJefe(int i){
+        this.visSelJef.getPanelesJefes().get(i).addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e){
+                visSelJef.mostrarInformacionJefe(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent()));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e){
+                visSelJef.borrarCampos();
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e){
+                setJefe(JefeDeTerreno.getJefe(visSelJef.getJefes().get(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent())).getClave()));
+                visSelJef.setVisible(false);
+            }
+        });
+    }
+    
     /**
      * Establece el jefe de terreno elegido por el usuario en la vista de
      * selección de jefe para realizar el registro.
@@ -122,6 +151,8 @@ public class ControladorRegistro {
      */
     public void setJefe(JefeDeTerreno jefe) {
         this.jefe = jefe;
+        this.visReg.getIconoJefe().setImagen("/Imagenes/Jefes/" + jefe.getClave() + ".png");
+        this.visReg.getIconoJefe().setToolTipText(jefe.getNombre());
     }
     
     /**
@@ -159,10 +190,12 @@ public class ControladorRegistro {
 
                     JOptionPane.showMessageDialog(null, "Registro exitoso.");
 
-                    // Se instancia el controlador de login
-                    this.contPrin.crearControladorLogin();
-                    // Se muestra la vista de login
-                    this.contPrin.getContLog().mostrarVistaLogin();
+                    if(quienLlama instanceof VistaLogin){
+                        // Se instancia el controlador de login
+                        this.contPrin.crearControladorLogin();
+                        // Se muestra la vista de login
+                        this.contPrin.getContLog().mostrarVistaLogin();
+                    }
                     // Se elimina la vista de registro
                     this.eliminarVistaRegistro();
                 } catch (IOException ex) {

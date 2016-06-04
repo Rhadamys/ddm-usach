@@ -13,6 +13,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,7 +25,6 @@ public class ControladorPrincipal {
     private ControladorLogin contLog;
     private ControladorRegistro contReg;
     private ControladorMenuPrincipal contMenuPrin;
-    private ControladorSeleccionarJefe contSelJef;
     private ControladorNuevaPartida contNuePar;
     private ControladorBatalla contBat;
     private Usuario usuarioActivo;
@@ -95,8 +95,8 @@ public class ControladorPrincipal {
     /**
      * Crea una nueva instancia del controlador registro
      */
-    public void crearControladorRegistro(){
-        this.contReg = new ControladorRegistro(this);
+    public void crearControladorRegistro(JInternalFrame quienLlama){
+        this.contReg = new ControladorRegistro(this, quienLlama);
     }
     
     /**
@@ -104,13 +104,6 @@ public class ControladorPrincipal {
      */
     public void crearControladorMenuPrincipal(){
         this.contMenuPrin = new ControladorMenuPrincipal(this);
-    }
-    
-    /**
-     * Crea una nueva instancia del controlador seleccionar jefe de terreno
-     */
-    public void crearControladorSeleccionarJefe() {
-        this.contSelJef = new ControladorSeleccionarJefe(this);
     }
     
     /**
@@ -158,14 +151,6 @@ public class ControladorPrincipal {
      */
     public ControladorMenuPrincipal getContMenuPrin() {
         return contMenuPrin;
-    }
-
-    /**
-     * Devuelve el controlador de selección de jefe de terreno
-     * @return Controlador de selección de jefe de terreno
-     */
-    public ControladorSeleccionarJefe getContSelJef() {
-        return contSelJef;
     }
 
     /**

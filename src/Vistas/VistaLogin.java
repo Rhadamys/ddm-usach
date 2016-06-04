@@ -64,7 +64,7 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         this.pass.setFont(fuente);
         this.registrarse.setFont(fuente);
         
-        this.mensaje.setText("");
+        this.mensaje.setText("");        
         
         PanelImagen fondo = new PanelImagen("/Imagenes/Fondos/fondo_login.png");
         fondo.setSize(this.getSize());

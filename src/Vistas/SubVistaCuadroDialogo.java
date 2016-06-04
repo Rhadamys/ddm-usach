@@ -20,9 +20,9 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class CompMensaje extends JInternalFrame{    
+public class SubVistaCuadroDialogo extends JInternalFrame{    
     public static int mostrarMensaje(String mensaje, String textoBoton, ControladorPrincipal contPrin){
-        CompMensaje visMen = new CompMensaje(mensaje, textoBoton, contPrin.getFuente());
+        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(mensaje, textoBoton, contPrin.getFuente());
         contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
         
@@ -40,7 +40,7 @@ public class CompMensaje extends JInternalFrame{
     }
     
     public static int mostrarMensaje(String mensaje, String textoBoton1, String textoBoton2, ControladorPrincipal contPrin){
-        CompMensaje visMen = new CompMensaje(mensaje, textoBoton1, textoBoton2, contPrin.getFuente());
+        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(mensaje, textoBoton1, textoBoton2, contPrin.getFuente());
         contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
         
@@ -52,7 +52,7 @@ public class CompMensaje extends JInternalFrame{
     private JLabel labelMensaje;
     private int respuesta;
     
-    public CompMensaje(String mensaje, String textoBoton, Font fuentePersonalizada){
+    public SubVistaCuadroDialogo(String mensaje, String textoBoton, Font fuentePersonalizada){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(null);
         this.setOpaque(false);
@@ -92,7 +92,7 @@ public class CompMensaje extends JInternalFrame{
         panelFondo.setSize(this.getSize());
     }
     
-    public CompMensaje(String mensaje, String textoBoton1, String textoBoton2, Font fuentePersonalizada){
+    public SubVistaCuadroDialogo(String mensaje, String textoBoton1, String textoBoton2, Font fuentePersonalizada){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         this.setBorder(null);
         this.setOpaque(false);

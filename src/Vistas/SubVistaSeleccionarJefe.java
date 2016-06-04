@@ -7,27 +7,30 @@ package Vistas;
 
 import Modelos.JefeDeTerreno;
 import Otros.BotonImagen;
+import Otros.ContenedorScroll;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
+import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaSeleccionarJefe extends JInternalFrame {
-    private VistaPrincipal visPrin;
-    private ArrayList<BotonImagen> botones = new ArrayList();
+public class SubVistaSeleccionarJefe extends JInternalFrame {
+    private final ArrayList<BotonImagen> panelesJefes;
+    private final ArrayList<JefeDeTerreno> jefes;
+    private final JScrollPane contenedor;
+    private final PanelImagen contenedorJefes;
         
     /**
      * Inicializa una nueva instancia de esta vista.
      * @param fuentePersonalizada Fuente que se utilizará en esta vista.
-     * @param jefes Lista de jefes de terreno.
      */
-    public VistaSeleccionarJefe(Font fuentePersonalizada, ArrayList<JefeDeTerreno> jefes){
+    public SubVistaSeleccionarJefe(Font fuentePersonalizada){
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -35,35 +38,46 @@ public class VistaSeleccionarJefe extends JInternalFrame {
         this.setOpaque(false);
         this.setBackground(new Color(0,0,0,0));
         
-        int filas = 2;
-        int columnas = 3;
-        int lado = 100;
-        int numJefes = jefes.size();
-        int separacionHorizontal = (640 - lado * columnas) / (columnas + 1);
-        int separacionVertical = (400 - lado * filas) / (filas + 1);
-        int aumentoMarco = 20;
+        this.panelesJefes = new ArrayList();
         
-        for (int i = 0; i < numJefes; i++){
+        this.contenedorJefes = new PanelImagen();
+        this.contenedorJefes.setLayout(null);
+        
+        this.contenedor = new ContenedorScroll();    
+        this.add(this.contenedor);
+        this.contenedor.setSize(598, 335);
+        this.contenedor.setLocation(101, 84);
+        this.contenedor.setViewportView(this.contenedorJefes);
+        this.contenedor.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.contenedor.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        jefes = JefeDeTerreno.getJefes();
+        
+        final int N_COLUMNAS = 4;
+        final int LADO = 100;
+        final int SEP = (this.contenedor.getWidth() - N_COLUMNAS * LADO) / (N_COLUMNAS + 1);
+        final int MARCO = 20;
+        int columna = 0;
+        int fila = -1;
+        
+        for (JefeDeTerreno jefe: jefes){
+            fila = columna == 0 ? ++fila : fila;
+            
+            BotonImagen marcoJefe = new BotonImagen("/Imagenes/vacio.png");
+            this.contenedorJefes.add(marcoJefe);
+            marcoJefe.setSize(LADO + MARCO, LADO + MARCO);
+            marcoJefe.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
+            marcoJefe.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
+            
             PanelImagen iconoJefe = new PanelImagen("/Imagenes/Jefes/"
-                    + jefes.get(i).getClave() + ".png");
+                    + jefe.getClave() + ".png");
+            this.contenedorJefes.add(iconoJefe);
+            iconoJefe.setSize(LADO, LADO);
+            iconoJefe.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
             
-            BotonImagen marco = new BotonImagen("/Imagenes/vacio.png");
-            
-            this.add(marco);
-            this.add(iconoJefe);
-            iconoJefe.setSize(lado, lado);
-            marco.setSize(lado + aumentoMarco, lado + aumentoMarco);
-            
-            int x = 90 + (separacionHorizontal + lado) * (i % columnas) + separacionHorizontal;
-            int y = 60 + (separacionVertical + lado) * (i / columnas) + separacionVertical;
-            
-            iconoJefe.setLocation(x, y);
-            marco.setLocation(x - aumentoMarco / 2, y - aumentoMarco / 2);
-            
-            marco.setName(String.valueOf(i));
-            marco.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-            
-            botones.add(marco);
+            panelesJefes.add(marcoJefe);
+
+            columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
         }
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
@@ -111,9 +125,23 @@ public class VistaSeleccionarJefe extends JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void mostrarInformacionJefe(int indiceJefe){
+        this.nombre.setText(this.jefes.get(indiceJefe).getNombre());
+        this.habilidad.setText(this.jefes.get(indiceJefe).getHabilidad());
+    }
+    
+    public void borrarCampos(){
+        this.nombre.setText("");
+        this.habilidad.setText("");
+    }
+    
+    public ArrayList<BotonImagen> getPanelesJefes() {
+        return panelesJefes;
+    }
 
-    public ArrayList<BotonImagen> getBotones() {
-        return botones;
+    public ArrayList<JefeDeTerreno> getJefes() {
+        return jefes;
     }
     
     public void setNombre(String nombre){

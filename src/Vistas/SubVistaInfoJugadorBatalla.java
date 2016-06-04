@@ -15,7 +15,7 @@ import javax.swing.JProgressBar;
  *
  * @author mam28
  */
-public class CompJugador extends PanelImagen{
+public class SubVistaInfoJugadorBatalla extends PanelImagen{
     private PanelImagen iconoJugador;
     private JLabel nombreJugador;
     private JProgressBar vidaJugador;
@@ -28,7 +28,7 @@ public class CompJugador extends PanelImagen{
     private JLabel puntosMovimiento;
     private JLabel puntosTrampa;
     
-    public CompJugador(Font fuentePersonalizada){
+    public SubVistaInfoJugadorBatalla(Font fuentePersonalizada){
         this.setLayout(null);
         this.setSize(140, 190);
         

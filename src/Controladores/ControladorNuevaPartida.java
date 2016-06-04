@@ -6,13 +6,16 @@
 package Controladores;
 
 import Modelos.Jugador;
-import Modelos.Usuario;
-import Vistas.CompInfoJug;
-import Vistas.CompSelEquipos;
+import Otros.BotonImagen;
+import Otros.PanelImagen;
+import Vistas.SubVistaCambiarJugador;
+import Vistas.SubVistaResumenJugador;
+import Vistas.SubVistaSeleccionEquipos;
 import Vistas.VistaNuevaPartida;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -20,9 +23,9 @@ import java.util.ArrayList;
  */
 public class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
-    private VistaNuevaPartida visNuePar;
-    private ArrayList<Jugador> jugadores;
-    private String[] prueba = {"mario", "metodos4", "metodos2", "usuario3", ""};
+    private final VistaNuevaPartida visNuePar;
+    private final ArrayList<Jugador> jugadores;
+    private SubVistaCambiarJugador visCamJug;
     
     ControladorNuevaPartida(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;
@@ -33,8 +36,14 @@ public class ControladorNuevaPartida {
         
         this.jugadores = new ArrayList();
         
-        this.agregarJugador(Usuario.getUsuario(prueba[0]));
-        this.agregarJugador(Usuario.getUsuario(prueba[1]));
+        this.agregarJugador(this.obtenerJugadorAleatorio());
+        this.agregarJugador(this.obtenerJugadorAleatorio());
+    }
+    
+    public Jugador obtenerJugadorAleatorio(){
+        ArrayList<Jugador> jugDisponibles = Jugador.getJugadores(jugadores);
+        Random rnd = new Random();
+        return jugDisponibles.get(rnd.nextInt(jugDisponibles.size()));
     }
     
     /**
@@ -52,7 +61,7 @@ public class ControladorNuevaPartida {
         this.visNuePar.getAgregar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                agregarJugador(Usuario.getUsuario(prueba[visNuePar.getVistasInfoJug().size()]));
+                agregarJugador(obtenerJugadorAleatorio());
             }
         });
         
@@ -70,6 +79,14 @@ public class ControladorNuevaPartida {
             }
         });
         
+        this.visNuePar.getRegistrar().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                contPrin.crearControladorRegistro(visNuePar);
+                contPrin.getContReg().mostrarVistaRegistro();
+            }
+        });
+        
         this.visNuePar.getComenzar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
@@ -83,14 +100,68 @@ public class ControladorNuevaPartida {
      * en la vista de nueva partida y define las acciones a realizar.
      * @param visInfoJug Vista a la que se agregarán los listeners.
      */
-    public void agregarListenersVistaInfoJugador(CompInfoJug visInfoJug){
+    public void agregarListenersVistaInfoJugador(SubVistaResumenJugador visInfoJug){
+        visInfoJug.getCambiarJugador().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                crearVistaCambiarJugador((PanelImagen) e.getComponent().getParent());
+            }
+        });
+        
         visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                eliminarJugador(visNuePar.getVistasInfoJug().indexOf((CompInfoJug)
+                eliminarJugador(visNuePar.getVistasInfoJug().indexOf((SubVistaResumenJugador)
                         e.getComponent().getParent()));
             }
         });
+    }
+            
+    public void crearVistaCambiarJugador(PanelImagen quienCambia){
+        this.visCamJug = new SubVistaCambiarJugador(this.contPrin.getFuente(), this.jugadores);
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visCamJug);
+        
+        for(int i = 0; i < this.visCamJug.getIconosJugadores().size(); i++){
+            this.agregarListenersVistaCambiarJugador(i);
+        }
+        
+        this.visCamJug.setName(String.valueOf(this.visNuePar.getVistasInfoJug().indexOf(quienCambia)));
+        this.visCamJug.setVisible(true);
+    }
+    
+    public void agregarListenersVistaCambiarJugador(int i){
+        this.visCamJug.getIconosJugadores().get(i).addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                cambiarJugador(Integer.parseInt(
+                        visCamJug.getName()),
+                        visCamJug.getIconosJugadores().indexOf((BotonImagen) e.getComponent()));
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                visCamJug.mostrarInformacionJugador(
+                        visCamJug.getIconosJugadores().indexOf((BotonImagen) e.getComponent()));
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e){
+                visCamJug.borrarCampos();
+            }
+        });
+        
+        this.visCamJug.getVolver().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                visCamJug.dispose();
+            }
+        });
+    }
+    
+    public void cambiarJugador(int quienCambia, int porQuienCambia){
+        this.jugadores.set(quienCambia, this.visCamJug.getJugadores().get(porQuienCambia));
+        this.visNuePar.getVistasInfoJug().get(quienCambia).actualizarInfoJug(this.visCamJug.getJugadores().get(porQuienCambia));
+        this.visCamJug.dispose();
     }
     
     /**
@@ -140,7 +211,7 @@ public class ControladorNuevaPartida {
      * encuentran actualmente en la vista de nueva partida.
      */
     public void crearVistaSeleccionEquipos(){
-        this.visNuePar.setVisSelEq(new CompSelEquipos());
+        this.visNuePar.setVisSelEq(new SubVistaSeleccionEquipos());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar.getVisSelEq());
         this.visNuePar.add(this.visNuePar.getVisSelEq(), 0);
         this.visNuePar.getVisSelEq().setLocation(280, 475);

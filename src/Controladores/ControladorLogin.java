@@ -47,7 +47,7 @@ public final class ControladorLogin {
             @Override
             public void mouseClicked(MouseEvent e){
                 // Se instancia un controlador de registro
-                contPrin.crearControladorRegistro();
+                contPrin.crearControladorRegistro(visLog);
                 // Se muestra la vista de registro
                 contPrin.getContReg().mostrarVistaRegistro();
                 // Se elimina la vista de login

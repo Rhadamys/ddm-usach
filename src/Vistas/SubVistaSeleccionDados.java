@@ -9,12 +9,12 @@ package Vistas;
  *
  * @author mam28
  */
-public class CompSelDados extends javax.swing.JInternalFrame {
+public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form CompSelDados
      */
-    public CompSelDados() {
+    public SubVistaSeleccionDados() {
         initComponents();
     }
 

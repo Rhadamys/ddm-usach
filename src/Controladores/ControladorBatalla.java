@@ -8,10 +8,10 @@ package Controladores;
 import Modelos.Jugador;
 import Modelos.Tablero;
 import Otros.BotonImagen;
-import Vistas.CompPosicion;
-import Vistas.CompTablero;
+import Vistas.SubVistaPosicion;
+import Vistas.SubVistaTablero;
 import Vistas.VistaBatalla;
-import Vistas.CompPausaBatalla;
+import Vistas.SubVistaMenuPausa;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 public class ControladorBatalla {
     private final ControladorPrincipal contPrin;
     private final VistaBatalla visBat;
-    private final CompPausaBatalla visPausBat;
+    private final SubVistaMenuPausa visPausBat;
     private Tablero tablero;
     
     public ControladorBatalla(
@@ -51,7 +51,7 @@ public class ControladorBatalla {
         this.tablero.setJugadores(jugadores);
         this.agregarVistasInfoJug(jugadores);
         
-        this.visPausBat = new CompPausaBatalla(this.contPrin.getFuente());
+        this.visPausBat = new SubVistaMenuPausa(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visPausBat);
         this.agregarListenersVistaPausaBatalla();
     }
@@ -63,11 +63,11 @@ public class ControladorBatalla {
      */
     public void crearTablero(){
         this.tablero = new Tablero();
-        this.visBat.setTablero(new CompTablero());
+        this.visBat.setTablero(new SubVistaTablero());
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                this.visBat.getTablero().getPosiciones()[i][j] = new CompPosicion(i, j);
+                this.visBat.getTablero().getPosiciones()[i][j] = new SubVistaPosicion(i, j);
                 this.visBat.getTablero().add(this.visBat.getTablero().getPosiciones()[i][j]);
                 this.agregarListenersPosicion(i, j);
             }
@@ -90,7 +90,7 @@ public class ControladorBatalla {
                 switch(tablero.getAccion()){
                     case 0: break;
                     case 1: visBat.getTablero().reiniciarCasillas();
-                            visBat.getTablero().setBotonActual((CompPosicion) e.getComponent());
+                            visBat.getTablero().setBotonActual((SubVistaPosicion) e.getComponent());
                             mostrarDespliegue(
                                     tablero.getDespliegue(),
                                     visBat.getTablero().getBotonActual(),
@@ -222,7 +222,7 @@ public class ControladorBatalla {
      * @param botonActual Botón actual sobre el que se encuentra el mouse.
      * @return 
      */
-    public ArrayList<CompPosicion> getDespliegue(int numDespliegue, CompPosicion botonActual){
+    public ArrayList<SubVistaPosicion> getDespliegue(int numDespliegue, SubVistaPosicion botonActual){
         switch(numDespliegue){
             case 0: return this.visBat.getTablero().getDespliegueCruz(botonActual, this.tablero.getDireccion());
             case 1: return this.visBat.getTablero().getDespliegueEscalera(botonActual, this.tablero.getDireccion());
@@ -242,10 +242,10 @@ public class ControladorBatalla {
      * @param direccion Dirección del despliegue.
      * @param turno Turno actual.
      */
-    public void mostrarDespliegue(int numDespliegue, CompPosicion botonActual, int direccion, int turno){
+    public void mostrarDespliegue(int numDespliegue, SubVistaPosicion botonActual, int direccion, int turno){
         if(getDespliegue(numDespliegue, botonActual) != null){
             // Comprobar
-            for(CompPosicion casilla: getDespliegue(numDespliegue, botonActual)){
+            for(SubVistaPosicion casilla: getDespliegue(numDespliegue, botonActual)){
                 if(casilla.getDueno() == 0){
                     casilla.setImagenSobre("/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
                 }else{
@@ -254,7 +254,7 @@ public class ControladorBatalla {
             }
             
             // Pintar
-            for(CompPosicion casilla: getDespliegue(numDespliegue, botonActual)){
+            for(SubVistaPosicion casilla: getDespliegue(numDespliegue, botonActual)){
                 casilla.setImagenActual(1);
             }
         }else{
@@ -267,7 +267,7 @@ public class ControladorBatalla {
      * @param casillas Casillas que conforman el despliegue.
      * @param turno Turno actual.
      */
-    public void asignarCasillas(ArrayList<CompPosicion> casillas, int turno){
+    public void asignarCasillas(ArrayList<SubVistaPosicion> casillas, int turno){
         int jugador = ++turno;
         
         // Comprobar
@@ -276,7 +276,7 @@ public class ControladorBatalla {
             // Asignar
             if(this.visBat.getTablero().estaDisponible(casillas)){
                 if(this.visBat.getTablero().estaConectadoAlTerreno(casillas, jugador)){
-                    for(CompPosicion casilla: casillas){
+                    for(SubVistaPosicion casilla: casillas){
                         casilla.setDueno(jugador);
                     }
                 }else{

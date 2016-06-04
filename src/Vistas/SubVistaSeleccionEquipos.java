@@ -17,7 +17,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class CompSelEquipos extends JInternalFrame{
+public class SubVistaSeleccionEquipos extends JInternalFrame{
     private PanelImagen marcoIzq;
     private PanelImagen marcoDer;
     private PanelImagen equipo1;
@@ -25,7 +25,7 @@ public class CompSelEquipos extends JInternalFrame{
     private ArrayList<Jugador> jugadores;
     private ArrayList<PanelImagen> iconosJugadores;
     
-    public CompSelEquipos(){
+    public SubVistaSeleccionEquipos(){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.setOpaque(false);

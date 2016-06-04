@@ -5,30 +5,17 @@
  */
 package Vistas;
 
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
-
 /**
  *
  * @author mam28
  */
-public class CompCambiarJugador extends javax.swing.JInternalFrame {
+public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form CompCambiarJugador
-     * @param fuente Fuente que se utilizará en esta vista.
+     * Creates new form CompLanzamientoDados
      */
-    public CompCambiarJugador(Font fuente) {
+    public SubVistaLanzamientoDados() {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setBorder(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
-        
-        
     }
 
     /**
@@ -41,6 +28,7 @@ public class CompCambiarJugador extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setBackground(new java.awt.Color(51, 51, 51));
+        setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -49,11 +37,11 @@ public class CompCambiarJugador extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 790, Short.MAX_VALUE)
+            .addGap(0, 806, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 599, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
         );
 
         pack();

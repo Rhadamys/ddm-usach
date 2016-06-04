@@ -15,7 +15,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class CompPausaBatalla extends javax.swing.JInternalFrame {
+public class SubVistaMenuPausa extends javax.swing.JInternalFrame {
     private final BotonImagen continuarPartida;
     private final BotonImagen volverMenuPrincipal;
     private final BotonImagen salirAplicacion;
@@ -24,7 +24,7 @@ public class CompPausaBatalla extends javax.swing.JInternalFrame {
      * Creates new form VistaPausaBatalla
      * @param fuente Fuente que se utilizará en esta vista.
      */
-    public CompPausaBatalla(Font fuente) {
+    public SubVistaMenuPausa(Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);

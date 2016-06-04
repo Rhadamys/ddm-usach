@@ -15,12 +15,12 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class CompSelDesp extends javax.swing.JInternalFrame {
+public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
     ArrayList<BotonImagen> botonesDespliegue;
     /**
      * Creates new form CompSelDesp
      */
-    public CompSelDesp() {
+    public SubVistaSeleccionDespliegue() {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);

@@ -18,24 +18,21 @@ import javax.swing.JLabel;
  *
  * @author mam28
  */
-public class CompInfoJug extends PanelImagen {
-    private Jugador jugador;
-    private JLabel nombreJugador;
-    private JLabel tipoJugador;
-    private PanelImagen iconoJugador;
+public class SubVistaResumenJugador extends PanelImagen {
+    private final JLabel nombreJugador;
+    private final JLabel tipoJugador;
+    private final PanelImagen iconoJugador;
     private ArrayList<Dado> dadosJugador;
-    private BotonImagen modificarPuzle;
-    private BotonImagen cambiarJugador;
-    private BotonImagen eliminar;
+    private final BotonImagen modificarPuzle;
+    private final BotonImagen cambiarJugador;
+    private final BotonImagen eliminar;
     
-    public CompInfoJug(Jugador jugador, Font fuentePersonalizada){
+    public SubVistaResumenJugador(Jugador jugador, Font fuentePersonalizada){
         initComponents();
         
         this.setLayout(null);
         this.setBorder(null);
         this.setSize(340, 170);
-        
-        this.jugador = jugador;
         this.dadosJugador = jugador.getDados();
         
         this.nombreJugador = new JLabel(jugador.getNombreJugador());
@@ -119,16 +116,11 @@ public class CompInfoJug extends PanelImagen {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void actualizarInforJug(Jugador jugador){
-        this.jugador = jugador;
+    public void actualizarInfoJug(Jugador jugador){
         this.dadosJugador = jugador.getDados();
-        
+        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getClave() + ".png");
         this.nombreJugador.setText(jugador.getNombreJugador());
         this.tipoJugador.setText(jugador.getTipoJugador());
-    }
-
-    public Jugador getJugador() {
-        return jugador;
     }
 
     public JLabel getNombreJugador() {

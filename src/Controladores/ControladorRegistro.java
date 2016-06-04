@@ -68,12 +68,7 @@ public class ControladorRegistro {
             // Cuando se haga clic sobre el botón "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                // Se instancia el controlador de login
-                contPrin.crearControladorLogin();
-                // Se muestra la vista de login
-                contPrin.getContLog().mostrarVistaLogin();
-                // Se elimina la vista de registro
-                eliminarVistaRegistro();
+                cerrarVistaRegistro();
             }
         });
         
@@ -114,14 +109,6 @@ public class ControladorRegistro {
      */
     public void mostrarVistaRegistro(){
         this.visReg.setVisible(true);
-    }
-    
-    /**
-     * Oculta la vista de registro en el JFrame principal.
-     */
-    public void eliminarVistaRegistro(){
-        //this.visReg.setVisible(false);
-        this.visReg.dispose();
     }
     
     public void agregarListenersVistaSeleccionarJefe(int i){
@@ -190,14 +177,8 @@ public class ControladorRegistro {
 
                     JOptionPane.showMessageDialog(null, "Registro exitoso.");
 
-                    if(quienLlama instanceof VistaLogin){
-                        // Se instancia el controlador de login
-                        this.contPrin.crearControladorLogin();
-                        // Se muestra la vista de login
-                        this.contPrin.getContLog().mostrarVistaLogin();
-                    }
-                    // Se elimina la vista de registro
-                    this.eliminarVistaRegistro();
+                    this.cerrarVistaRegistro();
+                    
                 } catch (IOException ex) {
                     this.visReg.setMensaje("Error interno de la aplicación.");
                 }
@@ -227,5 +208,17 @@ public class ControladorRegistro {
         }
         
         return dados;
+    }
+    
+    public void cerrarVistaRegistro(){
+        if(quienLlama instanceof VistaLogin){
+            // Se instancia el controlador de login
+            this.contPrin.crearControladorLogin();
+            // Se muestra la vista de login
+            this.contPrin.getContLog().mostrarVistaLogin();
+        }
+        this.visSelJef.dispose();
+        // Se elimina la vista de registro
+        this.visReg.dispose();
     }
 }

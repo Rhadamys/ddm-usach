@@ -14,3 +14,5 @@ superzelda;usach;jefe5;dado12;dado1;dado4;dado2;dado12;dado12;dado11;dado14;dado
 javac;usach;jefe3;dado5;dado1;dado14;dado1;dado5;dado15;dado15;dado11;dado4;dado13;dado9;dado9;dado13;dado6;dado6
 javadoc;usach;jefe5;dado12;dado12;dado4;dado5;dado5;dado15;dado5;dado12;dado12;dado13;dado9;dado3;dado7;dado6;dado10
 dungeon;usach;jefe4;dado14;dado4;dado11;dado5;dado14;dado12;dado4;dado11;dado1;dado13;dado13;dado3;dado7;dado10;dado10
+dicemons;usach;jefe1;dado2;dado14;dado5;dado1;dado2;dado2;dado14;dado2;dado2;dado9;dado13;dado3;dado7;dado10;dado10
+natalia;usach;jefe4;dado11;dado1;dado11;dado2;dado4;dado4;dado12;dado5;dado11;dado3;dado3;dado9;dado3;dado10;dado6

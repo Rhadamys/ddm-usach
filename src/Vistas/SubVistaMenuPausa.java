@@ -66,7 +66,7 @@ public class SubVistaMenuPausa extends javax.swing.JInternalFrame {
         this.salirAplicacion.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.salirAplicacion.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
     
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_menu_pausa.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
         

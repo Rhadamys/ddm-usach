@@ -5,10 +5,10 @@
  */
 package Controladores;
 
+import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaMenuPrincipal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 public final class ControladorMenuPrincipal {
     private final ControladorPrincipal contPrin;
     private final VistaMenuPrincipal visMenuPrin;
+    private final SubVistaCuadroDialogo visMenLogOut;
     
     public ControladorMenuPrincipal(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
@@ -25,6 +26,11 @@ public final class ControladorMenuPrincipal {
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visMenuPrin);
         this.setMensajeBienvenida(this.contPrin.getUsuarioActivo().getUsername());
         this.agregarListenersVistaMenuPrincipal();
+        
+        this.visMenLogOut = new SubVistaCuadroDialogo(
+                "¿Deseas cerrar sesión?",
+                "Si", "No", this.contPrin.getFuente(), this.contPrin, 1);
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMenLogOut);
     }
 
     public VistaMenuPrincipal getVisMenuPrin() {
@@ -52,7 +58,7 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                contPrin.salir();
+                contPrin.getContVisPrin().salir();
             }
         });
         
@@ -75,20 +81,11 @@ public final class ControladorMenuPrincipal {
     public void nuevaPartida(){
         this.contPrin.crearControladorNuevaPartida();
         this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
-        this.visMenuPrin.setVisible(false);
+        this.visMenuPrin.dispose();
     }
     
     public void logOut(){
-        if(JOptionPane.showConfirmDialog(
-                null,
-                "¿Deseas cerrar sesión?",
-                "Cerrar sesión",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-            
-            this.contPrin.crearControladorLogin();
-            this.contPrin.getContLog().mostrarVistaLogin();
-            this.visMenuPrin.dispose();
-        }
+        this.visMenLogOut.setVisible(true);
     }
     
 }

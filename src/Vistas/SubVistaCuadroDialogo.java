@@ -20,44 +20,26 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class SubVistaCuadroDialogo extends JInternalFrame{    
-    public static int mostrarMensaje(String mensaje, String textoBoton, ControladorPrincipal contPrin){
-        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(mensaje, textoBoton, contPrin.getFuente());
-        contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
-        visMen.setVisible(true);
-        
-        synchronized(visMen){
-            while(visMen.getRespuesta() == 0){
-                try {
-                    visMen.wait();
-                } catch (InterruptedException ex) {
-                    // Nada
-                }
-            }
-        }
-        
-        return visMen.getRespuesta();
-    }
-    
-    public static int mostrarMensaje(String mensaje, String textoBoton1, String textoBoton2, ControladorPrincipal contPrin){
-        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(mensaje, textoBoton1, textoBoton2, contPrin.getFuente());
-        contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
-        visMen.setVisible(true);
-        
-        return visMen.getRespuesta();
-    }
-    
-    private BotonImagen boton1;
+public class SubVistaCuadroDialogo extends JInternalFrame{ 
+    private final ControladorPrincipal contPrin;
+    private final JLabel labelMensaje;
+    private final BotonImagen boton1;
     private BotonImagen boton2;
-    private JLabel labelMensaje;
-    private int respuesta;
     
-    public SubVistaCuadroDialogo(String mensaje, String textoBoton, Font fuentePersonalizada){
+    public SubVistaCuadroDialogo(
+            String mensaje,
+            String textoBoton,
+            Font fuente,
+            ControladorPrincipal contPrin,
+            int accion){
+        
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
         this.setBorder(null);
         this.setOpaque(false);
         this.setSize(800, 600);
         this.setBackground(new Color(0,0,0,0));
+        this.contPrin = contPrin;
         
         this.labelMensaje = new JLabel(mensaje);
         this.boton1 = new BotonImagen("/Imagenes/Botones/boton.png");
@@ -67,37 +49,46 @@ public class SubVistaCuadroDialogo extends JInternalFrame{
         
         this.boton1.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.boton1.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.boton1.setSize(200, 30);
-        this.boton1.setLocation(300, 480);
+        this.boton1.setSize(200, 40);
+        this.boton1.setLocation(300, 320);
         this.boton1.setText(textoBoton);
-        this.boton1.setFont(fuentePersonalizada);
+        this.boton1.setFont(fuente);
         this.boton1.setForeground(Color.white);
         
-        this.labelMensaje.setSize(580, 150);
+        this.labelMensaje.setSize(580, 100);
         this.labelMensaje.setHorizontalAlignment(JLabel.CENTER);
         this.labelMensaje.setVerticalAlignment(JLabel.CENTER);
-        this.labelMensaje.setLocation(110, 100);
-        this.labelMensaje.setFont(fuentePersonalizada);
+        this.labelMensaje.setLocation(110, 220);
+        this.labelMensaje.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
         this.labelMensaje.setForeground(Color.white);
         
         this.boton1.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                setRespuesta(1);
+                realizarAccion(accion, 1);
             }
         });
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_mensaje.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
     }
     
-    public SubVistaCuadroDialogo(String mensaje, String textoBoton1, String textoBoton2, Font fuentePersonalizada){
+    public SubVistaCuadroDialogo(
+            String mensaje,
+            String textoBoton1,
+            String textoBoton2,
+            Font fuente,
+            ControladorPrincipal contPrin, 
+            int accion){
+        
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
         this.setBorder(null);
         this.setOpaque(false);
         this.setSize(800, 600);
         this.setBackground(new Color(0,0,0,0));
+        this.contPrin = contPrin;
         
         this.labelMensaje = new JLabel(mensaje);
         this.boton1 = new BotonImagen("/Imagenes/Botones/boton.png");
@@ -109,59 +100,72 @@ public class SubVistaCuadroDialogo extends JInternalFrame{
         
         this.boton1.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.boton1.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.boton1.setSize(200, 30);
-        this.boton1.setLocation(170, 480);
+        this.boton1.setSize(200, 40);
+        this.boton1.setLocation(170, 320);
         this.boton1.setText(textoBoton1);
-        this.boton1.setFont(fuentePersonalizada);
+        this.boton1.setFont(fuente);
         this.boton1.setForeground(Color.white);
         
         this.boton2.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.boton2.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.boton2.setSize(200, 30);
-        this.boton2.setLocation(390, 480);
+        this.boton2.setSize(200, 40);
+        this.boton2.setLocation(410, 320);
         this.boton2.setText(textoBoton2);
-        this.boton2.setFont(fuentePersonalizada);
+        this.boton2.setFont(fuente);
         this.boton2.setForeground(Color.white);
         
-        this.labelMensaje.setSize(580, 150);
+        this.labelMensaje.setSize(580, 100);
         this.labelMensaje.setHorizontalAlignment(JLabel.CENTER);
         this.labelMensaje.setVerticalAlignment(JLabel.CENTER);
-        this.labelMensaje.setLocation(110, 100);
-        this.labelMensaje.setFont(fuentePersonalizada);
+        this.labelMensaje.setLocation(110, 220);
+        this.labelMensaje.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
         this.labelMensaje.setForeground(Color.white);
         
         this.boton1.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                setRespuesta(1);
+                realizarAccion(accion, 1);
             }
         });
         
         this.boton2.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                setRespuesta(2);
+                realizarAccion(accion, 2);
             }
         });
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_mensaje.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
     }
     
-    public synchronized void setRespuesta(int respuesta){
-        this.respuesta = respuesta;
-        this.notify();
-    }
-    
-    public synchronized int getRespuesta(){
-        if(Integer.valueOf(0).equals(this.respuesta)){
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-            }
+    public void realizarAccion(int accion, int respuesta){
+        switch(accion){
+            case 0: if(respuesta == 1){
+                        this.contPrin.getContVisPrin().getVisPrin().dispose();
+                    }else{
+                        this.setVisible(false);
+                    }
+                    break;
+            case 1: if(respuesta == 1){
+                        this.contPrin.getContMenuPrin().getVisMenuPrin().dispose();
+                        this.contPrin.crearControladorLogin();
+                        this.contPrin.getContLog().mostrarVistaLogin();
+                    }else{
+                        this.setVisible(false);
+                    }
+                    break;
+            case 2: if(respuesta == 1){
+                        this.contPrin.getContBat().getVisBat().dispose();
+                        this.contPrin.getContBat().getVisPausBat().dispose();
+                        this.contPrin.crearControladorMenuPrincipal();
+                        this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+                    }else{
+                        this.setVisible(false);
+                    }
+                    break;
+            default: this.dispose();
         }
-        
-        return this.respuesta;
     }
 }

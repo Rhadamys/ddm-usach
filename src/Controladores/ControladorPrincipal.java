@@ -7,6 +7,7 @@ package Controladores;
 
 import Modelos.Jugador;
 import Modelos.Usuario;
+import Vistas.SubVistaCuadroDialogo;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -43,21 +44,6 @@ public class ControladorPrincipal {
         contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
         contPrin.crearControladorLogin();
         contPrin.contLog.mostrarVistaLogin();;
-    }
-    
-    /**
-     * Muestra un mensaje con las opciones si / no solicitando al usuario que
-     * confirme si desea salir de la aplicación.
-     */
-    public void salir(){
-        if (JOptionPane.showConfirmDialog(
-                null,
-                "¿Deseas salir de la aplicación?",
-                "Salir",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-            this.contVisPrin.getVisPrin().dispose();
-        }
-     
     }
     
     /**

@@ -14,7 +14,8 @@ import javax.swing.JInternalFrame;
  * @author mam28
  */
 public class VistaPrincipal extends javax.swing.JFrame {
-
+    private SubVistaCuadroDialogo visSalir;
+    
     /**
      * Creates new form VistaPrincipal
      */

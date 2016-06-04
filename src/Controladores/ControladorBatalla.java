@@ -8,6 +8,7 @@ package Controladores;
 import Modelos.Jugador;
 import Modelos.Tablero;
 import Otros.BotonImagen;
+import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaPosicion;
 import Vistas.SubVistaTablero;
 import Vistas.VistaBatalla;
@@ -19,6 +20,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -28,6 +31,7 @@ public class ControladorBatalla {
     private final ControladorPrincipal contPrin;
     private final VistaBatalla visBat;
     private final SubVistaMenuPausa visPausBat;
+    private final SubVistaCuadroDialogo visVolMenuPrin;
     private Tablero tablero;
     
     public ControladorBatalla(
@@ -54,6 +58,12 @@ public class ControladorBatalla {
         this.visPausBat = new SubVistaMenuPausa(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visPausBat);
         this.agregarListenersVistaPausaBatalla();
+        
+        this.visVolMenuPrin = new SubVistaCuadroDialogo(
+                "<html><center>¿Deseas volver al menú principal?<br>"
+              + "Se perderá el progreso de la partida.</center></html>",
+                "Si", "No", this.contPrin.getFuente(), this.contPrin, 2);
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visVolMenuPrin);
     }
     
     /**
@@ -144,6 +154,13 @@ public class ControladorBatalla {
             @Override
             public void mouseMoved(MouseEvent e){
                 visBat.setMensaje("");
+            }
+        });
+        
+        this.visBat.addInternalFrameListener(new InternalFrameAdapter(){
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e){
+                
             }
         });
         
@@ -308,7 +325,7 @@ public class ControladorBatalla {
         this.visPausBat.getSalirAplicacion().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                contPrin.salir();
+                contPrin.getContVisPrin().salir();
             }
         });
     }
@@ -318,17 +335,14 @@ public class ControladorBatalla {
     }
     
     public void volverMenuPrincipal(){
-        if(JOptionPane.showConfirmDialog(
-                null,
-                "¿Deseas volver al menú principal? Se perderá el progreso actual de la partida.",
-                "Volver al menú principal",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-            
-            this.contPrin.crearControladorMenuPrincipal();
-            this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
-            this.visPausBat.dispose();
-            this.visBat.dispose();
-        }
+        this.visVolMenuPrin.setVisible(true);
     }
-    
+
+    public VistaBatalla getVisBat() {
+        return visBat;
+    }
+
+    public SubVistaMenuPausa getVisPausBat() {
+        return visPausBat;
+    }
 }

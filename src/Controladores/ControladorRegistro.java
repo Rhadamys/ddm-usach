@@ -9,6 +9,7 @@ import Modelos.Dado;
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
 import Otros.BotonImagen;
+import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaSeleccionarJefe;
 import Vistas.VistaLogin;
 import Vistas.VistaRegistro;
@@ -175,10 +176,14 @@ public class ControladorRegistro {
 
                     escritor.close();
 
-                    JOptionPane.showMessageDialog(null, "Registro exitoso.");
-
                     this.cerrarVistaRegistro();
                     
+                    SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
+                            "<html><center>Registro exitoso. Ahora volverás a la<br>"
+                            + "vista anterior.</center></html>",
+                            "Aceptar", this.contPrin.getFuente(), this.contPrin, -1);
+                    this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
+                    visMen.setVisible(true);
                 } catch (IOException ex) {
                     this.visReg.setMensaje("Error interno de la aplicación.");
                 }

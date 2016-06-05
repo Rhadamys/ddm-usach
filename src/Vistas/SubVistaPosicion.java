@@ -6,15 +6,16 @@
 package Vistas;
 
 import Otros.BotonImagen;
+import Otros.PanelImagen;
 
 /**
  *
  * @author mam28
  */
 public class SubVistaPosicion extends BotonImagen {
-    private int fila;
-    private int columna;
-    private int dueno = 0;
+    private final PanelImagen iconoElemento;
+    private final int fila;
+    private final int columna;
     
     public SubVistaPosicion(int fila, int columna){
         setImagenNormal("/Imagenes/Botones/casilla.png");
@@ -22,6 +23,11 @@ public class SubVistaPosicion extends BotonImagen {
         
         this.fila = fila;
         this.columna = columna;
+        this.setLayout(null);
+        
+        this.iconoElemento = new PanelImagen();
+        this.add(this.iconoElemento);
+        this.iconoElemento.setSize(this.getSize());
     }
     
     @Override
@@ -37,12 +43,7 @@ public class SubVistaPosicion extends BotonImagen {
         return columna;
     }
 
-    public int getDueno() {
-        return dueno;
-    }
-
-    public void setDueno(int dueno) {
-        this.dueno = dueno;
-        this.setImagenNormal("/Imagenes/Botones/casilla_j" + dueno + ".png");
+    public PanelImagen getIconoElemento() {
+        return iconoElemento;
     }
 }

@@ -18,12 +18,12 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class SubVistaSeleccionEquipos extends JInternalFrame{
-    private PanelImagen marcoIzq;
-    private PanelImagen marcoDer;
-    private PanelImagen equipo1;
-    private PanelImagen equipo2;
-    private ArrayList<Jugador> jugadores;
-    private ArrayList<PanelImagen> iconosJugadores;
+    private final PanelImagen marcoIzq;
+    private final PanelImagen marcoDer;
+    private final PanelImagen equipo1;
+    private final PanelImagen equipo2;
+    private final ArrayList<Jugador> jugadores;
+    private final ArrayList<PanelImagen> iconosJugadores;
     
     public SubVistaSeleccionEquipos(){
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -64,7 +64,7 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
         this.jugadores.add(jug);
         
         this.iconosJugadores.add(new PanelImagen("/Imagenes/Jefes/" +
-                jug.getJefeDeTerreno().getClave() + ".png"));
+                jug.getJefeDeTerreno().getNombreImagen() + ".png"));
         this.iconosJugadores.get(i).setToolTipText(
             jug.getNombreJugador());
         this.iconosJugadores.get(i).setSize(60, 60);
@@ -116,6 +116,14 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
         this.actualizarEquipos();
     }
     
+    public void actualizarIconos(){
+        for(int i = 0; i < this.jugadores.size(); i++){
+            this.iconosJugadores.get(i).setImagen("/Imagenes/Jefes/" + 
+                    this.jugadores.get(i).getJefeDeTerreno().getNombreImagen() + ".png");
+            this.iconosJugadores.get(i).setToolTipText(this.jugadores.get(i).getNombreJugador());
+        }
+    }
+    
     public void actualizarEquipos(){
         int cantidadE1 = this.equipo1.getComponentCount();
         int cantidadE2 = this.equipo2.getComponentCount();
@@ -158,6 +166,10 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
 
     public PanelImagen getEquipo2() {
         return equipo2;
+    }
+
+    public ArrayList<Jugador> getJugadores() {
+        return jugadores;
     }
     
 }

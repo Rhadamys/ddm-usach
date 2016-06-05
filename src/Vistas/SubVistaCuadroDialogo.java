@@ -21,16 +21,15 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class SubVistaCuadroDialogo extends JInternalFrame{ 
-    private final ControladorPrincipal contPrin;
     private final JLabel labelMensaje;
     private final BotonImagen boton1;
     private BotonImagen boton2;
+    private ControladorPrincipal contPrin;
     
     public SubVistaCuadroDialogo(
             String mensaje,
             String textoBoton,
             Font fuente,
-            ControladorPrincipal contPrin,
             int accion){
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -39,7 +38,6 @@ public class SubVistaCuadroDialogo extends JInternalFrame{
         this.setOpaque(false);
         this.setSize(800, 600);
         this.setBackground(new Color(0,0,0,0));
-        this.contPrin = contPrin;
         
         this.labelMensaje = new JLabel(mensaje);
         this.boton1 = new BotonImagen("/Imagenes/Botones/boton.png");
@@ -152,6 +150,7 @@ public class SubVistaCuadroDialogo extends JInternalFrame{
                         this.contPrin.getContMenuPrin().getVisMenuPrin().dispose();
                         this.contPrin.crearControladorLogin();
                         this.contPrin.getContLog().mostrarVistaLogin();
+                        this.dispose();
                     }else{
                         this.setVisible(false);
                     }
@@ -161,6 +160,7 @@ public class SubVistaCuadroDialogo extends JInternalFrame{
                         this.contPrin.getContBat().getVisPausBat().dispose();
                         this.contPrin.crearControladorMenuPrincipal();
                         this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+                        this.dispose();
                     }else{
                         this.setVisible(false);
                     }

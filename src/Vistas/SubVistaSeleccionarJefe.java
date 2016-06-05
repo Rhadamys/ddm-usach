@@ -10,6 +10,7 @@ import Otros.BotonImagen;
 import Otros.ContenedorScroll;
 import Otros.PanelImagen;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
@@ -70,7 +71,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
             marcoJefe.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
             
             PanelImagen iconoJefe = new PanelImagen("/Imagenes/Jefes/"
-                    + jefe.getClave() + ".png");
+                    + jefe.getNombreImagen() + ".png");
             this.contenedorJefes.add(iconoJefe);
             iconoJefe.setSize(LADO, LADO);
             iconoJefe.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
@@ -79,6 +80,8 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
 
             columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
         }
+        
+        this.contenedorJefes.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
         this.add(panelFondo);
@@ -128,7 +131,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     
     public void mostrarInformacionJefe(int indiceJefe){
         this.nombre.setText(this.jefes.get(indiceJefe).getNombre());
-        this.habilidad.setText(this.jefes.get(indiceJefe).getHabilidad());
+        this.habilidad.setText(this.jefes.get(indiceJefe).getDescHabilidad());
     }
     
     public void borrarCampos(){

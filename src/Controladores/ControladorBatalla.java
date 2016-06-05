@@ -19,7 +19,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -33,6 +32,7 @@ public class ControladorBatalla {
     private final SubVistaMenuPausa visPausBat;
     private final SubVistaCuadroDialogo visVolMenuPrin;
     private Tablero tablero;
+    private final int[][] posJugTab = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
     
     public ControladorBatalla(
             ControladorPrincipal contPrin,
@@ -53,7 +53,7 @@ public class ControladorBatalla {
         this.agregarListenersVistaSeleccionarDespliegue();
         
         this.tablero.setJugadores(jugadores);
-        this.agregarVistasInfoJug(jugadores);
+        this.agregarJugadoresPartida(jugadores);
         
         this.visPausBat = new SubVistaMenuPausa(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visPausBat);
@@ -99,10 +99,9 @@ public class ControladorBatalla {
                 visBat.setMensaje("");
                 switch(tablero.getAccion()){
                     case 0: break;
-                    case 1: visBat.getTablero().reiniciarCasillas();
-                            visBat.getTablero().setBotonActual((SubVistaPosicion) e.getComponent());
+                    case 1: visBat.getTablero().setBotonActual((SubVistaPosicion) e.getComponent());
                             mostrarDespliegue(
-                                    tablero.getDespliegue(),
+                                    tablero.getNumDespliegue(),
                                     visBat.getTablero().getBotonActual(),
                                     tablero.getDireccion(),
                                     tablero.getTurnoActual());
@@ -114,9 +113,8 @@ public class ControladorBatalla {
             public void mouseClicked(MouseEvent e){
                 switch(tablero.getAccion()){
                     case 0: break;
-                    case 1: asignarCasillas(getDespliegue(
-                            tablero.getDespliegue(),
-                            visBat.getTablero().getBotonActual()),
+                    case 1: asignarCasillas(
+                            tablero.getDespliegue(visBat.getTablero().getBotonActual()),
                             tablero.getTurnoActual());
                 }
             }
@@ -136,9 +134,9 @@ public class ControladorBatalla {
                                         break;
                 }
                 
-                visBat.getTablero().reiniciarCasillas();
+                visBat.getTablero().actualizarCasillas();
                 mostrarDespliegue(
-                        tablero.getDespliegue(),
+                        tablero.getNumDespliegue(),
                         visBat.getTablero().getBotonActual(),
                         tablero.getDireccion(),
                         tablero.getTurnoActual());
@@ -205,10 +203,14 @@ public class ControladorBatalla {
      * @param jugPartida Jugadores de la partida para los cuales se crearán las
      * vistas.
      */
-    public void agregarVistasInfoJug(ArrayList<Jugador> jugPartida){
-        for(Jugador jug: jugPartida){
-            this.visBat.agregarJugador(jug);
+    public void agregarJugadoresPartida(ArrayList<Jugador> jugPartida){
+        for(int i = 0; i < jugPartida.size(); i++){
+            this.visBat.agregarJugador(jugPartida.get(i));
+            this.visBat.getTablero().marcarCasilla(posJugTab[i], i + 1);
+            this.tablero.asignarCasilla(posJugTab[i], i + 1);
         }
+        
+        this.visBat.getTablero().actualizarCasillas();
     }
     
     public void mostrarVistaBatalla(){
@@ -229,26 +231,8 @@ public class ControladorBatalla {
      */
     public void cambiarDespliegue(int numDespliegue){
         this.tablero.setAccion(1);
-        this.tablero.setDespliegue(numDespliegue);
+        this.tablero.setNumDespliegue(numDespliegue);
         this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
-    }
-    
-    /**
-     * Devuelve la forma del despliegue indicado por "numDespliegue".
-     * @param numDespliegue Número del despliegue a obtener.
-     * @param botonActual Botón actual sobre el que se encuentra el mouse.
-     * @return 
-     */
-    public ArrayList<SubVistaPosicion> getDespliegue(int numDespliegue, SubVistaPosicion botonActual){
-        switch(numDespliegue){
-            case 0: return this.visBat.getTablero().getDespliegueCruz(botonActual, this.tablero.getDireccion());
-            case 1: return this.visBat.getTablero().getDespliegueEscalera(botonActual, this.tablero.getDireccion());
-            case 2: return this.visBat.getTablero().getDespliegueT(botonActual, this.tablero.getDireccion());
-            case 3: return this.visBat.getTablero().getDespliegueS(botonActual, this.tablero.getDireccion());
-            case 4: return this.visBat.getTablero().getDespliegue4(botonActual, this.tablero.getDireccion());
-            case 5: return this.visBat.getTablero().getDespliegueR(botonActual, this.tablero.getDireccion());
-        }
-        return null;
     }
     
     /**
@@ -260,50 +244,43 @@ public class ControladorBatalla {
      * @param turno Turno actual.
      */
     public void mostrarDespliegue(int numDespliegue, SubVistaPosicion botonActual, int direccion, int turno){
-        if(getDespliegue(numDespliegue, botonActual) != null){
-            // Comprobar
-            for(SubVistaPosicion casilla: getDespliegue(numDespliegue, botonActual)){
-                if(casilla.getDueno() == 0){
-                    casilla.setImagenSobre("/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
+        this.visBat.getTablero().actualizarCasillas();
+        for(int[] coord: this.tablero.getDespliegue(botonActual)){
+            try{
+                if(this.tablero.getPosiciones()[coord[0]][coord[1]].getDueno() == 0){
+                    this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenSobre(
+                            "/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
                 }else{
-                    casilla.setImagenSobre("/Imagenes/Botones/casilla_error.png");
+                    this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenSobre(
+                            "/Imagenes/Botones/casilla_error.png");
                 }
+                this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenActual(1);
+            }catch(Exception e){
+                this.visBat.setMensaje("Fuera de los límites del tablero.");
             }
-            
-            // Pintar
-            for(SubVistaPosicion casilla: getDespliegue(numDespliegue, botonActual)){
-                casilla.setImagenActual(1);
-            }
-        }else{
-            this.visBat.setMensaje("Fuera de los límites del tablero.");
         }
     }
     
     /**
      * Marca las casillas del despliegue como propiedad del jugador del turno actual.
-     * @param casillas Casillas que conforman el despliegue.
+     * @param idxCasillas Índices de las posiciones en el tablero que conforman el despliegue.
      * @param turno Turno actual.
      */
-    public void asignarCasillas(ArrayList<SubVistaPosicion> casillas, int turno){
-        int jugador = ++turno;
-        
-        // Comprobar
-        if(casillas != null){
-
-            // Asignar
-            if(this.visBat.getTablero().estaDisponible(casillas)){
-                if(this.visBat.getTablero().estaConectadoAlTerreno(casillas, jugador)){
-                    for(SubVistaPosicion casilla: casillas){
-                        casilla.setDueno(jugador);
-                    }
-                }else{
-                    this.visBat.setMensaje("No está conectado a tu terreno.");
+    public void asignarCasillas(int[][] idxCasillas, int turno){
+        // Comprobar si las casillas están disponibles
+        if(this.tablero.estaDisponible(idxCasillas)){
+            // Comprobar que el despliegue esté conectado al terreno del jugador
+            if(this.tablero.estaConectadoAlTerreno(idxCasillas, (turno + 1))){
+                // Asignar casillas al jugador
+                for(int[] coord: idxCasillas){
+                    this.tablero.asignarCasilla(coord, (turno + 1));
+                    this.visBat.getTablero().marcarCasilla(coord, (turno + 1));
                 }
             }else{
-                this.visBat.setMensaje("Casilla ocupada por otro jugador.");
+                this.visBat.setMensaje("No está conectado a tu terreno.");
             }
         }else{
-            this.visBat.setMensaje("No se pudo invocar. Elige una posición válida.");
+            this.visBat.setMensaje("No es posible invocar en esta posición.");
         }
     }
 

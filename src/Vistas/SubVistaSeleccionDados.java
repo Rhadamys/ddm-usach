@@ -5,17 +5,93 @@
  */
 package Vistas;
 
+import Modelos.Dado;
+import Otros.BotonCheckImagen;
+import Otros.BotonImagen;
+import Otros.ContenedorScroll;
+import Otros.PanelImagen;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.JScrollPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 /**
  *
  * @author mam28
  */
 public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
-
+    private final ArrayList<BotonCheckImagen> panelesDados;
+    private final ContenedorScroll contenedor;
+    private final PanelImagen contenedorDados;
+    private final BotonImagen lanzarDados;
+    private int seleccionados = 0;
+    
     /**
      * Creates new form CompSelDados
+     * @param fuente Fuente que se utilizará en esta vista.
+     * @param dados Dados del jugador.
      */
-    public SubVistaSeleccionDados() {
+    public SubVistaSeleccionDados(Font fuente, ArrayList<Dado> dados) {
         initComponents();
+        
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
+        this.setOpaque(false);
+        this.setBackground(new Color(0,0,0,0));
+        this.panelesDados = new ArrayList();
+        
+        this.contenedorDados = new PanelImagen();
+        this.contenedorDados.setLayout(null);
+        
+        this.contenedor = new ContenedorScroll();    
+        this.add(this.contenedor);
+        this.contenedor.setSize(598, 335);
+        this.contenedor.setLocation(101, 84);
+        this.contenedor.setViewportView(this.contenedorDados);
+        this.contenedor.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.contenedor.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        final int N_COLUMNAS = 4;
+        final int LADO = 100;
+        final int SEP = (this.contenedor.getWidth() - N_COLUMNAS * LADO) / (N_COLUMNAS + 1);
+        final int MARCO = 20;
+        int columna = 0;
+        int fila = -1;
+        
+        for (Dado dado: dados){
+            fila = columna == 0 ? ++fila : fila;
+            
+            BotonCheckImagen marcoDado = new BotonCheckImagen("/Imagenes/vacio.png");
+            this.contenedorDados.add(marcoDado);
+            marcoDado.setSize(LADO + MARCO, LADO + MARCO);
+            marcoDado.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
+            marcoDado.setImagenSelNormal("/Imagenes/Otros/marco_seleccion.png");
+            marcoDado.setImagenSelSobre("/Imagenes/Otros/marco_seleccion.png");
+            marcoDado.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
+            
+            PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
+                    + dado.getCriatura().getNombreImagen() + ".png");
+            this.contenedorDados.add(iconoCriatura);
+            iconoCriatura.setSize(LADO, LADO);
+            iconoCriatura.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
+            
+            panelesDados.add(marcoDado);
+
+            columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
+        }
+        
+        this.contenedorDados.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
+        
+        this.lanzarDados = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.add(lanzarDados);
+        this.lanzarDados.setText("Lanzar dados");
+        this.lanzarDados.setFont(fuente);
+        
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
+        this.add(panelFondo);
+        panelFondo.setSize(this.getSize());
     }
 
     /**
@@ -47,6 +123,17 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public ArrayList<BotonCheckImagen> getPanelesDados() {
+        return panelesDados;
+    }
+
+    public int getSeleccionados() {
+        return seleccionados;
+    }
+
+    public void setSeleccionados(int seleccionados) {
+        this.seleccionados = seleccionados;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -14,20 +14,23 @@ import java.util.*;
 
 /** @pdOid ba01c964-70b9-429b-9412-0cfa461bb9c0 */
 public class JefeDeTerreno extends ElementoEnCampo {
-    private String clave;
-    private String nombre;
-    private String habilidad;
+    private final String nombre;
+    private final int habilidad;
+    private final String descHabilidad;
     private int puntosVida;
+    private final String nombreImagen;
     
     public JefeDeTerreno(
-            String clave, 
             String nombre, 
-            String habilidad, 
-            int puntosVida){
+            int habilidad,
+            String descHabilidad,
+            int puntosVida,
+            String nombreImagen){
         
-        this.clave = clave;
+        this.nombreImagen = nombreImagen;
         this.nombre = nombre;
         this.habilidad = habilidad;
+        this.descHabilidad = descHabilidad;
         this.puntosVida = puntosVida;
     }
     
@@ -44,10 +47,11 @@ public class JefeDeTerreno extends ElementoEnCampo {
                 while (linea != null){
                     String[] infoJefe = linea.split(";");
                     jefes.add(new JefeDeTerreno(
-                            infoJefe[0],
                             infoJefe[1],
-                            infoJefe[2],
-                            Integer.parseInt(infoJefe[3])));
+                            Integer.parseInt(infoJefe[2]),
+                            infoJefe[3],
+                            Integer.parseInt(infoJefe[4]),
+                            infoJefe[0]));
                     
                     linea = lector.readLine();
                 }
@@ -74,10 +78,11 @@ public class JefeDeTerreno extends ElementoEnCampo {
                         String[] infoJefe = linea.split(";");
                         
                         return new JefeDeTerreno(
-                            infoJefe[0],
                             infoJefe[1],
-                            infoJefe[2],
-                            Integer.parseInt(infoJefe[3]));
+                            Integer.parseInt(infoJefe[2]),
+                            infoJefe[3],
+                            Integer.parseInt(infoJefe[4]),
+                            infoJefe[0]);
                     }
                     
                     linea = lector.readLine();
@@ -92,16 +97,20 @@ public class JefeDeTerreno extends ElementoEnCampo {
         return null;
     }
 
-    public String getClave() {
-        return clave;
+    public String getNombreImagen() {
+        return nombreImagen;
     }
     
     public String getNombre() {
         return nombre;
     }
 
-    public String getHabilidad() {
+    public int getHabilidad() {
         return habilidad;
+    }
+
+    public String getDescHabilidad() {
+        return descHabilidad;
     }
 
     public int getPuntosVida() {

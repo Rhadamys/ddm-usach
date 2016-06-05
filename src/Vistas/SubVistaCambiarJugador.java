@@ -80,7 +80,7 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
             marcoJugador.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
             
             PanelImagen iconoJugador = new PanelImagen("/Imagenes/Jefes/" +
-                    jugador.getJefeDeTerreno().getClave() + ".png");
+                    jugador.getJefeDeTerreno().getNombreImagen() + ".png");
             this.contenedorJugadores.add(iconoJugador);
             iconoJugador.setSize(LADO, LADO);
             iconoJugador.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);

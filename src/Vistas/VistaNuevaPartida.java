@@ -5,14 +5,12 @@
  */
 package Vistas;
 
-import Modelos.Jugador;
 import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -21,14 +19,13 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class VistaNuevaPartida extends javax.swing.JInternalFrame {
     private SubVistaSeleccionEquipos visSelEq;
+    private SubVistaCambiarJugador visCamJug;
     private final ArrayList<SubVistaResumenJugador> vistasResJug;
     private final BotonImagen agregar;
     private final BotonCheckImagen enEquipos;
     private final BotonImagen volver;
     private final BotonImagen registrar;
     private final BotonImagen comenzar;
-    private final JLabel mensaje;
-    private final Font fuente;
     private final int[][] posVisResJug = 
     {{50, 90}, {410, 90}, {50, 275}, {410, 275}};
     
@@ -42,7 +39,6 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.vistasResJug = new ArrayList();
-        this.fuente = fuente;
         
         this.agregar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
         this.add(agregar);
@@ -104,15 +100,6 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         this.comenzar.setForeground(Color.white);
         this.comenzar.setFont(fuente);
         
-        this.mensaje = new JLabel("");
-        this.add(mensaje);
-        this.mensaje.setFont(fuente);
-        this.mensaje.setForeground(Color.white);
-        this.mensaje.setSize(520, 40);
-        this.mensaje.setLocation(245, 35);
-        this.mensaje.setHorizontalAlignment(JLabel.CENTER);
-        this.mensaje.setVerticalAlignment(JLabel.CENTER);
-        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
@@ -137,45 +124,8 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Agrega una "vista" de información de jugador a la vista de nueva partida.
-     * Esta vista es un resumen del jugador.
-     * @param jugador Jugador para el cual se crea la vista.
-     */    
-    public void agregarVistaInfoJugador(Jugador jugador){
-        if(vistasResJug.size() < 4){
-            SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jugador, this.fuente);
-            vistasResJug.add(visInfoJug);
-            this.add(visInfoJug, 0);
-            this.actualizarVista();
-        }else{
-            this.setMensaje("Máximo 4 jugadores.");
-        }
-    }
-    
-    /**
-     * Elimina una vista de información de jugador.
-     * @param i Índice de la vista a eliminar.
-     */
-    public void eliminarVisInfoJug(int i){
-        if(vistasResJug.size() > 2){
-            vistasResJug.get(i).setVisible(false);
-            vistasResJug.remove(i);
-            actualizarVista();
-        }else{
-            setMensaje("Mínimo 2 jugadores.");
-        }
-    }
-    
-    /**
-     * Actualiza esta vista para reordenar los elementos en ella de acuerdo a la
-     * cantidad de jugadores actual definidos para la partida.
-     */
-    public void actualizarVista(){
-        for(SubVistaResumenJugador infoJug: vistasResJug){
-            infoJug.setLocation(posVisResJug[vistasResJug.indexOf(infoJug)][0], 
-                    posVisResJug[vistasResJug.indexOf(infoJug)][1]);
-        }
+    public int[][] getPosVisResJug() {
+        return posVisResJug;
     }
     
     public BotonImagen getAgregar() {
@@ -198,7 +148,7 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         return comenzar;
     }
 
-    public ArrayList<SubVistaResumenJugador> getVistasInfoJug() {
+    public ArrayList<SubVistaResumenJugador> getVistasResJug() {
         return vistasResJug;
     }
 
@@ -206,12 +156,16 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         return visSelEq;
     }
 
+    public SubVistaCambiarJugador getVisCamJug() {
+        return visCamJug;
+    }
+
     public void setVisSelEq(SubVistaSeleccionEquipos visSelEq) {
         this.visSelEq = visSelEq;
     }
-    
-    public void setMensaje(String mensaje){
-        this.mensaje.setText(mensaje);
+
+    public void setVisCamJug(SubVistaCambiarJugador visCamJug) {
+        this.visCamJug = visCamJug;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

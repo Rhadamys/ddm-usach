@@ -29,7 +29,6 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     private final ArrayList<SubVistaInfoJugadorBatalla> vistasJugador;
     private final SubVistaSeleccionDespliegue visSelDesp;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
-    private final int[][] posJefTer = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
     
     /**
      * Creates new form VistaBatalla
@@ -137,14 +136,9 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.vistasJugador.get(i).setNombreJugador(jug.getNombreJugador());
         
         this.vistasJugador.get(i).setIconoJugador("/Imagenes/Jefes/" +
-                jug.getJefeDeTerreno().getClave() + ".png");
+                jug.getJefeDeTerreno().getNombreImagen() + ".png");
         
-        this.tablero.getPosiciones()[posJefTer[i][0]][posJefTer[i][1]].setImagenNormal(
-        "/Imagenes/Botones/casilla_j" + (i + 1) + ".png");
-        
-        this.tablero.getPosiciones()[posJefTer[i][0]][posJefTer[i][1]].setDueno(i + 1);
-        
-        this.tablero.reiniciarCasillas();
+        this.tablero.actualizarCasillas();
         
         this.add(this.vistasJugador.get(i), 0);
     }

@@ -126,7 +126,7 @@ public class ControladorRegistro {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                setJefe(JefeDeTerreno.getJefe(visSelJef.getJefes().get(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent())).getClave()));
+                setJefe(JefeDeTerreno.getJefe(visSelJef.getJefes().get(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent())).getNombreImagen()));
                 visSelJef.setVisible(false);
             }
         });
@@ -139,7 +139,7 @@ public class ControladorRegistro {
      */
     public void setJefe(JefeDeTerreno jefe) {
         this.jefe = jefe;
-        this.visReg.getIconoJefe().setImagen("/Imagenes/Jefes/" + jefe.getClave() + ".png");
+        this.visReg.getIconoJefe().setImagen("/Imagenes/Jefes/" + jefe.getNombreImagen() + ".png");
         this.visReg.getIconoJefe().setToolTipText(jefe.getNombre());
     }
     
@@ -172,7 +172,7 @@ public class ControladorRegistro {
                     }
 
                     // Se registra al usuario en el archivo
-                    escritor.println(usuario + ";" + pass + ";" + jefe.getClave() + lineaDados);
+                    escritor.println(usuario + ";" + pass + ";" + jefe.getNombreImagen() + lineaDados);
 
                     escritor.close();
 
@@ -181,7 +181,7 @@ public class ControladorRegistro {
                     SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
                             "<html><center>Registro exitoso. Ahora volverás a la<br>"
                             + "vista anterior.</center></html>",
-                            "Aceptar", this.contPrin.getFuente(), this.contPrin, -1);
+                            "Aceptar", this.contPrin.getFuente(), -1);
                     this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
                     visMen.setVisible(true);
                 } catch (IOException ex) {
@@ -199,8 +199,6 @@ public class ControladorRegistro {
         int nivelCriatura = 1;
         
         for(int i = 0; i < 15; i++){
-            dados.add(Dado.getDado(nivelCriatura));
-            
             if(i < 8){
                 nivelCriatura = 1;
             }else if(i < 12){
@@ -210,6 +208,8 @@ public class ControladorRegistro {
             }else{
                 nivelCriatura = 4;
             }
+            
+            dados.add(Dado.getDado(nivelCriatura));
         }
         
         return dados;

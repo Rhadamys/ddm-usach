@@ -14,16 +14,16 @@ import java.util.*;
 
 /** @pdOid dae863aa-62cf-47e0-9a47-196272f29518 */
 public class Criatura extends ElementoEnCampo {
-    private int nivel;
     private int puntosVida;
     private int puntosAtaque;
     private int puntosDefensa;
+    private final String nombreImagen;
     
-    public Criatura(int nivel, int puntosVida, int puntosAtaque, int puntosDefensa){
-        this.nivel = nivel;
+    public Criatura(int puntosVida, int puntosAtaque, int puntosDefensa, String nombreImagen){
         this.puntosVida = puntosVida;
         this.puntosAtaque = puntosAtaque;
         this.puntosDefensa = puntosDefensa;
+        this.nombreImagen = nombreImagen;
     }
     
     public static Criatura getCriatura(String claveCriatura){
@@ -43,7 +43,7 @@ public class Criatura extends ElementoEnCampo {
                                 Integer.parseInt(infoCriatura[1]),
                                 Integer.parseInt(infoCriatura[2]),
                                 Integer.parseInt(infoCriatura[3]),
-                                Integer.parseInt(infoCriatura[4]));
+                                infoCriatura[0]);
                     }
                     
                     linea = lector.readLine();
@@ -57,46 +57,6 @@ public class Criatura extends ElementoEnCampo {
         }
         
         return null;
-    }
-    
-    public static Criatura getCriatura(int nivelCriatura){
-        File archivoCriaturas = new File("src\\Otros\\criaturas.txt");
-        FileReader archivo;
-        try {
-            archivo = new FileReader(archivoCriaturas);
-            BufferedReader lector = new BufferedReader(archivo);
-
-            try {                
-                String linea = lector.readLine();
-                
-                while(linea != null){
-                    if(linea.contains(";" + nivelCriatura + ";")){
-                        String[] infoCriatura = linea.split(";");
-                        
-                        Criatura criatura = new Criatura(
-                                Integer.parseInt(infoCriatura[0]),
-                                Integer.parseInt(infoCriatura[1]),
-                                Integer.parseInt(infoCriatura[2]),
-                                Integer.parseInt(infoCriatura[3]));
-                        
-                        return criatura;
-                    }
-                    
-                    linea = lector.readLine();
-                    
-                }
-            } catch (IOException ex) {
-                return null;
-            }
-        } catch (FileNotFoundException ex) {
-            return null;
-        }
-        
-        return null;
-    }
-
-    public int getNivel() {
-        return nivel;
     }
 
     public int getPuntosVida() {
@@ -110,5 +70,8 @@ public class Criatura extends ElementoEnCampo {
     public int getPuntosDefensa() {
         return puntosDefensa;
     }
-    
+
+    public String getNombreImagen() {
+        return nombreImagen;
+    }
 }

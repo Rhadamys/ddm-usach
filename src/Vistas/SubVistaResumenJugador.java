@@ -38,7 +38,7 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.nombreJugador = new JLabel(jugador.getNombreJugador());
         this.tipoJugador = new JLabel(jugador.getTipoJugador());
         this.iconoJugador = new PanelImagen("/Imagenes/Jefes/" +
-                jugador.getJefeDeTerreno().getClave() + ".png");
+                jugador.getJefeDeTerreno().getNombreImagen() + ".png");
         this.cambiarJugador = new BotonImagen("/Imagenes/Botones/boton.png");
         this.modificarPuzle = new BotonImagen("/Imagenes/Botones/boton.png");
         this.eliminar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
@@ -118,7 +118,7 @@ public class SubVistaResumenJugador extends PanelImagen {
 
     public void actualizarInfoJug(Jugador jugador){
         this.dadosJugador = jugador.getDados();
-        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getClave() + ".png");
+        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNombreImagen() + ".png");
         this.nombreJugador.setText(jugador.getNombreJugador());
         this.tipoJugador.setText(jugador.getTipoJugador());
     }

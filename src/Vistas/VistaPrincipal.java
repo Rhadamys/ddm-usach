@@ -13,9 +13,7 @@ import javax.swing.JInternalFrame;
  *
  * @author mam28
  */
-public class VistaPrincipal extends javax.swing.JFrame {
-    private SubVistaCuadroDialogo visSalir;
-    
+public class VistaPrincipal extends javax.swing.JFrame {    
     /**
      * Creates new form VistaPrincipal
      */
@@ -39,7 +37,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         contenedor = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Dungeon Dice Monsters");
+        setTitle("Super Mario & Zelda | Dungeon Dice Monsters");
         setLocationByPlatform(true);
         setMaximumSize(new java.awt.Dimension(806, 629));
         setMinimumSize(new java.awt.Dimension(806, 629));

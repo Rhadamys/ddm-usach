@@ -18,6 +18,7 @@ public abstract class Jugador {
     protected String nombreJugador;
     protected String tipoJugador;
     protected JefeDeTerreno jefeDeTerreno;
+    protected Terreno terreno;
     protected int equipo;
     
     public static ArrayList<Jugador> getJugadores(){

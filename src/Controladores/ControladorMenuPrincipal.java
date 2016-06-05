@@ -22,9 +22,10 @@ public final class ControladorMenuPrincipal {
     public ControladorMenuPrincipal(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visMenuPrin = new VistaMenuPrincipal(this.contPrin.getFuente());
+        this.visMenuPrin = new VistaMenuPrincipal(
+                this.contPrin.getFuente(),
+                this.contPrin.getUsuarioActivo());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visMenuPrin);
-        this.setMensajeBienvenida(this.contPrin.getUsuarioActivo().getUsername());
         this.agregarListenersVistaMenuPrincipal();
         
         this.visMenLogOut = new SubVistaCuadroDialogo(
@@ -35,10 +36,6 @@ public final class ControladorMenuPrincipal {
 
     public VistaMenuPrincipal getVisMenuPrin() {
         return visMenuPrin;
-    }
-    
-    public void setMensajeBienvenida(String nombreUsuario) {
-        this.visMenuPrin.setMensajeBienvenida(nombreUsuario);
     }
     
     /**

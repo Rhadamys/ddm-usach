@@ -5,12 +5,15 @@
  */
 package Vistas;
 
+import Modelos.Jugador;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -24,9 +27,10 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form VistaMenuPrincipal
-     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
+     * @param fuente Fuente que se utilizará en esta vista.
+     * @param jugador Jugador que ha iniciado sesión
      */
-    public VistaMenuPrincipal(Font fuentePersonalizada) {
+    public VistaMenuPrincipal(Font fuente, Jugador jugador) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -79,12 +83,12 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
             this.add(panel);
         }
         
-        this.cerrarSesion = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
+        this.cerrarSesion = new BotonImagen();
         this.add(cerrarSesion);
         this.cerrarSesion.setSize(60, 60);
         this.cerrarSesion.setLocation(730, 10);
-        this.cerrarSesion.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
-        this.cerrarSesion.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
+        this.cerrarSesion.setImagenSobre("/Imagenes/Otros/cerrar_sesion.png");
+        this.cerrarSesion.setImagenPresionado("/Imagenes/Otros/cerrar_sesion_presionado.png");
         this.cerrarSesion.setLayout(null);
         this.cerrarSesion.addMouseListener(new MouseAdapter(){
                 @Override
@@ -98,22 +102,24 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
                 }
             });
         
-        PanelImagen iconoCerrarSesion = new PanelImagen("/Imagenes/Otros/cerrar_sesion.png");
-        this.cerrarSesion.add(iconoCerrarSesion);
-        iconoCerrarSesion.setSize(this.cerrarSesion.getWidth() / 2, this.cerrarSesion.getHeight() / 2);
-        iconoCerrarSesion.setLocation(
-                (this.cerrarSesion.getWidth() - iconoCerrarSesion.getWidth()) / 2,
-                (this.cerrarSesion.getHeight() - iconoCerrarSesion.getHeight()) / 2);
+        PanelImagen iconoJugador = new PanelImagen();
+        this.add(iconoJugador);
+        iconoJugador.setSize(60, 60);
+        iconoJugador.setLocation(730, 10);
+        iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNombreImagen() + ".png");
+        iconoJugador.setBorder(new LineBorder(Color.darkGray, 2));
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_menu_principal.png");
         panelFondo.setSize(this.getSize());
         this.add(panelFondo);
         
         this.mensaje.setText("");
-        this.mensaje.setFont(new Font(fuentePersonalizada.getName(), 
+        this.mensaje.setFont(new Font(fuente.getName(), 
                 Font.TRUETYPE_FONT, 36));
-        this.mensajeBienvenida.setFont(new Font(fuentePersonalizada.getName(), 
+        this.mensajeBienvenida.setFont(new Font(fuente.getName(), 
                 Font.TRUETYPE_FONT | Font.ITALIC, 24));
+        
+        this.mensajeBienvenida.setText("¡Bienvenid@ " + jugador.getNombreJugador() + "!");
     }
     
     /**
@@ -166,10 +172,6 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
 
     public BotonImagen getCerrarSesion() {
         return cerrarSesion;
-    }
-    
-    public void setMensajeBienvenida(String nombreUsuario){
-        this.mensajeBienvenida.setText("¡Bienvenid@ " + nombreUsuario + "!");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

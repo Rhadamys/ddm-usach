@@ -5,14 +5,17 @@
  ***********************************************************************/
 package Modelos;
 
-import java.awt.GridLayout;
 import java.util.*;
-import javax.swing.JInternalFrame;
 
 /** @pdOid 07aa83ed-8603-48f6-9dc8-14f936273e65 */
 public class Terreno {
+    private final ArrayList<Posicion> posiciones;
     
     public Terreno(){
-        
+        this.posiciones = new ArrayList();
+    }
+    
+    public void agregarCasillas(ArrayList<Posicion> posiciones){
+        this.posiciones.addAll(posiciones);
     }
 }

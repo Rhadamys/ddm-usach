@@ -23,24 +23,30 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     private final ArrayList<BotonCheckImagen> panelesDados;
+    private final ArrayList<BotonCheckImagen> seleccionados;
+    private final ArrayList<Dado> dados;
     private final ContenedorScroll contenedor;
     private final PanelImagen contenedorDados;
     private final BotonImagen lanzarDados;
-    private int seleccionados = 0;
     
     /**
      * Creates new form CompSelDados
      * @param fuente Fuente que se utilizará en esta vista.
      * @param dados Dados del jugador.
      */
-    public SubVistaSeleccionDados(Font fuente, ArrayList<Dado> dados) {
+    public SubVistaSeleccionDados(Font fuente, ArrayList<Dado> dados) {   
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
+        this.setLayout(null);
+        this.setBorder(null);
         this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
+        this.setBackground(new Color(0,0,0,0));   
+        
         this.panelesDados = new ArrayList();
+        this.seleccionados = new ArrayList();
+        this.dados = dados;
         
         this.contenedorDados = new PanelImagen();
         this.contenedorDados.setLayout(null);
@@ -88,6 +94,11 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         this.add(lanzarDados);
         this.lanzarDados.setText("Lanzar dados");
         this.lanzarDados.setFont(fuente);
+        this.lanzarDados.setForeground(Color.white);
+        this.lanzarDados.setSize(200, 50);
+        this.lanzarDados.setLocation(450, 450);
+        this.lanzarDados.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.lanzarDados.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
         this.add(panelFondo);
@@ -104,7 +115,6 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setBackground(new java.awt.Color(51, 51, 51));
-        setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -113,26 +123,30 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 806, Short.MAX_VALUE)
+            .addGap(0, 790, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
+            .addGap(0, 599, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     public ArrayList<BotonCheckImagen> getPanelesDados() {
         return panelesDados;
     }
 
-    public int getSeleccionados() {
+    public ArrayList<BotonCheckImagen> getSeleccionados() {
         return seleccionados;
     }
 
-    public void setSeleccionados(int seleccionados) {
-        this.seleccionados = seleccionados;
+    public BotonImagen getLanzarDados() {
+        return lanzarDados;
+    }
+
+    public ArrayList<Dado> getDados() {
+        return dados;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

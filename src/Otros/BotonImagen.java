@@ -75,9 +75,9 @@ public class BotonImagen extends JButton {
     
     @Override
     public void paint(Graphics g) {
-        g.drawImage(imagenActual, 0, 0, getWidth(), getHeight(),
-                        this);
+        g.drawImage(imagenActual, 0, 0, getWidth(), getHeight(), this);
         
+        this.setOpaque(false);
         super.paint(g);
     }
     
@@ -130,31 +130,6 @@ public class BotonImagen extends JButton {
      */
     public void setImagenPresionado(String imagen){
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando el mouse se encuentre sobre
-     * el botón
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenSobre(Image imagen){
-        imagenMouseSobre = imagen;
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando el mouse salga del botón.
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenNormal(Image imagen){
-        imagenMouseNormal = imagen;
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando se presiona el botón.
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenPresionado(Image imagen){
-        imagenMousePresionado = imagen;
     }
     
     public void setImagenActual(int i){

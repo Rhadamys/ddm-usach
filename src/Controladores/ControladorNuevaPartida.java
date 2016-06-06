@@ -40,18 +40,7 @@ public class ControladorNuevaPartida {
         this.agregarJugador(this.obtenerJugadorAleatorio());
     }
     
-    public Jugador obtenerJugadorAleatorio(){
-        ArrayList<Jugador> jugDisponibles = Jugador.getJugadores(jugadores);
-        Random rnd = new Random();
-        return jugDisponibles.get(rnd.nextInt(jugDisponibles.size()));
-    }
-    
-    /**
-     * Muestra la vista de nueva partida instanciada en este controlador.
-     */
-    public void mostrarVistaNuevaPartida(){
-        this.visNuePar.setVisible(true);
-    }
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista de nueva partida">  
     
     /**
      * Agrega los listeners a los componentes de la vista de nueva partida y
@@ -96,6 +85,114 @@ public class ControladorNuevaPartida {
     }
     
     /**
+     * Muestra la vista de nueva partida instanciada en este controlador.
+     */
+    public void mostrarVistaNuevaPartida(){
+        this.visNuePar.setVisible(true);
+    }
+    
+    /**
+     * Agrega un jugador a la partida.
+     * @param jug Jugador que se agregará.
+     */
+    public void agregarJugador(Jugador jug){
+        if(this.jugadores.size() < 4){
+            this.jugadores.add(jug);
+            
+            SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jug, this.contPrin.getFuente());
+            this.visNuePar.getVistasResJug().add(visInfoJug);
+            this.visNuePar.add(this.visNuePar.getVistasResJug().get(this.visNuePar.getVistasResJug().size() - 1), 0);
+            this.actualizarPosicionVistasResJug();
+        
+            this.agregarListenersVistaInfoJugador(this.visNuePar.getVistasResJug()
+                    .get(this.visNuePar.getVistasResJug().size() - 1));
+
+            try{
+                this.visNuePar.getVisSelEq().agregarJugador(jug);
+                this.agregarListenersVistaSeleccionEquipos(
+                        this.visNuePar.getVisSelEq().getIconosJugadores().size() - 1);
+            }catch(Exception e){
+                // Nada
+            }
+            
+            this.actualizarPosicionVistasResJug();
+        }else{
+            this.mostrarCuadroDialogo("Máximo 4 jugadores.");
+        }
+    }
+    
+    /**
+     * Se elimina un jugador de la partida.
+     * @param i Índice del jugador a eliminar.
+     */
+    public void eliminarJugador(int i){
+        if(this.visNuePar.getVistasResJug().size() > 2){
+            this.jugadores.remove(i);
+            
+            this.visNuePar.getVistasResJug().get(i).setVisible(false);
+            this.visNuePar.getVistasResJug().remove(i);
+            actualizarPosicionVistasResJug();
+            
+            try{
+                this.visNuePar.getVisSelEq().eliminarJugador(i);
+                if(this.jugadores.size() == 2){
+                    this.enSolitario();
+                }
+            }catch(Exception e){
+                // Nada
+            }
+            
+            this.actualizarPosicionVistasResJug();
+        }else{
+            this.mostrarCuadroDialogo("Mínimo 2 jugadores.");
+        }
+    }
+    
+    /**
+     * Obtiene un jugador aleatorio de entre los que no están actualmente en la partida.
+     * @return Instancia de jugador.
+     */
+    public Jugador obtenerJugadorAleatorio(){
+        ArrayList<Jugador> jugDisponibles = Jugador.getJugadores(jugadores);
+        Random rnd = new Random();
+        return jugDisponibles.get(rnd.nextInt(jugDisponibles.size()));
+    }
+
+    /**
+     * Vuelve a la vista de menú principal.
+     */
+    public void volver(){
+        this.visNuePar.dispose();
+        contPrin.crearControladorMenuPrincipal();
+        contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+    }
+    
+    /**
+     * Comienza la partida con los jugadores agregados en la vista de nueva partida.
+     */
+    public void comenzarPartida(){
+        this.contPrin.crearControladorBatalla(this.jugadores);
+        this.contPrin.getContBat().mostrarVistaBatalla();
+        
+        visNuePar.dispose();
+    }
+    
+    /**
+     * Muestra un cuadro de diálogo con un mensaje.
+     * @param mensaje Mensaje que se mostrará en el cuadro de diálogo.
+     */
+    public void mostrarCuadroDialogo(String mensaje){
+        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
+                mensaje, "Aceptar", this.contPrin.getFuente(), -1);
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
+        visMen.setVisible(true);
+    }
+    
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista de resumen de jugador">
+    
+    /**
      * Agrega los listeners a los componentes de la vista de información de jugador
      * en la vista de nueva partida y define las acciones a realizar.
      * @param visInfoJug Vista a la que se agregarán los listeners.
@@ -123,12 +220,81 @@ public class ControladorNuevaPartida {
             }
         });
     }
+    
+// </editor-fold>
+  
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista de selección de equipos">  
+    
+    /**
+     * Crea la "vista" de selección de equipos y le agrega los jugadores que se
+     * encuentran actualmente en la vista de nueva partida.
+     */
+    public void crearVistaSeleccionEquipos(){
+        this.visNuePar.setVisSelEq(new SubVistaSeleccionEquipos());
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar.getVisSelEq());
+        this.visNuePar.add(this.visNuePar.getVisSelEq(), 0);
+        this.visNuePar.getVisSelEq().setLocation(280, 475);
+        this.visNuePar.getVisSelEq().setVisible(true);
+        
+        for(int i = 0; i < this.jugadores.size(); i++){
+            this.visNuePar.getVisSelEq().agregarJugador(this.jugadores.get(i));
+            this.agregarListenersVistaSeleccionEquipos(i);
+        }
+    }
+    
+    /**
+     * Agrega los listeners a un jugador en la vista de selección de equipos.
+     * @param i Índice del componente al que se agregarán los listeners.
+     */
+    public void agregarListenersVistaSeleccionEquipos(int i){
+        this.visNuePar.getVisSelEq().getIconosJugadores().get(i).addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                visNuePar.getVisSelEq().cambiarEquipo(e.getComponent());
+            }
+        });
+    }
+    
+    /**
+     * Cambia el estado actual de la partida, determinando si la partida es o no
+     * en equipos.
+     */
+    public void enEquipos(){
+        try{
+            this.enSolitario();
+        }catch(Exception e){
+            if(this.jugadores.size() >= 3){
+                this.crearVistaSeleccionEquipos();
+            }else{
+                this.mostrarCuadroDialogo("<html><center>Se necesitan mínimo 3 jugadores para<br>formar equipos.</center></html>");
+                this.visNuePar.getEnEquipos().setSelected(false);
+            }
+        }
+    }
+    
+    /**
+     * Cambia el estado de la partida a partida en solitario.
+     */
+    public void enSolitario(){
+        this.visNuePar.getVisSelEq().dispose();
+        this.visNuePar.setVisSelEq(null);
+
+        for(Jugador jug: this.jugadores){
+            jug.setEquipo(0);
+        }
+        
+        this.visNuePar.getEnEquipos().setSelected(false);
+    }
+    
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista para cambiar un jugador">
         
     /**
      * Actualiza esta vista para reordenar los elementos en ella de acuerdo a la
      * cantidad de jugadores actual definidos para la partida.
      */
-    public void actualizarPosicionVistasInfoJug(){
+    public void actualizarPosicionVistasResJug(){
         for(int i = 0; i < this.visNuePar.getVistasResJug().size(); i++){
             this.visNuePar.getVistasResJug().get(i).setLocation(
                     this.visNuePar.getPosVisResJug()[i][0], 
@@ -204,148 +370,6 @@ public class ControladorNuevaPartida {
         this.visNuePar.getVisCamJug().dispose();
     }
     
-    /**
-     * Agrega un jugador a la partida.
-     * @param jug Jugador que se agregará.
-     */
-    public void agregarJugador(Jugador jug){
-        if(this.jugadores.size() < 4){
-            this.jugadores.add(jug);
-            
-            SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jug, this.contPrin.getFuente());
-            this.visNuePar.getVistasResJug().add(visInfoJug);
-            this.visNuePar.add(this.visNuePar.getVistasResJug().get(this.visNuePar.getVistasResJug().size() - 1), 0);
-            this.actualizarPosicionVistasInfoJug();
-        
-            this.agregarListenersVistaInfoJugador(this.visNuePar.getVistasResJug()
-                    .get(this.visNuePar.getVistasResJug().size() - 1));
-
-            try{
-                this.visNuePar.getVisSelEq().agregarJugador(jug);
-                this.agregarListenersVistaSeleccionEquipos(
-                        this.visNuePar.getVisSelEq().getIconosJugadores().size() - 1);
-            }catch(Exception e){
-                // Nada
-            }
-            
-            this.actualizarPosicionVistasInfoJug();
-        }else{
-            this.mostrarMensaje("Máximo 4 jugadores.");
-        }
-    }
+// </editor-fold>
     
-    /**
-     * Se elimina un jugador de la partida.
-     * @param i Índice del jugador a eliminar.
-     */
-    public void eliminarJugador(int i){
-        if(this.visNuePar.getVistasResJug().size() > 2){
-            this.jugadores.remove(i);
-            
-            this.visNuePar.getVistasResJug().get(i).setVisible(false);
-            this.visNuePar.getVistasResJug().remove(i);
-            actualizarPosicionVistasInfoJug();
-            
-            try{
-                this.visNuePar.getVisSelEq().eliminarJugador(i);
-                if(this.jugadores.size() == 2){
-                    this.enSolitario();
-                }
-            }catch(Exception e){
-                // Nada
-            }
-            
-            this.actualizarPosicionVistasInfoJug();
-        }else{
-            this.mostrarMensaje("Mínimo 2 jugadores.");
-        }
-    }
-    
-    /**
-     * Crea la "vista" de selección de equipos y le agrega los jugadores que se
-     * encuentran actualmente en la vista de nueva partida.
-     */
-    public void crearVistaSeleccionEquipos(){
-        this.visNuePar.setVisSelEq(new SubVistaSeleccionEquipos());
-        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar.getVisSelEq());
-        this.visNuePar.add(this.visNuePar.getVisSelEq(), 0);
-        this.visNuePar.getVisSelEq().setLocation(280, 475);
-        this.visNuePar.getVisSelEq().setVisible(true);
-        
-        for(int i = 0; i < this.jugadores.size(); i++){
-            this.visNuePar.getVisSelEq().agregarJugador(this.jugadores.get(i));
-            this.agregarListenersVistaSeleccionEquipos(i);
-        }
-    }
-    
-    /**
-     * Agrega los listeners a un jugador en la vista de selección de equipos.
-     * @param i Índice del componente al que se agregarán los listeners.
-     */
-    public void agregarListenersVistaSeleccionEquipos(int i){
-        this.visNuePar.getVisSelEq().getIconosJugadores().get(i).addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                visNuePar.getVisSelEq().cambiarEquipo(e.getComponent());
-            }
-        });
-    }
-    
-    /**
-     * Cambia el estado actual de la partida, determinando si la partida es o no
-     * en equipos.
-     */
-    public void enEquipos(){
-        try{
-            this.enSolitario();
-        }catch(Exception e){
-            if(this.jugadores.size() >= 3){
-                this.crearVistaSeleccionEquipos();
-            }else{
-                this.mostrarMensaje("<html><center>Se necesitan mínimo 3 jugadores para<br>formar equipos.</center></html>");
-                this.visNuePar.getEnEquipos().setSelected(false);
-            }
-        }
-    }
-    
-    /**
-     * Cambia el estado de la partida a partida en solitario.
-     */
-    public void enSolitario(){
-        this.visNuePar.getVisSelEq().dispose();
-        this.visNuePar.setVisSelEq(null);
-
-        for(Jugador jug: this.jugadores){
-            jug.setEquipo(0);
-        }
-        
-        this.visNuePar.getEnEquipos().setSelected(false);
-        this.visNuePar.getEnEquipos().setImagenActual(0);
-    }
-
-    /**
-     * Vuelve a la vista de menú principal.
-     */
-    public void volver(){
-        this.visNuePar.dispose();
-        contPrin.crearControladorMenuPrincipal();
-        contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
-    }
-    
-    /**
-     * Comienza la partida con los jugadores agregados en la vista de nueva partida.
-     */
-    public void comenzarPartida(){
-        this.contPrin.crearControladorBatalla(this.jugadores);
-        this.contPrin.getContBat().mostrarVistaBatalla();
-        
-        visNuePar.dispose();
-    }
-    
-    public void mostrarMensaje(String mensaje){
-        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                mensaje, "Aceptar", this.contPrin.getFuente(), -1);
-        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
-        visMen.setVisible(true);
-    }
 }

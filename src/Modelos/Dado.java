@@ -17,10 +17,10 @@ import java.util.Random;
 public class Dado {
     private final Criatura criatura;
     private final int nivel;
-    private final String[] caras;
+    private final int[] caras;
     private final String clave;
     
-    public Dado(Criatura criatura, int nivel, String[] caras, String clave){
+    public Dado(Criatura criatura, int nivel, int[] caras, String clave){
         this.criatura = criatura;
         this.nivel = nivel;
         this.caras = caras;
@@ -41,8 +41,13 @@ public class Dado {
                     if(linea.startsWith(claveDado)){
                         String[] infoDado = linea.split(";");
                         
-                        String[] caras = {infoDado[3], infoDado[4],
-                            infoDado[5], infoDado[6], infoDado[7], infoDado[8]};
+                        int[] caras = {
+                            Integer.parseInt(infoDado[3]),
+                            Integer.parseInt(infoDado[4]),
+                            Integer.parseInt(infoDado[5]),
+                            Integer.parseInt(infoDado[6]),
+                            Integer.parseInt(infoDado[7]),
+                            Integer.parseInt(infoDado[8])};
                         
                         lector.close();
                         archivo.close();
@@ -89,8 +94,13 @@ public class Dado {
                 
                 String[] infoDado = lineasDado.get(new Random().nextInt(lineasDado.size()));
                 
-                String[] caras = {infoDado[3],infoDado[4], infoDado[5],
-                    infoDado[6], infoDado[7], infoDado[8]};
+                int[] caras = {
+                    Integer.parseInt(infoDado[3]),
+                    Integer.parseInt(infoDado[4]),
+                    Integer.parseInt(infoDado[5]),
+                    Integer.parseInt(infoDado[6]),
+                    Integer.parseInt(infoDado[7]),
+                    Integer.parseInt(infoDado[8])};
 
                 lector.close();
                 archivo.close();
@@ -117,7 +127,7 @@ public class Dado {
         return nivel;
     }
 
-    public String[] getCaras() {
+    public int[] getCaras() {
         return caras;
     }
 

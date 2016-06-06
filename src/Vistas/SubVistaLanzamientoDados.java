@@ -5,17 +5,48 @@
  */
 package Vistas;
 
+import Modelos.Dado;
+import Otros.PanelImagen;
+import java.awt.Color;
+import java.util.ArrayList;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 /**
  *
  * @author mam28
  */
 public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
-
+    
     /**
      * Creates new form CompLanzamientoDados
+     * @param caras
+     * @param dados
      */
-    public SubVistaLanzamientoDados() {
+    public SubVistaLanzamientoDados(int[] caras, ArrayList<Dado> dados) {
         initComponents();
+        
+        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        
+        this.setLayout(null);
+        this.setBorder(null);
+        this.setOpaque(false);
+        this.setBackground(new Color(0,0,0,0));
+        
+        final int ANCHO = 180;
+        final int ALTO = ANCHO * 2;
+        final int SEP = (800 - ANCHO * dados.size()) / (dados.size() + 1);
+        
+        for(int i = 0; i < dados.size(); i++){
+            PanelImagen dado = new PanelImagen("/Imagenes/Dados/dado_" + dados.get(i).getNivel() 
+                    + "_" + caras[i] + ".gif");
+            this.add(dado);
+            dado.setSize(ANCHO, ALTO);
+            dado.setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
+        }
+        
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_lanzamiento_dados.png");
+        this.add(panelFondo);
+        panelFondo.setSize(this.getSize());
     }
 
     /**

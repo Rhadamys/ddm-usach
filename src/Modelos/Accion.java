@@ -11,9 +11,9 @@ import java.util.*;
 public class Accion {
     private int accion;
     
-    public static String[] lanzarDados(ArrayList<Dado> dados){
+    public static int[] lanzarDados(ArrayList<Dado> dados){
         Random rnd = new Random();
-        String[] caras = new String[dados.size()];
+        int[] caras = new int[dados.size()];
         
         for(Dado dado: dados){
             caras[dados.indexOf(dado)] = dado.getCaras()[rnd.nextInt(5)];

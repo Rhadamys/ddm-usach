@@ -35,10 +35,9 @@ public class CajaTextoImagen extends JTextField {
     
     @Override
     public void paint(Graphics g) {
-        g.drawImage(imagen, 0, 0, getWidth(), getHeight(),
-                        this);
- 
-        setOpaque(false);
+        g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+        
+        this.setOpaque(false);
         super.paint(g);
     }
 

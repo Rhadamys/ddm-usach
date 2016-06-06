@@ -5,22 +5,25 @@
  */
 package Controladores;
 
+import Modelos.Accion;
+import Modelos.Dado;
 import Modelos.Jugador;
 import Modelos.Tablero;
+import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
 import Vistas.SubVistaCuadroDialogo;
+import Vistas.SubVistaLanzamientoDados;
 import Vistas.SubVistaPosicion;
 import Vistas.SubVistaTablero;
 import Vistas.VistaBatalla;
 import Vistas.SubVistaMenuPausa;
+import Vistas.SubVistaSeleccionDados;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -31,7 +34,7 @@ public class ControladorBatalla {
     private final VistaBatalla visBat;
     private final SubVistaMenuPausa visPausBat;
     private final SubVistaCuadroDialogo visVolMenuPrin;
-    private Tablero tablero;
+    private final Tablero tablero;
     private final int[][] posJugTab = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
     
     public ControladorBatalla(
@@ -44,7 +47,8 @@ public class ControladorBatalla {
         this.visBat = new VistaBatalla(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visBat);
         // Instancia y agrega el tablero a la vista batalla
-        this.crearTablero();
+        this.tablero = new Tablero();
+        this.crearVistaTablero();
         // Agrega los listeners a los componentes de la vista batalla
         this.agregarListenersVistaBatalla();
         
@@ -66,13 +70,85 @@ public class ControladorBatalla {
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visVolMenuPrin);
     }
     
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con vista batalla">   
+    
+    /**
+     * Agrega las vistas de resumen de información de jugador para los jugadores
+     * que conforman esta partida.
+     * @param jugPartida Jugadores de la partida para los cuales se crearán las
+     * vistas.
+     */
+    public void agregarJugadoresPartida(ArrayList<Jugador> jugPartida){
+        for(int i = 0; i < jugPartida.size(); i++){
+            this.visBat.agregarJugador(jugPartida.get(i));
+            this.visBat.getTablero().marcarCasilla(posJugTab[i], i + 1);
+            this.tablero.asignarCasilla(posJugTab[i], i + 1);
+        }
+        
+        this.visBat.getTablero().actualizarCasillas();
+    }
+       
+    /**
+     * Agrega los listeners a los componentes de la vista de batalla.
+     */
+    public void agregarListenersVistaBatalla(){
+        this.visBat.addMouseMotionListener(new MouseMotionAdapter(){
+            @Override
+            public void mouseMoved(MouseEvent e){
+                visBat.setMensaje("");
+            }
+        });
+        
+        this.visBat.getInvocacion().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                mostrarVistaSeleccionarDespliegue();
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                visBat.setMensaje("Invocar criatura");
+            }
+        });
+        
+        this.visBat.getAtaque().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                crearVistaSeleccionDados(tablero.getJugadores().get(tablero.getTurnoActual()));
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                visBat.setMensaje("Realizar un ataque");
+            }
+        });
+        
+        this.visBat.getPausa().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                cambiarVisibilidadVistaPausaBatalla();
+            }
+        });
+    }
+    
+    public void mostrarVistaBatalla(){
+        this.visBat.setVisible(true);
+    }
+
+    public VistaBatalla getVisBat() {
+        return visBat;
+    }
+    
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista tablero">    
+    
     /**
      * Instancia una nueva "vista" de tablero y la agrega a la vista de batalla
      * instanciada en este controlador. Además, crea una nueva instancia del modelo
      * Tablero y la almacena en este controlador.
      */
-    public void crearTablero(){
-        this.tablero = new Tablero();
+    public void crearVistaTablero(){
         this.visBat.setTablero(new SubVistaTablero());
         
         for(int i = 0; i < 15; i++){
@@ -145,97 +221,6 @@ public class ControladorBatalla {
     }
     
     /**
-     * Agrega los listeners a los componentes de la vista de batalla.
-     */
-    public void agregarListenersVistaBatalla(){
-        this.visBat.addMouseMotionListener(new MouseMotionAdapter(){
-            @Override
-            public void mouseMoved(MouseEvent e){
-                visBat.setMensaje("");
-            }
-        });
-        
-        this.visBat.addInternalFrameListener(new InternalFrameAdapter(){
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e){
-                
-            }
-        });
-        
-        this.visBat.getInvocacion().addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                mostrarVistaSeleccionarDespliegue();
-            }
-            
-            @Override
-            public void mouseEntered(MouseEvent e){
-                visBat.setMensaje("Invocar criatura");
-            }
-        });
-        
-        this.visBat.getPausa().addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e){
-                cambiarVisibilidadVistaPausaBatalla();
-            }
-        });
-    }
-    
-    /**
-     * Agrega los listeners a la "vista" de selección de despliegue de dados.
-     */
-    public void agregarListenersVistaSeleccionarDespliegue(){        
-        for(BotonImagen botonDespliegue: this.visBat.getVisSelDesp().getBotonesDespliegue()){
-            botonDespliegue.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent e){
-                    cambiarDespliegue(Integer.parseInt(e.getComponent().getName()));
-                    ocultarVistaSeleccionarDespliegue();
-                }
-            });
-        }
-    }
-    
-    /**
-     * Agrega las vistas de resumen de información de jugador para los jugadores
-     * que conforman esta partida.
-     * @param jugPartida Jugadores de la partida para los cuales se crearán las
-     * vistas.
-     */
-    public void agregarJugadoresPartida(ArrayList<Jugador> jugPartida){
-        for(int i = 0; i < jugPartida.size(); i++){
-            this.visBat.agregarJugador(jugPartida.get(i));
-            this.visBat.getTablero().marcarCasilla(posJugTab[i], i + 1);
-            this.tablero.asignarCasilla(posJugTab[i], i + 1);
-        }
-        
-        this.visBat.getTablero().actualizarCasillas();
-    }
-    
-    public void mostrarVistaBatalla(){
-        this.visBat.setVisible(true);
-    }
-    
-    public void mostrarVistaSeleccionarDespliegue(){
-        this.visBat.getVisSelDesp().setVisible(true);
-    }
-    
-    public void ocultarVistaSeleccionarDespliegue(){
-        this.visBat.getVisSelDesp().setVisible(false);
-    }
-    
-    /**
-     * Cambia el valor del despliegue a mostrar en el tablero.
-     * @param numDespliegue Número de despliegue a mostrar.
-     */
-    public void cambiarDespliegue(int numDespliegue){
-        this.tablero.setAccion(1);
-        this.tablero.setNumDespliegue(numDespliegue);
-        this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
-    }
-    
-    /**
      * Pinta los botones que conforman el despliegue de dados en la posición indicada
      * por el botón actual sobre el que se encuentra el mouse.
      * @param numDespliegue Número del despliegue a mostrar.
@@ -283,7 +268,105 @@ public class ControladorBatalla {
             this.visBat.setMensaje("No es posible invocar en esta posición.");
         }
     }
-
+    
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista de selección de dados">  
+    
+    public void crearVistaSeleccionDados(Jugador jugador){
+        this.visBat.setVisSelDados(new SubVistaSeleccionDados(this.contPrin.getFuente(), jugador.getDados()));
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisSelDados());
+        this.visBat.getVisSelDados().setVisible(true);
+        
+        for(int i = 0; i < this.visBat.getVisSelDados().getPanelesDados().size(); i++){
+            this.agregarListenersVistaSeleccionDados(i);
+        }
+    }
+    
+    public void agregarListenersVistaSeleccionDados(int i){
+        this.visBat.getVisSelDados().getPanelesDados().get(i).addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                cambiarEstadoPanelDado((BotonCheckImagen) e.getComponent());
+            }
+        });
+        
+        this.visBat.getVisSelDados().getLanzarDados().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                lanzarDados();
+            }
+        });
+    }
+    
+    public void cambiarEstadoPanelDado(BotonCheckImagen panelDado){
+        if(panelDado.isSelected()){
+            if(this.visBat.getVisSelDados().getSeleccionados().size() < 4){
+                this.visBat.getVisSelDados().getSeleccionados().add(panelDado);
+            }else{
+                System.out.println("Entro aquí");
+                panelDado.setSelected(false);
+            }
+        }else{
+            this.visBat.getVisSelDados().getSeleccionados().remove(panelDado);
+        }
+    }
+    
+    public void lanzarDados(){
+        this.visBat.getVisSelDados().setVisible(false);
+        
+        ArrayList<Dado> dados = new ArrayList();
+        
+        for(BotonCheckImagen panelDado: this.visBat.getVisSelDados().getSeleccionados()){
+            dados.add(Dado.getDado(this.visBat.getVisSelDados().getDados().get(
+                    this.visBat.getVisSelDados().getPanelesDados().indexOf(panelDado)).getClave()));
+        }
+        
+        this.visBat.setVisLanDados(new SubVistaLanzamientoDados(Accion.lanzarDados(dados), dados));
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisLanDados());
+        this.visBat.getVisLanDados().setVisible(true);
+    }
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista de selección de despliegue"> 
+    
+    /**
+     * Agrega los listeners a la "vista" de selección de despliegue de dados.
+     */
+    public void agregarListenersVistaSeleccionarDespliegue(){        
+        for(BotonImagen botonDespliegue: this.visBat.getVisSelDesp().getBotonesDespliegue()){
+            botonDespliegue.addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    cambiarDespliegue(Integer.parseInt(e.getComponent().getName()));
+                    ocultarVistaSeleccionarDespliegue();
+                }
+            });
+        }
+    }
+    
+    public void mostrarVistaSeleccionarDespliegue(){
+        this.visBat.getVisSelDesp().setVisible(true);
+    }
+    
+    public void ocultarVistaSeleccionarDespliegue(){
+        this.visBat.getVisSelDesp().setVisible(false);
+    }
+    
+    /**
+     * Cambia el valor del despliegue a mostrar en el tablero.
+     * @param numDespliegue Número de despliegue a mostrar.
+     */
+    public void cambiarDespliegue(int numDespliegue){
+        this.tablero.setAccion(1);
+        this.tablero.setNumDespliegue(numDespliegue);
+        this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
+    }
+    
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista pausa batalla">
+    
     public void agregarListenersVistaPausaBatalla(){
         this.visPausBat.getContinuarPartida().addMouseListener(new MouseAdapter(){
             @Override
@@ -310,16 +393,15 @@ public class ControladorBatalla {
     public void cambiarVisibilidadVistaPausaBatalla(){
         this.visPausBat.setVisible(!this.visPausBat.isVisible());
     }
-    
-    public void volverMenuPrincipal(){
-        this.visVolMenuPrin.setVisible(true);
-    }
-
-    public VistaBatalla getVisBat() {
-        return visBat;
-    }
 
     public SubVistaMenuPausa getVisPausBat() {
         return visPausBat;
     }
+    
+    public void volverMenuPrincipal(){
+        this.visVolMenuPrin.setVisible(true);
+    }
+    
+// </editor-fold>
+    
 }

@@ -10,7 +10,6 @@ import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Font;
 import java.util.ArrayList;
-import javax.swing.JLabel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -28,6 +27,8 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     private final BotonImagen pausa;
     private final ArrayList<SubVistaInfoJugadorBatalla> vistasJugador;
     private final SubVistaSeleccionDespliegue visSelDesp;
+    private SubVistaSeleccionDados visSelDados;
+    private SubVistaLanzamientoDados visLanDados;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
     
     /**
@@ -175,12 +176,16 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return vistasJugador;
     }
 
-    public JLabel getMensaje() {
-        return mensaje;
-    }
-
     public SubVistaSeleccionDespliegue getVisSelDesp() {
         return visSelDesp;
+    }
+
+    public SubVistaSeleccionDados getVisSelDados() {
+        return visSelDados;
+    }
+
+    public SubVistaLanzamientoDados getVisLanDados() {
+        return visLanDados;
     }
 
     public void setTablero(SubVistaTablero tablero) {
@@ -189,6 +194,14 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     
     public void setMensaje(String mensaje){
         this.mensaje.setText(mensaje);
+    }
+
+    public void setVisSelDados(SubVistaSeleccionDados visSelDados) {
+        this.visSelDados = visSelDados;
+    }
+
+    public void setVisLanDados(SubVistaLanzamientoDados visLanDados) {
+        this.visLanDados = visLanDados;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

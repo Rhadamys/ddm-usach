@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
+import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -28,7 +29,6 @@ public class BotonCheckImagen extends JToggleButton {
     public BotonCheckImagen(){
         this.setContentAreaFilled(false);
         this.setBorder(null);
-        repaint();
         agregarListeners();
     }
     
@@ -37,14 +37,13 @@ public class BotonCheckImagen extends JToggleButton {
      * @param imagen String - Nombre del archivo.
      */
     public BotonCheckImagen(String imagen){
-        //Inicializar panel de fondo        
+        //Inicializar panel de fondo
         imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
         this.imagen = imagenMouseSobre;
         this.setContentAreaFilled(false);
         this.setBorder(null);
-        repaint();
         agregarListeners();
     }
     
@@ -89,23 +88,22 @@ public class BotonCheckImagen extends JToggleButton {
                     ((BotonCheckImagen) e.getComponent()).setImagenActual(1);
                 }
             }
-            
-            @Override
-            public void mouseClicked(MouseEvent e){
-                if(((BotonCheckImagen) e.getComponent()).isSelected()){
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(4);
-                }else{
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(1);
-                }
+        });
+        
+        this.addChangeListener((ChangeEvent e) -> {
+            if(((BotonCheckImagen) e.getSource()).isSelected()){
+                ((BotonCheckImagen) e.getSource()).setImagenActual(3);
+            }else{
+                ((BotonCheckImagen) e.getSource()).setImagenActual(1);
             }
         });
     }
     
     @Override
     public void paint(Graphics g) {
-        g.drawImage(imagen, 0, 0, getWidth(), getHeight(),
-                        this);
+        g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
         
+        this.setOpaque(false);
         super.paint(g);
     }
     
@@ -161,28 +159,11 @@ public class BotonCheckImagen extends JToggleButton {
     }
     
     /**
-     * Define la imagen que se mostrará cuando el mouse se encuentre sobre
-     * el botón
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenSobre(Image imagen){
-        imagenMouseSobre = imagen;
-    }
-    
-    /**
      * Define la imagen que se mostrará cuando el mouse salga del botón.
      * @param imagen String - Nombre del archivo
      */
-    public void setImagenNormal(Image imagen){
-        imagenMouseNormal = imagen;
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando se presiona el botón.
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenPresionado(Image imagen){
-        imagenMousePresionado = imagen;
+    public void setImagenSelNormal(String imagen){
+        imagenSelMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
     /**
@@ -195,44 +176,11 @@ public class BotonCheckImagen extends JToggleButton {
     }
     
     /**
-     * Define la imagen que se mostrará cuando el mouse salga del botón.
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenSelNormal(String imagen){
-        imagenSelMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
-    }
-    
-    /**
      * Define la imagen que se mostrará cuando se presiona el botón.
      * @param imagen String - Nombre del archivo
      */
     public void setImagenSelPresionado(String imagen){
         imagenSelMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando el mouse se encuentre sobre
-     * el botón
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenSelSobre(Image imagen){
-        imagenSelMouseSobre = imagen;
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando el mouse salga del botón.
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenSelNormal(Image imagen){
-        imagenSelMouseNormal = imagen;
-    }
-    
-    /**
-     * Define la imagen que se mostrará cuando se presiona el botón.
-     * @param imagen String - Nombre del archivo
-     */
-    public void setImagenSelPresionado(Image imagen){
-        imagenSelMousePresionado = imagen;
     }
     
     public void setImagenActual(int i){

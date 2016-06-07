@@ -6,8 +6,10 @@
 package Vistas;
 
 import Modelos.Dado;
+import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -16,13 +18,15 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
+    private final BotonImagen aculumarPuntos;
+    private final BotonImagen realizarAcciones;
     
     /**
      * Creates new form CompLanzamientoDados
      * @param caras
      * @param dados
      */
-    public SubVistaLanzamientoDados(int[] caras, ArrayList<Dado> dados) {
+    public SubVistaLanzamientoDados(int[] caras, ArrayList<Dado> dados, Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -31,6 +35,24 @@ public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
         this.setBorder(null);
         this.setOpaque(false);
         this.setBackground(new Color(0,0,0,0));
+        
+        this.aculumarPuntos = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.realizarAcciones = new BotonImagen("/Imagenes/Botones/boton.png");
+        
+        this.add(aculumarPuntos);
+        this.add(realizarAcciones);
+        
+        this.aculumarPuntos.setSize(200, 40);
+        this.aculumarPuntos.setLocation(170, 540);
+        this.aculumarPuntos.setFont(fuente);
+        this.aculumarPuntos.setForeground(Color.white);
+        this.aculumarPuntos.setText("Acumular puntos");
+        
+        this.realizarAcciones.setSize(200, 40);
+        this.realizarAcciones.setLocation(410, 540);
+        this.realizarAcciones.setFont(fuente);
+        this.realizarAcciones.setForeground(Color.white);
+        this.realizarAcciones.setText("Acumular puntos");
         
         final int ANCHO = 180;
         final int ALTO = ANCHO * 2;

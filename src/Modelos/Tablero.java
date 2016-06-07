@@ -35,14 +35,14 @@ public class Tablero {
      * @param botonActual Botón actual sobre el que se encuentra el mouse.
      * @return 
      */
-    public int[][] getDespliegue(SubVistaPosicion botonActual){
+    public int[][] getDespliegue(int fila, int columna){
         switch(numDespliegue){
-            case 0: return getIdxDespliegueCruz(botonActual, direccion);
-            case 1: return getIdxDespliegueEscalera(botonActual, direccion);
-            case 2: return getIdxDespliegueT(botonActual, direccion);
-            case 3: return getIdxDespliegueS(botonActual, direccion);
-            case 4: return getIdxDespliegue4(botonActual, direccion);
-            case 5: return getIdxDespliegueR(botonActual, direccion);
+            case 0: return getIdxDespliegueCruz(fila, columna, direccion);
+            case 1: return getIdxDespliegueEscalera(fila, columna, direccion);
+            case 2: return getIdxDespliegueT(fila, columna, direccion);
+            case 3: return getIdxDespliegueS(fila, columna, direccion);
+            case 4: return getIdxDespliegue4(fila, columna, direccion);
+            case 5: return getIdxDespliegueR(fila, columna, direccion);
         }
         return null;
     }
@@ -53,9 +53,7 @@ public class Tablero {
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue cruz.
      */
-    public int[][] getIdxDespliegueCruz(SubVistaPosicion botonActual, int direccion){
-        int columna = botonActual.getColumna();
-        int fila = botonActual.getFila();
+    public int[][] getIdxDespliegueCruz(int fila, int columna, int direccion){
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
@@ -89,9 +87,7 @@ public class Tablero {
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue escalera.
      */
-    public int[][] getIdxDespliegueEscalera(SubVistaPosicion botonActual, int direccion){
-        int columna = botonActual.getColumna();
-        int fila = botonActual.getFila();
+    public int[][] getIdxDespliegueEscalera(int fila, int columna, int direccion){
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
@@ -125,9 +121,7 @@ public class Tablero {
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue T.
      */
-    public int[][] getIdxDespliegueT(SubVistaPosicion botonActual, int direccion){
-        int columna = botonActual.getColumna();
-        int fila = botonActual.getFila();
+    public int[][] getIdxDespliegueT(int fila, int columna, int direccion){
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
@@ -161,9 +155,7 @@ public class Tablero {
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue S.
      */
-    public int[][] getIdxDespliegueS(SubVistaPosicion botonActual, int direccion){
-        int columna = botonActual.getColumna();
-        int fila = botonActual.getFila();
+    public int[][] getIdxDespliegueS(int fila, int columna, int direccion){
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
@@ -197,9 +189,7 @@ public class Tablero {
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue 4.
      */
-    public int[][] getIdxDespliegue4(SubVistaPosicion botonActual, int direccion){
-        int columna = botonActual.getColumna();
-        int fila = botonActual.getFila();
+    public int[][] getIdxDespliegue4(int fila, int columna, int direccion){
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         
@@ -233,9 +223,7 @@ public class Tablero {
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue R.
      */
-    public int[][] getIdxDespliegueR(SubVistaPosicion botonActual, int direccion){
-        int columna = botonActual.getColumna();
-        int fila = botonActual.getFila();
+    public int[][] getIdxDespliegueR(int fila, int columna, int direccion){
         int dirVer = direccion == 2 ? -1: 1;
         int dirHor = direccion == 3 ? -1: 1;
         

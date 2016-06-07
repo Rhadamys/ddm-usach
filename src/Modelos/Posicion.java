@@ -9,6 +9,7 @@ import java.util.*;
 
 /** @pdOid 86acb453-8a93-4d0f-b73a-4646653b4f7c */
 public class Posicion {
+    private ElementoEnCampo elemento;
     private int dueno;
     
     public Posicion(){
@@ -21,6 +22,10 @@ public class Posicion {
 
     public void setDueno(int dueno) {
         this.dueno = dueno;
+    }
+
+    public void setElemento(ElementoEnCampo elemento) {
+        this.elemento = elemento;
     }
         
 }

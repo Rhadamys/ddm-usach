@@ -7,7 +7,6 @@ package Vistas;
 
 import Otros.PanelImagen;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 /**
  *

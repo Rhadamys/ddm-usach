@@ -155,7 +155,7 @@ public class ControladorRegistro {
         // Se comprueba que los campos estén completos (escritos)
         if(this.visReg.comprobarCampos()){
             // Se comprueba que el usuario no exista previamente.
-            if(!Usuario.existe(usuario)){
+            if(Usuario.getUsuario(usuario) == null){
                 this.visReg.usuarioCorrecto();
                 try {
                     File archivoUsuario = new File("src/Otros/usuarios.txt");
@@ -222,10 +222,8 @@ public class ControladorRegistro {
             // Se muestra la vista de login
             this.contPrin.getContLog().mostrarVistaLogin();
         }
-        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visSelJef);
         this.visSelJef.dispose();
         // Se elimina la vista de registro
-        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visReg);
         this.visReg.dispose();
     }
 }

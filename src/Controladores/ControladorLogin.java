@@ -111,7 +111,6 @@ public final class ControladorLogin {
      * controlador sea eliminado de la memoria.
      */
     public void eliminarVistaLogin() {
-        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visLog);
         this.visLog.dispose();
     }
     
@@ -123,10 +122,9 @@ public final class ControladorLogin {
     public void iniciarSesion(String usuarioText, String passText) {
         // Se comprueba que los campos estén completos
         if (this.visLog.comprobarCampos()){
-            // Se comprubea si el usuario existe llamando al método estático de Usuario
-            if (Usuario.existe(usuarioText)){ // Si existe
-                // Se obtiene la instancia de Usuario del usuario ingresado
-                this.usuario = Usuario.getUsuario(usuarioText);
+            // Se obtiene la instancia de Usuario del usuario ingresado
+            this.usuario = Usuario.getUsuario(usuarioText);
+            if(this.usuario != null){
                 // Se comprueba que los datos ingresados sean correctos
                 if (passText.equals(this.usuario.getPass())){
                     // Se asigna como el usuario actual al usuario obtenido

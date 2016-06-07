@@ -66,10 +66,6 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public void agregarVista(JInternalFrame vista){
         this.contenedor.add(vista, 0);
     }
-    
-    public void eliminarVista(JInternalFrame vista){
-        this.contenedor.remove(vista);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JDesktopPane contenedor;

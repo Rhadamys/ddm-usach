@@ -11,7 +11,6 @@ import Modelos.Jugador;
 import Modelos.Tablero;
 import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
-import Otros.PanelImagen;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaInfoElemento;
 import Vistas.SubVistaLanzamientoDados;
@@ -192,7 +191,9 @@ public class ControladorBatalla {
                 switch(tablero.getAccion()){
                     case 0: break;
                     case 1: asignarCasillas(
-                            tablero.getDespliegue(visBat.getTablero().getBotonActual()),
+                            tablero.getDespliegue(
+                                    visBat.getTablero().getBotonActual().getFila(),
+                                    visBat.getTablero().getBotonActual().getColumna()),
                             tablero.getTurnoActual());
                 }
             }
@@ -232,7 +233,7 @@ public class ControladorBatalla {
      */
     public void mostrarDespliegue(int numDespliegue, SubVistaPosicion botonActual, int direccion, int turno){
         this.visBat.getTablero().actualizarCasillas();
-        for(int[] coord: this.tablero.getDespliegue(botonActual)){
+        for(int[] coord: this.tablero.getDespliegue(botonActual.getFila(), botonActual.getColumna())){
             try{
                 if(this.tablero.getPosiciones()[coord[0]][coord[1]].getDueno() == 0){
                     this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenSobre(
@@ -341,7 +342,7 @@ public class ControladorBatalla {
                     this.visBat.getVisSelDados().getPanelesDados().indexOf(panelDado)).getClave()));
         }
         
-        this.visBat.setVisLanDados(new SubVistaLanzamientoDados(Accion.lanzarDados(dados), dados));
+        this.visBat.setVisLanDados(new SubVistaLanzamientoDados(Accion.lanzarDados(dados), dados, this.contPrin.getFuente()));
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisLanDados());
         this.visBat.getVisLanDados().setVisible(true);
     }

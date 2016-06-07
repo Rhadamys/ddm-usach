@@ -24,52 +24,6 @@ public class Usuario extends Jugador {
     }
     
     /**
-     * Comprueba si el usuario indicado existe en los registros
-     * @param usuario Nombre de usuario que se buscará en los registros
-     * @return true | existe - false | no existe
-     */
-    public static boolean existe(String usuario) {
-        File archivoUsuarios = new File("src/Otros/usuarios.txt");
-        
-        try {
-            FileReader archivo = new FileReader(archivoUsuarios);
-            BufferedReader lector = new BufferedReader(archivo); 
-            
-            try {
-                // Se lee la primera línea de los registros
-                String linea = lector.readLine();
-                
-                // Hasta el final del archivo
-                while(linea != null){
-                    // Si la línea actual contiene el nombre de usuario
-                    if(linea.contains(usuario + ";")){
-                        // Se cierra el archivo y devuelve true indicando que existe
-                        lector.close();
-                        archivo.close();
-                        return true;
-                    }else{
-                        // Sino, lee la siguiente línea
-                        linea = lector.readLine(); 
-                    }              
-                }
-
-                // Si se llega al final del archivo, entonces no existe
-                lector.close();
-                archivo.close();
-                return false;
-            } catch (IOException ex) {
-                // Si ocurre una excepción, se indica que el usuario no existe
-                return false;
-            }
-            
-        } catch (FileNotFoundException ex) {
-            // Si ocurre una excepción, se indica que el usuario no existe
-            return false;
-        }
-        
-    }
-    
-    /**
      * Entrega la instancia de Usuario del usuario indicado
      * @param usuario Usuario que se buscará en los registros
      * @return Instancia de Usuario

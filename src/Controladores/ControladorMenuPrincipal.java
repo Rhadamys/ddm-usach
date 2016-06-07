@@ -76,7 +76,6 @@ public final class ControladorMenuPrincipal {
     }
     
     public void eliminarVistaMenuPrincipal(){
-        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visMenuPrin);
         this.visMenuPrin.dispose();
     }
     

@@ -30,7 +30,7 @@ public class PanelImagen extends JPanel {
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
         
         this.setOpaque(false);
-        super.paint(g);
+        super.paint(g); // No eliminar NUNCA
     }
     
     public void setImagen(String imagen){

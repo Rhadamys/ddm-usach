@@ -158,7 +158,7 @@ public class ControladorRegistro {
             if(!Usuario.existe(usuario)){
                 this.visReg.usuarioCorrecto();
                 try {
-                    File archivoUsuario = new File("src\\Otros\\usuarios.txt");
+                    File archivoUsuario = new File("src/Otros/usuarios.txt");
                     PrintWriter escritor;
                     escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
 

@@ -71,7 +71,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
             marcoJefe.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
             
             PanelImagen iconoJefe = new PanelImagen("/Imagenes/Jefes/"
-                    + jefe.getNombreImagen() + ".png");
+                    + jefe.getNomArchivoImagen() + ".png");
             this.contenedorJefes.add(iconoJefe);
             iconoJefe.setSize(LADO, LADO);
             iconoJefe.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
@@ -131,7 +131,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     
     public void mostrarInformacionJefe(int indiceJefe){
         this.nombre.setText(this.jefes.get(indiceJefe).getNombre());
-        this.habilidad.setText(this.jefes.get(indiceJefe).getDescHabilidad());
+        this.habilidad.setText(this.jefes.get(indiceJefe).getDescripcion());
     }
     
     public void borrarCampos(){

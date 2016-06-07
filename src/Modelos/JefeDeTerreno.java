@@ -14,11 +14,7 @@ import java.util.*;
 
 /** @pdOid ba01c964-70b9-429b-9412-0cfa461bb9c0 */
 public class JefeDeTerreno extends ElementoEnCampo {
-    private final String nombre;
     private final int habilidad;
-    private final String descHabilidad;
-    private int puntosVida;
-    private final String nombreImagen;
     
     public JefeDeTerreno(
             String nombre, 
@@ -27,15 +23,15 @@ public class JefeDeTerreno extends ElementoEnCampo {
             int puntosVida,
             String nombreImagen){
         
-        this.nombreImagen = nombreImagen;
+        this.nomArchivoImagen = nombreImagen;
         this.nombre = nombre;
         this.habilidad = habilidad;
-        this.descHabilidad = descHabilidad;
+        this.descripcion = descHabilidad;
         this.puntosVida = puntosVida;
     }
     
     public static ArrayList getJefes() {
-        File archivoJefes = new File("src\\Otros\\jefes.txt");
+        File archivoJefes = new File("src/Otros/jefes.txt");
         FileReader archivo;
         try {
             archivo = new FileReader(archivoJefes);
@@ -66,7 +62,7 @@ public class JefeDeTerreno extends ElementoEnCampo {
     }
     
     public static JefeDeTerreno getJefe(String claveJefe){
-        File archivoJefes = new File("src\\Otros\\jefes.txt");
+        File archivoJefes = new File("src/Otros/jefes.txt");
         FileReader archivo;
         try {
             archivo = new FileReader(archivoJefes);
@@ -97,24 +93,8 @@ public class JefeDeTerreno extends ElementoEnCampo {
         return null;
     }
 
-    public String getNombreImagen() {
-        return nombreImagen;
-    }
-    
-    public String getNombre() {
-        return nombre;
-    }
-
     public int getHabilidad() {
         return habilidad;
-    }
-
-    public String getDescHabilidad() {
-        return descHabilidad;
-    }
-
-    public int getPuntosVida() {
-        return puntosVida;
     }
     
 }

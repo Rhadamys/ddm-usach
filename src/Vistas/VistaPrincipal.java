@@ -6,6 +6,7 @@
 package Vistas;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
@@ -64,6 +65,10 @@ public class VistaPrincipal extends javax.swing.JFrame {
     
     public void agregarVista(JInternalFrame vista){
         this.contenedor.add(vista, 0);
+    }
+    
+    public void eliminarVista(JInternalFrame vista){
+        this.contenedor.remove(vista);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

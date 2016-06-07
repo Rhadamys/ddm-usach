@@ -7,6 +7,7 @@ package Vistas;
 
 import Modelos.Dado;
 import Modelos.Jugador;
+import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
@@ -36,9 +37,9 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.dadosJugador = jugador.getDados();
         
         this.nombreJugador = new JLabel(jugador.getNombreJugador());
-        this.tipoJugador = new JLabel(jugador.getTipoJugador());
+        this.tipoJugador = new JLabel(jugador instanceof Usuario ? "Humano": "Personaje no jugable");
         this.iconoJugador = new PanelImagen("/Imagenes/Jefes/" +
-                jugador.getJefeDeTerreno().getNombreImagen() + ".png");
+                jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         this.cambiarJugador = new BotonImagen("/Imagenes/Botones/boton.png");
         this.modificarPuzle = new BotonImagen("/Imagenes/Botones/boton.png");
         this.eliminar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
@@ -118,9 +119,9 @@ public class SubVistaResumenJugador extends PanelImagen {
 
     public void actualizarInfoJug(Jugador jugador){
         this.dadosJugador = jugador.getDados();
-        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNombreImagen() + ".png");
+        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         this.nombreJugador.setText(jugador.getNombreJugador());
-        this.tipoJugador.setText(jugador.getTipoJugador());
+        this.tipoJugador.setText(jugador instanceof Usuario ? "Humano": "Personaje no jugable");
     }
 
     public JLabel getNombreJugador() {

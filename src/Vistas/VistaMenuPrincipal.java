@@ -106,7 +106,7 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         this.add(iconoJugador);
         iconoJugador.setSize(60, 60);
         iconoJugador.setLocation(730, 10);
-        iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNombreImagen() + ".png");
+        iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         iconoJugador.setBorder(new LineBorder(Color.darkGray, 2));
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_menu_principal.png");

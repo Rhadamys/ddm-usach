@@ -7,7 +7,6 @@ package Controladores;
 
 import Modelos.Jugador;
 import Modelos.Usuario;
-import Vistas.SubVistaCuadroDialogo;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -15,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,10 +50,10 @@ public class ControladorPrincipal {
     public void elementosPersonalizados(){
         try {
             //create the font to use. Specify the size!
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\Fuentes\\pixel.ttf")).deriveFont(14f);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Fuentes/pixel.ttf")).deriveFont(14f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src\\Fuentes\\pixel.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Fuentes/pixel.ttf")));
             this.fuente = customFont;
         }catch(IOException | FontFormatException e){
             e.printStackTrace();

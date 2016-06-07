@@ -22,6 +22,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
+    private SubVistaInfoElemento visInfo;
     private final ArrayList<BotonCheckImagen> panelesDados;
     private final ArrayList<BotonCheckImagen> seleccionados;
     private final ArrayList<Dado> dados;
@@ -78,7 +79,7 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
             marcoDado.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
             
             PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
-                    + dado.getCriatura().getNombreImagen() + ".png");
+                    + dado.getCriatura().getNomArchivoImagen() + ".png");
             this.contenedorDados.add(iconoCriatura);
             iconoCriatura.setSize(LADO, LADO);
             iconoCriatura.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
@@ -147,6 +148,14 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
 
     public ArrayList<Dado> getDados() {
         return dados;
+    }
+
+    public SubVistaInfoElemento getVisInfo() {
+        return visInfo;
+    }
+
+    public void setVisInfo(SubVistaInfoElemento visInfo) {
+        this.visInfo = visInfo;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

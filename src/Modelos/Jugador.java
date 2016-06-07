@@ -16,7 +16,6 @@ import java.util.*;
 public abstract class Jugador {
     protected ArrayList<Dado> dados;
     protected String nombreJugador;
-    protected String tipoJugador;
     protected JefeDeTerreno jefeDeTerreno;
     protected Terreno terreno;
     protected int equipo;
@@ -24,7 +23,7 @@ public abstract class Jugador {
     public static ArrayList<Jugador> getJugadores(){
         ArrayList<Jugador> jugadores = new ArrayList();
         
-        File archivoUsuarios = new File("src\\Otros\\usuarios.txt");
+        File archivoUsuarios = new File("src/Otros/usuarios.txt");
         
         try {
             FileReader archivo = new FileReader(archivoUsuarios);
@@ -69,7 +68,7 @@ public abstract class Jugador {
     public static ArrayList<Jugador> getJugadores(ArrayList<Jugador> excluidos){
         ArrayList<Jugador> jugadores = new ArrayList();
         
-        File archivoUsuarios = new File("src\\Otros\\usuarios.txt");
+        File archivoUsuarios = new File("src/Otros/usuarios.txt");
         
         try {
             FileReader archivo = new FileReader(archivoUsuarios);
@@ -128,10 +127,6 @@ public abstract class Jugador {
 
     public String getNombreJugador() {
         return nombreJugador;
-    }
-
-    public String getTipoJugador() {
-        return tipoJugador;
     }
 
     public JefeDeTerreno getJefeDeTerreno() {

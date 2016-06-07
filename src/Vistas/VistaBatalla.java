@@ -137,7 +137,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.vistasJugador.get(i).setNombreJugador(jug.getNombreJugador());
         
         this.vistasJugador.get(i).setIconoJugador("/Imagenes/Jefes/" +
-                jug.getJefeDeTerreno().getNombreImagen() + ".png");
+                jug.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         
         this.tablero.actualizarCasillas();
         

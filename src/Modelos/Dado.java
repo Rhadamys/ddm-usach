@@ -28,7 +28,7 @@ public class Dado {
     }
     
     public static Dado getDado(String claveDado){
-        File archivoDados = new File("src\\Otros\\dados.txt");
+        File archivoDados = new File("src/Otros/dados.txt");
         FileReader archivo;
         try {
             archivo = new FileReader(archivoDados);
@@ -71,7 +71,7 @@ public class Dado {
     }
     
     public static Dado getDado(int nivelDado) {
-        File archivoDados = new File("src\\Otros\\dados.txt");
+        File archivoDados = new File("src/Otros/dados.txt");
         FileReader archivo;
         try {
             archivo = new FileReader(archivoDados);

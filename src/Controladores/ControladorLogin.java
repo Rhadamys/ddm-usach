@@ -111,6 +111,7 @@ public final class ControladorLogin {
      * controlador sea eliminado de la memoria.
      */
     public void eliminarVistaLogin() {
+        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visLog);
         this.visLog.dispose();
     }
     

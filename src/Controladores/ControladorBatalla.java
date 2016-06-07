@@ -11,7 +11,9 @@ import Modelos.Jugador;
 import Modelos.Tablero;
 import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
+import Otros.PanelImagen;
 import Vistas.SubVistaCuadroDialogo;
+import Vistas.SubVistaInfoElemento;
 import Vistas.SubVistaLanzamientoDados;
 import Vistas.SubVistaPosicion;
 import Vistas.SubVistaTablero;
@@ -289,6 +291,23 @@ public class ControladorBatalla {
             public void mouseClicked(MouseEvent e){
                 cambiarEstadoPanelDado((BotonCheckImagen) e.getComponent());
             }
+            
+            @Override
+            public void mouseEntered(MouseEvent e){
+                mostrarVistaInfoCriatura((BotonCheckImagen) e.getComponent());
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e){
+                ocultarVistaInfoCriatura();
+            }
+        });
+        
+        this.visBat.getVisSelDados().getPanelesDados().get(i).addMouseMotionListener(new MouseMotionAdapter(){
+            @Override
+            public void mouseMoved(MouseEvent e){
+                cambiarPosicionVistaInfoCriatura(e.getComponent().getX() + 101);
+            }
         });
         
         this.visBat.getVisSelDados().getLanzarDados().addMouseListener(new MouseAdapter(){
@@ -325,6 +344,24 @@ public class ControladorBatalla {
         this.visBat.setVisLanDados(new SubVistaLanzamientoDados(Accion.lanzarDados(dados), dados));
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisLanDados());
         this.visBat.getVisLanDados().setVisible(true);
+    }
+    
+    public void mostrarVistaInfoCriatura(BotonCheckImagen panelDado){
+        this.visBat.getVisSelDados().setVisInfo(new SubVistaInfoElemento(
+                this.visBat.getVisSelDados().getDados().get(this.visBat.getVisSelDados().getPanelesDados().indexOf(panelDado)).getCriatura(),
+                this.contPrin.getFuente()));
+        this.visBat.getVisSelDados().add(this.visBat.getVisSelDados().getVisInfo(), 0);  
+        this.visBat.getVisSelDados().getVisInfo().setVisible(true);
+    }
+    
+    public void cambiarPosicionVistaInfoCriatura(int x){
+        this.visBat.getVisSelDados().getVisInfo().setLocation(x > 400 ? 10: 540, 100);
+        this.visBat.getVisSelDados().repaint();
+    }
+    
+    public void ocultarVistaInfoCriatura(){
+        this.visBat.getVisSelDados().getVisInfo().setVisible(false);
+        this.visBat.getVisSelDados().remove(this.visBat.getVisSelDados().getVisInfo());
     }
 // </editor-fold>
     

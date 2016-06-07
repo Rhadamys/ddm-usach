@@ -6,6 +6,7 @@
 package Vistas;
 
 import Modelos.Jugador;
+import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.ContenedorScroll;
 import Otros.PanelImagen;
@@ -80,7 +81,7 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
             marcoJugador.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
             
             PanelImagen iconoJugador = new PanelImagen("/Imagenes/Jefes/" +
-                    jugador.getJefeDeTerreno().getNombreImagen() + ".png");
+                    jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
             this.contenedorJugadores.add(iconoJugador);
             iconoJugador.setSize(LADO, LADO);
             iconoJugador.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
@@ -135,7 +136,7 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
      
     public void mostrarInformacionJugador(int indiceJugador){
         this.nombre.setText(this.jugadores.get(indiceJugador).getNombreJugador());
-        this.tipoJugador.setText(this.jugadores.get(indiceJugador).getTipoJugador());
+        this.tipoJugador.setText(this.jugadores.get(indiceJugador) instanceof Usuario ? "Humano": "Personaje no jugable");
     }
     
     public void borrarCampos(){

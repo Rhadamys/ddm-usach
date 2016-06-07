@@ -126,7 +126,7 @@ public class ControladorRegistro {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                setJefe(JefeDeTerreno.getJefe(visSelJef.getJefes().get(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent())).getNombreImagen()));
+                setJefe(JefeDeTerreno.getJefe(visSelJef.getJefes().get(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent())).getNomArchivoImagen()));
                 visSelJef.setVisible(false);
             }
         });
@@ -139,7 +139,7 @@ public class ControladorRegistro {
      */
     public void setJefe(JefeDeTerreno jefe) {
         this.jefe = jefe;
-        this.visReg.getIconoJefe().setImagen("/Imagenes/Jefes/" + jefe.getNombreImagen() + ".png");
+        this.visReg.getIconoJefe().setImagen("/Imagenes/Jefes/" + jefe.getNomArchivoImagen() + ".png");
         this.visReg.getIconoJefe().setToolTipText(jefe.getNombre());
     }
     
@@ -172,7 +172,7 @@ public class ControladorRegistro {
                     }
 
                     // Se registra al usuario en el archivo
-                    escritor.println(usuario + ";" + pass + ";" + jefe.getNombreImagen() + lineaDados);
+                    escritor.println(usuario + ";" + pass + ";" + jefe.getNomArchivoImagen() + lineaDados);
 
                     escritor.close();
 
@@ -222,8 +222,10 @@ public class ControladorRegistro {
             // Se muestra la vista de login
             this.contPrin.getContLog().mostrarVistaLogin();
         }
+        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visSelJef);
         this.visSelJef.dispose();
         // Se elimina la vista de registro
+        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visReg);
         this.visReg.dispose();
     }
 }

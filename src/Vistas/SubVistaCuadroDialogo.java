@@ -147,9 +147,7 @@ public class SubVistaCuadroDialogo extends JInternalFrame{
                     }
                     break;
             case 1: if(respuesta == 1){
-                        this.contPrin.getContMenuPrin().getVisMenuPrin().dispose();
-                        this.contPrin.crearControladorLogin();
-                        this.contPrin.getContLog().mostrarVistaLogin();
+                        this.contPrin.getContMenuPrin().logOut();
                         this.dispose();
                     }else{
                         this.setVisible(false);

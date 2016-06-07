@@ -6,6 +6,7 @@
 package Controladores;
 
 import Modelos.Jugador;
+import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import Vistas.SubVistaCambiarJugador;
@@ -71,8 +72,7 @@ public class ControladorNuevaPartida {
         this.visNuePar.getRegistrar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                contPrin.crearControladorRegistro(visNuePar);
-                contPrin.getContReg().mostrarVistaRegistro();
+                registrarJugador();
             }
         });
         
@@ -165,6 +165,14 @@ public class ControladorNuevaPartida {
         this.visNuePar.dispose();
         contPrin.crearControladorMenuPrincipal();
         contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+    }
+    
+    /**
+     * Instancia un nuevo controlador y vista registro para registrar un nuevo jugador.
+     */
+    public void registrarJugador(){
+        contPrin.crearControladorRegistro(visNuePar);
+        contPrin.getContReg().mostrarVistaRegistro();
     }
     
     /**

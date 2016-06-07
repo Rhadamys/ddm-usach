@@ -11,15 +11,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** @pdOid 5fdf1593-9417-4518-a690-8bb149f077b5 */
 public class Usuario extends Jugador {
     private String pass;
     
     public Usuario(String username, String pass, JefeDeTerreno jefe, ArrayList<Dado> dados){
-        this.tipoJugador = "Humano";
         this.nombreJugador = username;
         this.pass = pass;
         this.dados = dados;
@@ -32,7 +29,7 @@ public class Usuario extends Jugador {
      * @return true | existe - false | no existe
      */
     public static boolean existe(String usuario) {
-        File archivoUsuarios = new File("src\\Otros\\usuarios.txt");
+        File archivoUsuarios = new File("src/Otros/usuarios.txt");
         
         try {
             FileReader archivo = new FileReader(archivoUsuarios);
@@ -78,7 +75,7 @@ public class Usuario extends Jugador {
      * @return Instancia de Usuario
      */
     public static Usuario getUsuario(String usuario){
-        File archivoUsuarios = new File("src\\Otros\\usuarios.txt");
+        File archivoUsuarios = new File("src/Otros/usuarios.txt");
         
         try {
             FileReader archivo = new FileReader(archivoUsuarios);

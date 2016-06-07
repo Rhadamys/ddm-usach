@@ -64,7 +64,7 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
         this.jugadores.add(jug);
         
         this.iconosJugadores.add(new PanelImagen("/Imagenes/Jefes/" +
-                jug.getJefeDeTerreno().getNombreImagen() + ".png"));
+                jug.getJefeDeTerreno().getNomArchivoImagen() + ".png"));
         this.iconosJugadores.get(i).setToolTipText(
             jug.getNombreJugador());
         this.iconosJugadores.get(i).setSize(60, 60);
@@ -119,7 +119,7 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
     public void actualizarIconos(){
         for(int i = 0; i < this.jugadores.size(); i++){
             this.iconosJugadores.get(i).setImagen("/Imagenes/Jefes/" + 
-                    this.jugadores.get(i).getJefeDeTerreno().getNombreImagen() + ".png");
+                    this.jugadores.get(i).getJefeDeTerreno().getNomArchivoImagen() + ".png");
             this.iconosJugadores.get(i).setToolTipText(this.jugadores.get(i).getNombreJugador());
         }
     }

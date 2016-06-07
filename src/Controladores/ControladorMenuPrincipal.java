@@ -63,7 +63,7 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                logOut();
+                mostrarMensajeLogOut();
             }
         });
     }
@@ -75,13 +75,24 @@ public final class ControladorMenuPrincipal {
         this.visMenuPrin.setVisible(true);
     }
     
-    public void nuevaPartida(){
-        this.contPrin.crearControladorNuevaPartida();
-        this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
+    public void eliminarVistaMenuPrincipal(){
+        this.contPrin.getContVisPrin().getVisPrin().eliminarVista(visMenuPrin);
         this.visMenuPrin.dispose();
     }
     
+    public void nuevaPartida(){
+        this.contPrin.crearControladorNuevaPartida();
+        this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
+        eliminarVistaMenuPrincipal();
+    }
+    
     public void logOut(){
+        this.contPrin.crearControladorLogin();
+        this.contPrin.getContLog().mostrarVistaLogin();
+        eliminarVistaMenuPrincipal();
+    }
+    
+    public void mostrarMensajeLogOut(){
         this.visMenLogOut.setVisible(true);
     }
     

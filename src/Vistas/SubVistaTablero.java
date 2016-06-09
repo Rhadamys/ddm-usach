@@ -21,6 +21,13 @@ public class SubVistaTablero extends PanelImagen{
         this.setSize(500, 500);
         this.setLayout(new GridLayout(15, 15));
         this.setBorder(null);
+        
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                posiciones[i][j] = new SubVistaPosicion(i, j);
+                this.add(posiciones[i][j]);
+            }
+        }
     }
     
     /**
@@ -29,7 +36,19 @@ public class SubVistaTablero extends PanelImagen{
     public void actualizarCasillas(){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                posiciones[i][j].setImagenActual(0);
+                if(posiciones[i][j].isSelected()){
+                    posiciones[i][j].setImagenActual(3);
+                }else{
+                    posiciones[i][j].setImagenActual(0);
+                }
+            }
+        }
+    }
+    
+    public void reiniciarCasillas(){
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                posiciones[i][j].setSelected(false);
             }
         }
     }
@@ -50,7 +69,8 @@ public class SubVistaTablero extends PanelImagen{
         this.posiciones = posiciones;
     }
     
-    public void marcarCasilla(int[] idxCasilla, int jugador){
+    public void marcarCasilla(int[] idxCasilla, int jugador, String imagenCasilla){
         this.posiciones[idxCasilla[0]][idxCasilla[1]].setImagenNormal("/Imagenes/Botones/casilla_j" + jugador + ".png");
+        this.posiciones[idxCasilla[0]][idxCasilla[1]].setImagenIconoElemento(imagenCasilla);
     }
 }

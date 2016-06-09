@@ -6,7 +6,6 @@
 package Controladores;
 
 import Modelos.Jugador;
-import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import Vistas.SubVistaCambiarJugador;
@@ -37,7 +36,7 @@ public class ControladorNuevaPartida {
         
         this.jugadores = new ArrayList();
         
-        this.agregarJugador(this.obtenerJugadorAleatorio());
+        this.agregarJugador((Jugador) this.contPrin.getUsuarioActivo());
         this.agregarJugador(this.obtenerJugadorAleatorio());
     }
     
@@ -126,7 +125,11 @@ public class ControladorNuevaPartida {
      * @param i Índice del jugador a eliminar.
      */
     public void eliminarJugador(int i){
-        if(this.visNuePar.getVistasResJug().size() > 2){
+        if(i == 0){
+            this.mostrarCuadroDialogo("<html><center>No se puede eliminar a <b><i style=\"color:orange;\">" + 
+                    this.jugadores.get(0).getNombreJugador() + "</i></b> de la partida porque es el" + 
+                    " usuario activo en la aplicación.</center></html>");
+        }else if(this.visNuePar.getVistasResJug().size() > 2){
             this.jugadores.remove(i);
             
             this.visNuePar.getVistasResJug().get(i).setVisible(false);
@@ -181,7 +184,8 @@ public class ControladorNuevaPartida {
     public void comenzarPartida(){
         this.contPrin.crearControladorBatalla(this.jugadores);
         this.contPrin.getContBat().mostrarVistaBatalla();
-        
+        this.contPrin.getContBat().iniciarJuego();
+                
         visNuePar.dispose();
     }
     
@@ -191,7 +195,7 @@ public class ControladorNuevaPartida {
      */
     public void mostrarCuadroDialogo(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                mensaje, "Aceptar", this.contPrin.getFuente(), -1);
+                mensaje, "Aceptar", this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
     }

@@ -12,9 +12,9 @@ public abstract class ElementoEnCampo {
     protected String nomArchivoImagen;
     protected String nombre;
     protected String descripcion;
-    protected int puntosVida;
-    protected int puntosAtaque;
-    protected int puntosDefensa;
+    protected int vida;
+    protected int ataque;
+    protected int defensa;
 
     public String getNomArchivoImagen() {
         return nomArchivoImagen;
@@ -28,16 +28,16 @@ public abstract class ElementoEnCampo {
         return descripcion;
     }
 
-    public int getPuntosVida() {
-        return puntosVida;
+    public int getVida() {
+        return vida;
     }
 
-    public int getPuntosAtaque() {
-        return puntosAtaque;
+    public int getAtaque() {
+        return ataque;
     }
 
-    public int getPuntosDefensa() {
-        return puntosDefensa;
+    public int getDefensa() {
+        return defensa;
     }
     
     

@@ -24,7 +24,6 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
 public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     private SubVistaInfoElemento visInfo;
     private final ArrayList<BotonCheckImagen> panelesDados;
-    private final ArrayList<BotonCheckImagen> seleccionados;
     private final ArrayList<Dado> dados;
     private final ContenedorScroll contenedor;
     private final PanelImagen contenedorDados;
@@ -46,7 +45,6 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         this.setBackground(new Color(0,0,0,0));   
         
         this.panelesDados = new ArrayList();
-        this.seleccionados = new ArrayList();
         this.dados = dados;
         
         this.contenedorDados = new PanelImagen();
@@ -138,20 +136,37 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         return panelesDados;
     }
 
-    public ArrayList<BotonCheckImagen> getSeleccionados() {
-        return seleccionados;
+    public ArrayList<Dado> getDadosSeleccionados() {
+        ArrayList<Dado> dadosSeleccionados = new ArrayList();
+        for(int i = 0; i < panelesDados.size(); i++){
+            if(panelesDados.get(i).isSelected()){
+                dadosSeleccionados.add(dados.get(i));
+            }
+        }
+        
+        return dadosSeleccionados;
     }
 
     public BotonImagen getLanzarDados() {
         return lanzarDados;
     }
 
-    public ArrayList<Dado> getDados() {
-        return dados;
-    }
-
     public SubVistaInfoElemento getVisInfo() {
         return visInfo;
+    }
+    
+    public int getSeleccionados(){
+        int seleccionados = 0;
+        for(int i = 0; i < panelesDados.size(); i++){
+            if(panelesDados.get(i).isSelected()){
+                seleccionados += 1;
+            }
+        }
+        return seleccionados;
+    }
+    
+    public Dado getDado(BotonCheckImagen panelDado){
+        return this.dados.get(panelesDados.indexOf(panelDado));
     }
 
     public void setVisInfo(SubVistaInfoElemento visInfo) {

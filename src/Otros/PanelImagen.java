@@ -19,22 +19,28 @@ public class PanelImagen extends JPanel {
     
     public PanelImagen(){
         this.imagen = new ImageIcon(getClass().getResource("/Imagenes/vacio.png")).getImage();
+        this.setOpaque(false);
     }
     
     public PanelImagen(String imagen){
         this.imagen = new ImageIcon(getClass().getResource(imagen)).getImage();
+        if(imagen.endsWith(".gif")){
+            this.imagen.flush();
+        }
+        this.setOpaque(false);
     }
     
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
-        
-        this.setOpaque(false);
-        super.paint(g); // No eliminar NUNCA
+        super.paintComponent(g);
     }
     
     public void setImagen(String imagen){
         this.imagen = new ImageIcon(getClass().getResource(imagen)).getImage();
+        if(imagen.endsWith(".gif")){
+            this.imagen.flush();
+        }
         this.repaint();
     }
     

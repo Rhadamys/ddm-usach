@@ -20,6 +20,10 @@ public class Posicion {
         return dueno;
     }
 
+    public ElementoEnCampo getElemento() {
+        return elemento;
+    }
+
     public void setDueno(int dueno) {
         this.dueno = dueno;
     }

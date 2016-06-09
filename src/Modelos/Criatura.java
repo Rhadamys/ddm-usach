@@ -13,19 +13,22 @@ import java.io.IOException;
 
 /** @pdOid dae863aa-62cf-47e0-9a47-196272f29518 */
 public class Criatura extends ElementoEnCampo {
+    private int nivel;
     
     public Criatura(
             String nombre,
             int puntosVida,
             int puntosAtaque,
             int puntosDefensa,
+            int nivel,
             String nombreArchivoImagen,
             String descripcion){
         
         this.nombre = nombre;
-        this.puntosVida = puntosVida;
-        this.puntosAtaque = puntosAtaque;
-        this.puntosDefensa = puntosDefensa;
+        this.vida = puntosVida;
+        this.ataque = puntosAtaque;
+        this.defensa = puntosDefensa;
+        this.nivel = nivel;
         this.nomArchivoImagen = nombreArchivoImagen;
         this.descripcion = descripcion;
     }
@@ -48,8 +51,9 @@ public class Criatura extends ElementoEnCampo {
                                 Integer.parseInt(infoCriatura[2]),
                                 Integer.parseInt(infoCriatura[3]),
                                 Integer.parseInt(infoCriatura[4]),
+                                Integer.parseInt(infoCriatura[5]),
                                 infoCriatura[0],
-                                infoCriatura[5]);
+                                infoCriatura[6]);
                     }
                     
                     linea = lector.readLine();
@@ -64,4 +68,9 @@ public class Criatura extends ElementoEnCampo {
         
         return null;
     }
+
+    public int getNivel() {
+        return nivel;
+    }
+    
 }

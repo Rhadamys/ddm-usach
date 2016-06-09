@@ -12,8 +12,8 @@ import Vistas.VistaModificarPuzle;
  * @author mam28
  */
 public class ControladorModificarPuzle {
-    private ControladorPrincipal contPrin;
-    private VistaModificarPuzle visModPuz;
+    private final ControladorPrincipal contPrin;
+    private final VistaModificarPuzle visModPuz;
     
     public ControladorModificarPuzle(ControladorPrincipal contPrin){
         this.contPrin = contPrin;

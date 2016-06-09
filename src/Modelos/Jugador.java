@@ -14,11 +14,16 @@ import java.util.*;
 
 /** @pdOid cbe19438-3292-497c-bc58-a1da1e9c38b6 */
 public abstract class Jugador {
+    protected Turno turno;
     protected ArrayList<Dado> dados;
     protected String nombreJugador;
     protected JefeDeTerreno jefeDeTerreno;
     protected Terreno terreno;
     protected int equipo;
+    
+    public Jugador(){
+        this.turno = new Turno();
+    }
     
     public static ArrayList<Jugador> getJugadores(){
         ArrayList<Jugador> jugadores = new ArrayList();
@@ -124,6 +129,9 @@ public abstract class Jugador {
     public ArrayList<Dado> getDados() {
         return dados;
     }
+    public Dado getDado(int i) {
+        return dados.get(i);
+    }
 
     public String getNombreJugador() {
         return nombreJugador;
@@ -133,8 +141,24 @@ public abstract class Jugador {
         return jefeDeTerreno;
     }
 
+    public Terreno getTerreno() {
+        return terreno;
+    }
+
+    public int getEquipo() {
+        return equipo;
+    }
+
+    public Turno getTurno() {
+        return turno;
+    }
+
     public void setEquipo(int equipo) {
         this.equipo = equipo;
     }
-    
+
+    public void setTerreno(Terreno terreno) {
+        this.terreno = terreno;
+    }
+           
 }

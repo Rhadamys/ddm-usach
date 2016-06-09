@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 public final class ControladorMenuPrincipal {
     private final ControladorPrincipal contPrin;
     private final VistaMenuPrincipal visMenuPrin;
-    private final SubVistaCuadroDialogo visMenLogOut;
+    private final SubVistaCuadroDialogo visMen;
     
     public ControladorMenuPrincipal(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
@@ -28,10 +28,11 @@ public final class ControladorMenuPrincipal {
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visMenuPrin);
         this.agregarListenersVistaMenuPrincipal();
         
-        this.visMenLogOut = new SubVistaCuadroDialogo(
+        this.visMen = new SubVistaCuadroDialogo(
                 "¿Deseas cerrar sesión?",
-                "Si", "No", this.contPrin.getFuente(), this.contPrin, 1);
-        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMenLogOut);
+                "Si", "No", this.contPrin.getFuente());
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
+        this.agregarListenersVistaMensaje();
     }
 
     public VistaMenuPrincipal getVisMenuPrin() {
@@ -55,7 +56,7 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                contPrin.getContVisPrin().salir();
+                contPrin.getContVisPrin().mostrarMensajeSalir();
             }
         });
         
@@ -68,6 +69,22 @@ public final class ControladorMenuPrincipal {
         });
     }
     
+    public void agregarListenersVistaMensaje(){
+        this.visMen.getBoton1().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                logOut();
+            }
+        });
+        
+        this.visMen.getBoton2().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                visMen.setVisible(false);
+            }
+        });
+    }
+    
     /**
      * Hace visible la vista de menú principal en el JFrame principal.
      */
@@ -76,6 +93,7 @@ public final class ControladorMenuPrincipal {
     }
     
     public void eliminarVistaMenuPrincipal(){
+        this.visMen.dispose();
         this.visMenuPrin.dispose();
     }
     
@@ -92,7 +110,7 @@ public final class ControladorMenuPrincipal {
     }
     
     public void mostrarMensajeLogOut(){
-        this.visMenLogOut.setVisible(true);
+        this.visMen.setVisible(true);
     }
     
 }

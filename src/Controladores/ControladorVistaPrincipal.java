@@ -7,6 +7,8 @@ package Controladores;
 
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaPrincipal;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -17,7 +19,7 @@ import java.awt.event.WindowEvent;
 public final class ControladorVistaPrincipal {
     private final ControladorPrincipal contPrin;
     private final VistaPrincipal visPrin;
-    private final SubVistaCuadroDialogo visMenSalir;
+    private final SubVistaCuadroDialogo visMen;
     
     public ControladorVistaPrincipal(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
@@ -26,17 +28,18 @@ public final class ControladorVistaPrincipal {
         this.visPrin.setVisible(true);
         this.agregarListenersVistaPrincipal();
         
-        this.visMenSalir = new SubVistaCuadroDialogo(
+        this.visMen = new SubVistaCuadroDialogo(
                 "¿Deseas salir de la aplicación?",
-                "Si", "No", this.contPrin.getFuente(), this.contPrin, 0);
-        this.visPrin.agregarVista(visMenSalir);
+                "Si", "No", this.contPrin.getFuente());
+        this.visPrin.agregarVista(visMen);
+        this.agregarListenersVistaMensaje();
     }
     
     public void agregarListenersVistaPrincipal(){
         this.visPrin.addWindowListener(new WindowAdapter(){
             @Override
             public void windowClosing(WindowEvent e){
-                salir();
+                mostrarMensajeSalir();
             }
         });
     }
@@ -47,9 +50,29 @@ public final class ControladorVistaPrincipal {
     
     /**
      * Muestra un mensaje con las opciones si / no solicitando al usuario que
-     * confirme si desea salir de la aplicación.
-     */
+     * confirme si desea mostrarMensajeSalir de la aplicación.
+     */    
+    public void mostrarMensajeSalir(){
+        this.visMen.setVisible(true);
+    }
+    
     public void salir(){
-        this.visMenSalir.setVisible(true);
+        this.contPrin.getContVisPrin().getVisPrin().dispose();
+    }
+    
+    public void agregarListenersVistaMensaje() {
+        this.visMen.getBoton1().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                salir();
+            }
+        });
+        
+        this.visMen.getBoton2().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                visMen.setVisible(false);
+            }
+        });
     }
 }

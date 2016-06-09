@@ -11,6 +11,8 @@ import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -18,13 +20,14 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author mam28
  */
 public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
-    private final BotonImagen aculumarPuntos;
+    private final BotonImagen acumularPuntos;
     private final BotonImagen realizarAcciones;
     
     /**
      * Creates new form CompLanzamientoDados
-     * @param caras
-     * @param dados
+     * @param caras Caras resultantes del lanzamiento de dados.
+     * @param dados Dados que eligió el jugador.
+     * @param fuente Fuente que se utilizará en esta vista.
      */
     public SubVistaLanzamientoDados(int[] caras, ArrayList<Dado> dados, Font fuente) {
         initComponents();
@@ -36,32 +39,38 @@ public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
         this.setOpaque(false);
         this.setBackground(new Color(0,0,0,0));
         
-        this.aculumarPuntos = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.acumularPuntos = new BotonImagen("/Imagenes/Botones/boton.png");
         this.realizarAcciones = new BotonImagen("/Imagenes/Botones/boton.png");
         
-        this.add(aculumarPuntos);
+        this.add(acumularPuntos);
         this.add(realizarAcciones);
         
-        this.aculumarPuntos.setSize(200, 40);
-        this.aculumarPuntos.setLocation(170, 540);
-        this.aculumarPuntos.setFont(fuente);
-        this.aculumarPuntos.setForeground(Color.white);
-        this.aculumarPuntos.setText("Acumular puntos");
+        this.acumularPuntos.setSize(200, 40);
+        this.acumularPuntos.setLocation(180, 520);
+        this.acumularPuntos.setFont(fuente);
+        this.acumularPuntos.setForeground(Color.white);
+        this.acumularPuntos.setText("Acumular puntos");
+        this.acumularPuntos.setVisible(false);
+        this.acumularPuntos.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.acumularPuntos.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         
         this.realizarAcciones.setSize(200, 40);
-        this.realizarAcciones.setLocation(410, 540);
+        this.realizarAcciones.setLocation(420, 520);
         this.realizarAcciones.setFont(fuente);
         this.realizarAcciones.setForeground(Color.white);
-        this.realizarAcciones.setText("Acumular puntos");
+        this.realizarAcciones.setText("Realizar acciones");
+        this.realizarAcciones.setVisible(false);
+        this.realizarAcciones.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
+        this.realizarAcciones.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         
         final int ANCHO = 180;
         final int ALTO = ANCHO * 2;
         final int SEP = (800 - ANCHO * dados.size()) / (dados.size() + 1);
-        
+                
         for(int i = 0; i < dados.size(); i++){
             PanelImagen dado = new PanelImagen("/Imagenes/Dados/dado_" + dados.get(i).getNivel() 
                     + "_" + caras[i] + ".gif");
-            this.add(dado);
+            this.add(dado, 0);
             dado.setSize(ANCHO, ALTO);
             dado.setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
         }
@@ -69,6 +78,20 @@ public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_lanzamiento_dados.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
+        
+        Timer timer = new Timer();      
+        SubVistaLanzamientoDados vista = this;
+        timer.schedule(new TimerTask(){
+            int tic = 0;
+            
+            @Override
+            public void run(){                
+                acumularPuntos.setVisible(true);
+                realizarAcciones.setVisible(true);
+                vista.repaint();
+                timer.cancel();
+            }            
+        }, 3500, 1);
     }
 
     /**
@@ -81,26 +104,22 @@ public class SubVistaLanzamientoDados extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setBackground(new java.awt.Color(51, 51, 51));
-        setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 806, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
-        );
+        getContentPane().setLayout(null);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public BotonImagen getAculumarPuntos() {
+        return acumularPuntos;
+    }
 
+    public BotonImagen getRealizarAcciones() {
+        return realizarAcciones;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

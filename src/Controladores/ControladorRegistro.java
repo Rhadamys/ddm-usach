@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -181,7 +180,7 @@ public class ControladorRegistro {
                     SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
                             "<html><center>Registro exitoso. Ahora volverás a la<br>"
                             + "vista anterior.</center></html>",
-                            "Aceptar", this.contPrin.getFuente(), -1);
+                            "Aceptar", this.contPrin.getFuente());
                     this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
                     visMen.setVisible(true);
                 } catch (IOException ex) {

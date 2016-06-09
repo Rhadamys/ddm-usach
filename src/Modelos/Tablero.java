@@ -5,21 +5,20 @@
  ***********************************************************************/
 package Modelos;
 
-import Vistas.SubVistaPosicion;
 import java.util.ArrayList;
 
 public class Tablero {
     private final Posicion[][] posiciones;
     private ArrayList<Jugador> jugadores;
     private int turnoActual;
-    private int accion;
+    private int numAccion;
     private int direccion;
     private int numDespliegue;
     
     public Tablero(){
         this.posiciones = new Posicion[15][15];
         this.turnoActual = 0;
-        this.accion = 0;
+        this.numAccion = 0;
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
@@ -27,12 +26,15 @@ public class Tablero {
             }
         }
     }
+    
+    public void cambiarTurno(){
+        this.turnoActual++;
+    }
         
     /**
      * Devuelve la forma del numDespliegue indicado por "numDespliegue".
-     * @param numDespliegue Número del numDespliegue a obtener.
-     * @param direccion Dirección del despligue.
-     * @param botonActual Botón actual sobre el que se encuentra el mouse.
+     * @param fila
+     * @param columna
      * @return 
      */
     public int[][] getDespliegue(int fila, int columna){
@@ -49,7 +51,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue cruz.
-     * @param botonActual Botón sobre el que se encuentra el mouse actualmente.
+     * @param fila
+     * @param columna
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue cruz.
      */
@@ -300,16 +303,22 @@ public class Tablero {
         return true;
     }
     
+    /**
+     * Asigna una casilla a un jugador y la agrega a su terreno.
+     * @param idxCasilla
+     * @param jugador 
+     */
     public void asignarCasilla(int[] idxCasilla, int jugador){
         this.posiciones[idxCasilla[0]][idxCasilla[1]].setDueno(jugador);
+        this.getJugadorActual().getTerreno().agregarCasilla(this.posiciones[idxCasilla[0]][idxCasilla[1]]);
     }
 
     public int getTurnoActual() {
-        return turnoActual;
+        return this.turnoActual % this.jugadores.size();
     }
 
-    public int getAccion() {
-        return accion;
+    public int getNumAccion() {
+        return numAccion;
     }
 
     public int getDireccion() {
@@ -324,20 +333,20 @@ public class Tablero {
         return posiciones;
     }
 
-    public ArrayList<Jugador> getJugadores() {
-        return jugadores;
+    public Jugador getJugador(int i) {
+        return jugadores.get(i);
+    }
+    
+    public Jugador getJugadorActual() {
+        return jugadores.get(this.getTurnoActual());
     }
 
     public void setJugadores(ArrayList<Jugador> jugadores) {
         this.jugadores = jugadores;
     }
 
-    public void setTurnoActual(int turnoActual) {
-        this.turnoActual = turnoActual;
-    }
-
-    public void setAccion(int accion) {
-        this.accion = accion;
+    public void setNumAccion(int accion) {
+        this.numAccion = accion;
     }
 
     public void setDireccion(int direccion) {
@@ -347,5 +356,8 @@ public class Tablero {
     public void setNumDespliegue(int despliegue) {
         this.numDespliegue = despliegue;
     }
-        
+
+    public void setTurnoActual(int turnoActual) {
+        this.turnoActual = turnoActual;
+    }
 }

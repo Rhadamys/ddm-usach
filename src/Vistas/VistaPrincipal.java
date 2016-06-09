@@ -6,7 +6,6 @@
 package Vistas;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 

@@ -1,6 +1,6 @@
-jefe1;Link;0;Habilidad de Link;100
-jefe2;Zelda;1;Habilidad de Zelda;140
-jefe3;Ganondorf;2;Habilidad de Ganondorf;130
-jefe4;Mario;0;Habilidad de Mario;120
-jefe5;Luigi;1;Habilidad de Luigi;110
-jefe6;Bowser;2;Habilidad de Bowser;140
+jefe1;Link;0;Habilidad de Link;1000
+jefe2;Zelda;1;Habilidad de Zelda;1400
+jefe3;Ganondorf;2;Habilidad de Ganondorf;1300
+jefe4;Mario;0;Habilidad de Mario;1200
+jefe5;Luigi;1;Habilidad de Luigi;1100
+jefe6;Bowser;2;Habilidad de Bowser;1400

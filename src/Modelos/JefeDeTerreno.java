@@ -27,7 +27,7 @@ public class JefeDeTerreno extends ElementoEnCampo {
         this.nombre = nombre;
         this.habilidad = habilidad;
         this.descripcion = descHabilidad;
-        this.puntosVida = puntosVida;
+        this.vida = puntosVida;
     }
     
     public static ArrayList getJefes() {

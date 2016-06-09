@@ -29,6 +29,7 @@ public class BotonCheckImagen extends JToggleButton {
     public BotonCheckImagen(){
         this.setContentAreaFilled(false);
         this.setBorder(null);
+        this.setOpaque(false);
         agregarListeners();
     }
     
@@ -44,6 +45,7 @@ public class BotonCheckImagen extends JToggleButton {
         this.imagen = imagenMouseSobre;
         this.setContentAreaFilled(false);
         this.setBorder(null);
+        this.setOpaque(false);
         agregarListeners();
     }
     
@@ -55,46 +57,51 @@ public class BotonCheckImagen extends JToggleButton {
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e){
-                if(((BotonCheckImagen) e.getComponent()).isSelected()){
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(4);
+                if(isSelected()){
+                    setImagenActual(4);
                 }else{
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(1);
+                    setImagenActual(1);
                 }
             }
             
             @Override
             public void mouseExited(MouseEvent e){
-                if(((BotonCheckImagen) e.getComponent()).isSelected()){
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(3);
+                if(isSelected()){
+                    setImagenActual(3);
                 }else{
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(0);
+                    setImagenActual(0);
                 }
             }
             
             @Override
             public void mousePressed(MouseEvent e){
-                if(((BotonCheckImagen) e.getComponent()).isSelected()){
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(5);
+                if(isSelected()){
+                    setImagenActual(5);
                 }else{
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(2);
+                    setImagenActual(2);
                 }
             }
             
             @Override
             public void mouseReleased(MouseEvent e){
-                if(((BotonCheckImagen) e.getComponent()).isSelected()){
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(4);
+                if(e.getX() > 0 && e.getX() < getWidth() &&
+                   e.getY() > 0 && e.getY() < getHeight()){
+                    if(isSelected()){
+                        setImagenActual(4);
+                    }else{
+                        setImagenActual(1);
+                    }
                 }else{
-                    ((BotonCheckImagen) e.getComponent()).setImagenActual(1);
+                    mouseExited(e);
                 }
             }
         });
         
         this.addChangeListener((ChangeEvent e) -> {
-            if(((BotonCheckImagen) e.getSource()).isSelected()){
-                ((BotonCheckImagen) e.getSource()).setImagenActual(3);
+            if(isSelected()){
+                setImagenActual(3);
             }else{
-                ((BotonCheckImagen) e.getSource()).setImagenActual(1);
+                setImagenActual(1);
             }
         });
     }
@@ -102,8 +109,6 @@ public class BotonCheckImagen extends JToggleButton {
     @Override
     public void paint(Graphics g) {
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
-        
-        this.setOpaque(false);
         super.paint(g);
     }
     

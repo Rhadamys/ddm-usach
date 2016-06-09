@@ -117,9 +117,9 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         this.mensaje.setFont(new Font(fuente.getName(), 
                 Font.TRUETYPE_FONT, 36));
         this.mensajeBienvenida.setFont(new Font(fuente.getName(), 
-                Font.TRUETYPE_FONT | Font.ITALIC, 24));
+                Font.TRUETYPE_FONT, 24));
         
-        this.mensajeBienvenida.setText("¡Bienvenid@ " + jugador.getNombreJugador() + "!");
+        this.mensajeBienvenida.setText("<html>¡Bienvenid@ <i><b style=\"color:orange;\">" + jugador.getNombreJugador() + "</b></i>!</html>");
     }
     
     /**

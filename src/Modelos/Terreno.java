@@ -15,7 +15,22 @@ public class Terreno {
         this.posiciones = new ArrayList();
     }
     
-    public void agregarCasillas(ArrayList<Posicion> posiciones){
-        this.posiciones.addAll(posiciones);
+    public void agregarCasilla(Posicion posicion){
+        this.posiciones.add(posicion);
+    }
+    
+    public int cantidadCriaturasInvocadas(){
+        int cantidadCriaturas = 0;
+        for(Posicion posicion: posiciones){
+            if(posicion.getElemento() != null &&
+               posicion.getElemento() instanceof Criatura){
+                cantidadCriaturas++;
+            }
+        }
+        return cantidadCriaturas;
+    }
+    
+    public boolean contienePosicion(Posicion posicion){
+        return this.posiciones.contains(posicion);
     }
 }

@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -21,10 +22,12 @@ public class BotonImagen extends JButton {
     private Image imagenMouseNormal;
     private Image imagenMouseSobre;
     private Image imagenMousePresionado;
+    private Image imagenDeshabilitado;
     
     public BotonImagen(){
         this.setContentAreaFilled(false);
         this.setBorder(null);
+        this.setOpaque(false);
         repaint();
         agregarListeners();
     }
@@ -38,9 +41,11 @@ public class BotonImagen extends JButton {
         imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
+        imagenDeshabilitado = new ImageIcon(getClass().getResource(imagen)).getImage();
         this.imagenActual = imagenMouseSobre;
         this.setContentAreaFilled(false);
         this.setBorder(null);
+        this.setOpaque(false);
         repaint();
         agregarListeners();
     }
@@ -53,22 +58,51 @@ public class BotonImagen extends JButton {
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e){
-                setImagenActual(1);
+                if(isEnabled()){
+                    setImagenActual(1);
+                }else{
+                    setImagenActual(3);
+                }
             }
             
             @Override
             public void mouseExited(MouseEvent e){
-                setImagenActual(0);
+                if(isEnabled()){
+                    setImagenActual(0);
+                }else{
+                    setImagenActual(3);
+                }
             }
             
             @Override
             public void mousePressed(MouseEvent e){
-                setImagenActual(2);
+                if(isEnabled()){
+                    setImagenActual(2);
+                }else{
+                    setImagenActual(3);
+                }
             }
             
             @Override
             public void mouseReleased(MouseEvent e){
-                setImagenActual(1);
+                if(e.getX() > 0 && e.getX() < e.getComponent().getWidth() &&
+                   e.getY() > 0 && e.getY() < e.getComponent().getHeight()){
+                    if(isEnabled()){
+                        setImagenActual(1);
+                    }else{
+                        setImagenActual(3);
+                    }
+                }else{
+                    mouseExited(e);
+                }
+            }
+        });
+        
+        this.addChangeListener((ChangeEvent e) -> {
+            if(isEnabled()){
+                setImagenActual(0);
+            }else{
+                setImagenActual(3);
             }
         });
     }
@@ -76,8 +110,6 @@ public class BotonImagen extends JButton {
     @Override
     public void paint(Graphics g) {
         g.drawImage(imagenActual, 0, 0, getWidth(), getHeight(), this);
-        
-        this.setOpaque(false);
         super.paint(g);
     }
     
@@ -132,6 +164,14 @@ public class BotonImagen extends JButton {
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
+    /**
+     * Define la imagen que se mostrará cuando el botón esté deshabilitado.
+     * @param imagen String - Nombre del archivo
+     */
+    public void setImagenDeshabilitado(String imagen){
+        imagenDeshabilitado = new ImageIcon(getClass().getResource(imagen)).getImage();
+    }
+    
     public void setImagenActual(int i){
         switch(i){
             case 0: this.imagenActual = this.imagenMouseNormal;
@@ -140,6 +180,7 @@ public class BotonImagen extends JButton {
                     break;
             case 2: this.imagenActual = this.imagenMousePresionado;
                     break;
+            default: this.imagenActual = this.imagenDeshabilitado;
         }
         this.repaint();
     }

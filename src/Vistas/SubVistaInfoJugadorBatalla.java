@@ -123,4 +123,25 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
     public void setIconoJugador(String imagen){
         this.iconoJugador.setImagen(imagen);
     }
+
+    public void setVidaJugador(int vidaJugador) {
+        this.vidaJugador.setValue(vidaJugador);
+    }
+
+    public void setPuntosAtaque(String puntosAtaque) {
+        this.puntosAtaque.setText(puntosAtaque);
+    }
+
+    public void setPuntosMagia(String puntosMagia) {
+        this.puntosMagia.setText(puntosMagia);
+    }
+
+    public void setPuntosMovimiento(String puntosMovimiento) {
+        this.puntosMovimiento.setText(puntosMovimiento);
+    }
+
+    public void setPuntosTrampa(String puntosTrampa) {
+        this.puntosTrampa.setText(puntosTrampa);
+    }
+    
 }

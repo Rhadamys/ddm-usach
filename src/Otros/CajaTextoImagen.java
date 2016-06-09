@@ -31,13 +31,12 @@ public class CajaTextoImagen extends JTextField {
         
         this.imagen = this.imagenNormal;
         this.setBorder(new EmptyBorder(0, 10, 0, 10));
+        this.setOpaque(false);
     }
     
     @Override
     public void paint(Graphics g) {
         g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
-        
-        this.setOpaque(false);
         super.paint(g);
     }
 

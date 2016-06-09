@@ -25,6 +25,7 @@ public class SubVistaInfoElemento extends PanelImagen {
     public SubVistaInfoElemento(ElementoEnCampo elemento, Font fuente) {
         initComponents();
         
+        this.setVisible(false);
         this.setSize(250, 400);
         this.setImagen("/Imagenes/Fondos/fondo_info_elemento.png");
         
@@ -48,14 +49,14 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.barraVida.setBorder(null);
         this.barraVida.setForeground(Color.green);
         this.barraVida.setBackground(Color.yellow);
-        this.barraVida.setMaximum(elemento.getPuntosVida());
-        this.barraVida.setValue(elemento.getPuntosVida());
+        this.barraVida.setMaximum(elemento.getVida() != 0 ? elemento.getVida() : 1);
+        this.barraVida.setValue(elemento.getVida() != 0 ? elemento.getVida() : 1);
         
         this.vida.setText(barraVida.getValue() + "/" + barraVida.getMaximum());
         this.vida.setFont(fuente);
-        this.defensa.setText(String.valueOf(elemento.getPuntosDefensa()));
+        this.defensa.setText(elemento.getDefensa() != 0 ? String.valueOf(elemento.getDefensa()) : "No aplica");
         this.defensa.setFont(fuente);
-        this.ataque.setText(String.valueOf(elemento.getPuntosAtaque()));
+        this.ataque.setText(elemento.getAtaque() != 0 ? String.valueOf(elemento.getAtaque()) : "No aplica");
         this.ataque.setFont(fuente);
     }
 
@@ -121,21 +122,22 @@ public class SubVistaInfoElemento extends PanelImagen {
 
         vida.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         vida.setForeground(java.awt.Color.yellow);
+        vida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         vida.setText("100/100");
         add(vida);
-        vida.setBounds(100, 160, 60, 17);
+        vida.setBounds(20, 160, 200, 17);
 
         defensa.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         defensa.setForeground(java.awt.Color.yellow);
         defensa.setText("100");
         add(defensa);
-        defensa.setBounds(100, 180, 60, 17);
+        defensa.setBounds(100, 180, 120, 17);
 
         ataque.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         ataque.setForeground(java.awt.Color.yellow);
         ataque.setText("100");
         add(ataque);
-        ataque.setBounds(100, 200, 60, 17);
+        ataque.setBounds(100, 200, 120, 17);
     }// </editor-fold>//GEN-END:initComponents
 
 

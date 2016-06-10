@@ -36,8 +36,6 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
         this.setOpaque(false);
         this.setBackground(new Color(0,0,0,0));
         
-        System.out.println(criaturas);
-        
         this.criaturas = criaturas;
         this.panelesCriaturas = new ArrayList();
         

@@ -129,6 +129,7 @@ public abstract class Jugador {
     public ArrayList<Dado> getDados() {
         return dados;
     }
+    
     public Dado getDado(int i) {
         return dados.get(i);
     }
@@ -160,5 +161,5 @@ public abstract class Jugador {
     public void setTerreno(Terreno terreno) {
         this.terreno = terreno;
     }
-           
+          
 }

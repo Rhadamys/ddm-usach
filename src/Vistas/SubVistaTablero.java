@@ -13,19 +13,19 @@ import java.awt.GridLayout;
  * @author mam28
  */
 public class SubVistaTablero extends PanelImagen{
-    private SubVistaPosicion[][] posiciones;
-    private SubVistaPosicion botonActual;
+    private SubVistaPosicion[][] casillas;
+    private SubVistaPosicion casillaActual;
     
     public SubVistaTablero(){
-        this.posiciones = new SubVistaPosicion[15][15];
+        this.casillas = new SubVistaPosicion[15][15];
         this.setSize(500, 500);
         this.setLayout(new GridLayout(15, 15));
         this.setBorder(null);
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                posiciones[i][j] = new SubVistaPosicion(i, j);
-                this.add(posiciones[i][j]);
+                casillas[i][j] = new SubVistaPosicion(i, j);
+                this.add(casillas[i][j]);
             }
         }
     }
@@ -36,10 +36,10 @@ public class SubVistaTablero extends PanelImagen{
     public void actualizarCasillas(){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                if(posiciones[i][j].isSelected()){
-                    posiciones[i][j].setImagenActual(3);
+                if(casillas[i][j].isSelected()){
+                    casillas[i][j].setImagenActual(3);
                 }else{
-                    posiciones[i][j].setImagenActual(0);
+                    casillas[i][j].setImagenActual(0);
                 }
             }
         }
@@ -48,29 +48,25 @@ public class SubVistaTablero extends PanelImagen{
     public void reiniciarCasillas(){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                posiciones[i][j].setSelected(false);
+                casillas[i][j].setSelected(false);
             }
         }
     }
-        
-    public SubVistaPosicion[][] getPosiciones() {
-        return posiciones;
+    
+    public SubVistaPosicion getCasilla(int fila, int columna){
+        return casillas[fila][columna];
     }
 
     public SubVistaPosicion getBotonActual() {
-        return botonActual;
+        return casillaActual;
     }
 
     public void setBotonActual(SubVistaPosicion botonActual) {
-        this.botonActual = botonActual;
-    }
-    
-    public void setPosiciones(SubVistaPosicion[][] posiciones) {
-        this.posiciones = posiciones;
+        this.casillaActual = botonActual;
     }
     
     public void marcarCasilla(int[] idxCasilla, int jugador, String imagenCasilla){
-        this.posiciones[idxCasilla[0]][idxCasilla[1]].setImagenNormal("/Imagenes/Botones/casilla_j" + jugador + ".png");
-        this.posiciones[idxCasilla[0]][idxCasilla[1]].setImagenIconoElemento(imagenCasilla);
+        this.casillas[idxCasilla[0]][idxCasilla[1]].setImagenNormal("/Imagenes/Botones/casilla_j" + jugador + ".png");
+        this.casillas[idxCasilla[0]][idxCasilla[1]].setImagenIconoElemento(imagenCasilla);
     }
 }

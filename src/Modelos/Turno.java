@@ -73,4 +73,20 @@ public class Turno {
     public ArrayList<Dado> getDadosLanzados() {
         return dadosLanzados;
     }
+    
+    public void descontarPuntoAtaque(){
+        this.puntosAtaque--;
+    }
+    
+    public void descontarPuntosMagia(int puntos){
+        this.puntosMagia -= puntos;
+    }
+    
+    public void descontarPuntoMovimiento(){
+        this.puntosMovimiento--;
+    }
+    
+    public void descontarPuntosTrampa(int puntos){
+        this.puntosTrampa -= puntos;
+    }
 }

@@ -202,8 +202,8 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return terminarTurno;
     }
     
-    public ArrayList<SubVistaInfoJugadorBatalla> getVistasJugador() {
-        return vistasJugador;
+    public SubVistaInfoJugadorBatalla getVistaJugador(int i){
+        return vistasJugador.get(i);
     }
 
     public SubVistaSeleccionDespliegue getVisSelDesp() {

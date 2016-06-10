@@ -9,11 +9,15 @@ import java.util.*;
 
 /** @pdOid 86acb453-8a93-4d0f-b73a-4646653b4f7c */
 public class Posicion {
+    private final int fila;
+    private final int columna;
     private ElementoEnCampo elemento;
     private int dueno;
     
-    public Posicion(){
+    public Posicion(int fila, int columna){
         this.dueno = 0;
+        this.fila = fila;
+        this.columna = columna;
     }
 
     public int getDueno() {
@@ -22,6 +26,14 @@ public class Posicion {
 
     public ElementoEnCampo getElemento() {
         return elemento;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getColumna() {
+        return columna;
     }
 
     public void setDueno(int dueno) {

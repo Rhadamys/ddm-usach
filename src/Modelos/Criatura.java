@@ -13,7 +13,10 @@ import java.io.IOException;
 
 /** @pdOid dae863aa-62cf-47e0-9a47-196272f29518 */
 public class Criatura extends ElementoEnCampo {
-    private int nivel;
+    private final int nivel;
+    private int vida;
+    private final int ataque;
+    private final int defensa;
     
     public Criatura(
             String nombre,
@@ -71,6 +74,18 @@ public class Criatura extends ElementoEnCampo {
 
     public int getNivel() {
         return nivel;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public int getAtaque() {
+        return ataque;
+    }
+
+    public int getDefensa() {
+        return defensa;
     }
     
 }

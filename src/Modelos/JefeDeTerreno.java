@@ -15,6 +15,7 @@ import java.util.*;
 /** @pdOid ba01c964-70b9-429b-9412-0cfa461bb9c0 */
 public class JefeDeTerreno extends ElementoEnCampo {
     private final int habilidad;
+    private final int vida;
     
     public JefeDeTerreno(
             String nombre, 
@@ -96,5 +97,8 @@ public class JefeDeTerreno extends ElementoEnCampo {
     public int getHabilidad() {
         return habilidad;
     }
-    
+
+    public int getVida() {
+        return vida;
+    }
 }

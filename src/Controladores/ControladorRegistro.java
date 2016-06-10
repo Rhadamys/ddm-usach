@@ -48,7 +48,7 @@ public class ControladorRegistro {
         this.visSelJef = new SubVistaSeleccionarJefe(this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visSelJef);
         
-        for(int i = 0; i < this.visSelJef.getPanelesJefes().size(); i++){
+        for(int i = 0; i < this.visSelJef.cantidadJefes(); i++){
             this.agregarListenersVistaSeleccionarJefe(i);
         }
         
@@ -112,10 +112,10 @@ public class ControladorRegistro {
     }
     
     public void agregarListenersVistaSeleccionarJefe(int i){
-        this.visSelJef.getPanelesJefes().get(i).addMouseListener(new MouseAdapter() {
+        this.visSelJef.getPanelJefe(i).addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e){
-                visSelJef.mostrarInformacionJefe(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent()));
+                visSelJef.mostrarInformacionJefe(visSelJef.idxJefe((BotonImagen) e.getComponent()));
             }
 
             @Override
@@ -125,7 +125,7 @@ public class ControladorRegistro {
 
             @Override
             public void mouseClicked(MouseEvent e){
-                setJefe(JefeDeTerreno.getJefe(visSelJef.getJefes().get(visSelJef.getPanelesJefes().indexOf((BotonImagen) e.getComponent())).getNomArchivoImagen()));
+                setJefe((BotonImagen) e.getComponent());
                 visSelJef.setVisible(false);
             }
         });
@@ -134,10 +134,10 @@ public class ControladorRegistro {
     /**
      * Establece el jefe de terreno elegido por el usuario en la vista de
      * selección de jefe para realizar el registro.
-     * @param jefe Jefe de terreno seleccionado.
+     * @param panelJefe Jefe de terreno seleccionado.
      */
-    public void setJefe(JefeDeTerreno jefe) {
-        this.jefe = jefe;
+    public void setJefe(BotonImagen panelJefe) {
+        this.jefe = this.visSelJef.getJefe(panelJefe);
         this.visReg.getIconoJefe().setImagen("/Imagenes/Jefes/" + jefe.getNomArchivoImagen() + ".png");
         this.visReg.getIconoJefe().setToolTipText(jefe.getNombre());
     }

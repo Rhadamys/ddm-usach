@@ -96,7 +96,7 @@ public class ControladorBatalla {
             this.tablero.getJugador(i).setTerreno(this.terrenos.get(i));
             this.visBat.agregarJugador(jugPartida.get(i));
             this.tablero.asignarCasilla(posJugTab[i], i + 1);
-            this.tablero.getPosiciones()[posJugTab[i][0]][posJugTab[i][1]]
+            this.tablero.getPosicion(posJugTab[i][0], posJugTab[i][1])
                     .setElemento(jugPartida.get(i).getJefeDeTerreno());
             this.asignarCasilla(posJugTab[i], i, jugPartida.get(i).getJefeDeTerreno());
         }
@@ -139,7 +139,11 @@ public class ControladorBatalla {
             @Override
             public void mouseClicked(MouseEvent e){
                 if(e.getComponent().isEnabled()){
-                    mostrarVistaSeleccionarDespliegue();
+                    if(tablero.getNumAccion() == 1){
+                        mostrarVistaSeleccionarDespliegue();
+                    }else{
+                        mostrarMensaje("No estás invocando una criatura actualmente.");
+                    }
                 }
             }
             
@@ -171,10 +175,14 @@ public class ControladorBatalla {
             @Override
             public void mouseClicked(MouseEvent e){
                 if(e.getComponent().isEnabled()){
-                    if(sePuedeMover()){
-                        tablero.setNumAccion(10);
+                    if(tablero.getNumAccion() == 0){
+                        if(sePuedeMover()){
+                            solicitarSeleccionarCriatura();
+                        }else{
+                            mostrarMensajeNoSePuedeMover();
+                        }
                     }else{
-                        mostrarMensajeNoSePuedeMover();
+                        moverCriatura();
                     }
                 }
             }
@@ -231,7 +239,7 @@ public class ControladorBatalla {
     }
     
     public void actualizarVistaJugador(int i){
-        SubVistaInfoJugadorBatalla visInfoJug = this.visBat.getVistasJugador().get(i);
+        SubVistaInfoJugadorBatalla visInfoJug = this.visBat.getVistaJugador(i);
         visInfoJug.setPuntosAtaque(String.valueOf(this.tablero.getJugador(i).getTurno().getPuntosAtaque()));
         visInfoJug.setPuntosMagia(String.valueOf(this.tablero.getJugador(i).getTurno().getPuntosMagia()));
         visInfoJug.setPuntosMovimiento(String.valueOf(this.tablero.getJugador(i).getTurno().getPuntosMovimiento()));
@@ -271,7 +279,7 @@ public class ControladorBatalla {
      * @param columna Columna de la posición dentro del tablero.
      */
     public void agregarListenersPosicion(int fila, int columna){
-        this.visBat.getTablero().getPosiciones()[fila][columna].addMouseListener(new MouseAdapter(){
+        this.visBat.getTablero().getCasilla(fila, columna).addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(MouseEvent e){
                 visBat.setMensaje("");
@@ -300,8 +308,9 @@ public class ControladorBatalla {
                     case 1: visBat.getTablero().reiniciarCasillas();
                             invocarCriatura((SubVistaPosicion) e.getComponent());
                             break;
-                    case 10:    visBat.getTablero().reiniciarCasillas();
-                                setCriaturaAMover((SubVistaPosicion) e.getComponent());
+                    case 10:    setCriaturaAMover((SubVistaPosicion) e.getComponent());
+                                break;
+                    case 11:    cambiarEstadoCasillaCamino((SubVistaPosicion) e.getComponent());
                                 break;
                 }
             }
@@ -312,7 +321,7 @@ public class ControladorBatalla {
             }
         });
         
-        this.visBat.getTablero().getPosiciones()[fila][columna].addKeyListener(new KeyAdapter(){
+        this.visBat.getTablero().getCasilla(fila, columna).addKeyListener(new KeyAdapter(){
             @Override
             public void keyPressed(KeyEvent e){
                 switch(tablero.getNumAccion()){
@@ -351,15 +360,16 @@ public class ControladorBatalla {
     public void mostrarDespliegue(int numDespliegue, SubVistaPosicion botonActual, int direccion, int turno){
         this.visBat.getTablero().actualizarCasillas();
         for(int[] coord: this.tablero.getDespliegue(botonActual.getFila(), botonActual.getColumna())){
+        Posicion posicionActual = this.tablero.getPosicion(coord[0], coord[1]);
             try{
-                if(this.tablero.getPosiciones()[coord[0]][coord[1]].getDueno() == 0){
-                    this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenSobre(
+                if(posicionActual.getDueno() == 0){
+                    this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenSobre(
                             "/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
                 }else{
-                    this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenSobre(
+                    this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenSobre(
                             "/Imagenes/Botones/casilla_error.png");
                 }
-                this.visBat.getTablero().getPosiciones()[coord[0]][coord[1]].setImagenActual(1);
+                this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenActual(1);
             }catch(Exception e){
                 this.visBat.setMensaje("Fuera de los límites del tablero.");
             }
@@ -373,7 +383,7 @@ public class ControladorBatalla {
      */
     public void asignarCasillas(int[][] idxCasillas, int turno){
         for(int[] coord: idxCasillas){
-            this.asignarCasilla(coord, turno, this.tablero.getPosiciones()[coord[0]][coord[1]].getElemento());
+            this.asignarCasilla(coord, turno, this.tablero.getPosicion(coord[0], coord[1]).getElemento());
         }
     }
     
@@ -394,9 +404,10 @@ public class ControladorBatalla {
     }
     
     public void mostrarVistaInfoElemento(SubVistaPosicion posicion){
-        if(this.tablero.getPosiciones()[posicion.getFila()][posicion.getColumna()].getElemento() != null){
+        Posicion posicionActual = this.tablero.getPosicion(posicion.getFila(), posicion.getColumna());
+        if(posicionActual.getElemento() != null){
             this.visInfoEl = new SubVistaInfoElemento(
-                    this.tablero.getPosiciones()[posicion.getFila()][posicion.getColumna()].getElemento(),
+                    posicionActual.getElemento(),
                     this.contPrin.getFuente());
             this.visBat.add(this.visInfoEl, 0);
             
@@ -543,6 +554,7 @@ public class ControladorBatalla {
                     mostrarMensajeCarasInvocacion();
                 }else{
                     acumularPuntos();
+                    cambiarTurno();
                 }
             }
         });
@@ -550,6 +562,7 @@ public class ControladorBatalla {
         this.visBat.getVisLanDados().getRealizarAcciones().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
+                acumularPuntos();
                 if(cantidadCarasInvocacion() != 0){
                     mostrarVistaSeleccionCriatura();
                 }else{
@@ -574,7 +587,6 @@ public class ControladorBatalla {
         this.tablero.getJugadorActual().getTurno().acumularPuntos();
         this.visBat.getVisLanDados().dispose();
         this.actualizarVistaJugador(this.tablero.getTurnoActual());
-        this.cambiarTurno();
     }
     
     public void mostrarMensajeCarasInvocacion(){
@@ -589,7 +601,6 @@ public class ControladorBatalla {
     public void realizarAcciones(){
         this.visBat.getVisLanDados().dispose();
         this.habilitarBotones();
-        this.visBat.getTerminarTurno().setEnabled(true);
     }
 // </editor-fold>
     
@@ -625,7 +636,7 @@ public class ControladorBatalla {
         ocultarVistaSeleccionarDespliegue();
         this.tablero.setNumAccion(1);
         this.tablero.setNumDespliegue(numDespliegue);
-        this.visBat.getTablero().getPosiciones()[0][0].requestFocus();
+        this.visBat.getTablero().getCasilla(0, 0).requestFocus();
         this.visBat.getInvocacion().setEnabled(true);
     }
     
@@ -707,18 +718,26 @@ public class ControladorBatalla {
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el ataque de criatura">  
     
     public boolean sePuedeAtacar(){
-        int cantidadJugadoresTienenCriaturas = 0;
-        for(Terreno terreno: terrenos){
-            if(terreno.cantidadCriaturasInvocadas() != 0){
-                cantidadJugadoresTienenCriaturas++;
+        if(this.tablero.getJugadorActual().getTurno().getPuntosAtaque() != 0){
+            int cantidadJugadoresTienenCriaturas = 0;
+            for(Terreno terreno: terrenos){
+                if(terreno.cantidadCriaturasInvocadas() != 0){
+                    cantidadJugadoresTienenCriaturas++;
+                }
             }
-        }
-        
-        if(cantidadJugadoresTienenCriaturas > 1){
-            return true;
+
+            if(cantidadJugadoresTienenCriaturas > 1){
+                return true;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
+    }
+    
+    public boolean casillaContieneCriatura(SubVistaPosicion posicion){
+        return this.tablero.getPosicion(posicion.getFila(), posicion.getColumna()).getElemento() instanceof Criatura;
     }
     
     public void mostrarMensajeNoSePuedeAtacar(){
@@ -757,15 +776,23 @@ public class ControladorBatalla {
             int nivel = dado.getCriatura().getNivel();
             if(nivel == 1){
                 criaturas.add(dado.getCriatura());
-            }else if(nivel == 2 && this.cantidadCarasInvocacion() >= 2){
-                criaturas.add(dado.getCriatura());
-            }else{
-                for(int i = 0; i < 15; i++){
-                    for(int j = 0; j < 15; j++){
-                        if(this.tablero.getPosiciones()[i][j].getElemento() != null &&
-                           this.tablero.getPosiciones()[i][j].getElemento() instanceof Criatura &&
-                           ((Criatura) this.tablero.getPosiciones()[i][j].getElemento()).getNivel() == (nivel - 1)){
-                            criaturas.add(dado.getCriatura());
+            }else if(this.cantidadCarasInvocacion() >= 2){
+                if(nivel == 2){
+                    criaturas.add(dado.getCriatura());
+                }else{
+                    boolean terminar = false;
+                    for(int i = 0; i < 15; i++){
+                        if(!terminar){
+                            for(int j = 0; j < 15; j++){
+                                if(this.tablero.getPosicion(i, j).getElemento() instanceof Criatura &&
+                                   ((Criatura) this.tablero.getPosicion(i, j).getElemento()).getNivel() == (nivel - 1)){
+                                    criaturas.add(dado.getCriatura());
+                                    terminar = true;
+                                    break;
+                                }
+                            }
+                        }else{
+                            break;
                         }
                     }
                 }
@@ -778,7 +805,6 @@ public class ControladorBatalla {
         this.visBat.getVisSelCri().dispose();
         accion.setCriaturaAInvocar(this.visBat.getVisSelCri().getCriatura(panelCriatura));
         this.mostrarVistaSeleccionarDespliegue();
-        this.habilitarBotones();
     }
     
     public boolean sePuedeInvocar(int[][] idxCasillas, int turno){
@@ -795,15 +821,15 @@ public class ControladorBatalla {
         }
     }
     
-    public void invocarCriatura(SubVistaPosicion posicion){
-        int[][] despliegue = tablero.getDespliegue(posicion.getFila(), posicion.getColumna());
+    public void invocarCriatura(SubVistaPosicion posicion)
+{        int[][] despliegue = tablero.getDespliegue(posicion.getFila(), posicion.getColumna());
         
         if(this.sePuedeInvocar(despliegue, tablero.getTurnoActual())){
-            this.accion.invocarCriatura(this.tablero.getPosiciones()[posicion.getFila()][posicion.getColumna()]);
+            this.accion.invocarCriatura(this.tablero.getPosicion(posicion.getFila(), posicion.getColumna()));
             asignarCasillas(despliegue, tablero.getTurnoActual());
             this.visBat.getTablero().actualizarCasillas();
+            this.habilitarBotones();
             this.visBat.getInvocacion().setEnabled(false);
-            this.visBat.getTerminarTurno().setEnabled(true);
             this.tablero.setNumAccion(0);
         }else{
             this.visBat.setMensaje("No se puede invocar en la posición actual.");
@@ -819,11 +845,18 @@ public class ControladorBatalla {
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el movimiento de criaturas"> 
     
     public boolean sePuedeMover(){
-        if(terrenos.get(this.tablero.getTurnoActual()).cantidadCriaturasInvocadas() != 0){
+        if(this.tablero.getJugadorActual().getTurno().getPuntosMovimiento() != 0 &&
+           terrenos.get(this.tablero.getTurnoActual()).cantidadCriaturasInvocadas() != 0){
             return true;
         }else{
             return false;
         }
+    }
+    
+    public void solicitarSeleccionarCriatura(){
+        this.visBat.setMensaje("Selecciona una criatura.");
+        this.tablero.setNumAccion(10);
+        this.deshabilitarBotones();
     }
     
     public boolean posicionTieneCriaturaDelJugador(Posicion posicionActual){
@@ -836,19 +869,128 @@ public class ControladorBatalla {
     }
     
     public void setCriaturaAMover(SubVistaPosicion posicion){
-        Posicion posicionActual = this.tablero.getPosiciones()[posicion.getFila()][posicion.getColumna()];
+        Posicion posicionActual = this.tablero.getPosicion(posicion.getFila(), posicion.getColumna());
         if(this.posicionTieneCriaturaDelJugador(posicionActual)){
             this.accion.setCriaturaAMover((Criatura) posicionActual.getElemento());
+            this.cambiarEstadoCasillaCamino(posicion);
+            this.visBat.setMensaje("Marca las casillas del camino.");
             this.tablero.setNumAccion(11);
         }else{
             this.visBat.setMensaje("Aquí no hay una criatura o no te pertenece.");
+            this.visBat.getTablero().reiniciarCasillas();
         }
+    }
+    
+    public void cambiarEstadoCasillaCamino(SubVistaPosicion casilla){
+        Posicion posicionActual = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        if(this.accion.caminoContienePosicion(posicionActual)){
+            System.out.println("Está");
+            if(this.sePuedeEliminarCasilla(posicionActual)){
+                System.out.println("Se eliminó");
+                this.accion.eliminarPosicionDelCamino(posicionActual);
+            }else{                
+                casilla.setSelected(true);
+            }
+        }else{
+            System.out.println("No está");
+            if(this.accion.getLargoDelCamino() == 0 ||
+               this.sePuedeAgregarCasilla(
+               this.accion.obtenerUltimaPosicionAgregada().getFila(),
+               this.accion.obtenerUltimaPosicionAgregada().getColumna(),
+               posicionActual)){   
+                System.out.println("Se agregó");
+                this.accion.agregarPosicionAlCamino(posicionActual);
+            }else{                
+                casilla.setSelected(false);
+            } 
+        }
+        
+        if(this.accion.getLargoDelCamino() > 1){
+            this.visBat.getMovimiento().setEnabled(true);
+        }else{
+            this.visBat.getMovimiento().setEnabled(false);
+        }
+    }
+    
+    public boolean sePuedeAgregarCasilla(int fila, int columna, Posicion posicion){
+        if((this.accion.getLargoDelCamino() - 1) < this.tablero.getJugadorActual().getTurno().getPuntosMovimiento() &&
+          (posicion.getElemento() == null || posicion.getElemento() instanceof Trampa)){
+            int[][] vecinos = {{fila - 1, columna},
+                               {fila + 1, columna},
+                               {fila, columna - 1},
+                               {fila, columna + 1}};
+
+            for(int[] coord: vecinos){
+                try{                    
+                    if(this.tablero.getPosicion(coord[0], coord[1]).equals(posicion)){
+                        return true;
+                    }
+                }catch(Exception e){
+                    // Nada
+                }
+            }
+        }else{
+            return false;
+        }
+        
+        return false;
+    }
+    
+    public boolean sePuedeEliminarCasilla(Posicion posicion){
+        return this.accion.obtenerUltimaPosicionAgregada().equals(posicion);
+    }
+    
+    public void moverCriatura(){
+        this.tablero.setNumAccion(0);
+        this.visBat.getTablero().actualizarCasillas();
+        
+        Timer timerMovimiento = new Timer();
+        timerMovimiento.schedule(new TimerTask(){
+            int pasos = accion.getLargoDelCamino() - 1;
+            int tic = 0;
+            
+            @Override
+            public void run(){
+                if(tic != pasos){
+                    System.out.println("TIC: " + tic + " PASOS: " + pasos);
+                    Posicion posAnt = accion.obtenerPosicionCamino(0);
+                    Posicion posAct = accion.obtenerPosicionCamino(1);
+
+                    ElementoEnCampo elemento = accion.moverCriaturaSiguientePosicion();
+                    tablero.getJugadorActual().getTurno().descontarPuntoMovimiento();
+
+                    visBat.getTablero().getCasilla(posAnt.getFila(), posAnt.getColumna()).setImagenIconoElemento(
+                            "/Imagenes/vacio.png");
+                    visBat.getTablero().getCasilla(posAnt.getFila(), posAnt.getColumna()).setImagenIconoElemento(
+                            "/Imagenes/Criaturas/" + accion.getCriaturaAMover().getNomArchivoImagen() + ".png");
+
+                    if(elemento instanceof Trampa){
+                        ((Trampa) elemento).activarTrampa();
+                        mostrarMensaje("Se ha activado una trampa.");
+                        finalizarMovimiento();
+                    }
+
+                    tic++;
+                }else{
+                    finalizarMovimiento();        
+                }
+            }
+            
+            public void finalizarMovimiento(){
+                actualizarVistaJugador(tablero.getTurnoActual());
+                visBat.getTablero().reiniciarCasillas();
+                accion.finalizarMovimiento();
+                habilitarBotones();
+                
+                timerMovimiento.cancel();
+            }
+        }, 0, 500);
     }
     
     public void comprobarCasillaSeleccionCriatura(SubVistaPosicion casilla){
         this.visBat.getTablero().actualizarCasillas();
-        if(this.tablero.getPosiciones()[casilla.getFila()][casilla.getColumna()].getDueno() == (this.tablero.getTurnoActual() + 1) &&
-           this.tablero.getPosiciones()[casilla.getFila()][casilla.getColumna()].getElemento() instanceof Criatura){
+        if(this.tablero.getPosicion(casilla.getFila(), casilla.getColumna()).getDueno() == (this.tablero.getTurnoActual() + 1) &&
+           this.tablero.getPosicion(casilla.getFila(), casilla.getColumna()).getElemento() instanceof Criatura){
             casilla.setImagenSobre("/Imagenes/Botones/casilla_correcta.png");
         }else{
             casilla.setImagenSobre("/Imagenes/Botones/casilla_error.png");
@@ -857,7 +999,7 @@ public class ControladorBatalla {
     }
     
     public void comprobarCasillaMovimiento(SubVistaPosicion casilla){
-        Posicion posicionActual = this.tablero.getPosiciones()[casilla.getFila()][casilla.getColumna()];
+        Posicion posicionActual = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
         this.visBat.getTablero().actualizarCasillas();
         if(!this.accion.caminoContienePosicion(posicionActual) && posicionActual.getDueno() != 0 && 
           (posicionActual.getElemento() == null || posicionActual.getElemento() instanceof Trampa)){
@@ -869,7 +1011,7 @@ public class ControladorBatalla {
     }
     
     public void mostrarMensajeNoSePuedeMover(){
-        this.mostrarMensaje("No tienes criaturas para mover.");
+        this.mostrarMensaje("No tienes criaturas para mover o no tienes puntos de movimiento.");
     }
     
 // </editor-fold>   
@@ -886,6 +1028,7 @@ public class ControladorBatalla {
         this.visBat.getMagia().setEnabled(true);
         this.visBat.getMovimiento().setEnabled(true);
         this.visBat.getTrampa().setEnabled(true);
+        this.visBat.getTerminarTurno().setEnabled(true);
     }
     
     public void deshabilitarBotones(){

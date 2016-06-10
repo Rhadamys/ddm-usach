@@ -22,7 +22,7 @@ public class Tablero {
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                posiciones[i][j] = new Posicion();
+                posiciones[i][j] = new Posicion(i, j);
             }
         }
     }
@@ -51,8 +51,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue cruz.
-     * @param fila
-     * @param columna
+     * @param fila Fila dentro del tablero de la posición actual en la que se encuentra el mouse.
+     * @param columna Columna dentro del tablero de la posición actual en la que se encuentra el mouse.
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue cruz.
      */
@@ -86,7 +86,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue escalera.
-     * @param botonActual Botón sobre el que se encuentra el mouse actualmente.
+     * @param fila Fila dentro del tablero de la posición actual en la que se encuentra el mouse.
+     * @param columna Columna dentro del tablero de la posición actual en la que se encuentra el mouse.
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue escalera.
      */
@@ -120,7 +121,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue T.
-     * @param botonActual Botón sobre el que se encuentra el mouse actualmente.
+     * @param fila Fila dentro del tablero de la posición actual en la que se encuentra el mouse.
+     * @param columna Columna dentro del tablero de la posición actual en la que se encuentra el mouse.
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue T.
      */
@@ -154,7 +156,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue S.
-     * @param botonActual Botón sobre el que se encuentra el mouse actualmente.
+     * @param fila Fila dentro del tablero de la posición actual en la que se encuentra el mouse.
+     * @param columna Columna dentro del tablero de la posición actual en la que se encuentra el mouse.
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue S.
      */
@@ -188,7 +191,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue 4.
-     * @param botonActual Botón sobre el que se encuentra el mouse actualmente.
+     * @param fila Fila dentro del tablero de la posición actual en la que se encuentra el mouse.
+     * @param columna Columna dentro del tablero de la posición actual en la que se encuentra el mouse.
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue 4.
      */
@@ -222,7 +226,8 @@ public class Tablero {
     
     /**
      * Devuelve los índices de posiciones en el tablero que conforman el numDespliegue R.
-     * @param botonActual Botón sobre el que se encuentra el mouse actualmente.
+     * @param fila Fila dentro del tablero de la posición actual en la que se encuentra el mouse.
+     * @param columna Columna dentro del tablero de la posición actual en la que se encuentra el mouse.
      * @param direccion Dirección del numDespliegue.
      * @return Despliegue R.
      */
@@ -328,9 +333,9 @@ public class Tablero {
     public int getNumDespliegue() {
         return numDespliegue;
     }
-
-    public Posicion[][] getPosiciones() {
-        return posiciones;
+    
+    public Posicion getPosicion(int fila, int columna){
+        return posiciones[fila][columna];
     }
 
     public Jugador getJugador(int i) {

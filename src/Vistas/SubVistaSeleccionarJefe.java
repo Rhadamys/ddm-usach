@@ -139,12 +139,20 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         this.habilidad.setText("");
     }
     
-    public ArrayList<BotonImagen> getPanelesJefes() {
-        return panelesJefes;
+    public BotonImagen getPanelJefe(int i){
+        return panelesJefes.get(i);
     }
-
-    public ArrayList<JefeDeTerreno> getJefes() {
-        return jefes;
+    
+    public int cantidadJefes(){
+        return this.jefes.size();
+    }
+    
+    public int idxJefe(BotonImagen panelJefe){
+        return panelesJefes.indexOf(panelJefe);
+    }
+    
+    public JefeDeTerreno getJefe(BotonImagen panelJefe){
+        return jefes.get(this.idxJefe(panelJefe));
     }
     
     public void setNombre(String nombre){

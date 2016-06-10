@@ -12,9 +12,6 @@ public abstract class ElementoEnCampo {
     protected String nomArchivoImagen;
     protected String nombre;
     protected String descripcion;
-    protected int vida;
-    protected int ataque;
-    protected int defensa;
 
     public String getNomArchivoImagen() {
         return nomArchivoImagen;
@@ -27,18 +24,5 @@ public abstract class ElementoEnCampo {
     public String getDescripcion() {
         return descripcion;
     }
-
-    public int getVida() {
-        return vida;
-    }
-
-    public int getAtaque() {
-        return ataque;
-    }
-
-    public int getDefensa() {
-        return defensa;
-    }
-    
     
 }

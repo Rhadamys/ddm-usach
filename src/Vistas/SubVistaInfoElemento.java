@@ -7,6 +7,8 @@ package Vistas;
 
 import Modelos.Criatura;
 import Modelos.ElementoEnCampo;
+import Modelos.JefeDeTerreno;
+import Modelos.Trampa;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
@@ -49,14 +51,17 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.barraVida.setBorder(null);
         this.barraVida.setForeground(Color.green);
         this.barraVida.setBackground(Color.yellow);
-        this.barraVida.setMaximum(elemento.getVida() != 0 ? elemento.getVida() : 1);
-        this.barraVida.setValue(elemento.getVida() != 0 ? elemento.getVida() : 1);
+        this.barraVida.setMaximum(!(elemento instanceof Trampa) ? elemento instanceof Criatura ? 
+                ((Criatura) elemento).getVida() : ((JefeDeTerreno) elemento).getVida() : 1);
+        
+        this.barraVida.setValue(!(elemento instanceof Trampa) ? elemento instanceof Criatura ? 
+                ((Criatura) elemento).getVida() : ((JefeDeTerreno) elemento).getVida() : 1);
         
         this.vida.setText(barraVida.getValue() + "/" + barraVida.getMaximum());
         this.vida.setFont(fuente);
-        this.defensa.setText(elemento.getDefensa() != 0 ? String.valueOf(elemento.getDefensa()) : "No aplica");
+        this.defensa.setText(elemento instanceof Criatura ? String.valueOf(((Criatura) elemento).getDefensa()) : "No aplica");
         this.defensa.setFont(fuente);
-        this.ataque.setText(elemento.getAtaque() != 0 ? String.valueOf(elemento.getAtaque()) : "No aplica");
+        this.ataque.setText(elemento instanceof Criatura ? String.valueOf(((Criatura) elemento).getAtaque()) : "No aplica");
         this.ataque.setFont(fuente);
     }
 

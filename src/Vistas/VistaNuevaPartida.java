@@ -147,9 +147,18 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
     public BotonImagen getComenzar() {
         return comenzar;
     }
-
-    public ArrayList<SubVistaResumenJugador> getVistasResJug() {
-        return vistasResJug;
+    
+    public void agregarVisResJug(SubVistaResumenJugador visResJug){
+        this.vistasResJug.add(visResJug);
+    }
+    
+    public void eliminarVisResJug(int i){
+        this.vistasResJug.get(i).setVisible(false);
+        this.vistasResJug.remove(i);
+    }
+    
+    public SubVistaResumenJugador getVisResJug(int i){
+        return this.vistasResJug.get(i);
     }
 
     public SubVistaSeleccionEquipos getVisSelEq() {

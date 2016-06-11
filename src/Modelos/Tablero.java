@@ -259,6 +259,15 @@ public class Tablero {
         return null;
     }
     
+    public int[][] getIdxVecinos(Posicion posicion){
+        int[][] vecinos = {{posicion.getFila() - 1, posicion.getColumna()},
+                           {posicion.getFila() + 1, posicion.getColumna()},
+                           {posicion.getFila(), posicion.getColumna() - 1},
+                           {posicion.getFila(), posicion.getColumna() + 1}};
+        
+        return vecinos;
+    }
+    
     /**
      * Comprueba que la posición actual del despliegue esté conectada al terreno
      * del jugador.
@@ -268,20 +277,13 @@ public class Tablero {
      */
     public boolean estaConectadoAlTerreno(int[][] idxCasillas, int jugador){
         for(int[] coord: idxCasillas){
-            
-            int[][] vecinos = {
-                {coord[0] - 1, coord[1]},
-                {coord[0] + 1, coord[1]},
-                {coord[0], coord[1] + 1},
-                {coord[0], coord[1] - 1}};
-            
-            for(int[] vecino: vecinos){
+            for(int[] vecino: getIdxVecinos(this.getPosicion(coord[0], coord[1]))){
                 try{
                     if(this.posiciones[vecino[0]][vecino[1]].getDueno() == jugador){
                        return true;
                     }
                 }catch(Exception e){
-                   return false;
+                    // Nada
                 }
             }
         }
@@ -301,7 +303,7 @@ public class Tablero {
                     return false;
                 }
             }catch(Exception e){
-               return false;
+                // Nada
             }
         }
         
@@ -335,7 +337,11 @@ public class Tablero {
     }
     
     public Posicion getPosicion(int fila, int columna){
-        return posiciones[fila][columna];
+        try{
+            return posiciones[fila][columna];
+        }catch(Exception e){
+            return null;
+        }
     }
 
     public Jugador getJugador(int i) {
@@ -344,6 +350,10 @@ public class Tablero {
     
     public Jugador getJugadorActual() {
         return jugadores.get(this.getTurnoActual());
+    }
+    
+    public int cantidadJugadores(){
+        return this.jugadores.size();
     }
 
     public void setJugadores(ArrayList<Jugador> jugadores) {

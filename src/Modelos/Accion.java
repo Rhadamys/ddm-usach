@@ -17,16 +17,22 @@ public class Accion {
         this.posicionesMovimiento = new ArrayList();
     }
     
-    public void invocarCriatura(Posicion posicion){
+    public void invocarCriatura(Posicion posicion, ArrayList<Dado> dados){
         posicion.setElemento(criaturaAInvocar);
+        
+        for(Dado dado: dados){
+            if(criaturaAInvocar.equals(dado.getCriatura())){
+                dado.setParaLanzar(false);
+                break;
+            }
+        }
     }
     
-    public ElementoEnCampo moverCriaturaSiguientePosicion(){
+    public ElementoEnCampo moverCriaturaSiguientePosicion(int posAct){
         ElementoEnCampo elementoAnterior = this.posicionesMovimiento.get(0).getElemento();
         
-        this.posicionesMovimiento.get(0).setElemento(null);
-        this.posicionesMovimiento.get(1).setElemento(criaturaAMover);
-        this.posicionesMovimiento.remove(0);
+        this.posicionesMovimiento.get(posAct).setElemento(null);
+        this.posicionesMovimiento.get(posAct + 1).setElemento(criaturaAMover);
         
         return elementoAnterior;
     }
@@ -59,8 +65,8 @@ public class Accion {
         return this.posicionesMovimiento.get(this.posicionesMovimiento.size() - 1);
     }
 
-    public int getLargoDelCamino() {
-        return posicionesMovimiento.size();
+    public int largoDelCamino() {
+        return posicionesMovimiento.size() - 1;
     }
 
     public Criatura getCriaturaAMover() {

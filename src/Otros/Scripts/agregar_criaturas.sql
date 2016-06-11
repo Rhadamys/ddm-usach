@@ -1,0 +1,10 @@
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Goomba', '<html><p align="justify">Como textualmente su manual describía “Pequeño Goomba: Un Champiñón que engaño al rey Champiñón. Se salta encima y muere… 100 puntos”, parecen ser una especie de Champiñón con pies, señas, y en ocasiones, colmillos (hacia arriba).</p></html>', 'criatura1', 100, 20, 30, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Bokoblin', '<html><p align="justify">Los orígenes de estos monstruos se pierden en la Noche de los Tiempos. Pueden realizar tareas sencillas y manejar distintas armas; prefieren atacar en grupo, quizá por su escaso intelecto. Su extraña obsesión por la ropa interior merece mención aparte.</p</html>', 'criatura2', 120, 10, 20, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Boo', '<html><p align="justify">Una característica esencial de este enemigo es que cuando lo miran, se queda quieto, se tapa la cara con sus manos o se hace invisible, pero si no lo están viendo, comienza a moverse para atacar al jugador</p></html>', 'criatura3', 200, 30, 25, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Lizalfos', '<html><p align="justify">Son muy ágiles en combate y tienden a oscilar su arma en Link en un momento determinado, pero siempre hay pequeñas oportunidades para atacar cuando ellos bajan la guardia. </p></html>', 'criatura4', 280, 50, 40, 3);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Magikoopa', '<html><p align="justify">Es una criatura que viste un sombrero de hechicero color azul, una túnica azul, usa anteojos y tiene una varita mágica para lanzar hechizos, a veces vuela sobre una escoba.</p></html>', 'criatura5', 500, 100, 75, 4);

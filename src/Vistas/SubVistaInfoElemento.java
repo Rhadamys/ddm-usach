@@ -51,18 +51,49 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.barraVida.setBorder(null);
         this.barraVida.setForeground(Color.green);
         this.barraVida.setBackground(Color.yellow);
-        this.barraVida.setMaximum(!(elemento instanceof Trampa) ? elemento instanceof Criatura ? 
-                ((Criatura) elemento).getVida() : ((JefeDeTerreno) elemento).getVida() : 1);
         
-        this.barraVida.setValue(!(elemento instanceof Trampa) ? elemento instanceof Criatura ? 
-                ((Criatura) elemento).getVida() : ((JefeDeTerreno) elemento).getVida() : 1);
-        
-        this.vida.setText(barraVida.getValue() + "/" + barraVida.getMaximum());
-        this.vida.setFont(fuente);
-        this.defensa.setText(elemento instanceof Criatura ? String.valueOf(((Criatura) elemento).getDefensa()) : "No aplica");
+        String aumento = "";
+        if(!(elemento instanceof Trampa)){
+            
+            if(elemento instanceof Criatura){
+                this.barraVida.setMaximum(((Criatura) elemento).getVidaMaxima());
+                this.barraVida.setValue(((Criatura) elemento).getVida());
+                
+                if(((Criatura) elemento).getVidaPorDefecto() < barraVida.getMaximum()){
+                    aumento = " (+" + (barraVida.getMaximum() - ((Criatura) elemento).getVidaPorDefecto()) + ")";
+                }
+                
+                this.defensa.setText(String.valueOf(((Criatura) elemento).getDefensa()));
+                this.ataque.setText(String.valueOf(((Criatura) elemento).getAtaque()));
+                
+                if(((Criatura) elemento).getDefensaPorDefecto() < ((Criatura) elemento).getDefensa()){
+                    this.defensa.setText(this.defensa.getText() + " (+" + (((Criatura) elemento).getDefensa() - ((Criatura) elemento).getDefensaPorDefecto()) + ")");
+                }
+                
+                if(((Criatura) elemento).getAtaquePorDefecto() < ((Criatura) elemento).getAtaque()){
+                    this.ataque.setText(this.ataque.getText() + " (+" + (((Criatura) elemento).getAtaque() - ((Criatura) elemento).getAtaquePorDefecto()) + ")");
+                }
+                
+            }else{
+                this.barraVida.setMaximum(((JefeDeTerreno) elemento).getVidaMaxima());
+                this.barraVida.setValue(((JefeDeTerreno) elemento).getVida());
+                
+                this.defensa.setText("No aplica");
+                this.ataque.setText("No aplica");
+            }
+        }else{
+            this.barraVida.setMaximum(1);
+            this.barraVida.setValue(1);
+                
+            this.defensa.setText("No aplica");
+            this.ataque.setText("No aplica");
+        }
+            
         this.defensa.setFont(fuente);
-        this.ataque.setText(elemento instanceof Criatura ? String.valueOf(((Criatura) elemento).getAtaque()) : "No aplica");
         this.ataque.setFont(fuente);
+
+        this.vida.setFont(fuente);
+        this.vida.setText(barraVida.getValue() + "/" + barraVida.getMaximum() + aumento);
     }
 
     /**

@@ -5,100 +5,74 @@
  ***********************************************************************/
 package Modelos;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
+import ModelosDAO.JefeDeTerrenoDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /** @pdOid ba01c964-70b9-429b-9412-0cfa461bb9c0 */
 public class JefeDeTerreno extends ElementoEnCampo {
-    private final int habilidad;
-    private final int vida;
+    private final int idJefe;
+    private int vida;
+    private final int vidaMaxima;
+    private final double incVida;
+    private final double incAtaque;
+    private final double incDefensa;
     
     public JefeDeTerreno(
+            int idJefe,
             String nombre, 
-            int habilidad,
             String descHabilidad,
+            String nombreImagen,
             int puntosVida,
-            String nombreImagen){
+            double incVida,
+            double incAtaque,
+            double incDefensa){
         
+        this.idJefe = idJefe;
         this.nomArchivoImagen = nombreImagen;
         this.nombre = nombre;
-        this.habilidad = habilidad;
         this.descripcion = descHabilidad;
         this.vida = puntosVida;
+        this.vidaMaxima = puntosVida;
+        this.incVida = incVida;
+        this.incAtaque = incAtaque;
+        this.incDefensa = incDefensa;
     }
     
-    public static ArrayList getJefes() {
-        File archivoJefes = new File("src/Otros/jefes.txt");
-        FileReader archivo;
+    public static ArrayList<JefeDeTerreno> getJefes(){
         try {
-            archivo = new FileReader(archivoJefes);
-            BufferedReader lector = new BufferedReader(archivo);
-            try {
-                String linea = lector.readLine();
-                
-                ArrayList<JefeDeTerreno> jefes = new ArrayList();
-                while (linea != null){
-                    String[] infoJefe = linea.split(";");
-                    jefes.add(new JefeDeTerreno(
-                            infoJefe[1],
-                            Integer.parseInt(infoJefe[2]),
-                            infoJefe[3],
-                            Integer.parseInt(infoJefe[4]),
-                            infoJefe[0]));
-                    
-                    linea = lector.readLine();
-                }
-                
-                return jefes;
-            } catch (IOException ex) {
-                return null;
-            }
-        } catch (FileNotFoundException ex) {
+            return JefeDeTerrenoDAO.getJefes();
+        } catch (SQLException ex) {
             return null;
         }
     }
     
-    public static JefeDeTerreno getJefe(String claveJefe){
-        File archivoJefes = new File("src/Otros/jefes.txt");
-        FileReader archivo;
-        try {
-            archivo = new FileReader(archivoJefes);
-            BufferedReader lector = new BufferedReader(archivo);
-            try {
-                String linea = lector.readLine();
-                while (linea != null){
-                    if(linea.startsWith(claveJefe + ";")){
-                        String[] infoJefe = linea.split(";");
-                        
-                        return new JefeDeTerreno(
-                            infoJefe[1],
-                            Integer.parseInt(infoJefe[2]),
-                            infoJefe[3],
-                            Integer.parseInt(infoJefe[4]),
-                            infoJefe[0]);
-                    }
-                    
-                    linea = lector.readLine();
-                }
-            } catch (IOException ex) {
-                return null;
-            }
-        } catch (FileNotFoundException ex) {
-            return null;
-        }
-        
-        return null;
+    public void restarVida(int vida){
+        this.vida -= vida;
     }
 
-    public int getHabilidad() {
-        return habilidad;
+    public int getIdJefe() {
+        return idJefe;
     }
 
     public int getVida() {
         return vida;
     }
+
+    public int getVidaMaxima() {
+        return vidaMaxima;
+    }
+
+    public double getIncVida() {
+        return incVida;
+    }
+
+    public double getIncAtaque() {
+        return incAtaque;
+    }
+
+    public double getIncDefensa() {
+        return incDefensa;
+    }
+    
 }

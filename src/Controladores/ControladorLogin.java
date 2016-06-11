@@ -46,12 +46,7 @@ public final class ControladorLogin {
             // Cuando se haga clic sobre el label "Registrarse".
             @Override
             public void mouseClicked(MouseEvent e){
-                // Se instancia un controlador de registro
-                contPrin.crearControladorRegistro(visLog);
-                // Se muestra la vista de registro
-                contPrin.getContReg().mostrarVistaRegistro();
-                // Se elimina la vista de login
-                eliminarVistaLogin();
+                registrarse();
             }
         });
         
@@ -150,4 +145,12 @@ public final class ControladorLogin {
         }
     }
     
+    public void registrarse(){
+        // Se instancia un controlador de registro
+        contPrin.crearControladorRegistro(visLog);
+        // Se muestra la vista de registro
+        contPrin.getContReg().mostrarVistaRegistro();
+        // Se elimina la vista de login
+        eliminarVistaLogin();
+}
 }

@@ -28,6 +28,7 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     private final ContenedorScroll contenedor;
     private final PanelImagen contenedorDados;
     private final BotonImagen lanzarDados;
+    private final PanelImagen iconoDado;
     
     /**
      * Creates new form CompSelDados
@@ -46,6 +47,21 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         
         this.panelesDados = new ArrayList();
         this.dados = dados;
+        
+        this.iconoDado = new PanelImagen();
+        this.add(this.iconoDado);
+        this.iconoDado.setSize(150, 150);
+        this.iconoDado.setLocation(90, 375);
+        
+        this.L1.setFont(fuente);
+        this.L2.setFont(fuente);
+        this.L3.setFont(fuente);
+        this.nivel.setFont(fuente);
+        this.nombreCriatura.setFont(fuente);
+        this.cantidadDados.setFont(fuente);
+        
+        this.nivel.setText("");
+        this.nombreCriatura.setText("");
         
         this.contenedorDados = new PanelImagen();
         this.contenedorDados.setLayout(null);
@@ -95,7 +111,7 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         this.lanzarDados.setFont(fuente);
         this.lanzarDados.setForeground(Color.white);
         this.lanzarDados.setSize(200, 50);
-        this.lanzarDados.setLocation(450, 450);
+        this.lanzarDados.setLocation(480, 455);
         this.lanzarDados.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
         this.lanzarDados.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         
@@ -113,24 +129,72 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        L1 = new javax.swing.JLabel();
+        L2 = new javax.swing.JLabel();
+        nivel = new javax.swing.JLabel();
+        nombreCriatura = new javax.swing.JLabel();
+        L3 = new javax.swing.JLabel();
+        cantidadDados = new javax.swing.JLabel();
+
         setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
+        getContentPane().setLayout(null);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 790, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 599, Short.MAX_VALUE)
-        );
+        L1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        L1.setForeground(java.awt.Color.red);
+        L1.setText("Nivel:");
+        getContentPane().add(L1);
+        L1.setBounds(260, 435, 80, 20);
+
+        L2.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        L2.setForeground(java.awt.Color.red);
+        L2.setText("Criatura:");
+        getContentPane().add(L2);
+        L2.setBounds(260, 455, 80, 20);
+
+        nivel.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        nivel.setForeground(java.awt.Color.red);
+        nivel.setText("Nivel");
+        getContentPane().add(nivel);
+        nivel.setBounds(350, 435, 150, 20);
+
+        nombreCriatura.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        nombreCriatura.setForeground(java.awt.Color.red);
+        nombreCriatura.setText("Nombre criatura");
+        getContentPane().add(nombreCriatura);
+        nombreCriatura.setBounds(350, 455, 150, 20);
+
+        L3.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        L3.setForeground(java.awt.Color.red);
+        L3.setText("Dados seleccionados:");
+        getContentPane().add(L3);
+        L3.setBounds(260, 495, 160, 17);
+
+        cantidadDados.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        cantidadDados.setForeground(java.awt.Color.red);
+        cantidadDados.setText("0");
+        getContentPane().add(cantidadDados);
+        cantidadDados.setBounds(430, 495, 70, 17);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void setInfoDado(BotonCheckImagen panelDado){
+        if(panelDado != null){
+            Dado dado = getDado(panelDado);
+            this.iconoDado.setImagen("/Imagenes/Dados/dado_" + dado.getNivel() + ".gif");
+            this.nivel.setText(String.valueOf(dado.getNivel()));
+            this.nombreCriatura.setText(dado.getCriatura().getNombre());
+        }else{
+            this.iconoDado.setImagen("/Imagenes/vacio.png");
+            this.nivel.setText("");
+            this.nombreCriatura.setText("");
+        }
+        
+        this.cantidadDados.setText(String.valueOf(this.cantidadSeleccionados()));
+    }
     
     public ArrayList<BotonCheckImagen> getPanelesDados() {
         return panelesDados;
@@ -155,7 +219,7 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         return visInfo;
     }
     
-    public int getSeleccionados(){
+    public int cantidadSeleccionados(){
         int seleccionados = 0;
         for(int i = 0; i < panelesDados.size(); i++){
             if(panelesDados.get(i).isSelected()){
@@ -174,5 +238,11 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel L1;
+    private javax.swing.JLabel L2;
+    private javax.swing.JLabel L3;
+    private javax.swing.JLabel cantidadDados;
+    private javax.swing.JLabel nivel;
+    private javax.swing.JLabel nombreCriatura;
     // End of variables declaration//GEN-END:variables
 }

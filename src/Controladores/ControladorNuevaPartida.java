@@ -6,6 +6,7 @@
 package Controladores;
 
 import Modelos.Jugador;
+import ModelosDAO.JugadorDAO;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import Vistas.SubVistaCambiarJugador;
@@ -15,6 +16,7 @@ import Vistas.SubVistaSeleccionEquipos;
 import Vistas.VistaNuevaPartida;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -26,6 +28,7 @@ public class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
     private final VistaNuevaPartida visNuePar;
     private final ArrayList<Jugador> jugadores;
+    private int cantidadJugadores;
     
     ControladorNuevaPartida(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;
@@ -35,6 +38,7 @@ public class ControladorNuevaPartida {
         this.agregarListenersVistaNuevaPartida();
         
         this.jugadores = new ArrayList();
+        this.cantidadJugadores = Jugador.getJugadores(this.jugadores).size();
         
         this.agregarJugador((Jugador) this.contPrin.getUsuarioActivo());
         this.agregarJugador(this.obtenerJugadorAleatorio());
@@ -50,7 +54,11 @@ public class ControladorNuevaPartida {
         this.visNuePar.getAgregar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                agregarJugador(obtenerJugadorAleatorio());
+                if(restanJugadores()){
+                    agregarJugador(obtenerJugadorAleatorio());
+                }else{
+                    mostrarCuadroDialogo("No hay más jugadores registrados para agregar a la partida.");
+                }
             }
         });
         
@@ -92,19 +100,18 @@ public class ControladorNuevaPartida {
     
     /**
      * Agrega un jugador a la partida.
-     * @param jug Jugador que se agregará.
+     * @param jug
      */
     public void agregarJugador(Jugador jug){
         if(this.jugadores.size() < 4){
             this.jugadores.add(jug);
-            
             SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jug, this.contPrin.getFuente());
-            this.visNuePar.getVistasResJug().add(visInfoJug);
-            this.visNuePar.add(this.visNuePar.getVistasResJug().get(this.visNuePar.getVistasResJug().size() - 1), 0);
+            this.visNuePar.agregarVisResJug(visInfoJug);
+            this.visNuePar.add(visInfoJug, 0);
+            visInfoJug.setName(String.valueOf(this.jugadores.size() - 1));
             this.actualizarPosicionVistasResJug();
-        
-            this.agregarListenersVistaInfoJugador(this.visNuePar.getVistasResJug()
-                    .get(this.visNuePar.getVistasResJug().size() - 1));
+
+            this.agregarListenersVistaInfoJugador(visInfoJug);
 
             try{
                 this.visNuePar.getVisSelEq().agregarJugador(jug);
@@ -113,7 +120,8 @@ public class ControladorNuevaPartida {
             }catch(Exception e){
                 // Nada
             }
-            
+
+            this.cantidadJugadores--;
             this.actualizarPosicionVistasResJug();
         }else{
             this.mostrarCuadroDialogo("Máximo 4 jugadores.");
@@ -126,14 +134,13 @@ public class ControladorNuevaPartida {
      */
     public void eliminarJugador(int i){
         if(i == 0){
-            this.mostrarCuadroDialogo("<html><center>No se puede eliminar a <b><i style=\"color:orange;\">" + 
+            this.mostrarCuadroDialogo("No se puede eliminar a <b><i style=\"color:orange;\">" + 
                     this.jugadores.get(0).getNombreJugador() + "</i></b> de la partida porque es el" + 
-                    " usuario activo en la aplicación.</center></html>");
-        }else if(this.visNuePar.getVistasResJug().size() > 2){
+                    " usuario activo en la aplicación.");
+        }else if(this.jugadores.size() > 2){
             this.jugadores.remove(i);
             
-            this.visNuePar.getVistasResJug().get(i).setVisible(false);
-            this.visNuePar.getVistasResJug().remove(i);
+            this.visNuePar.eliminarVisResJug(i);
             actualizarPosicionVistasResJug();
             
             try{
@@ -145,6 +152,7 @@ public class ControladorNuevaPartida {
                 // Nada
             }
             
+            this.cantidadJugadores++;
             this.actualizarPosicionVistasResJug();
         }else{
             this.mostrarCuadroDialogo("Mínimo 2 jugadores.");
@@ -156,9 +164,13 @@ public class ControladorNuevaPartida {
      * @return Instancia de jugador.
      */
     public Jugador obtenerJugadorAleatorio(){
-        ArrayList<Jugador> jugDisponibles = Jugador.getJugadores(jugadores);
-        Random rnd = new Random();
-        return jugDisponibles.get(rnd.nextInt(jugDisponibles.size()));
+        try {
+            ArrayList<Jugador> jugDisponibles = JugadorDAO.getJugadores(jugadores);
+            Random rnd = new Random();
+            return jugDisponibles.get(rnd.nextInt(jugDisponibles.size()));
+        } catch (SQLException ex) {
+            return null;
+        }
     }
 
     /**
@@ -195,7 +207,7 @@ public class ControladorNuevaPartida {
      */
     public void mostrarCuadroDialogo(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                mensaje, "Aceptar", this.contPrin.getFuente());
+                "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
     }
@@ -213,15 +225,19 @@ public class ControladorNuevaPartida {
         visInfoJug.getCambiarJugador().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                crearVistaCambiarJugador((PanelImagen) e.getComponent().getParent());
+                if(restanJugadores()){
+                    crearVistaCambiarJugador((SubVistaResumenJugador) e.getComponent().getParent());
+                }else{
+                    mostrarCuadroDialogo("No hay más jugadores registrados para realizar un cambio.");
+                }
             }
         });
         
         visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                eliminarJugador(visNuePar.getVistasResJug().indexOf((SubVistaResumenJugador)
-                        e.getComponent().getParent()));
+                eliminarJugador(Integer.parseInt(((SubVistaResumenJugador)
+                        e.getComponent().getParent()).getName()));
             }
         });
         
@@ -278,7 +294,7 @@ public class ControladorNuevaPartida {
             if(this.jugadores.size() >= 3){
                 this.crearVistaSeleccionEquipos();
             }else{
-                this.mostrarCuadroDialogo("<html><center>Se necesitan mínimo 3 jugadores para<br>formar equipos.</center></html>");
+                this.mostrarCuadroDialogo("Se necesitan mínimo 3 jugadores para<br>formar equipos.");
                 this.visNuePar.getEnEquipos().setSelected(false);
             }
         }
@@ -307,8 +323,8 @@ public class ControladorNuevaPartida {
      * cantidad de jugadores actual definidos para la partida.
      */
     public void actualizarPosicionVistasResJug(){
-        for(int i = 0; i < this.visNuePar.getVistasResJug().size(); i++){
-            this.visNuePar.getVistasResJug().get(i).setLocation(
+        for(int i = 0; i < this.jugadores.size(); i++){
+            this.visNuePar.getVisResJug(i).setLocation(
                     this.visNuePar.getPosVisResJug()[i][0], 
                     this.visNuePar.getPosVisResJug()[i][1]);
         }
@@ -318,7 +334,7 @@ public class ControladorNuevaPartida {
      * Instancia una vista para cambiar algún jugador en la vista nueva partida.
      * @param quienCambia Índice del jugador que cambia en la partida.
      */
-    public void crearVistaCambiarJugador(PanelImagen quienCambia){
+    public void crearVistaCambiarJugador(SubVistaResumenJugador quienCambia){
         this.visNuePar.setVisCamJug(new SubVistaCambiarJugador(this.contPrin.getFuente(), this.jugadores));
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visNuePar.getVisCamJug());
         
@@ -326,7 +342,7 @@ public class ControladorNuevaPartida {
             this.agregarListenersVistaCambiarJugador(i);
         }
         
-        this.visNuePar.getVisCamJug().setName(String.valueOf(this.visNuePar.getVistasResJug().indexOf(quienCambia)));
+        this.visNuePar.getVisCamJug().setName(String.valueOf(quienCambia.getName()));
         this.visNuePar.getVisCamJug().setVisible(true);
     }
     
@@ -370,7 +386,7 @@ public class ControladorNuevaPartida {
      */
     public void cambiarJugador(int quienCambia, int porQuienCambia){
         this.jugadores.set(quienCambia, this.visNuePar.getVisCamJug().getJugadores().get(porQuienCambia));
-        this.visNuePar.getVistasResJug().get(quienCambia).actualizarInfoJug(this.visNuePar.getVisCamJug().getJugadores().get(porQuienCambia));
+        this.visNuePar.getVisResJug(quienCambia).actualizarInfoJug(this.visNuePar.getVisCamJug().getJugadores().get(porQuienCambia));
         
         try{
             this.visNuePar.getVisSelEq().getJugadores().set(quienCambia, this.visNuePar.getVisCamJug().getJugadores().get(porQuienCambia));
@@ -383,5 +399,13 @@ public class ControladorNuevaPartida {
     }
     
 // </editor-fold>
+    
+    public boolean restanJugadores(){
+        if(cantidadJugadores > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }

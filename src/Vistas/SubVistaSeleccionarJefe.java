@@ -26,12 +26,13 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     private final ArrayList<JefeDeTerreno> jefes;
     private final JScrollPane contenedor;
     private final PanelImagen contenedorJefes;
+    private SubVistaInfoElemento visInfoEl;
         
     /**
      * Inicializa una nueva instancia de esta vista.
      * @param fuentePersonalizada Fuente que se utilizará en esta vista.
      */
-    public SubVistaSeleccionarJefe(Font fuentePersonalizada){
+    public SubVistaSeleccionarJefe(Font fuentePersonalizada) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -46,7 +47,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         
         this.contenedor = new ContenedorScroll();    
         this.add(this.contenedor);
-        this.contenedor.setSize(598, 335);
+        this.contenedor.setSize(598, 432);
         this.contenedor.setLocation(101, 84);
         this.contenedor.setViewportView(this.contenedorJefes);
         this.contenedor.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -83,7 +84,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         
         this.contenedorJefes.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
+        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
         
@@ -154,6 +155,10 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     public JefeDeTerreno getJefe(BotonImagen panelJefe){
         return jefes.get(this.idxJefe(panelJefe));
     }
+
+    public SubVistaInfoElemento getVisInfoEl() {
+        return visInfoEl;
+    }
     
     public void setNombre(String nombre){
         this.nombre.setText(nombre);
@@ -162,6 +167,12 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     public void setHabilidad(String habilidad){
         this.habilidad.setText(habilidad);
     }
+
+    public void setVisInfoEl(SubVistaInfoElemento visInfoEl) {
+        this.visInfoEl = visInfoEl;
+        this.add(visInfoEl, 0);
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel habilidad;

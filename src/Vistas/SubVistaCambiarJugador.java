@@ -96,6 +96,9 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
         this.nombre.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
         this.tipoJugador.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
         
+        this.nombre.setText("");
+        this.tipoJugador.setText("");
+        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());

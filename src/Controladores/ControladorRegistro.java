@@ -5,21 +5,20 @@
  */
 package Controladores;
 
-import Modelos.Dado;
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
+import ModelosDAO.UsuarioDAO;
 import Otros.BotonImagen;
 import Vistas.SubVistaCuadroDialogo;
+import Vistas.SubVistaInfoElemento;
 import Vistas.SubVistaSeleccionarJefe;
 import Vistas.VistaLogin;
 import Vistas.VistaRegistro;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JInternalFrame;
 
 /**
@@ -32,6 +31,7 @@ public class ControladorRegistro {
     private final VistaRegistro visReg;
     private final SubVistaSeleccionarJefe visSelJef;
     private JefeDeTerreno jefe;
+    private Timer timerVisInfoEl;
     
     /**
      * Inicializa una nueva instancia de controlador de registro.
@@ -115,12 +115,13 @@ public class ControladorRegistro {
         this.visSelJef.getPanelJefe(i).addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e){
-                visSelJef.mostrarInformacionJefe(visSelJef.idxJefe((BotonImagen) e.getComponent()));
+                mostrarVistaInfoJefe((BotonImagen) e.getComponent());
+                posicionarVistaInfoCriatura(e.getX());
             }
 
             @Override
             public void mouseExited(MouseEvent e){
-                visSelJef.borrarCampos();
+                ocultarVisInfoJefe();
             }
 
             @Override
@@ -155,63 +156,30 @@ public class ControladorRegistro {
         if(this.visReg.comprobarCampos()){
             // Se comprueba que el usuario no exista previamente.
             if(Usuario.getUsuario(usuario) == null){
-                this.visReg.usuarioCorrecto();
+                this.visReg.usuarioCorrecto();                
                 try {
-                    File archivoUsuario = new File("src/Otros/usuarios.txt");
-                    PrintWriter escritor;
-                    escritor = new PrintWriter(new FileWriter(archivoUsuario, true));
-
-                    // Se asignan los dados al jugador (aleatoriamente)
-                    ArrayList<Dado> dados = this.asignarDados();
-
-                    // Esto es para agregar a los registros del archivo
-                    String lineaDados = "";
-                    for(Dado dado: dados){
-                        lineaDados += ";" + dado.getClave();
-                    }
-
-                    // Se registra al usuario en el archivo
-                    escritor.println(usuario + ";" + pass + ";" + jefe.getNomArchivoImagen() + lineaDados);
-
-                    escritor.close();
+                    UsuarioDAO.registrarUsuario(usuario, pass, this.jefe);
 
                     this.cerrarVistaRegistro();
-                    
+
                     SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                            "<html><center>Registro exitoso. Ahora volverás a la<br>"
+                            "<html><center>Registro exitoso. Ahora volverás a la"
                             + "vista anterior.</center></html>",
                             "Aceptar", this.contPrin.getFuente());
                     this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
                     visMen.setVisible(true);
-                } catch (IOException ex) {
-                    this.visReg.setMensaje("Error interno de la aplicación.");
+                } catch (SQLException ex) {
+                    SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
+                            "<html><center>No se pudo completar el registro. Inténtalo nuevamente.</center></html>",
+                            "Aceptar", this.contPrin.getFuente());
+                    this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
+                    visMen.setVisible(true);
                 }
             }else{
                 this.visReg.setMensaje("Usuario ya existe");
                 this.visReg.usuarioErroneo();
             }
         }
-    }
-    
-    public ArrayList<Dado> asignarDados(){
-        ArrayList<Dado> dados = new ArrayList();
-        int nivelCriatura = 1;
-        
-        for(int i = 0; i < 15; i++){
-            if(i < 8){
-                nivelCriatura = 1;
-            }else if(i < 12){
-                nivelCriatura = 2;
-            }else if(i < 14){
-                nivelCriatura = 3;
-            }else{
-                nivelCriatura = 4;
-            }
-            
-            dados.add(Dado.getDado(nivelCriatura));
-        }
-        
-        return dados;
     }
     
     public void cerrarVistaRegistro(){
@@ -224,5 +192,39 @@ public class ControladorRegistro {
         this.visSelJef.dispose();
         // Se elimina la vista de registro
         this.visReg.dispose();
+    }
+    
+    public void mostrarVistaInfoJefe(BotonImagen panelJefe){
+        this.visSelJef.setVisInfoEl(new SubVistaInfoElemento(
+                this.visSelJef.getJefe(panelJefe),
+                this.contPrin.getFuente()));
+        
+        timerVisInfoEl = new Timer();
+        timerVisInfoEl.schedule(new TimerTask(){
+            @Override
+            public void run(){
+                visSelJef.getVisInfoEl().setVisible(true);
+                timerVisInfoEl.cancel();
+            }
+        }, 1500, 10);
+    }
+    
+    public void posicionarVistaInfoCriatura(int x){
+        this.visSelJef.getVisInfoEl().setLocation(x > 400 ? 10: 540, 100);
+        this.visSelJef.repaint();
+    }
+    
+    public void ocultarVisInfoJefe(){
+        try{
+            timerVisInfoEl.cancel();
+        }catch(Exception e){
+            // Nada
+        }
+        
+        try{
+            visSelJef.getVisInfoEl().setVisible(false);
+        }catch(Exception e){
+            // Nada
+        }
     }
 }

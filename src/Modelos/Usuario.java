@@ -5,21 +5,18 @@
  ***********************************************************************/
 package Modelos;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import ModelosDAO.UsuarioDAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /** @pdOid 5fdf1593-9417-4518-a690-8bb149f077b5 */
 public class Usuario extends Jugador {
     private String pass;
     
-    public Usuario(String username, String pass, JefeDeTerreno jefe, ArrayList<Dado> dados){
+    public Usuario(String username, String pass, JefeDeTerreno jefe, PuzzleDeDados puzzle){
         this.nombreJugador = username;
         this.pass = pass;
-        this.dados = dados;
+        this.puzzle = puzzle;
         this.jefeDeTerreno = jefe;
     }
     
@@ -29,50 +26,9 @@ public class Usuario extends Jugador {
      * @return Instancia de Usuario
      */
     public static Usuario getUsuario(String usuario){
-        File archivoUsuarios = new File("src/Otros/usuarios.txt");
-        
         try {
-            FileReader archivo = new FileReader(archivoUsuarios);
-            BufferedReader lector = new BufferedReader(archivo); 
-            
-            try {
-                // Se lee la primera línea de los registros
-                String linea = lector.readLine();
-                
-                // Hasta el final del archivo
-                while(linea != null){
-                    // Si la línea actual contiene el nombre del usuario
-                    if(linea.contains(usuario + ";")){
-                        // Se obtiene un Array con los datos del usuario
-                        String[] infoUsuario = linea.split(";");
-
-                        // Se obtienen los dados del usuario
-                        ArrayList<Dado> dados = new ArrayList();
-                        for(int i = 3; i < infoUsuario.length; i++){
-                            dados.add(Dado.getDado(infoUsuario[i]));
-                        }
-
-                        lector.close();
-                        archivo.close();
-                        
-                        // Se retorna la instancia del usuario
-                        return new Usuario(infoUsuario[0], infoUsuario[1],
-                                JefeDeTerreno.getJefe(infoUsuario[2]), dados);
-                    }    
-
-                    linea = lector.readLine();           
-                }
-
-                lector.close();
-                archivo.close();
-                return null;
-            } catch (IOException ex) {
-                // Si ocurre una excepción, se retorna null
-                return null;
-            }
-            
-        } catch (FileNotFoundException ex) {
-            // Si ocurre una excepción, se retorna null
+            return UsuarioDAO.getUsuario(usuario);
+        } catch (SQLException ex) {
             return null;
         }
     }

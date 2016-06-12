@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Modelos.Dado;
 import Modelos.Jugador;
 import Modelos.Usuario;
 import java.awt.Font;
@@ -25,6 +26,7 @@ public class ControladorPrincipal {
     private ControladorRegistro contReg;
     private ControladorMenuPrincipal contMenuPrin;
     private ControladorNuevaPartida contNuePar;
+    private ControladorModificarPuzzle contModPuzz;
     private ControladorBatalla contBat;
     private Usuario usuarioActivo;
     private Font fuente;
@@ -98,6 +100,14 @@ public class ControladorPrincipal {
     }
     
     /**
+     * Crea una nueva instancia del controlador mofidicar puzzle
+     * @param usuario Usuario que modificará el puzzle de dados.
+     */
+    public void crearControladorModificarPuzzle(Usuario usuario){
+        this.contModPuzz = new ControladorModificarPuzzle(this, usuario);
+    }
+    
+    /**
      * Crea una nueva instancia del controlador batalla
      * @param jugadores Jugadores de la partida
      */
@@ -143,6 +153,14 @@ public class ControladorPrincipal {
      */
     public ControladorNuevaPartida getContNuePar() {
         return contNuePar;
+    }
+
+    /**
+     * Devuelve el controlador de modificar puzzle
+     * @return Controlador de nueva partida
+     */
+    public ControladorModificarPuzzle getContModPuzz() {
+        return contModPuzz;
     }
 
     /**

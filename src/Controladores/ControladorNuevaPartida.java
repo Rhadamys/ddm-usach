@@ -5,7 +5,9 @@
  */
 package Controladores;
 
+import Modelos.Dado;
 import Modelos.Jugador;
+import Modelos.Usuario;
 import ModelosDAO.JugadorDAO;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
@@ -57,7 +59,7 @@ public class ControladorNuevaPartida {
                 if(restanJugadores()){
                     agregarJugador(obtenerJugadorAleatorio());
                 }else{
-                    mostrarCuadroDialogo("No hay más jugadores registrados para agregar a la partida.");
+                    mostrarMensaje("No hay más jugadores registrados para agregar a la partida.");
                 }
             }
         });
@@ -124,7 +126,7 @@ public class ControladorNuevaPartida {
             this.cantidadJugadores--;
             this.actualizarPosicionVistasResJug();
         }else{
-            this.mostrarCuadroDialogo("Máximo 4 jugadores.");
+            this.mostrarMensaje("Máximo 4 jugadores.");
         }
     }
     
@@ -134,7 +136,7 @@ public class ControladorNuevaPartida {
      */
     public void eliminarJugador(int i){
         if(i == 0){
-            this.mostrarCuadroDialogo("No se puede eliminar a <b><i style=\"color:orange;\">" + 
+            this.mostrarMensaje("No se puede eliminar a <b><i style=\"color:orange;\">" + 
                     this.jugadores.get(0).getNombreJugador() + "</i></b> de la partida porque es el" + 
                     " usuario activo en la aplicación.");
         }else if(this.jugadores.size() > 2){
@@ -155,7 +157,7 @@ public class ControladorNuevaPartida {
             this.cantidadJugadores++;
             this.actualizarPosicionVistasResJug();
         }else{
-            this.mostrarCuadroDialogo("Mínimo 2 jugadores.");
+            this.mostrarMensaje("Mínimo 2 jugadores.");
         }
     }
     
@@ -205,7 +207,7 @@ public class ControladorNuevaPartida {
      * Muestra un cuadro de diálogo con un mensaje.
      * @param mensaje Mensaje que se mostrará en el cuadro de diálogo.
      */
-    public void mostrarCuadroDialogo(String mensaje){
+    public void mostrarMensaje(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
                 "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
@@ -228,7 +230,7 @@ public class ControladorNuevaPartida {
                 if(restanJugadores()){
                     crearVistaCambiarJugador((SubVistaResumenJugador) e.getComponent().getParent());
                 }else{
-                    mostrarCuadroDialogo("No hay más jugadores registrados para realizar un cambio.");
+                    mostrarMensaje("No hay más jugadores registrados para realizar un cambio.");
                 }
             }
         });
@@ -236,15 +238,14 @@ public class ControladorNuevaPartida {
         visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                eliminarJugador(Integer.parseInt(((SubVistaResumenJugador)
-                        e.getComponent().getParent()).getName()));
+                eliminarJugador(Integer.parseInt(e.getComponent().getParent().getName()));
             }
         });
         
         visInfoJug.getModificarPuzle().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e){
-                
+                modificarPuzzle(Integer.parseInt(e.getComponent().getParent().getName()));
             }
         });
     }
@@ -294,7 +295,7 @@ public class ControladorNuevaPartida {
             if(this.jugadores.size() >= 3){
                 this.crearVistaSeleccionEquipos();
             }else{
-                this.mostrarCuadroDialogo("Se necesitan mínimo 3 jugadores para<br>formar equipos.");
+                this.mostrarMensaje("Se necesitan mínimo 3 jugadores para<br>formar equipos.");
                 this.visNuePar.getEnEquipos().setSelected(false);
             }
         }
@@ -398,13 +399,34 @@ public class ControladorNuevaPartida {
         this.visNuePar.getVisCamJug().dispose();
     }
     
-// </editor-fold>
-    
     public boolean restanJugadores(){
         if(cantidadJugadores > 0){
             return true;
         }else{
             return false;
+        }
+    }
+    
+    public void incrementarCantidadJugadores(){
+        this.cantidadJugadores++;
+    }
+    
+// </editor-fold>
+    
+    public boolean sePuedeModificarPuzzle(ArrayList<Dado> dados){
+        return dados.size() > 15;
+    }
+    
+    public void modificarPuzzle(int i){
+        if(this.jugadores.get(i) instanceof Usuario){
+            if(sePuedeModificarPuzzle(this.jugadores.get(i).getDados())){
+                this.contPrin.crearControladorModificarPuzzle((Usuario) this.jugadores.get(i));
+                this.contPrin.getContModPuzz().mostrarVistaModificarPuzle();
+            }else{
+                mostrarMensaje("El jugador tiene 15 dados. No puede modificar su puzzle.");
+            }
+        }else{
+            mostrarMensaje("No se puede modificar el puzzle de dados de personajes no jugables.");
         }
     }
     

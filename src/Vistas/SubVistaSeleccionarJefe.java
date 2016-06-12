@@ -30,9 +30,9 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         
     /**
      * Inicializa una nueva instancia de esta vista.
-     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
+     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public SubVistaSeleccionarJefe(Font fuentePersonalizada) {
+    public SubVistaSeleccionarJefe(Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -84,15 +84,11 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         
         this.contenedorJefes.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
         
+        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 18));
+        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
-        
-        this.nombre.setFont(new Font(fuentePersonalizada.getName(), Font.TRUETYPE_FONT, 36));
-        this.habilidad.setFont(new Font(fuentePersonalizada.getName(), Font.TRUETYPE_FONT, 24));
-        
-        this.setNombre("");
-        this.setHabilidad("");
     }
 
     /**
@@ -104,8 +100,7 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        habilidad = new javax.swing.JLabel();
-        nombre = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setBorder(null);
@@ -115,31 +110,16 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         setVisible(true);
         getContentPane().setLayout(null);
 
-        habilidad.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
-        habilidad.setForeground(new java.awt.Color(204, 0, 0));
-        habilidad.setText("Habilidad");
-        getContentPane().add(habilidad);
-        habilidad.setBounds(110, 490, 610, 29);
-
-        nombre.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
-        nombre.setForeground(new java.awt.Color(255, 255, 255));
-        nombre.setText("Nombre");
-        getContentPane().add(nombre);
-        nombre.setBounds(110, 445, 610, 29);
+        titulo.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("<html><center>Selecciona un jefe de terreno. Puede mantener el mouse sobre alguno de los jefes para ver detalles del mismo.</center></html>");
+        getContentPane().add(titulo);
+        titulo.setBounds(50, 0, 700, 60);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    public void mostrarInformacionJefe(int indiceJefe){
-        this.nombre.setText(this.jefes.get(indiceJefe).getNombre());
-        this.habilidad.setText(this.jefes.get(indiceJefe).getDescripcion());
-    }
-    
-    public void borrarCampos(){
-        this.nombre.setText("");
-        this.habilidad.setText("");
-    }
-    
+        
     public BotonImagen getPanelJefe(int i){
         return panelesJefes.get(i);
     }
@@ -159,14 +139,6 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     public SubVistaInfoElemento getVisInfoEl() {
         return visInfoEl;
     }
-    
-    public void setNombre(String nombre){
-        this.nombre.setText(nombre);
-    }
-    
-    public void setHabilidad(String habilidad){
-        this.habilidad.setText(habilidad);
-    }
 
     public void setVisInfoEl(SubVistaInfoElemento visInfoEl) {
         this.visInfoEl = visInfoEl;
@@ -175,7 +147,6 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel habilidad;
-    private javax.swing.JLabel nombre;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

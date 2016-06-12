@@ -11,9 +11,11 @@ import java.util.ArrayList;
 
 /** @pdOid 5fdf1593-9417-4518-a690-8bb149f077b5 */
 public class Usuario extends Jugador {
-    private String pass;
+    private final int id;
+    private final String pass;
     
-    public Usuario(String username, String pass, JefeDeTerreno jefe, PuzzleDeDados puzzle){
+    public Usuario(int id, String username, String pass, JefeDeTerreno jefe, PuzzleDeDados puzzle){
+        this.id = id;
         this.nombreJugador = username;
         this.pass = pass;
         this.puzzle = puzzle;
@@ -48,5 +50,9 @@ public class Usuario extends Jugador {
     public String getPass() {
         return pass;
     }
+
+    public int getId() {
+        return id;
+    }    
     
 }

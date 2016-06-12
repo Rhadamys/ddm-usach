@@ -5,10 +5,12 @@
  */
 package Controladores;
 
+import Modelos.Dado;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaMenuPrincipal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -49,6 +51,18 @@ public final class ControladorMenuPrincipal {
             @Override
             public void mouseClicked(MouseEvent e){
                 nuevaPartida();
+            }
+        });
+        
+        this.visMenuPrin.getModificarPuzzle().addMouseListener(new MouseAdapter(){
+            // Cuando se haga clic sobre el label "Volver atrás".
+            @Override
+            public void mouseClicked(MouseEvent e){
+                if(sePuedeMoficiarPuzzle(contPrin.getUsuarioActivo().getDados())){
+                    modificarPuzzle();
+                }else{
+                    mostrarMensaje("El jugador tiene 15 dados. No puede modificar su puzzle.");
+                }
             }
         });
         
@@ -106,6 +120,7 @@ public final class ControladorMenuPrincipal {
     public void logOut(){
         this.contPrin.crearControladorLogin();
         this.contPrin.getContLog().mostrarVistaLogin();
+        this.contPrin.setUsuarioActivo(null);
         eliminarVistaMenuPrincipal();
     }
     
@@ -113,4 +128,23 @@ public final class ControladorMenuPrincipal {
         this.visMen.setVisible(true);
     }
     
+    public boolean sePuedeMoficiarPuzzle(ArrayList<Dado> dados){
+        return dados.size() > 15;
+    }
+    
+    public void modificarPuzzle(){
+        this.contPrin.crearControladorModificarPuzzle(this.contPrin.getUsuarioActivo());
+        this.contPrin.getContModPuzz().mostrarVistaModificarPuzle();
+    }
+    
+    /**
+     * Muestra un cuadro de diálogo con un mensaje.
+     * @param mensaje Mensaje que se mostrará en el cuadro de diálogo.
+     */
+    public void mostrarMensaje(String mensaje){
+        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
+                "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
+        visMen.setVisible(true);
+    }
 }

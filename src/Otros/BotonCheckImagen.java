@@ -101,7 +101,7 @@ public class BotonCheckImagen extends JToggleButton {
             if(isSelected()){
                 setImagenActual(3);
             }else{
-                setImagenActual(1);
+                setImagenActual(0);
             }
         });
     }

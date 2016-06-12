@@ -44,7 +44,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.fuente = fuente;
-        this.visSelDesp = new SubVistaSeleccionDespliegue();
+        this.visSelDesp = new SubVistaSeleccionDespliegue(fuente);
         this.vistasJugador = new ArrayList();
         
         this.ataque = new BotonImagen("/Imagenes/Botones/ataque.png");

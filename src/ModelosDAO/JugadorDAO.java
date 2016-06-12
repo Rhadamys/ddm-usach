@@ -9,6 +9,7 @@ import BD.Conection.Conection;
 import Modelos.Dado;
 import Modelos.JefeDeTerreno;
 import Modelos.Jugador;
+import Modelos.PersonajeNoJugable;
 import Modelos.PuzzleDeDados;
 import Modelos.Usuario;
 import java.sql.ResultSet;
@@ -55,9 +56,9 @@ public class JugadorDAO {
                     }
 
                     if(esHumano){
-                        jugadores.add(new Usuario(user, password, jefeJugador, puzzleJugador));
+                        jugadores.add(new Usuario(id, user, password, jefeJugador, puzzleJugador));
                     }else{
-                        // Se agrega un PNJ
+                        jugadores.add(new PersonajeNoJugable(user, jefeJugador, puzzleJugador));
                     }
                 }
                 

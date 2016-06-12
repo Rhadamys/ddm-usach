@@ -13,6 +13,7 @@ import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaInfoElemento;
 import Vistas.SubVistaSeleccionarJefe;
 import Vistas.VistaLogin;
+import Vistas.VistaNuevaPartida;
 import Vistas.VistaRegistro;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -68,7 +69,7 @@ public class ControladorRegistro {
             // Cuando se haga clic sobre el botón "Volver atrás".
             @Override
             public void mouseClicked(MouseEvent e){
-                cerrarVistaRegistro();
+                cerrarVistaRegistro(false);
             }
         });
         
@@ -154,40 +155,29 @@ public class ControladorRegistro {
     public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) {
         // Se comprueba que los campos estén completos (escritos)
         if(this.visReg.comprobarCampos()){
-            // Se comprueba que el usuario no exista previamente.
-            if(Usuario.getUsuario(usuario) == null){
-                this.visReg.usuarioCorrecto();                
-                try {
-                    UsuarioDAO.registrarUsuario(usuario, pass, this.jefe);
-
-                    this.cerrarVistaRegistro();
-
-                    SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                            "<html><center>Registro exitoso. Ahora volverás a la"
-                            + "vista anterior.</center></html>",
-                            "Aceptar", this.contPrin.getFuente());
-                    this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
-                    visMen.setVisible(true);
-                } catch (SQLException ex) {
-                    SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                            "<html><center>No se pudo completar el registro. Inténtalo nuevamente.</center></html>",
-                            "Aceptar", this.contPrin.getFuente());
-                    this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
-                    visMen.setVisible(true);
+            this.visReg.usuarioCorrecto();                
+            try {
+                if(UsuarioDAO.registrarUsuario(usuario, pass, this.jefe)){
+                    this.cerrarVistaRegistro(true);
+                    this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");
+                }else{
+                    this.visReg.setMensaje("Usuario ya existe");
+                    this.visReg.usuarioErroneo();
                 }
-            }else{
-                this.visReg.setMensaje("Usuario ya existe");
-                this.visReg.usuarioErroneo();
+            } catch (SQLException ex) {
+                this.mostrarMensaje("No se pudo completar el registro. Inténtalo nuevamente.");
             }
         }
     }
     
-    public void cerrarVistaRegistro(){
+    public void cerrarVistaRegistro(boolean seCompletoRegistro){
         if(quienLlama instanceof VistaLogin){
             // Se instancia el controlador de login
             this.contPrin.crearControladorLogin();
             // Se muestra la vista de login
             this.contPrin.getContLog().mostrarVistaLogin();
+        }else if(quienLlama instanceof VistaNuevaPartida && seCompletoRegistro){
+           this.contPrin.getContNuePar().incrementarCantidadJugadores();
         }
         this.visSelJef.dispose();
         // Se elimina la vista de registro
@@ -226,5 +216,16 @@ public class ControladorRegistro {
         }catch(Exception e){
             // Nada
         }
+    }
+    
+    /**
+     * Muestra un cuadro de diálogo con un mensaje.
+     * @param mensaje Mensaje que se mostrará en el cuadro de diálogo.
+     */
+    public void mostrarMensaje(String mensaje){
+        SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
+                "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
+        visMen.setVisible(true);
     }
 }

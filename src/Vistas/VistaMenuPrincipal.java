@@ -22,6 +22,7 @@ import javax.swing.border.LineBorder;
 public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
     private final BotonImagen nuevaPartida;
     private final BotonImagen nuevoTorneo;
+    private final BotonImagen modificarPuzzle;
     private final BotonImagen salir;
     private final BotonImagen cerrarSesion;
     
@@ -37,31 +38,35 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         
         this.nuevaPartida = new BotonImagen("/Imagenes/Botones/partida.png");
         this.nuevoTorneo = new BotonImagen("/Imagenes/Botones/torneo.png");
+        this.modificarPuzzle = new BotonImagen("/Imagenes/Botones/modificar_puzzle.png");
         this.salir = new BotonImagen("/Imagenes/Botones/salir.png");
         
-        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, salir};
-        int cantidadCompoenentes = 3;
-        int separacion = (this.getSize().width - 200 * cantidadCompoenentes) 
-                / (cantidadCompoenentes + 1);
+        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, modificarPuzzle, salir};
+        
+        final int ANCHO = 160;
+        final int ALTO = ANCHO * 160 / 100;
+        final int CANTIDAD = botones.length;
+        final int SEP = (this.getWidth() - ANCHO * CANTIDAD) / (CANTIDAD + 1);
         
         String[] imagenBotonSobre = {
             "/Imagenes/Botones/partida_sobre.png", 
             "/Imagenes/Botones/torneo_sobre.png", 
+            "/Imagenes/Botones/modificar_puzzle_sobre.png",
             "/Imagenes/Botones/salir_sobre.png"};
         
         String[] imagenBotonPresionado = {
             "/Imagenes/Botones/partida_presionado.png", 
             "/Imagenes/Botones/torneo_presionado.png", 
+            "/Imagenes/Botones/modificar_puzzle_presionado.png",
             "/Imagenes/Botones/salir_presionado.png"};
         
-        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Salir"};
+        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Modificar puzzle", "Salir"};
         
-        for (int i = 0; i < cantidadCompoenentes; i ++){
+        for (int i = 0; i < CANTIDAD; i ++){
             final int index = i;
-            int posicionX = 200 * i + separacion * (i + 1);
             
-            botones[i].setSize(200, 320);
-            botones[i].setLocation(posicionX, 140);
+            botones[i].setSize(ANCHO, ALTO);
+            botones[i].setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
             botones[i].setImagenSobre(imagenBotonSobre[i]);
             botones[i].setImagenPresionado(imagenBotonPresionado[i]);
             botones[i].addMouseListener(new MouseAdapter(){
@@ -78,8 +83,8 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
             this.add(botones[i]);
             
             PanelImagen panel = new PanelImagen("/Imagenes/Fondos/cajon_menu.png");
-            panel.setSize(botones[i].getSize());
-            panel.setLocation(posicionX, 140);
+            panel.setSize(ANCHO, ALTO);
+            panel.setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
             this.add(panel);
         }
         
@@ -164,6 +169,10 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
 
     public BotonImagen getNuevoTorneo() {
         return nuevoTorneo;
+    }
+
+    public BotonImagen getModificarPuzzle() {
+        return modificarPuzzle;
     }
     
     public BotonImagen getSalir(){

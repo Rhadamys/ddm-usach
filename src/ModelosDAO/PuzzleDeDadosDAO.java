@@ -26,10 +26,12 @@ public class PuzzleDeDadosDAO {
 
                 ArrayList<Dado> dadosJugador = new ArrayList();
                 while(resultadosPuzzle.next()){
-                    int idDadoPuzzle = resultadosPuzzle.getInt(2);
-                    boolean paraJugar = resultadosPuzzle.getBoolean(3);
+                    int idRegPuzzDado = resultadosPuzzle.getInt(1);
+                    int idDadoPuzzle = resultadosPuzzle.getInt(3);
+                    boolean paraJugar = resultadosPuzzle.getBoolean(4);
                     
                     Dado dadoPuzzle = DadoDAO.getDado(idDadoPuzzle);
+                    dadoPuzzle.setIdRegPuzzDado(idRegPuzzDado);
                     dadoPuzzle.setParaJugar(paraJugar);
 
                     dadosJugador.add(dadoPuzzle);
@@ -89,5 +91,24 @@ public class PuzzleDeDadosDAO {
                 }
             }
         }          
+    }
+    
+    public static void actualizarPuzzleJugador(int idJugador, ArrayList<Dado> dados) throws SQLException{
+        Conection conection = new Conection();
+        if(conection.conectar()){
+            for(Dado dado: dados){
+                String consulta = "UPDATE PUZZLEDEDADOS SET PARAJUGAR = " + dado.isParaJugar() + " WHERE " +
+                        "ID_JUGADOR = " + idJugador + " AND ID_REGISTRODADO = " + dado.getIdRegPuzzDado() + " AND " +
+                        "ID_DADO = " + dado.getId();
+                Statement stmtPuzzle = conection.crearConsulta();    
+
+                if(stmtPuzzle != null){
+                    stmtPuzzle.executeUpdate(consulta);
+                    stmtPuzzle.close();
+                }
+            }
+            
+            conection.desconectar();
+        }
     }
 }

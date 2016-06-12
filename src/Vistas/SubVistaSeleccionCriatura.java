@@ -66,6 +66,8 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
             columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
         }
         
+        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
@@ -80,11 +82,20 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        titulo = new javax.swing.JLabel();
+
         setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         getContentPane().setLayout(null);
+
+        titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("Acción obligada: Selecciona una criatura para invocar");
+        getContentPane().add(titulo);
+        titulo.setBounds(0, 10, 790, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -102,5 +113,6 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

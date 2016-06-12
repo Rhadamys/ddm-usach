@@ -8,6 +8,7 @@ package Vistas;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -19,8 +20,9 @@ public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
     ArrayList<BotonImagen> botonesDespliegue;
     /**
      * Creates new form CompSelDesp
+     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public SubVistaSeleccionDespliegue() {
+    public SubVistaSeleccionDespliegue(Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -59,6 +61,8 @@ public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
             botonDespliegue.setLocation(x - aumentoMarco / 2, y - aumentoMarco / 2);
         }
         
+        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
         this.add(panelFondo);
         panelFondo.setSize(this.getSize());
@@ -73,12 +77,21 @@ public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        titulo = new javax.swing.JLabel();
+
         setBackground(new java.awt.Color(51, 51, 51));
         setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
         getContentPane().setLayout(null);
+
+        titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("Selecciona un despliegue de dado");
+        getContentPane().add(titulo);
+        titulo.setBounds(0, 10, 790, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -88,5 +101,6 @@ public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

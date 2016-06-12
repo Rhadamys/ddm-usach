@@ -164,10 +164,18 @@ ID_JEFEDETERRENO ASC
 create table PUZZLEDEDADOS 
 (
   
+   ID_REGISTRODADO      integer                        not null primary key GENERATED ALWAYS AS IDENTITY,
    ID_JUGADOR           integer                        not null,
    ID_DADO              integer                        not null,
    PARAJUGAR            boolean                        
    
+);
+
+/*==============================================================*/
+/* Index: PUZZLEDEDADOS_PK                                      */
+/*==============================================================*/
+create unique index PUZZLEDEDADOS_PK on PUZZLEDEDADOS (
+ID_REGISTRODADO ASC
 );
 
 /*==============================================================*/

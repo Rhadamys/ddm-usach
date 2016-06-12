@@ -448,7 +448,7 @@ public class ControladorBatalla {
         ArrayList<Dado> dadosParaLanzar = new ArrayList();
         
         for(Dado dado: jugador.getDados()){
-            if(dado.isParaLanzar()){
+            if(dado.isParaJugar() && dado.isParaLanzar()){
                 dadosParaLanzar.add(dado);
             }
         }

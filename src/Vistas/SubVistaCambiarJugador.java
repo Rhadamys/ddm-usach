@@ -98,6 +98,7 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
         
         this.nombre.setText("");
         this.tipoJugador.setText("");
+        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
         
         PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
         this.add(panelFondo);
@@ -115,6 +116,7 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
 
         tipoJugador = new javax.swing.JLabel();
         nombre = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -133,6 +135,13 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
         nombre.setText("Nombre");
         getContentPane().add(nombre);
         nombre.setBounds(110, 445, 610, 29);
+
+        titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("Selecciona un jugador");
+        getContentPane().add(titulo);
+        titulo.setBounds(0, 10, 790, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -162,5 +171,6 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel nombre;
     private javax.swing.JLabel tipoJugador;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

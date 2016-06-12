@@ -25,6 +25,7 @@ public class DadoDAO {
                 ResultSet resultadosDado = stmtDado.executeQuery(consulta);
                 resultadosDado.next();
                 
+                int idDado = resultadosDado.getInt(1);
                 int idCriaturaDado = resultadosDado.getInt(2);
                 int nivelDado = resultadosDado.getInt(3);
                 int cara1 = resultadosDado.getInt(4);
@@ -42,7 +43,7 @@ public class DadoDAO {
                 stmtDado.close();
                 conection.desconectar();
                 
-                return new Dado(criaturaDado, nivelDado, caras); 
+                return new Dado(idDado, criaturaDado, nivelDado, caras); 
             }else{
                 conection.desconectar();
                 return null;
@@ -62,6 +63,7 @@ public class DadoDAO {
                 ResultSet resultadosDado = stmtDado.executeQuery(consulta);
                 resultadosDado.next();
                 
+                int idDado = resultadosDado.getInt(1);
                 int idCriaturaDado = resultadosDado.getInt(2);
                 int nivelDado = resultadosDado.getInt(3);
                 int cara1 = resultadosDado.getInt(4);
@@ -79,7 +81,7 @@ public class DadoDAO {
                 stmtDado.close();
                 conection.desconectar();
                 
-                return new Dado(criaturaDado, nivelDado, caras); 
+                return new Dado(idDado, criaturaDado, nivelDado, caras); 
             }else{
                 conection.desconectar();
                 return null;

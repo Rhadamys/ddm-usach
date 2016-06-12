@@ -59,6 +59,7 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         this.nivel.setFont(fuente);
         this.nombreCriatura.setFont(fuente);
         this.cantidadDados.setFont(fuente);
+        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 18));
         
         this.nivel.setText("");
         this.nombreCriatura.setText("");
@@ -135,6 +136,7 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         nombreCriatura = new javax.swing.JLabel();
         L3 = new javax.swing.JLabel();
         cantidadDados = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -177,6 +179,13 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         cantidadDados.setText("0");
         getContentPane().add(cantidadDados);
         cantidadDados.setBounds(430, 495, 70, 17);
+
+        titulo.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
+        titulo.setForeground(new java.awt.Color(255, 255, 255));
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titulo.setText("<html><center>Selecciona los dados que deseas lanzar. Puedes mantener el mouse sobre alguno de los dados para ver información de la criatura del dado. Luego, presiona \"Lanzar dados\".</center></html>");
+        getContentPane().add(titulo);
+        titulo.setBounds(50, 0, 700, 60);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -244,5 +253,6 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     private javax.swing.JLabel cantidadDados;
     private javax.swing.JLabel nivel;
     private javax.swing.JLabel nombreCriatura;
+    private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
 }

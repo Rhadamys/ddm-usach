@@ -11,7 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
-import javax.swing.event.ChangeEvent;
 
 /**
  *
@@ -54,7 +53,7 @@ public class BotonCheckImagen extends JToggleButton {
      * producen eventos de mouse.
      */
     public void agregarListeners(){
-        this.addMouseListener(new MouseAdapter(){
+        this.addMouseListener(new MouseAdapter(){            
             @Override
             public void mouseEntered(MouseEvent e){
                 if(isSelected()){
@@ -83,7 +82,7 @@ public class BotonCheckImagen extends JToggleButton {
             }
             
             @Override
-            public void mouseReleased(MouseEvent e){
+            public void mouseReleased(MouseEvent e){  
                 if(e.getX() > 0 && e.getX() < getWidth() &&
                    e.getY() > 0 && e.getY() < getHeight()){
                     if(isSelected()){
@@ -94,14 +93,6 @@ public class BotonCheckImagen extends JToggleButton {
                 }else{
                     mouseExited(e);
                 }
-            }
-        });
-        
-        this.addChangeListener((ChangeEvent e) -> {
-            if(isSelected()){
-                setImagenActual(3);
-            }else{
-                setImagenActual(0);
             }
         });
     }
@@ -204,5 +195,15 @@ public class BotonCheckImagen extends JToggleButton {
                     break;
         }
         this.repaint();
+    }
+    
+    public void deseleccionado(){
+        this.setSelected(false);
+        this.setImagenActual(0);
+    }
+    
+    public void seleccionado(){
+        this.setSelected(true);
+        this.setImagenActual(3);
     }
 }

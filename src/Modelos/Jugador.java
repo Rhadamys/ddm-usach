@@ -17,9 +17,11 @@ public abstract class Jugador {
     protected JefeDeTerreno jefeDeTerreno;
     protected Terreno terreno;
     protected int equipo;
+    protected ArrayList<Trampa> trampas;
     
     public Jugador(){
         this.turno = new Turno();
+        this.puzzle = new PuzzleDeDados(new ArrayList());
     }
     
     public static ArrayList<Jugador> getJugadores(ArrayList<Jugador> excluidos){
@@ -28,6 +30,33 @@ public abstract class Jugador {
         } catch (SQLException ex) {
             return null;
         }
+    }
+    
+    public ArrayList<Criatura> getCriaturasMuertas(){
+        ArrayList<Criatura> criaturasMuertas = new ArrayList();
+        for(Dado dado: getDados()){
+            if(dado.getCriatura().getVida() <= 0){
+                criaturasMuertas.add(dado.getCriatura());
+            }
+        }
+        return criaturasMuertas;
+    }
+    
+    public void reiniciar(){
+        this.turno = new Turno();
+        this.trampas = new ArrayList();
+    }
+          
+    public int cantidadTrampas(){
+        return this.trampas.size();
+    }
+    
+    public void agregarTrampa(Trampa trampa){
+        this.trampas.add(trampa);
+    }
+    
+    public void eliminarTrampa(Trampa trampa){
+        this.trampas.remove(trampa);
     }
     
     public ArrayList<Dado> getDados(){
@@ -58,6 +87,10 @@ public abstract class Jugador {
         return turno;
     }
 
+    public ArrayList<Trampa> getTrampas() {
+        return trampas;
+    }
+
     public void setEquipo(int equipo) {
         this.equipo = equipo;
     }
@@ -65,5 +98,4 @@ public abstract class Jugador {
     public void setTerreno(Terreno terreno) {
         this.terreno = terreno;
     }
-          
 }

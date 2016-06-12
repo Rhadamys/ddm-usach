@@ -15,6 +15,8 @@ public class Criatura extends ElementoEnCampo {
     private final int ataquePorDefecto;
     private int defensa;
     private final int defensaPorDefecto;
+    private int turnosInmovilizada;
+    private int costoMovimiento;
     
     public Criatura(
             String nombre,
@@ -36,15 +38,23 @@ public class Criatura extends ElementoEnCampo {
         this.nivel = nivel;
         this.nomArchivoImagen = nombreArchivoImagen;
         this.descripcion = descripcion;
+        this.turnosInmovilizada = 0;
+        this.costoMovimiento = 1;
     }
     
-    public void disminuirVida(int vida){
+    public void reiniciar(int dueno){
+        this.dueno = dueno;
+        this.vida = this.vidaMaxima;
+    }
+    
+    public void restarVida(int vida){
         this.vida -= vida;
     }
     
     public void aumentarVidaMaxima(int vida){
         this.vidaMaxima += vida;
         this.vida = vidaMaxima;
+        this.turnosInmovilizada = 0;
     }
     
     public void aumentarAtaque(int aumento){
@@ -53,6 +63,12 @@ public class Criatura extends ElementoEnCampo {
     
     public void aumentarDefensa(int aumento){
         this.defensa += aumento;
+    }
+    
+    public void disminuirTurnosInmovilizada(){
+        if(turnosInmovilizada != 0){
+            this.turnosInmovilizada--;
+        }
     }
     
     public int getNivel() {
@@ -86,5 +102,21 @@ public class Criatura extends ElementoEnCampo {
     public int getDefensaPorDefecto() {
         return defensaPorDefecto;
     }
-    
+
+    public int getTurnosInmovilizada() {
+        return turnosInmovilizada;
+    }
+
+    public int getCostoMovimiento() {
+        return costoMovimiento;
+    }
+
+    public void setTurnosInmovilizada(int inmovilizada) {
+        this.turnosInmovilizada = inmovilizada;
+    }
+
+    public void setCostoMovimiento(int costoMovimiento) {
+        this.costoMovimiento = costoMovimiento;
+    }
+
 }

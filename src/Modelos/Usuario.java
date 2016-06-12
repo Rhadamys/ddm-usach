@@ -34,6 +34,18 @@ public class Usuario extends Jugador {
             return null;
         }
     }
+    
+    /**
+     * Registra un usuario en la base de datos.
+     * @param usuario Nombre de usuario.
+     * @param pass Contraseña.
+     * @param jefe Jefe de terreno elegido por el usuario.
+     * @return Falso si el usuario ya existe en la base de datos.
+     * @throws SQLException 
+     */
+    public static boolean registrarUsuario(String usuario, String pass, JefeDeTerreno jefe) throws SQLException{
+        return UsuarioDAO.registrarUsuario(usuario, pass, jefe);
+    }
 
     /**
      * Devuelve el nombre de usuario de esta instancia de Usuario

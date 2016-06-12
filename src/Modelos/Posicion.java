@@ -12,6 +12,7 @@ public class Posicion {
     private final int fila;
     private final int columna;
     private ElementoEnCampo elemento;
+    private Trampa respaldoTrampa;
     private int dueno;
     
     public Posicion(int fila, int columna){
@@ -20,6 +21,19 @@ public class Posicion {
         this.columna = columna;
     }
 
+    public void respaldarTrampa(){
+        this.respaldoTrampa = (Trampa) this.elemento;
+    }
+    
+    public void devolverTrampa(){
+        this.elemento = this.respaldoTrampa;
+        this.respaldoTrampa = null;
+    }
+    
+    public boolean trampaRespaldada(){
+        return this.respaldoTrampa != null;
+    }
+    
     public int getDueno() {
         return dueno;
     }

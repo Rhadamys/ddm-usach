@@ -17,7 +17,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
+public class SubVistaCriaturaRevivir extends javax.swing.JInternalFrame {
     private final ArrayList<BotonImagen> panelesCriaturas;
     private final ArrayList<Criatura> criaturas;
     
@@ -26,7 +26,7 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
      * @param criaturas
      * @param fuente
      */
-    public SubVistaSeleccionCriatura(ArrayList<Criatura> criaturas, Font fuente) {
+    public SubVistaCriaturaRevivir(ArrayList<Criatura> criaturas, Font fuente) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -44,8 +44,10 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
         final int SEP = (640 - N_COLUMNAS * LADO) / (N_COLUMNAS + 1);
         final int MARCO = 20;
         int columna = 0;
+        int fila = -1;
         
         for (Criatura criatura: criaturas){
+            fila = columna == 0 ? ++fila : fila;
             
             BotonImagen marcoCriatura = new BotonImagen("/Imagenes/vacio.png");
             this.add(marcoCriatura);
@@ -91,7 +93,7 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
         titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Acción obligada: Selecciona una criatura para invocar");
+        titulo.setText("Elige la criatura que deseas revivir.");
         getContentPane().add(titulo);
         titulo.setBounds(0, 10, 790, 40);
 

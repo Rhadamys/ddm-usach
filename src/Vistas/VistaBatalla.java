@@ -32,6 +32,8 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     private SubVistaSeleccionDados visSelDados;
     private SubVistaLanzamientoDados visLanDados;
     private SubVistaSeleccionCriatura visSelCri;
+    private SubVistaSeleccionTrampa visSelTram;
+    private SubVistaCriaturaRevivir visCriRev;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
     
     /**
@@ -165,6 +167,8 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.vistasJugador.get(i).setIconoJugador("/Imagenes/Jefes/" +
                 jug.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         
+        this.vistasJugador.get(i).setVidaMaximaJugador(jug.getJefeDeTerreno().getVidaMaxima());
+        
         this.tablero.actualizarCasillas();
         
         this.add(this.vistasJugador.get(i), 0);
@@ -222,6 +226,14 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return visSelCri;
     }
 
+    public SubVistaSeleccionTrampa getVisSelTram() {
+        return visSelTram;
+    }
+
+    public SubVistaCriaturaRevivir getVisCriRev() {
+        return visCriRev;
+    }
+
     public void setTablero(SubVistaTablero tablero) {
         this.tablero = tablero;
     }
@@ -241,7 +253,15 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     public void setVisSelCri(SubVistaSeleccionCriatura visSelCri) {
         this.visSelCri = visSelCri;
     }
-    
+
+    public void setVisSelTram(SubVistaSeleccionTrampa visSelTram) {
+        this.visSelTram = visSelTram;
+    }
+
+    public void setVisCriRev(SubVistaCriaturaRevivir visCriRev) {
+        this.visCriRev = visCriRev;
+    }
+           
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel mensaje;
     // End of variables declaration//GEN-END:variables

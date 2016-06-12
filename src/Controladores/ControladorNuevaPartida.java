@@ -296,7 +296,7 @@ public class ControladorNuevaPartida {
                 this.crearVistaSeleccionEquipos();
             }else{
                 this.mostrarMensaje("Se necesitan mínimo 3 jugadores para<br>formar equipos.");
-                this.visNuePar.getEnEquipos().setSelected(false);
+                this.visNuePar.getEnEquipos().deseleccionado();
             }
         }
     }

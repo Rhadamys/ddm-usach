@@ -16,17 +16,17 @@ import javax.swing.JProgressBar;
  * @author mam28
  */
 public class SubVistaInfoJugadorBatalla extends PanelImagen{
-    private PanelImagen iconoJugador;
-    private JLabel nombreJugador;
-    private JProgressBar vidaJugador;
-    private PanelImagen ataque;
-    private PanelImagen magia;
-    private PanelImagen movimiento;
-    private PanelImagen trampa;
-    private JLabel puntosAtaque;
-    private JLabel puntosMagia;
-    private JLabel puntosMovimiento;
-    private JLabel puntosTrampa;
+    private final PanelImagen iconoJugador;
+    private final JLabel nombreJugador;
+    private final JProgressBar vidaJugador;
+    private final PanelImagen ataque;
+    private final PanelImagen magia;
+    private final PanelImagen movimiento;
+    private final PanelImagen trampa;
+    private final JLabel puntosAtaque;
+    private final JLabel puntosMagia;
+    private final JLabel puntosMovimiento;
+    private final JLabel puntosTrampa;
     
     public SubVistaInfoJugadorBatalla(Font fuentePersonalizada){
         this.setLayout(null);
@@ -107,7 +107,6 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.nombreJugador.setFont(fuentePersonalizada);
         
         this.vidaJugador.setBorder(null);
-        this.vidaJugador.setValue(50);
         this.vidaJugador.setForeground(Color.green);
         this.vidaJugador.setBackground(Color.yellow);
     }
@@ -123,11 +122,17 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
     public void setIconoJugador(String imagen){
         this.iconoJugador.setImagen(imagen);
     }
+    
+    public void setVidaMaximaJugador(int vidaMaximaJugador){
+        this.vidaJugador.setMaximum(vidaMaximaJugador);
+        this.vidaJugador.setValue(vidaMaximaJugador);
+    }
 
     public void setVidaJugador(int vidaJugador) {
         this.vidaJugador.setValue(vidaJugador);
+        this.setToolTipText(this.vidaJugador.getValue() + " / " + this.vidaJugador.getMaximum());
     }
-
+    
     public void setPuntosAtaque(String puntosAtaque) {
         this.puntosAtaque.setText(puntosAtaque);
     }

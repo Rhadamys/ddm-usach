@@ -13,7 +13,7 @@ import java.awt.GridLayout;
  * @author mam28
  */
 public class SubVistaTablero extends PanelImagen{
-    private SubVistaPosicion[][] casillas;
+    private final SubVistaPosicion[][] casillas;
     private SubVistaPosicion casillaActual;
     
     public SubVistaTablero(){
@@ -24,7 +24,7 @@ public class SubVistaTablero extends PanelImagen{
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                casillas[i][j] = new SubVistaPosicion(i, j);
+                casillas[i][j] = new SubVistaPosicion(i, j, this.getWidth() / 15, this.getHeight() / 15);
                 this.add(casillas[i][j]);
             }
         }
@@ -43,14 +43,19 @@ public class SubVistaTablero extends PanelImagen{
                 }
             }
         }
+        
+        this.repaint();
     }
     
     public void reiniciarCasillas(){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                casillas[i][j].setSelected(false);
+                casillas[i][j].setImagenSobre("/Imagenes/Botones/casilla.png");
+                casillas[i][j].deseleccionado();
             }
         }
+        
+        this.repaint();
     }
     
     public SubVistaPosicion getCasilla(int fila, int columna){

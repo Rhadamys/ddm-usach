@@ -14,6 +14,8 @@ public class Tablero {
     private int numAccion;
     private int direccion;
     private int numDespliegue;
+    private Trampa trampaActivada;
+    private final ArrayList<int[]> magiasActivadas;
     
     public Tablero(){
         this.posiciones = new Posicion[15][15];
@@ -25,8 +27,43 @@ public class Tablero {
                 posiciones[i][j] = new Posicion(i, j);
             }
         }
+        
+        this.magiasActivadas = new ArrayList();
     }
     
+    /**
+     * Aplica las magias que se hayan activado.
+     * @param accion Accion para activar las magias.
+     */
+    public void aplicarMagias(Accion accion){
+        // Las magias son un Array de enteros
+        // [ <Numero de magia>, <Turnos restantes>, <Numero del jugador que la activó> ]
+        
+        for(int i = 0; i < magiasActivadas.size(); i++){
+            switch(magiasActivadas.get(i)[0]){
+                case 1: accion.lluviaTorrencial(magiasActivadas.get(i)[2], this);
+                        break;
+                case 2: accion.hierbasVenenosas(magiasActivadas.get(i)[2]);
+                        break;
+                default:    accion.meteoritosDeFuego(magiasActivadas.get(i)[2]);
+                            break;
+            }
+            
+            magiasActivadas.get(i)[1]--;
+            if(magiasActivadas.get(i)[1] == 0){
+                if(magiasActivadas.get(i)[0] == 1){
+                    accion.desactivarLluviaTorrencial(this);
+                }
+                
+                magiasActivadas.remove(i);
+                i--;
+            }
+        }
+    }
+    
+    /**
+     * Cambiar el número del turno.
+     */
     public void cambiarTurno(){
         this.turnoActual++;
     }
@@ -351,6 +388,10 @@ public class Tablero {
     public Jugador getJugadorActual() {
         return jugadores.get(this.getTurnoActual());
     }
+
+    public Trampa getTrampaActivada() {
+        return trampaActivada;
+    }
     
     public int cantidadJugadores(){
         return this.jugadores.size();
@@ -375,4 +416,9 @@ public class Tablero {
     public void setTurnoActual(int turnoActual) {
         this.turnoActual = turnoActual;
     }
+
+    public void setTrampaActivada(Trampa trampaActivada) {
+        this.trampaActivada = trampaActivada;
+    }
+    
 }

@@ -5,7 +5,7 @@
  */
 package Vistas;
 
-import Modelos.Criatura;
+import Modelos.Trampa;
 import Otros.BotonImagen;
 import Otros.PanelImagen;
 import java.awt.Color;
@@ -17,16 +17,17 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
-    private final ArrayList<BotonImagen> panelesCriaturas;
-    private final ArrayList<Criatura> criaturas;
-    
+public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
+    private final ArrayList<BotonImagen> panelesMagias;
+    private final ArrayList<Trampa> magias;
+
     /**
-     * Creates new form SubVistaSeleccionCriatura
-     * @param criaturas
-     * @param fuente
+     * Creates new form SubVistaSeleccionTrampa
+     * @param fuente Fuente que se utilizará en esta vista.
+     * @param magias Trampas del jugador.
+     * @param puntosTrampa Puntos de trampa que tiene el jugador.
      */
-    public SubVistaSeleccionCriatura(ArrayList<Criatura> criaturas, Font fuente) {
+    public SubVistaSeleccionMagia(Font fuente, ArrayList<Trampa> magias, int puntosTrampa) {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
@@ -36,32 +37,36 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
         this.setOpaque(false);
         this.setBackground(new Color(0,0,0,0));
         
-        this.criaturas = criaturas;
-        this.panelesCriaturas = new ArrayList();
+        this.panelesMagias = new ArrayList();
+        this.magias = magias;
         
-        final int N_COLUMNAS = criaturas.size();
+        final int N_COLUMNAS = 3;
         final int LADO = 100;
         final int SEP = (640 - N_COLUMNAS * LADO) / (N_COLUMNAS + 1);
         final int MARCO = 20;
         int columna = 0;
+        int fila = -1;
         
-        for (Criatura criatura: criaturas){
-            
-            BotonImagen marcoCriatura = new BotonImagen("/Imagenes/vacio.png");
-            this.add(marcoCriatura);
-            marcoCriatura.setSize(LADO + MARCO, LADO + MARCO);
-            marcoCriatura.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-            marcoCriatura.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (this.getHeight() - LADO - MARCO) / 2);
-            
-            PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
-                    + criatura.getNomArchivoImagen() + ".png");
-            this.add(iconoCriatura);
-            iconoCriatura.setSize(LADO, LADO);
-            iconoCriatura.setLocation((SEP + LADO) * columna + SEP + 80, (this.getHeight() - LADO) / 2);
-            
-            panelesCriaturas.add(marcoCriatura);
+        for (Trampa trampa: magias){
+            if(puntosTrampa >= trampa.getCosto()){
+                fila = columna == 0 ? ++fila : fila;
 
-            columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
+                BotonImagen marcoTrampa = new BotonImagen("/Imagenes/vacio.png");
+                this.add(marcoTrampa);
+                marcoTrampa.setSize(LADO + MARCO, LADO + MARCO);
+                marcoTrampa.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
+                marcoTrampa.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (SEP + LADO) * fila + SEP + 60 - MARCO / 2);
+
+                PanelImagen iconoTrampa = new PanelImagen("/Imagenes/Botones/"
+                        + trampa.getNomArchivoImagen() + ".png");
+                this.add(iconoTrampa);
+                iconoTrampa.setSize(LADO, LADO);
+                iconoTrampa.setLocation((SEP + LADO) * columna + SEP + 80, (SEP + LADO) * fila + SEP + 60);
+
+                panelesMagias.add(marcoTrampa);
+
+                columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
+            }
         }
         
         this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
@@ -91,23 +96,23 @@ public class SubVistaSeleccionCriatura extends javax.swing.JInternalFrame {
         titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Acción obligada: Selecciona una criatura para invocar");
+        titulo.setText("Selecciona la trampa que deseas colocar.");
         getContentPane().add(titulo);
         titulo.setBounds(0, 10, 790, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public BotonImagen getPanelCriatura(int i) {
-        return panelesCriaturas.get(i);
-    } 
-    
-    public Criatura getCriatura(BotonImagen panelCriatura){
-        return this.criaturas.get(this.panelesCriaturas.indexOf(panelCriatura));
+    public BotonImagen getPanelTrampa(int i){
+        return this.panelesMagias.get(i);
     }
     
-    public int getCantidadCriaturas(){
-        return this.panelesCriaturas.size();
+    public int cantidadTrampas(){
+        return this.panelesMagias.size();
+    }
+    
+    public Trampa getTrampa(BotonImagen panelTrampa){
+        return this.magias.get(this.panelesMagias.indexOf(panelTrampa));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

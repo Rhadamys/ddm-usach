@@ -32,7 +32,8 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.setImagen("/Imagenes/Fondos/fondo_info_elemento.png");
         
         PanelImagen icono = new PanelImagen("/Imagenes/" +
-                (elemento instanceof Criatura ? "Criaturas/" : "Jefes/") +
+                (elemento instanceof Criatura ? "Criaturas/" : 
+                (elemento instanceof JefeDeTerreno ? "Jefes/" : "Otros/")) +
                 elemento.getNomArchivoImagen() + ".png");
         this.add(icono);
         icono.setSize(80, 80);

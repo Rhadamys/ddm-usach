@@ -157,7 +157,7 @@ public class ControladorRegistro {
         if(this.visReg.comprobarCampos()){
             this.visReg.usuarioCorrecto();                
             try {
-                if(UsuarioDAO.registrarUsuario(usuario, pass, this.jefe)){
+                if(Usuario.registrarUsuario(usuario, pass, this.jefe)){
                     this.cerrarVistaRegistro(true);
                     this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");
                 }else{

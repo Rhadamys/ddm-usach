@@ -17,9 +17,15 @@ public class SubVistaPosicion extends BotonCheckImagen {
     private final int fila;
     private final int columna;
     
-    public SubVistaPosicion(int fila, int columna){
+    public SubVistaPosicion(int fila, int columna, int ancho, int alto){
+        this.setSize(ancho, alto);
+        
         setImagenNormal("/Imagenes/Botones/casilla.png");
+        setImagenSobre("/Imagenes/Botones/casilla.png");
+        setImagenPresionado("/Imagenes/Botones/casilla.png");
         setImagenSelNormal("/Imagenes/Botones/casilla_seleccionada.png");
+        setImagenSelSobre("/Imagenes/Botones/casilla_seleccionada.png");
+        setImagenSelPresionado("/Imagenes/Botones/casilla_seleccionada.png");
         setImagenActual(0);
         
         this.fila = fila;
@@ -27,6 +33,11 @@ public class SubVistaPosicion extends BotonCheckImagen {
         this.setLayout(null);
         
         this.iconoElemento = new PanelImagen();
+        this.iconoElemento.setSize(this.getWidth() * 80 / 100, this.getHeight() * 80 / 100);
+        this.iconoElemento.setLocation(
+                (this.getWidth() - this.iconoElemento.getWidth()) / 2,
+                (this.getHeight() - this.iconoElemento.getHeight()) / 2);
+        
         this.add(this.iconoElemento);
     }
     
@@ -49,10 +60,5 @@ public class SubVistaPosicion extends BotonCheckImagen {
     
     public void setImagenIconoElemento(String imagen){
         this.iconoElemento.setImagen(imagen);
-        
-        int lado = this.getParent().getWidth() / 15;
-        int ladoIcono = lado * 80 / 100;
-        this.iconoElemento.setSize(ladoIcono, ladoIcono);
-        this.iconoElemento.setLocation((lado - ladoIcono) / 2, (lado - ladoIcono) / 2);
     }
 }

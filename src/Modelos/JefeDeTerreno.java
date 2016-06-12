@@ -47,6 +47,11 @@ public class JefeDeTerreno extends ElementoEnCampo {
         }
     }
     
+    public void reiniciar(int dueno){
+        this.vida = this.vidaMaxima;
+        this.dueno = dueno;
+    }
+    
     public void restarVida(int vida){
         this.vida -= vida;
     }

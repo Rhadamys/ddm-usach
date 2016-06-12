@@ -30,6 +30,16 @@ public class Terreno {
         return cantidadCriaturas;
     }
     
+    public boolean criaturaQuePuedaMoverse(){
+        for(Posicion posicion: posiciones){
+            if(posicion.getElemento() instanceof Criatura &&
+              ((Criatura) posicion.getElemento()).getTurnosInmovilizada() == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public boolean contienePosicion(Posicion posicion){
         return this.posiciones.contains(posicion);
     }

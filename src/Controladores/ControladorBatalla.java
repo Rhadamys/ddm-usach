@@ -272,9 +272,6 @@ public class ControladorBatalla {
     }
     
     public void iniciarJuego(){
-        this.tablero.getJugador(0).getJefeDeTerreno().restarVida(950);
-        this.tablero.getJugador(1).getJefeDeTerreno().restarVida(1050);
-        
         this.tablero.setTurnoActual(-1);
         this.cambiarTurno();
     }

@@ -34,6 +34,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     private SubVistaSeleccionCriatura visSelCri;
     private SubVistaSeleccionTrampa visSelTram;
     private SubVistaCriaturaRevivir visCriRev;
+    private SubVistaSeleccionMagia visSelMag;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
     
     /**
@@ -234,6 +235,10 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return visCriRev;
     }
 
+    public SubVistaSeleccionMagia getVisSelMag() {
+        return visSelMag;
+    }
+
     public void setTablero(SubVistaTablero tablero) {
         this.tablero = tablero;
     }
@@ -260,6 +265,10 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
 
     public void setVisCriRev(SubVistaCriaturaRevivir visCriRev) {
         this.visCriRev = visCriRev;
+    }
+
+    public void setVisSelMag(SubVistaSeleccionMagia visSelMag) {
+        this.visSelMag = visSelMag;
     }
            
     // Variables declaration - do not modify//GEN-BEGIN:variables

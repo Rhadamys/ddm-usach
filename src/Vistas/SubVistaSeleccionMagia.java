@@ -11,6 +11,7 @@ import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -19,16 +20,38 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
     private final ArrayList<BotonImagen> panelesMagias;
-    private final ArrayList<Trampa> magias;
+    private final ArrayList<int[]> magias;
 
     /**
      * Creates new form SubVistaSeleccionTrampa
      * @param fuente Fuente que se utilizará en esta vista.
-     * @param magias Trampas del jugador.
-     * @param puntosTrampa Puntos de trampa que tiene el jugador.
+     * @param magias Magias disponibles.
+     * @param puntosMagia Puntos de magia que tiene el jugador.
      */
-    public SubVistaSeleccionMagia(Font fuente, ArrayList<Trampa> magias, int puntosTrampa) {
+    public SubVistaSeleccionMagia(Font fuente, ArrayList<int[]> magias, int puntosMagia) {
         initComponents();
+        
+        ArrayList<HashMap<String, String>> infoMagias = new ArrayList();
+        HashMap<String, String> lluviaTorrencial = new HashMap();
+        lluviaTorrencial.put("Nombre", "Lluvia torrencial");
+        lluviaTorrencial.put("NombreArchivoImagen", "magia_1");
+        lluviaTorrencial.put("Descripcion", "<html><p align=\"justify\">Hace que las criaturas enemigas gasten dos unidades de movimiento por cada cuadro que deseen desplazarse durante los próximos 3 turnos del juego.</p></html>");
+        lluviaTorrencial.put("Costo", "10");
+        infoMagias.add(lluviaTorrencial);
+        
+        HashMap<String, String> hierbasVenenosas = new HashMap();
+        hierbasVenenosas.put("Nombre", "Hierbas venenosas");
+        hierbasVenenosas.put("NombreArchivoImagen", "magia_2");
+        hierbasVenenosas.put("Descripcion", "<html><p align=\"justify\">El jugador puede seleccionar a 3 criaturas oponentes, durante los próximos 3 turnos estas criaturas recibirán un daño igual al 20% de la vida máxima que estas posean.</p></html>");
+        hierbasVenenosas.put("Costo", "15");
+        infoMagias.add(hierbasVenenosas);
+        
+        HashMap<String, String> meteoritosDeFuego = new HashMap();
+        meteoritosDeFuego.put("Nombre", "Meteoritos de fuego");
+        meteoritosDeFuego.put("NombreArchivoImagen", "magia_3");
+        meteoritosDeFuego.put("Descripcion", "<html><p align=\"justify\">El jugador selecciona un lugar del terreno, dentro de un radio de 5 cuadros del terreno, cualquier criatura enemiga que esté ubicada en esta sección recibirá un daño de 30% de la vida máxima que posea. Este efecto dura 3 turnos.</p></html>");
+        meteoritosDeFuego.put("Costo", "30");
+        infoMagias.add(meteoritosDeFuego);
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
@@ -40,30 +63,28 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
         this.panelesMagias = new ArrayList();
         this.magias = magias;
         
-        final int N_COLUMNAS = 3;
+        final int N_COLUMNAS = magias.size();
         final int LADO = 100;
         final int SEP = (640 - N_COLUMNAS * LADO) / (N_COLUMNAS + 1);
         final int MARCO = 20;
         int columna = 0;
-        int fila = -1;
         
-        for (Trampa trampa: magias){
-            if(puntosTrampa >= trampa.getCosto()){
-                fila = columna == 0 ? ++fila : fila;
+        for (int[] magia: magias){
+            HashMap<String, String> infoMagia = infoMagias.get(magia[0] - 1);
+            if(puntosMagia >= Integer.parseInt(infoMagia.get("Costo"))){
+                BotonImagen marcoMagia = new BotonImagen("/Imagenes/vacio.png");
+                this.add(marcoMagia);
+                marcoMagia.setSize(LADO + MARCO, LADO + MARCO);
+                marcoMagia.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
+                marcoMagia.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (this.getHeight() - LADO - MARCO) / 2);
 
-                BotonImagen marcoTrampa = new BotonImagen("/Imagenes/vacio.png");
-                this.add(marcoTrampa);
-                marcoTrampa.setSize(LADO + MARCO, LADO + MARCO);
-                marcoTrampa.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-                marcoTrampa.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (SEP + LADO) * fila + SEP + 60 - MARCO / 2);
+                PanelImagen iconoMagia = new PanelImagen("/Imagenes/Botones/"
+                        + infoMagia.get("NombreArchivoImagen") + ".png");
+                this.add(iconoMagia);
+                iconoMagia.setSize(LADO, LADO);
+                iconoMagia.setLocation((SEP + LADO) * columna + SEP + 80, (this.getHeight() - LADO) / 2);
 
-                PanelImagen iconoTrampa = new PanelImagen("/Imagenes/Botones/"
-                        + trampa.getNomArchivoImagen() + ".png");
-                this.add(iconoTrampa);
-                iconoTrampa.setSize(LADO, LADO);
-                iconoTrampa.setLocation((SEP + LADO) * columna + SEP + 80, (SEP + LADO) * fila + SEP + 60);
-
-                panelesMagias.add(marcoTrampa);
+                panelesMagias.add(marcoMagia);
 
                 columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
             }
@@ -103,16 +124,16 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public BotonImagen getPanelTrampa(int i){
+    public BotonImagen getPanelMagia(int i){
         return this.panelesMagias.get(i);
     }
     
-    public int cantidadTrampas(){
+    public int cantidadMagias(){
         return this.panelesMagias.size();
     }
     
-    public Trampa getTrampa(BotonImagen panelTrampa){
-        return this.magias.get(this.panelesMagias.indexOf(panelTrampa));
+    public int[] getMagia(BotonImagen panelTrampa){
+        return magias.get(this.panelesMagias.indexOf(panelTrampa));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,6 +17,7 @@ public class Criatura extends ElementoEnCampo {
     private final int defensaPorDefecto;
     private int turnosInmovilizada;
     private int costoMovimiento;
+    private int turnosCostoMovInc;
     
     public Criatura(
             String nombre,
@@ -40,6 +41,7 @@ public class Criatura extends ElementoEnCampo {
         this.descripcion = descripcion;
         this.turnosInmovilizada = 0;
         this.costoMovimiento = 1;
+        this.turnosCostoMovInc = 0;
     }
     
     public void reiniciar(int dueno){
@@ -68,6 +70,15 @@ public class Criatura extends ElementoEnCampo {
     public void disminuirTurnosInmovilizada(){
         if(turnosInmovilizada != 0){
             this.turnosInmovilizada--;
+        }
+    }
+    
+    public void disminuirTurnosCostoMovInc(){
+        if(turnosCostoMovInc != 0){
+            this.turnosCostoMovInc--;
+            if(turnosCostoMovInc == 0){
+                this.costoMovimiento = 1;
+            }
         }
     }
     
@@ -111,12 +122,20 @@ public class Criatura extends ElementoEnCampo {
         return costoMovimiento;
     }
 
+    public int getTurnosCostoMovInc() {
+        return turnosCostoMovInc;
+    }
+
     public void setTurnosInmovilizada(int inmovilizada) {
         this.turnosInmovilizada = inmovilizada;
     }
 
     public void setCostoMovimiento(int costoMovimiento) {
         this.costoMovimiento = costoMovimiento;
+    }
+
+    public void setTurnosCostoMovInc(int turnosCostoMovInc) {
+        this.turnosCostoMovInc = turnosCostoMovInc;
     }
 
 }

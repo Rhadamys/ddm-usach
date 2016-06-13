@@ -9,6 +9,7 @@ import Modelos.Accion;
 import Modelos.Criatura;
 import Modelos.Dado;
 import Modelos.ElementoEnCampo;
+import Modelos.JefeDeTerreno;
 import Modelos.Jugador;
 import Modelos.Posicion;
 import Modelos.Tablero;
@@ -28,6 +29,7 @@ import Vistas.VistaBatalla;
 import Vistas.SubVistaMenuPausa;
 import Vistas.SubVistaSeleccionCriatura;
 import Vistas.SubVistaSeleccionDados;
+import Vistas.SubVistaSeleccionMagia;
 import Vistas.SubVistaSeleccionTrampa;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -173,7 +175,11 @@ public class ControladorBatalla {
             @Override
             public void mouseClicked(MouseEvent e){
                 if(e.getComponent().isEnabled()){
-                    
+                    if(sePuedeActivarMagia()){
+                        mostrarVistaSeleccionMagia();
+                    }else{
+                        mostrarMensaje("No hay magias disponibles o no tienes puntos de magia suficientes.");
+                    }
                 }
             }
             
@@ -266,6 +272,9 @@ public class ControladorBatalla {
     }
     
     public void iniciarJuego(){
+        this.tablero.getJugador(0).getJefeDeTerreno().restarVida(950);
+        this.tablero.getJugador(1).getJefeDeTerreno().restarVida(1050);
+        
         this.tablero.setTurnoActual(-1);
         this.cambiarTurno();
     }
@@ -336,6 +345,8 @@ public class ControladorBatalla {
                                         break;
                             case 30:    comprobarCasillaTrampa((SubVistaPosicion) e.getComponent());
                                         break;
+                            case 40:    mostrarAreaAfectada((SubVistaPosicion) e.getComponent());
+                                        break;
                         }
                     }
 
@@ -358,6 +369,10 @@ public class ControladorBatalla {
                                         break;
                             case 30:    colocarTrampa((SubVistaPosicion) e.getComponent());
                                         break;
+                            case 40:    setAreaAfectada((SubVistaPosicion) e.getComponent());
+                                        break;
+                            case 41:    cambiarEstadoCriaturaAfectada((SubVistaPosicion) e.getComponent());
+                                        break;
                         }
                     }
 
@@ -369,9 +384,7 @@ public class ControladorBatalla {
                     }
                     
                     @Override
-                    public void mouseReleased(MouseEvent e){
-                        System.out.println(((BotonCheckImagen) e.getComponent()).isSelected());
-                        
+                    public void mouseReleased(MouseEvent e){                        
                         if(((BotonCheckImagen) e.getComponent()).isSelected()){
                             ((BotonCheckImagen) e.getComponent()).setImagenActual(3);
                         }else{
@@ -421,9 +434,9 @@ public class ControladorBatalla {
     public void mostrarDespliegue(int numDespliegue, SubVistaPosicion botonActual, int direccion, int turno){
         this.visBat.getTablero().actualizarCasillas();
         for(int[] coord: this.tablero.getDespliegue(botonActual.getFila(), botonActual.getColumna())){
-        Posicion posicionActual = this.tablero.getPosicion(coord[0], coord[1]);
-            try{
-                if(posicionActual.getDueno() == 0){
+            Posicion posAct = this.tablero.getPosicion(coord[0], coord[1]);
+            if(posAct != null){
+                if(posAct.getDueno() == 0){
                     this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenSobre(
                             "/Imagenes/Botones/casilla_j" + (turno + 1) + ".png");
                 }else{
@@ -431,7 +444,7 @@ public class ControladorBatalla {
                             "/Imagenes/Botones/casilla_error.png");
                 }
                 this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenActual(1);
-            }catch(Exception e){
+            }else{
                 this.visBat.setMensaje("Fuera de los límites del tablero.");
             }
         }
@@ -860,7 +873,18 @@ public class ControladorBatalla {
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
         if(posAct.getDueno() != (this.tablero.getTurnoActual() + 1)){
             if(posAct.getElemento() != null && !(posAct.getElemento() instanceof Trampa)){
-                this.accion.atacarEnemigo(posAct.getElemento());
+                int vida = this.accion.atacarEnemigo(posAct.getElemento());
+                if(vida <= 0){
+                    if(posAct.getElemento() instanceof JefeDeTerreno){
+                        this.tablero.agregarPerdedor(posAct.getDueno() - 1);
+                        this.eliminarJugadorPartida(posAct.getDueno());
+                        if(this.tablero.cantidadJugadores() == 1){
+                            finalizarPartida();
+                        }
+                    }
+                    posAct.setElemento(null);
+                }
+                
                 this.tablero.getJugadorActual().getTurno().descontarPuntoAtaque();
                 this.revisarCasillas();
                 this.finalizarAccion();
@@ -875,7 +899,7 @@ public class ControladorBatalla {
     public void comprobarCasillaCriaturaAtacante(SubVistaPosicion casilla){
         this.visBat.getTablero().reiniciarCasillas();
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
-        if(posAct.getDueno() != (this.tablero.getTurnoActual() + 1) || !(posAct.getElemento() instanceof Criatura)){
+        if(posAct.getDueno() == 0 || !(posAct.getElemento() instanceof Criatura)){
             casilla.setImagenSobre("/Imagenes/Botones/casilla_error.png");
         }else{
             casilla.setImagenSobre("/Imagenes/Botones/casilla_correcta.png");
@@ -982,12 +1006,154 @@ public class ControladorBatalla {
     
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la activación de magias">  
     
+    public boolean sePuedeActivarMagia(){
+        return this.accion.cantidadMagiasActivadas() < 3 &&
+               this.tablero.getJugadorActual().getTurno().getPuntosMagia() >= 10;
+    }
+    
+    public void mostrarVistaSeleccionMagia(){
+        ArrayList<int[]> magiasDisponibles = accion.getMagiasDisponibles();
+        
+        for(int i = 0; i < magiasDisponibles.size(); i++){
+            if(magiasDisponibles.get(i)[0] == 2){
+                int cantidadCriaturasInvocadas = 0;
+                for(int j = 0; j < this.tablero.cantidadJugadores(); j++){
+                    if(j != this.tablero.getTurnoActual()){
+                        cantidadCriaturasInvocadas += this.terrenos.get(j).cantidadCriaturasInvocadas();
+                    }
+                }
+                
+                if(cantidadCriaturasInvocadas == 0){
+                    magiasDisponibles.remove(i);
+                }
+                break;
+            }
+        }
+        
+        this.visBat.setVisSelMag(new SubVistaSeleccionMagia(
+                this.contPrin.getFuente(), magiasDisponibles,
+                this.tablero.getJugadorActual().getTurno().getPuntosMagia()));
+        
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisSelMag());
+        this.visBat.getVisSelMag().setVisible(true);
+        
+        this.agregarListenersVistaSeleccionMagia();
+    }
+    
+    public void agregarListenersVistaSeleccionMagia(){
+        for(int i = 0; i < this.visBat.getVisSelMag().cantidadMagias(); i++){
+            this.visBat.getVisSelMag().getPanelMagia(i).addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseClicked(MouseEvent e){
+                    agregarMagiaActivada(visBat.getVisSelMag().getMagia((BotonImagen) e.getComponent()));
+                }
+            });
+        }
+    }
+    
+    public void agregarMagiaActivada(int[] magia){
+        this.visBat.getVisSelMag().dispose();
+        
+        switch (magia[0]) {
+            case 3:
+                this.visBat.setMensaje("Marca el área afectada.");
+                this.tablero.setNumAccion(40);
+                this.deshabilitarBotones();
+                break;
+            case 2:
+                this.visBat.setMensaje("Selecciona 3 criaturas enemigas.");
+                this.tablero.setNumAccion(41);
+                this.deshabilitarBotones();
+                break;
+            default:
+                this.finalizarAccion();
+                this.accion.activarMagia(magia[0], this.tablero.getTurnoActual() + 1);
+                this.tablero.getJugadorActual().getTurno().descontarPuntosMagia(magia[3]);
+                this.mostrarMensaje("Se ha activado la magia.");
+                break;
+        }
+    }
+    
+    public void cambiarEstadoCriaturaAfectada(SubVistaPosicion casilla){
+        Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        if(posAct.getElemento() instanceof Criatura){
+            if(posAct.getElemento().getDueno() != (this.tablero.getTurnoActual() + 1)){
+                if(casilla.isSelected()){
+                    accion.quitarCriaturaAfectada((Criatura) posAct.getElemento());
+                }else{
+                    accion.agregarCriaturaAfectada((Criatura) posAct.getElemento());
+                    if(accion.cantidadCriaturasAfectadas() == 3){
+                        this.finalizarAccion();
+                        this.accion.activarMagia(2, this.tablero.getTurnoActual() + 1);
+                        this.tablero.getJugadorActual().getTurno().descontarPuntosMagia(15);
+                        this.mostrarMensaje("Se ha activado la magia.");
+                    }
+                }
+            }else{
+                this.visBat.setMensaje("Elige una criatura enemiga.");
+            }
+        }else{
+            this.visBat.setMensaje("Aquí no hay una criatura.");
+        }
+    }
+    
+    public void casillaTieneCriaturaEnemiga(SubVistaPosicion casilla){
+        this.visBat.getTablero().actualizarCasillas();
+        Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        if(posAct.getElemento() instanceof Criatura &&
+           posAct.getElemento().getDueno() != (this.tablero.getTurnoActual() + 1)){
+            casilla.setImagenSobre("/Imagenes/Botones/casilla_correcta.png");
+        }else{
+            casilla.setImagenSobre("/Imagenes/Botones/casilla_erronea.png");
+        }
+        casilla.setImagenActual(1);
+    }
+    
+    public void mostrarAreaAfectada(SubVistaPosicion casilla){
+        this.visBat.getTablero().actualizarCasillas();
+        
+        int filaEsqSupIzq = casilla.getFila() - 5;
+        int columnaEsqSupIzQ = casilla.getColumna() - 5;
+        
+        for(int i = 0; i < 11; i++){
+            for(int j = 0; j < 11; j++){
+                try{
+                    this.visBat.getTablero().getCasilla(filaEsqSupIzq + i, columnaEsqSupIzQ + j).setImagenSobre("/Imagenes/Botones/casilla_seleccionada.png");
+                    this.visBat.getTablero().getCasilla(filaEsqSupIzq + i, columnaEsqSupIzQ + j).setImagenActual(1);
+                }catch(Exception e){
+                    // Nada
+                }
+            }
+        }
+    }
+    
+    public void setAreaAfectada(SubVistaPosicion casilla){
+        int filaEsqSupIzq = casilla.getFila() - 5;
+        int columnaEsqSupIzQ = casilla.getColumna() - 5;
+        ArrayList<Posicion> areaAfectada = new ArrayList();
+        
+        for(int i = 0; i < 11; i++){
+            for(int j = 0; j < 11; j++){
+                Posicion posAct = this.tablero.getPosicion(filaEsqSupIzq + i, columnaEsqSupIzQ + j);
+                if(posAct != null){
+                    areaAfectada.add(posAct);
+                }
+            }
+        }
+        
+        accion.setAreaDeEfecto(areaAfectada);
+        accion.activarMagia(3, this.tablero.getTurnoActual() + 1);
+        this.tablero.getJugadorActual().getTurno().descontarPuntosMagia(30);
+        this.finalizarAccion();
+        this.mostrarMensaje("Se ha activado la magia en el área marcada.");
+    }
+    
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el movimiento de criaturas"> 
     
     public boolean sePuedeMover(){
-        return this.tablero.getJugadorActual().getTurno().getPuntosMovimiento() != 0 &&
+        return this.tablero.getJugadorActual().getTurno().getPuntosMovimiento() >= this.tablero.getJugadorActual().getDado(0).getCriatura().getCostoMovimiento() &&
                 getTerrenoJugActual().cantidadCriaturasInvocadas() != 0 &&
                 getTerrenoJugActual().criaturaQuePuedaMoverse();
     }
@@ -1307,12 +1473,15 @@ public class ControladorBatalla {
     }
     
     public void cambiarTurno(){
-        for(Dado dado: this.tablero.getJugadorActual().getDados()){
-            dado.getCriatura().disminuirTurnosInmovilizada();
+        if(this.tablero.getTurnoActual() != -1){
+            for(Dado dado: this.tablero.getJugadorActual().getDados()){
+                dado.getCriatura().disminuirTurnosInmovilizada();
+                dado.getCriatura().disminuirTurnosCostoMovInc();
+            }
+
+            this.tablero.aplicarMagias(accion);
+            this.revisarCasillas(); 
         }
-        
-        this.tablero.aplicarMagias(accion);
-        this.revisarCasillas(); 
         
         this.deshabilitarBotones();
         this.visBat.getTablero().reiniciarCasillas();
@@ -1344,6 +1513,32 @@ public class ControladorBatalla {
         visBat.getTablero().reiniciarCasillas();
         this.tablero.setNumAccion(0);
         this.habilitarBotones();
+    }
+    
+    public void eliminarJugadorPartida(int numJug){
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                Posicion posAct = this.tablero.getPosicion(i, j);
+                if(posAct.getElemento() instanceof Criatura && posAct.getElemento().getDueno() == numJug){
+                    posAct.setElemento(null);
+                }else if(posAct.getElemento() instanceof Trampa &&
+                   ((Trampa) posAct.getElemento()).getDueno() == numJug &&
+                   ((Trampa) posAct.getElemento()).getNumTrampa() == 3){
+                    posAct.setElemento(null);
+                }
+            }
+        }
+        
+        this.revisarCasillas();
+    }
+    
+    public void finalizarPartida(){
+        this.mostrarMensaje("¡El ganador es " + this.tablero.getJugadorActual().getNombreJugador()+ "!");
+        
+        this.contPrin.crearControladorMenuPrincipal();
+        this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+        
+        this.visBat.dispose();
     }
     
 // </editor-fold>

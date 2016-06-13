@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class Tablero {
     private final Posicion[][] posiciones;
     private ArrayList<Jugador> jugadores;
+    private ArrayList<Jugador> perdedores;
     private int turnoActual;
     private int numAccion;
     private int direccion;
     private int numDespliegue;
     private Trampa trampaActivada;
-    private final ArrayList<int[]> magiasActivadas;
     
     public Tablero(){
         this.posiciones = new Posicion[15][15];
@@ -28,7 +28,7 @@ public class Tablero {
             }
         }
         
-        this.magiasActivadas = new ArrayList();
+        this.perdedores = new ArrayList();        
     }
     
     /**
@@ -39,24 +39,30 @@ public class Tablero {
         // Las magias son un Array de enteros
         // [ <Numero de magia>, <Turnos restantes>, <Numero del jugador que la activó> ]
         
-        for(int i = 0; i < magiasActivadas.size(); i++){
-            switch(magiasActivadas.get(i)[0]){
-                case 1: accion.lluviaTorrencial(magiasActivadas.get(i)[2], this);
-                        break;
-                case 2: accion.hierbasVenenosas(magiasActivadas.get(i)[2]);
-                        break;
-                default:    accion.meteoritosDeFuego(magiasActivadas.get(i)[2]);
+        ArrayList<int[]> magiasActivadas = accion.getMagiasActivadas();
+        
+        if(!magiasActivadas.isEmpty()){
+            for(int[] magia: magiasActivadas){
+                switch(magia[0]){
+                    case 1: accion.lluviaTorrencial(magia[2], this);
                             break;
-            }
-            
-            magiasActivadas.get(i)[1]--;
-            if(magiasActivadas.get(i)[1] == 0){
-                if(magiasActivadas.get(i)[0] == 1){
-                    accion.desactivarLluviaTorrencial(this);
+                    case 2: accion.hierbasVenenosas(magia[2]);
+                            break;
+                    default:    accion.meteoritosDeFuego(magia[2]);
+                                break;
                 }
-                
-                magiasActivadas.remove(i);
-                i--;
+
+                if(magia[0] == 1){
+                    if(this.turnoActual + 1 == magia[2]){
+                        magia[1]--;
+                    }
+                }else{
+                    magia[1]--;
+                }
+
+                if(magia[1] == 0){
+                    accion.desactivarMagia(magia[0]);
+                }
             }
         }
     }
@@ -65,7 +71,9 @@ public class Tablero {
      * Cambiar el número del turno.
      */
     public void cambiarTurno(){
-        this.turnoActual++;
+        do{
+            this.turnoActual++;
+        }while(this.getJugadorActual().getJefeDeTerreno().getVida() <= 0);
     }
         
     /**
@@ -356,6 +364,10 @@ public class Tablero {
         this.posiciones[idxCasilla[0]][idxCasilla[1]].setDueno(jugador);
         this.getJugadorActual().getTerreno().agregarCasilla(this.posiciones[idxCasilla[0]][idxCasilla[1]]);
     }
+    
+    public void agregarPerdedor(int numJug){
+        this.perdedores.add(this.jugadores.get(numJug));
+    }
 
     public int getTurnoActual() {
         return this.turnoActual % this.jugadores.size();
@@ -394,7 +406,13 @@ public class Tablero {
     }
     
     public int cantidadJugadores(){
-        return this.jugadores.size();
+        int numJugadores = 0;
+        for(Jugador jugador: this.jugadores){
+            if(jugador.getJefeDeTerreno().getVida() > 0){
+                numJugadores++;
+            }
+        }
+        return numJugadores;
     }
 
     public void setJugadores(ArrayList<Jugador> jugadores) {

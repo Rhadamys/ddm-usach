@@ -18,12 +18,7 @@ public abstract class Jugador {
     protected Terreno terreno;
     protected int equipo;
     protected ArrayList<Trampa> trampas;
-    
-    public Jugador(){
-        this.turno = new Turno();
-        this.puzzle = new PuzzleDeDados(new ArrayList());
-    }
-    
+        
     public static ArrayList<Jugador> getJugadores(ArrayList<Jugador> excluidos){
         try {
             return JugadorDAO.getJugadores(excluidos);

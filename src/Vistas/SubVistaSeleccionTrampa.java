@@ -7,38 +7,39 @@ package Vistas;
 
 import Modelos.Trampa;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
-import java.awt.Color;
-import java.awt.Font;
+import Otros.VistaPersonalizada;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaSeleccionTrampa extends javax.swing.JInternalFrame {
+public class SubVistaSeleccionTrampa extends VistaPersonalizada implements MouseListener{
     private final ArrayList<BotonImagen> panelesTrampas;
     private final ArrayList<Trampa> trampas;
+    private final BotonImagen volver;
 
     /**
      * Creates new form SubVistaSeleccionTrampa
-     * @param fuente Fuente que se utilizará en esta vista.
      * @param trampas Trampas del jugador.
      * @param puntosTrampa Puntos de trampa que tiene el jugador.
      */
-    public SubVistaSeleccionTrampa(Font fuente, ArrayList<Trampa> trampas, int puntosTrampa) {
+    public SubVistaSeleccionTrampa(ArrayList<Trampa> trampas, int puntosTrampa) {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setBorder(null);
-        this.setLayout(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
         
         this.panelesTrampas = new ArrayList();
         this.trampas = trampas;
+        
+        this.volver = new BotonImagen(Constantes.BTN_ATRAS);
+        this.add(this.volver);
+        this.volver.setLocation(20, 20);
+        this.volver.setSize(50, 50);
+        
+        this.volver.addMouseListener(this);
         
         final int N_COLUMNAS = 3;
         final int LADO = 100;
@@ -51,14 +52,13 @@ public class SubVistaSeleccionTrampa extends javax.swing.JInternalFrame {
             if(puntosTrampa >= trampa.getCosto()){
                 fila = columna == 0 ? ++fila : fila;
 
-                BotonImagen marcoTrampa = new BotonImagen("/Imagenes/vacio.png");
+                BotonImagen marcoTrampa = new BotonImagen(Constantes.BTN_MARCO);
                 this.add(marcoTrampa);
                 marcoTrampa.setSize(LADO + MARCO, LADO + MARCO);
-                marcoTrampa.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
                 marcoTrampa.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (SEP + LADO) * fila + SEP + 60 - MARCO / 2);
 
-                PanelImagen iconoTrampa = new PanelImagen("/Imagenes/Botones/"
-                        + trampa.getNomArchivoImagen() + ".png");
+                PanelImagen iconoTrampa = new PanelImagen(Constantes.RUTA_BOTONES
+                        + trampa.getNomArchivoImagen() + Constantes.EXT1);
                 this.add(iconoTrampa);
                 iconoTrampa.setSize(LADO, LADO);
                 iconoTrampa.setLocation((SEP + LADO) * columna + SEP + 80, (SEP + LADO) * fila + SEP + 60);
@@ -69,11 +69,9 @@ public class SubVistaSeleccionTrampa extends javax.swing.JInternalFrame {
             }
         }
         
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        this.titulo.setFont(Constantes.FUENTE_24PX);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_3);
     }
 
     /**
@@ -115,6 +113,30 @@ public class SubVistaSeleccionTrampa extends javax.swing.JInternalFrame {
         return this.trampas.get(this.panelesTrampas.indexOf(panelTrampa));
     }
 
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        this.dispose();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        // Nada
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        // Nada
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        // Nada
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        // Nada
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

@@ -43,16 +43,7 @@ public class Trampa extends ElementoEnCampo {
     
     public void trampaParaLadrones(Accion accion){
         accion.getCriaturaAMover().restarVida(accion.getCriaturaAMover().getVida() * 10 / 100);
-        
-        ArrayList<Posicion> posiciones = new ArrayList();
-        int pasoActual = accion.getPasoActualMovimiento();
-        posiciones.add(accion.getPosicionCamino(pasoActual));
-        posiciones.add(accion.getPosicionCamino(pasoActual - 1));
-        
-        accion.finalizarMovimiento();
-        
-        accion.agregarPosicionAlCamino(posiciones.get(0));
-        accion.agregarPosicionAlCamino(posiciones.get(1));
+        accion.modificarCaminoTrampaParaLadrones();
     }
     
     public void renacerDeLosMuertos(Criatura criaturaResucitada, Jugador duenoCriaturaReemplazada){        

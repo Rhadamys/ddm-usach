@@ -15,7 +15,6 @@ public abstract class Jugador {
     protected PuzzleDeDados puzzle;
     protected String nombreJugador;
     protected JefeDeTerreno jefeDeTerreno;
-    protected Terreno terreno;
     protected int equipo;
     protected ArrayList<Trampa> trampas;
         
@@ -46,6 +45,36 @@ public abstract class Jugador {
         return this.trampas.size();
     }
     
+    public int cantidadTrampaDeOso(){
+        int cantidadTrampas = 0;
+        for(Trampa trampa: this.trampas){
+            if(trampa.getNumTrampa() == 1){
+                cantidadTrampas++;
+            }
+        }
+        return cantidadTrampas;
+    }
+    
+    public int cantidadTrampaParaLadrones(){
+        int cantidadTrampas = 0;
+        for(Trampa trampa: this.trampas){
+            if(trampa.getNumTrampa() == 2){
+                cantidadTrampas++;
+            }
+        }
+        return cantidadTrampas;
+    }
+    
+    public int cantidadRenacerDeLosMuertos(){
+        int cantidadTrampas = 0;
+        for(Trampa trampa: this.trampas){
+            if(trampa.getNumTrampa() == 3){
+                cantidadTrampas++;
+            }
+        }
+        return cantidadTrampas;
+    }
+    
     public void agregarTrampa(Trampa trampa){
         this.trampas.add(trampa);
     }
@@ -61,6 +90,10 @@ public abstract class Jugador {
     public Dado getDado(int i) {
         return puzzle.getDado(i);
     }
+    
+    public void agregarDado(Dado dado){
+        this.puzzle.agregarDado(dado);
+    }
 
     public String getNombreJugador() {
         return nombreJugador;
@@ -68,10 +101,6 @@ public abstract class Jugador {
 
     public JefeDeTerreno getJefeDeTerreno() {
         return jefeDeTerreno;
-    }
-
-    public Terreno getTerreno() {
-        return terreno;
     }
 
     public int getEquipo() {
@@ -88,9 +117,5 @@ public abstract class Jugador {
 
     public void setEquipo(int equipo) {
         this.equipo = equipo;
-    }
-
-    public void setTerreno(Terreno terreno) {
-        this.terreno = terreno;
     }
 }

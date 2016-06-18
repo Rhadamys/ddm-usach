@@ -7,7 +7,6 @@ package Controladores;
 
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
-import ModelosDAO.UsuarioDAO;
 import Otros.BotonImagen;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaInfoElemento;
@@ -26,7 +25,7 @@ import javax.swing.JInternalFrame;
  *
  * @author mam28
  */
-public class ControladorRegistro {
+public final class ControladorRegistro {
     private final ControladorPrincipal contPrin;
     private final JInternalFrame quienLlama;
     private final VistaRegistro visReg;
@@ -42,11 +41,11 @@ public class ControladorRegistro {
     public ControladorRegistro(ControladorPrincipal contPrin, JInternalFrame quienLlama){
         this.contPrin = contPrin;
         
-        this.visReg = new VistaRegistro(this.contPrin.getFuente());
+        this.visReg = new VistaRegistro();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visReg);
         this.agregarListenersVistaRegistro();
         
-        this.visSelJef = new SubVistaSeleccionarJefe(this.contPrin.getFuente());
+        this.visSelJef = new SubVistaSeleccionarJefe();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visSelJef);
         
         for(int i = 0; i < this.visSelJef.cantidadJefes(); i++){
@@ -186,8 +185,7 @@ public class ControladorRegistro {
     
     public void mostrarVistaInfoJefe(BotonImagen panelJefe){
         this.visSelJef.setVisInfoEl(new SubVistaInfoElemento(
-                this.visSelJef.getJefe(panelJefe),
-                this.contPrin.getFuente()));
+                this.visSelJef.getJefe(panelJefe)));
         
         timerVisInfoEl = new Timer();
         timerVisInfoEl.schedule(new TimerTask(){
@@ -224,7 +222,7 @@ public class ControladorRegistro {
      */
     public void mostrarMensaje(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
+                "<html><center>" +mensaje + "</center></html>", "Aceptar");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
     }

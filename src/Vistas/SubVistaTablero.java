@@ -31,31 +31,27 @@ public class SubVistaTablero extends PanelImagen{
     }
     
     /**
-     * Reinicia la imagen de las casillas a su imagen "normal".
+     * Actualiza las casillas y muestra su imagen "normal".
      */
     public void actualizarCasillas(){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                if(casillas[i][j].isSelected()){
-                    casillas[i][j].setImagenActual(3);
-                }else{
+                if(!casillas[i][j].isSelected()){
                     casillas[i][j].setImagenActual(0);
                 }
             }
         }
-        
-        this.repaint();
     }
     
+    /**
+     * Reinicia la imagen de las casillas a su imagen "normal" y las deselecciona.
+     */    
     public void reiniciarCasillas(){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                casillas[i][j].setImagenSobre("/Imagenes/Botones/casilla.png");
                 casillas[i][j].deseleccionado();
             }
         }
-        
-        this.repaint();
     }
     
     public SubVistaPosicion getCasilla(int fila, int columna){
@@ -70,8 +66,7 @@ public class SubVistaTablero extends PanelImagen{
         this.casillaActual = botonActual;
     }
     
-    public void marcarCasilla(int[] idxCasilla, int jugador, String imagenCasilla){
+    public void marcarCasilla(int[] idxCasilla, int jugador){
         this.casillas[idxCasilla[0]][idxCasilla[1]].setImagenNormal("/Imagenes/Botones/casilla_j" + jugador + ".png");
-        this.casillas[idxCasilla[0]][idxCasilla[1]].setImagenIconoElemento(imagenCasilla);
     }
 }

@@ -6,18 +6,20 @@
 package Modelos;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Tablero {
-    private final Posicion[][] posiciones;
+    private final ArrayList<Jugador> perdedores;
     private ArrayList<Jugador> jugadores;
-    private ArrayList<Jugador> perdedores;
+    private final Posicion[][] posiciones;
     private int turnoActual;
+    private final int[] ordenTurnos;
     private int numAccion;
     private int direccion;
     private int numDespliegue;
     private Trampa trampaActivada;
     
-    public Tablero(){
+    public Tablero(ArrayList<Jugador> jugadores){
         this.posiciones = new Posicion[15][15];
         this.turnoActual = 0;
         this.numAccion = 0;
@@ -28,7 +30,24 @@ public class Tablero {
             }
         }
         
+        this.jugadores = jugadores;
         this.perdedores = new ArrayList();        
+        this.ordenTurnos = new int[this.jugadores.size()];
+        
+        ArrayList<Integer> orden = new ArrayList();
+        Random rnd = new Random();
+        for(int i = 0; i < this.ordenTurnos.length; i++){
+            int numJug = 0;
+            do{
+                numJug = rnd.nextInt(this.jugadores.size());
+            }while(orden.contains(numJug));
+            
+            orden.add(numJug);
+        }
+        
+        for(int i = 0; i < this.ordenTurnos.length; i++){
+            this.ordenTurnos[i] = orden.get(i);
+        }        
     }
     
     /**
@@ -37,7 +56,7 @@ public class Tablero {
      */
     public void aplicarMagias(Accion accion){
         // Las magias son un Array de enteros
-        // [ <Numero de magia>, <Turnos restantes>, <Numero del jugador que la activó> ]
+        // [ <Numero de magia>, <Turnos restantes>, <Numero del jugador que la activó> , <Costo de la trampa> ]
         
         ArrayList<int[]> magiasActivadas = accion.getMagiasActivadas();
         
@@ -53,10 +72,12 @@ public class Tablero {
                 }
 
                 if(magia[0] == 1){
+                    // Dura 3 turnos de cada jugador
                     if(this.turnoActual + 1 == magia[2]){
                         magia[1]--;
                     }
                 }else{
+                    // Dura 3 turnos del juego
                     magia[1]--;
                 }
 
@@ -72,8 +93,8 @@ public class Tablero {
      */
     public void cambiarTurno(){
         do{
-            this.turnoActual++;
-        }while(this.getJugadorActual().getJefeDeTerreno().getVida() <= 0);
+            this.turnoActual = turnoActual == this.jugadores.size() - 1 ? 0 : this.turnoActual + 1;
+        }while(this.perdedores.contains(this.getJugadorActual()));
     }
         
     /**
@@ -360,9 +381,45 @@ public class Tablero {
      * @param idxCasilla
      * @param jugador 
      */
-    public void asignarCasilla(int[] idxCasilla, int jugador){
+    public void asignarPosicion(int[] idxCasilla, int jugador){
         this.posiciones[idxCasilla[0]][idxCasilla[1]].setDueno(jugador);
-        this.getJugadorActual().getTerreno().agregarCasilla(this.posiciones[idxCasilla[0]][idxCasilla[1]]);
+    }
+    
+    public int cantidadCriaturasInvocadas(int numJug){
+        int cantidadCriaturas = 0;
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                Posicion posAct = this.posiciones[i][j];
+                if(posAct.getElemento() instanceof Criatura &&
+                   posAct.getElemento().getDueno() == numJug){
+                    cantidadCriaturas++;
+                }
+            }
+        }
+        return cantidadCriaturas;
+    }
+    
+    public int cantidadJugadoresTienenCriaturas(){
+        int cantidadJugadoresTienenCriaturas = 0;
+        for(int i = 0; i < jugadores.size(); i++){
+            if(!perdedores.contains(jugadores.get(i))){
+                if(cantidadCriaturasInvocadas(i+1) > 0){
+                    cantidadJugadoresTienenCriaturas++;
+                }
+            }
+        }
+        return cantidadJugadoresTienenCriaturas;
+    }
+    
+    public int numInvOtrosJugadores(){
+        int numInvOtrosJugadores = 0;
+        for(int i = 0; i < jugadores.size(); i++){
+            if(i != this.getTurnoActual() &&
+               !perdedores.contains(jugadores.get(i))){
+                numInvOtrosJugadores += cantidadCriaturasInvocadas(i+1);
+            }
+        }
+        return numInvOtrosJugadores;
     }
     
     public void agregarPerdedor(int numJug){
@@ -370,7 +427,11 @@ public class Tablero {
     }
 
     public int getTurnoActual() {
-        return this.turnoActual % this.jugadores.size();
+        return this.ordenTurnos[this.turnoActual];
+    }
+
+    public ArrayList<Jugador> getPerdedores() {
+        return perdedores;
     }
 
     public int getNumAccion() {
@@ -413,10 +474,6 @@ public class Tablero {
             }
         }
         return numJugadores;
-    }
-
-    public void setJugadores(ArrayList<Jugador> jugadores) {
-        this.jugadores = jugadores;
     }
 
     public void setNumAccion(int accion) {

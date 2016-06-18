@@ -7,34 +7,25 @@ package Vistas;
 
 import Modelos.Criatura;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
-import java.awt.Color;
-import java.awt.Font;
+import Otros.VistaPersonalizada;
 import java.util.ArrayList;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaCriaturaRevivir extends javax.swing.JInternalFrame {
+public class SubVistaCriaturaRevivir extends VistaPersonalizada {
     private final ArrayList<BotonImagen> panelesCriaturas;
     private final ArrayList<Criatura> criaturas;
     
     /**
      * Creates new form SubVistaSeleccionCriatura
      * @param criaturas
-     * @param fuente
      */
-    public SubVistaCriaturaRevivir(ArrayList<Criatura> criaturas, Font fuente) {
+    public SubVistaCriaturaRevivir(ArrayList<Criatura> criaturas) {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setBorder(null);
-        this.setLayout(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
         
         this.criaturas = criaturas;
         this.panelesCriaturas = new ArrayList();
@@ -49,14 +40,13 @@ public class SubVistaCriaturaRevivir extends javax.swing.JInternalFrame {
         for (Criatura criatura: criaturas){
             fila = columna == 0 ? ++fila : fila;
             
-            BotonImagen marcoCriatura = new BotonImagen("/Imagenes/vacio.png");
+            BotonImagen marcoCriatura = new BotonImagen(Constantes.BTN_MARCO);
             this.add(marcoCriatura);
             marcoCriatura.setSize(LADO + MARCO, LADO + MARCO);
-            marcoCriatura.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
             marcoCriatura.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (this.getHeight() - LADO - MARCO) / 2);
             
-            PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
-                    + criatura.getNomArchivoImagen() + ".png");
+            PanelImagen iconoCriatura = new PanelImagen(Constantes.RUTA_CRIATURAS
+                    + criatura.getNomArchivoImagen() + Constantes.EXT1);
             this.add(iconoCriatura);
             iconoCriatura.setSize(LADO, LADO);
             iconoCriatura.setLocation((SEP + LADO) * columna + SEP + 80, (this.getHeight() - LADO) / 2);
@@ -66,11 +56,9 @@ public class SubVistaCriaturaRevivir extends javax.swing.JInternalFrame {
             columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
         }
         
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        this.titulo.setFont(Constantes.FUENTE_24PX);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_3);
     }
 
     /**

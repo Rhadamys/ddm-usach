@@ -5,6 +5,7 @@
  */
 package Otros;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -28,6 +29,8 @@ public class CajaTextoImagen extends JTextField {
                 "/Imagenes/Otros/fondo_caja_texto_incorrecto.png")).getImage();
         this.imagenCorrecto = new ImageIcon(getClass().getResource(
                 "/Imagenes/Otros/fondo_caja_texto_correcto.png")).getImage();
+        this.setFont(Constantes.FUENTE_14PX);
+        this.setForeground(Color.white);
         
         this.imagen = this.imagenNormal;
         this.setBorder(new EmptyBorder(0, 10, 0, 10));

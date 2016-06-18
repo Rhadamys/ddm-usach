@@ -9,9 +9,9 @@ import Modelos.Dado;
 import Modelos.Jugador;
 import Modelos.Usuario;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
 import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 
@@ -28,7 +28,7 @@ public class SubVistaResumenJugador extends PanelImagen {
     private final BotonImagen cambiarJugador;
     private final BotonImagen eliminar;
     
-    public SubVistaResumenJugador(Jugador jugador, Font fuentePersonalizada){
+    public SubVistaResumenJugador(Jugador jugador){
         initComponents();
         
         this.setLayout(null);
@@ -38,11 +38,11 @@ public class SubVistaResumenJugador extends PanelImagen {
         
         this.nombreJugador = new JLabel(jugador.getNombreJugador());
         this.tipoJugador = new JLabel(jugador instanceof Usuario ? "Humano": "Personaje no jugable");
-        this.iconoJugador = new PanelImagen("/Imagenes/Jefes/" +
-                jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
-        this.cambiarJugador = new BotonImagen("/Imagenes/Botones/boton.png");
-        this.modificarPuzle = new BotonImagen("/Imagenes/Botones/boton.png");
-        this.eliminar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
+        this.iconoJugador = new PanelImagen(Constantes.RUTA_JEFES +
+                jugador.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
+        this.cambiarJugador = new BotonImagen(Constantes.BTN_NORMAL);
+        this.modificarPuzle = new BotonImagen(Constantes.BTN_NORMAL);
+        this.eliminar = new BotonImagen(Constantes.BTN_REDONDO);
         
         this.add(nombreJugador);
         this.add(tipoJugador);
@@ -57,34 +57,23 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.nombreJugador.setSize(200, 20);
         this.nombreJugador.setLocation(150, 25);
         this.nombreJugador.setForeground(Color.white);
-        this.nombreJugador.setFont(new Font(fuentePersonalizada.getName(), 
-                Font.TRUETYPE_FONT, 20));
+        this.nombreJugador.setFont(Constantes.FUENTE_18PX);
         
         this.tipoJugador.setSize(200, 10);
         this.tipoJugador.setLocation(150,50);
         this.tipoJugador.setForeground(Color.white);
-        this.tipoJugador.setFont(fuentePersonalizada);
+        this.tipoJugador.setFont(Constantes.FUENTE_14PX);
         
         this.cambiarJugador.setText("Cambiar jugador");
         this.cambiarJugador.setSize(160, 30);
         this.cambiarJugador.setLocation(160, 75);
-        this.cambiarJugador.setForeground(Color.white);
-        this.cambiarJugador.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.cambiarJugador.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.cambiarJugador.setFont(fuentePersonalizada);
         
         this.modificarPuzle.setText("Modificar puzle");
         this.modificarPuzle.setSize(160, 30);
         this.modificarPuzle.setLocation(160, 115);
-        this.modificarPuzle.setForeground(Color.white);
-        this.modificarPuzle.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.modificarPuzle.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.modificarPuzle.setFont(fuentePersonalizada);
         
         this.eliminar.setSize(30, 30);
         this.eliminar.setLocation(290, 20);
-        this.eliminar.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
-        this.eliminar.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
         this.eliminar.setLayout(null);
         
         PanelImagen iconoEliminar = new PanelImagen("/Imagenes/Otros/eliminar.png");

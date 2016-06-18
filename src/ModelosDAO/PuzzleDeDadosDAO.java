@@ -111,4 +111,22 @@ public class PuzzleDeDadosDAO {
             conection.desconectar();
         }
     }
+    
+    public static void agregarDadosAlPuzzle(int idJugador, ArrayList<Dado> dados) throws SQLException{
+        Conection conection = new Conection();
+        if(conection.conectar()){
+            for(Dado dado: dados){
+                String consulta = "INSERT INTO PUZZLEDEDADOS (ID_JUGADOR, ID_DADO, PARAJUGAR) VALUES (" +
+                        idJugador + ", " + dado.getId() + ", false)";
+                Statement stmtPuzzle = conection.crearConsulta();    
+
+                if(stmtPuzzle != null){
+                    stmtPuzzle.executeUpdate(consulta);
+                    stmtPuzzle.close();
+                }
+            }
+            
+            conection.desconectar();
+        }
+    }
 }

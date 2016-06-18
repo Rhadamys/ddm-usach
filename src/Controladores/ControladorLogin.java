@@ -28,7 +28,7 @@ public final class ControladorLogin {
     public ControladorLogin(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visLog = new VistaLogin(this.contPrin.getFuente());
+        this.visLog = new VistaLogin();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visLog);
         this.agregarListenersVistaLogin();
     }
@@ -90,6 +90,14 @@ public final class ControladorLogin {
                     // Se inicia el proceso de login
                     iniciarSesion(visLog.getUsuario(), visLog.getPass());
                 }
+            }
+        });
+        
+        this.visLog.getSalir().addMouseListener(new MouseAdapter(){
+            // Cuando se presione el botón de "Ingresar"
+            @Override
+            public void mouseClicked(MouseEvent e){
+                contPrin.getContVisPrin().mostrarMensajeSalir();
             }
         });
     }

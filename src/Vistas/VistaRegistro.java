@@ -7,9 +7,10 @@ package Vistas;
 import Otros.BotonImagen;
 import Otros.CajaPassImagen;
 import Otros.CajaTextoImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
+import Otros.VistaPersonalizada;
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -17,7 +18,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author mam28
  */
-public class VistaRegistro extends javax.swing.JInternalFrame {
+public class VistaRegistro extends VistaPersonalizada {
     private final BotonImagen registrarse;
     private final BotonImagen volver;
     private final BotonImagen seleccionarJefe;
@@ -28,46 +29,35 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form VistaRegistro
-     * @param fuentePersonalizada Fuente que se utilizará en esta vista.
      */
-    public VistaRegistro(Font fuentePersonalizada) {
+    public VistaRegistro() {
         initComponents();
         
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);    
         
-        this.registrarse = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.registrarse = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(this.registrarse);
-        this.registrarse.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.registrarse.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         this.registrarse.setLocation(330, 535);
         this.registrarse.setSize(170, 40);
         this.registrarse.setText("Registrarse");
-        this.registrarse.setFont(fuentePersonalizada);
-        this.registrarse.setForeground(Color.white);
         
-        this.volver = new BotonImagen("/Imagenes/Botones/atras.png");
+        this.volver = new BotonImagen(Constantes.BTN_ATRAS);
         this.add(this.volver);
-        this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
-        this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
         this.volver.setLocation(20, 20);
         this.volver.setSize(50, 50);
         
-        this.seleccionarJefe = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.seleccionarJefe = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(seleccionarJefe);
-        this.seleccionarJefe.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.seleccionarJefe.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         this.seleccionarJefe.setLocation(150, 475);
         this.seleccionarJefe.setSize(170, 40);
         this.seleccionarJefe.setText("Seleccionar jefe");
-        this.seleccionarJefe.setFont(fuentePersonalizada);
-        this.seleccionarJefe.setForeground(Color.white);
         
-        this.mensaje.setFont(fuentePersonalizada);
-        this.L1.setFont(fuentePersonalizada);
-        this.L2.setFont(fuentePersonalizada);
-        this.L3.setFont(fuentePersonalizada);
+        this.mensaje.setFont(Constantes.FUENTE_14PX);
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
         
-        iconoJefe = new PanelImagen("/Imagenes/vacio.png");
+        iconoJefe = new PanelImagen();
         this.add(iconoJefe);
         iconoJefe.setSize(40, 40);
         iconoJefe.setLocation(330, 475);
@@ -78,27 +68,18 @@ public class VistaRegistro extends javax.swing.JInternalFrame {
         this.add(usuario);
         usuario.setLocation(230, 435);
         usuario.setSize(140, 30);
-        usuario.setFont(fuentePersonalizada);
-        usuario.setForeground(Color.white);
         
         pass = new CajaPassImagen();
         this.add(pass);
         pass.setLocation(500, 435);
         pass.setSize(140, 30);
-        pass.setFont(fuentePersonalizada);
-        pass.setForeground(Color.white);
         
         repitePass = new CajaPassImagen();
         this.add(repitePass);
         repitePass.setLocation(500, 485);
         repitePass.setSize(140, 30);
-        repitePass.setFont(fuentePersonalizada);
-        repitePass.setForeground(Color.white);
                 
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_registro.png");
-        this.add(panelFondo);
-        panelFondo.setLocation(0, 0);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_REGISTRO);
         
         this.setMensaje("");
     }

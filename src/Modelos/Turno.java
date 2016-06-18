@@ -17,10 +17,10 @@ public class Turno {
     private ArrayList<Dado> dadosLanzados;
     
     public Turno(){
-        this.puntosAtaque = 0;
-        this.puntosMagia = 0;
-        this.puntosMovimiento = 0;
-        this.puntosTrampa = 0;
+        this.puntosAtaque = 40;
+        this.puntosMagia = 40;
+        this.puntosMovimiento = 40;
+        this.puntosTrampa = 40;
     }
     
     public void lanzarDados(ArrayList<Dado> dados){

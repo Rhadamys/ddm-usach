@@ -9,6 +9,7 @@ import Modelos.Criatura;
 import Modelos.ElementoEnCampo;
 import Modelos.JefeDeTerreno;
 import Modelos.Trampa;
+import Otros.Constantes;
 import Otros.PanelImagen;
 import java.awt.Color;
 import java.awt.Font;
@@ -22,9 +23,8 @@ public class SubVistaInfoElemento extends PanelImagen {
     /**
      * Creates new form SubVistaInfoCriatura
      * @param elemento Elemento para el cual se creará la vista.
-     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public SubVistaInfoElemento(ElementoEnCampo elemento, Font fuente) {
+    public SubVistaInfoElemento(ElementoEnCampo elemento) {
         initComponents();
         
         this.setVisible(false);
@@ -40,13 +40,13 @@ public class SubVistaInfoElemento extends PanelImagen {
         icono.setLocation(85, 10);
         
         this.nombre.setText(elemento.getNombre());
-        this.nombre.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT | Font.ITALIC, 24));
+        this.nombre.setFont(Constantes.FUENTE_18PX);
         
-        this.L1.setFont(fuente);
-        this.L2.setFont(fuente);
-        this.L3.setFont(fuente);
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
         
-        this.descripcion.setFont(fuente);
+        this.descripcion.setFont(Constantes.FUENTE_14PX);
         this.descripcion.setText(elemento.getDescripcion());
         
         this.barraVida.setBorder(null);
@@ -90,11 +90,55 @@ public class SubVistaInfoElemento extends PanelImagen {
             this.ataque.setText("No aplica");
         }
             
-        this.defensa.setFont(fuente);
-        this.ataque.setFont(fuente);
+        this.defensa.setFont(Constantes.FUENTE_14PX);
+        this.ataque.setFont(Constantes.FUENTE_14PX);
 
-        this.vida.setFont(fuente);
+        this.vida.setFont(Constantes.FUENTE_14PX);
         this.vida.setText(barraVida.getValue() + "/" + barraVida.getMaximum() + aumento);
+    }
+
+    /**
+     * Creates new form SubVistaInfoCriatura
+     * @param nombre
+     * @param nomArIm
+     * @param descripcion
+     */
+    public SubVistaInfoElemento(String nombre, String nomArIm, String descripcion) {
+        initComponents();
+        
+        this.setVisible(false);
+        this.setSize(250, 400);
+        this.setImagen("/Imagenes/Fondos/fondo_info_elemento.png");
+        
+        PanelImagen icono = new PanelImagen("/Imagenes/Otros/" + nomArIm + ".png");
+        this.add(icono);
+        icono.setSize(80, 80);
+        icono.setLocation(85, 10);
+        
+        this.nombre.setText(nombre);
+        this.nombre.setFont(Constantes.FUENTE_18PX);
+        
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
+        
+        this.descripcion.setFont(Constantes.FUENTE_14PX);
+        this.descripcion.setText(descripcion);
+        
+        this.barraVida.setBorder(null);
+        this.barraVida.setForeground(Color.green);
+        this.barraVida.setBackground(Color.yellow);
+        
+        this.barraVida.setMaximum(0);
+        this.barraVida.setValue(0);
+                
+        this.defensa.setText("No aplica");
+        this.ataque.setText("No aplica");
+        this.vida.setText("No aplica");
+            
+        this.defensa.setFont(Constantes.FUENTE_14PX);
+        this.ataque.setFont(Constantes.FUENTE_14PX);
+        this.vida.setFont(Constantes.FUENTE_14PX);
     }
 
     /**

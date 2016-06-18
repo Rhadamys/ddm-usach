@@ -8,20 +8,19 @@ package Vistas;
 import Modelos.Dado;
 import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.ContenedorScroll;
 import Otros.PanelImagen;
-import java.awt.Color;
+import Otros.VistaPersonalizada;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaModificarPuzzle extends javax.swing.JInternalFrame {
+public class VistaModificarPuzzle extends VistaPersonalizada {
     private SubVistaInfoElemento visInfo;
     private final ArrayList<PanelImagen> iconosDados1;
     private final ArrayList<PanelImagen> iconosDados2;
@@ -39,23 +38,13 @@ public class VistaModificarPuzzle extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form VistaModificarPuzle
-     * @param fuente Fuente que se utilizará en esta vista.
      * @param dados Dados del jugador.
      */
-    public VistaModificarPuzzle(Font fuente, ArrayList<Dado> dados) {
+    public VistaModificarPuzzle(ArrayList<Dado> dados) {
         initComponents();
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setLayout(null);
-        this.setBorder(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));  
-        
-        this.volver = new BotonImagen("/Imagenes/Botones/atras.png");
+        this.volver = new BotonImagen(Constantes.BTN_ATRAS);
         this.add(this.volver);
-        this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
-        this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
         this.volver.setLocation(20, 20);
         this.volver.setSize(50, 50); 
         
@@ -86,16 +75,13 @@ public class VistaModificarPuzzle extends javax.swing.JInternalFrame {
             if(dado.isParaJugar()){
                 this.dadosPuzzle.add(dado);
 
-                BotonCheckImagen marcoDado = new BotonCheckImagen("/Imagenes/vacio.png");
+                BotonCheckImagen marcoDado = new BotonCheckImagen(Constantes.BTN_MARCO);
                 this.contenedorDados1.add(marcoDado);
                 marcoDado.setSize(LADO + MARCO, LADO + MARCO);
-                marcoDado.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-                marcoDado.setImagenSelNormal("/Imagenes/Otros/marco_seleccion.png");
-                marcoDado.setImagenSelSobre("/Imagenes/Otros/marco_seleccion.png");
                 marcoDado.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, SEP - MARCO / 2 - 5);
 
-                PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
-                        + dado.getCriatura().getNomArchivoImagen() + ".png");
+                PanelImagen iconoCriatura = new PanelImagen(Constantes.RUTA_CRIATURAS
+                        + dado.getCriatura().getNomArchivoImagen() + Constantes.EXT1);
                 this.contenedorDados1.add(iconoCriatura);
                 iconoCriatura.setSize(LADO, LADO);
                 iconoCriatura.setLocation((SEP + LADO) * columna + SEP, SEP - 5);
@@ -125,16 +111,13 @@ public class VistaModificarPuzzle extends javax.swing.JInternalFrame {
             if(!dado.isParaJugar()){
                 this.dadosNoEnPuzzle.add(dado);
                 
-                BotonCheckImagen marcoDado = new BotonCheckImagen("/Imagenes/vacio.png");
+                BotonCheckImagen marcoDado = new BotonCheckImagen(Constantes.BTN_MARCO);
                 this.contenedorDados2.add(marcoDado);
                 marcoDado.setSize(LADO + MARCO, LADO + MARCO);
-                marcoDado.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-                marcoDado.setImagenSelNormal("/Imagenes/Otros/marco_seleccion.png");
-                marcoDado.setImagenSelSobre("/Imagenes/Otros/marco_seleccion.png");
                 marcoDado.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, SEP - MARCO / 2 - 5);
 
-                PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
-                        + dado.getCriatura().getNomArchivoImagen() + ".png");
+                PanelImagen iconoCriatura = new PanelImagen(Constantes.RUTA_CRIATURAS
+                        + dado.getCriatura().getNomArchivoImagen() + Constantes.EXT1);
                 this.contenedorDados2.add(iconoCriatura);
                 iconoCriatura.setSize(LADO, LADO);
                 iconoCriatura.setLocation((SEP + LADO) * columna + SEP, SEP - 5);
@@ -148,48 +131,37 @@ public class VistaModificarPuzzle extends javax.swing.JInternalFrame {
         
         this.contenedorDados2.setPreferredSize(new Dimension((LADO + SEP) * (columna + 1) + SEP, contenedor2.getHeight()));
         
-        this.intercambiarDados = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.intercambiarDados = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(intercambiarDados);
         this.intercambiarDados.setText("Intercambiar dados");
-        this.intercambiarDados.setFont(fuente);
-        this.intercambiarDados.setForeground(Color.white);
         this.intercambiarDados.setSize(170, 40);
         this.intercambiarDados.setLocation(520, 435);
-        this.intercambiarDados.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.intercambiarDados.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         
-        this.guardarCambios = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.guardarCambios = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(guardarCambios);
         this.guardarCambios.setText("Guardar cambios");
-        this.guardarCambios.setFont(fuente);
-        this.guardarCambios.setForeground(Color.white);
         this.guardarCambios.setSize(170, 40);
         this.guardarCambios.setLocation(520, 485);
-        this.guardarCambios.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.guardarCambios.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.guardarCambios.setImagenDeshabilitado("/Imagenes/Botones/boton_deshabilitado.png");
         this.guardarCambios.setEnabled(false);
         
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 18));
-        this.L1.setFont(fuente);
-        this.L2.setFont(fuente);
-        this.L3.setFont(fuente);
-        this.L4.setFont(fuente);
-        this.L5.setFont(fuente);
-        this.L6.setFont(fuente);
-        this.nivel1.setFont(fuente);
-        this.nombreCriatura1.setFont(fuente);
-        this.nivel2.setFont(fuente);
-        this.nombreCriatura2.setFont(fuente);
+        this.titulo.setFont(Constantes.FUENTE_18PX);
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
+        this.L4.setFont(Constantes.FUENTE_14PX);
+        this.L5.setFont(Constantes.FUENTE_14PX);
+        this.L6.setFont(Constantes.FUENTE_14PX);
+        this.nivel1.setFont(Constantes.FUENTE_14PX);
+        this.nombreCriatura1.setFont(Constantes.FUENTE_14PX);
+        this.nivel2.setFont(Constantes.FUENTE_14PX);
+        this.nombreCriatura2.setFont(Constantes.FUENTE_14PX);
         
         this.nivel1.setText("");
         this.nombreCriatura1.setText("");
         this.nivel2.setText("");
         this.nombreCriatura2.setText("");
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_4.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_4);
     }
 
     /**

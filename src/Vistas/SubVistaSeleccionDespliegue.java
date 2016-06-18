@@ -6,29 +6,23 @@
 package Vistas;
 
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
-import java.awt.Color;
+import Otros.VistaPersonalizada;
 import java.awt.Font;
 import java.util.ArrayList;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
+public class SubVistaSeleccionDespliegue extends VistaPersonalizada {
     ArrayList<BotonImagen> botonesDespliegue;
     /**
      * Creates new form CompSelDesp
-     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public SubVistaSeleccionDespliegue(Font fuente) {
+    public SubVistaSeleccionDespliegue() {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
         
         this.botonesDespliegue = new ArrayList();
         
@@ -39,18 +33,17 @@ public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
         int numDespliegues = nomDespliegues.length;
         int separacionHorizontal = (640 - lado * columnas) / (columnas + 1);
         int separacionVertical = (480 - lado * filas) / (filas + 1);
-        int aumentoMarco = 20;
+        int marco = 20;
         
         for(int i = 0; i < numDespliegues; i++){
-            BotonImagen botonDespliegue = new BotonImagen("/Imagenes/vacio.png");
+            BotonImagen botonDespliegue = new BotonImagen(Constantes.BTN_MARCO);
             this.add(botonDespliegue);
-            botonDespliegue.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-            botonDespliegue.setSize(lado + aumentoMarco, lado + aumentoMarco);
+            botonDespliegue.setSize(lado + marco, lado + marco);
             botonDespliegue.setName(String.valueOf(i));
             botonesDespliegue.add(botonDespliegue);
             
             PanelImagen fondoDespliegue = new PanelImagen(
-                    "/Imagenes/Otros/despliegue_" + nomDespliegues[i] + ".gif");
+                    Constantes.IMAGEN_DESPLIEGUE + nomDespliegues[i] + Constantes.EXT2);
             this.add(fondoDespliegue);
             fondoDespliegue.setSize(lado, lado);
             
@@ -58,14 +51,12 @@ public class SubVistaSeleccionDespliegue extends javax.swing.JInternalFrame {
             int y = 60 + (separacionVertical + lado) * (i / columnas) + separacionVertical;
             
             fondoDespliegue.setLocation(x, y);
-            botonDespliegue.setLocation(x - aumentoMarco / 2, y - aumentoMarco / 2);
+            botonDespliegue.setLocation(x - marco / 2, y - marco / 2);
         }
         
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        this.titulo.setFont(Constantes.FUENTE_24PX);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_3);
     }
 
     /**

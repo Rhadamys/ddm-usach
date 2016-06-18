@@ -5,9 +5,10 @@
  */
 package Vistas;
 
+import Otros.Constantes;
 import Otros.PanelImagen;
 import java.awt.Color;
-import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
@@ -27,10 +28,11 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
     private final JLabel puntosMagia;
     private final JLabel puntosMovimiento;
     private final JLabel puntosTrampa;
+    private final ArrayList<JLabel> puntosTrampas;
     
-    public SubVistaInfoJugadorBatalla(Font fuentePersonalizada){
+    public SubVistaInfoJugadorBatalla(){
         this.setLayout(null);
-        this.setSize(140, 190);
+        this.setSize(140, 250);
         
         this.nombreJugador = new JLabel();
         this.iconoJugador = new PanelImagen();
@@ -81,34 +83,62 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.puntosMovimiento.setLocation(74, 165);
         this.puntosTrampa.setLocation(107, 165);
         
+        this.ataque.setToolTipText("Puntos de ataque");
+        this.magia.setToolTipText("Puntos de magia");
+        this.movimiento.setToolTipText("Puntos de movimiento");
+        this.trampa.setToolTipText("Puntos de trampa");
+        
         this.puntosAtaque.setHorizontalAlignment(JLabel.CENTER);
         this.puntosAtaque.setVerticalAlignment(JLabel.CENTER);
         this.puntosAtaque.setForeground(Color.white);
-        this.puntosAtaque.setFont(fuentePersonalizada);
+        this.puntosAtaque.setFont(Constantes.FUENTE_14PX);
         
         this.puntosMagia.setHorizontalAlignment(JLabel.CENTER);
         this.puntosMagia.setVerticalAlignment(JLabel.CENTER);
         this.puntosMagia.setForeground(Color.white);
-        this.puntosMagia.setFont(fuentePersonalizada);
+        this.puntosMagia.setFont(Constantes.FUENTE_14PX);
         
         this.puntosMovimiento.setHorizontalAlignment(JLabel.CENTER);
         this.puntosMovimiento.setVerticalAlignment(JLabel.CENTER);
         this.puntosMovimiento.setForeground(Color.white);
-        this.puntosMovimiento.setFont(fuentePersonalizada);
+        this.puntosMovimiento.setFont(Constantes.FUENTE_14PX);
         
         this.puntosTrampa.setHorizontalAlignment(JLabel.CENTER);
         this.puntosTrampa.setVerticalAlignment(JLabel.CENTER);
         this.puntosTrampa.setForeground(Color.white);
-        this.puntosTrampa.setFont(fuentePersonalizada);
+        this.puntosTrampa.setFont(Constantes.FUENTE_14PX);
         
         this.nombreJugador.setHorizontalAlignment(JLabel.CENTER);
         this.nombreJugador.setVerticalAlignment(JLabel.CENTER);
         this.nombreJugador.setForeground(Color.white);
-        this.nombreJugador.setFont(fuentePersonalizada);
+        this.nombreJugador.setFont(Constantes.FUENTE_14PX);
         
         this.vidaJugador.setBorder(null);
         this.vidaJugador.setForeground(Color.green);
         this.vidaJugador.setBackground(Color.yellow);
+        
+        this.puntosTrampas = new ArrayList();
+        
+        final int SEP = 65 / 4;
+        String[] nombreTrampa = {"Trampa de oso", "Trampa para ladrones", "Renacer de los muertos"};
+        for(int i = 1; i <= 3; i++){
+            PanelImagen panelTrampa = new PanelImagen("/Imagenes/Otros/trampa_" + i + ".png");
+            this.add(panelTrampa);
+            panelTrampa.setSize(25, 25);
+            panelTrampa.setLocation((SEP + 25) * (i - 1) + SEP, 195);
+            panelTrampa.setToolTipText("<html>Cantidad disponible de:<br><b>" + nombreTrampa[i - 1] + "</b></html>");
+            
+            JLabel ptosTrampa = new JLabel("0");
+            this.add(ptosTrampa);
+            ptosTrampa.setSize(25, 20);
+            ptosTrampa.setLocation((SEP + 25) * (i - 1) + SEP, 220);
+            ptosTrampa.setHorizontalAlignment(JLabel.CENTER);
+            ptosTrampa.setVerticalAlignment(JLabel.CENTER);
+            ptosTrampa.setForeground(Color.white);
+            ptosTrampa.setFont(Constantes.FUENTE_14PX);
+            
+            puntosTrampas.add(ptosTrampa);
+        }
     }
 
     public JProgressBar getVidaJugador() {
@@ -149,4 +179,22 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.puntosTrampa.setText(puntosTrampa);
     }
     
+    public void setPuntosTrampa(int i, int puntosTrampa){
+        this.puntosTrampas.get(i).setText(String.valueOf(puntosTrampa));
+    }
+    
+    /*
+     * Actualiza la vista de información de jugador con la información actual del jugador.
+    */
+    public void actualizarVista(int pa, int pmag, int pm, int pt, int vida, int to, int tl, int trm){
+        this.setPuntosAtaque(String.valueOf(pa));
+        this.setPuntosMagia(String.valueOf(pmag));
+        this.setPuntosMovimiento(String.valueOf(pm));
+        this.setPuntosTrampa(String.valueOf(pt));
+        this.setVidaJugador(vida);
+
+        this.setPuntosTrampa(0, to);
+        this.setPuntosTrampa(1, tl);
+        this.setPuntosTrampa(2, trm);
+    }
 }

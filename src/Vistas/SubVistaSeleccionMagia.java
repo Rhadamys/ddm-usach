@@ -5,33 +5,38 @@
  */
 package Vistas;
 
-import Modelos.Trampa;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
-import java.awt.Color;
-import java.awt.Font;
+import Otros.VistaPersonalizada;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
+public class SubVistaSeleccionMagia extends VistaPersonalizada implements MouseListener{
+    private final ArrayList<HashMap<String, String>> infoMagias;
     private final ArrayList<BotonImagen> panelesMagias;
     private final ArrayList<int[]> magias;
+    private final BotonImagen volver;
+    private SubVistaInfoElemento visInfoEl;
+    private Timer timerVisInfoEl;
 
     /**
      * Creates new form SubVistaSeleccionTrampa
-     * @param fuente Fuente que se utilizará en esta vista.
      * @param magias Magias disponibles.
      * @param puntosMagia Puntos de magia que tiene el jugador.
      */
-    public SubVistaSeleccionMagia(Font fuente, ArrayList<int[]> magias, int puntosMagia) {
+    public SubVistaSeleccionMagia(ArrayList<int[]> magias, int puntosMagia) {
         initComponents();
         
-        ArrayList<HashMap<String, String>> infoMagias = new ArrayList();
+        infoMagias = new ArrayList();
         HashMap<String, String> lluviaTorrencial = new HashMap();
         lluviaTorrencial.put("Nombre", "Lluvia torrencial");
         lluviaTorrencial.put("NombreArchivoImagen", "magia_1");
@@ -53,15 +58,15 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
         meteoritosDeFuego.put("Costo", "30");
         infoMagias.add(meteoritosDeFuego);
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setBorder(null);
-        this.setLayout(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
-        
         this.panelesMagias = new ArrayList();
         this.magias = magias;
+        
+        this.volver = new BotonImagen(Constantes.BTN_ATRAS);
+        this.add(this.volver);
+        this.volver.setLocation(20, 20);
+        this.volver.setSize(50, 50);
+        
+        this.volver.addMouseListener(this);
         
         final int N_COLUMNAS = magias.size();
         final int LADO = 100;
@@ -72,14 +77,15 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
         for (int[] magia: magias){
             HashMap<String, String> infoMagia = infoMagias.get(magia[0] - 1);
             if(puntosMagia >= Integer.parseInt(infoMagia.get("Costo"))){
-                BotonImagen marcoMagia = new BotonImagen("/Imagenes/vacio.png");
+                BotonImagen marcoMagia = new BotonImagen(Constantes.BTN_MARCO);
                 this.add(marcoMagia);
                 marcoMagia.setSize(LADO + MARCO, LADO + MARCO);
-                marcoMagia.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
                 marcoMagia.setLocation((SEP + LADO) * columna + SEP - MARCO / 2 + 80, (this.getHeight() - LADO - MARCO) / 2);
+                marcoMagia.setName(String.valueOf(magia[0] - 1));
+                marcoMagia.addMouseListener(this);
 
-                PanelImagen iconoMagia = new PanelImagen("/Imagenes/Botones/"
-                        + infoMagia.get("NombreArchivoImagen") + ".png");
+                PanelImagen iconoMagia = new PanelImagen(Constantes.RUTA_BOTONES
+                        + infoMagia.get("NombreArchivoImagen") + Constantes.EXT1);
                 this.add(iconoMagia);
                 iconoMagia.setSize(LADO, LADO);
                 iconoMagia.setLocation((SEP + LADO) * columna + SEP + 80, (this.getHeight() - LADO) / 2);
@@ -90,11 +96,9 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
             }
         }
         
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        this.titulo.setFont(Constantes.FUENTE_24PX);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_3);
     }
 
     /**
@@ -117,7 +121,7 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
         titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Selecciona la trampa que deseas colocar.");
+        titulo.setText("Selecciona la magia que deseas activar.");
         getContentPane().add(titulo);
         titulo.setBounds(0, 10, 790, 40);
 
@@ -139,4 +143,68 @@ public class SubVistaSeleccionMagia extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables
+
+    public void posicionarVistaInfoElemento(int x){
+        if(this.visInfoEl != null){
+            this.visInfoEl.setLocation(x > 400 ? 10: 540, 100);
+        }
+    }
+    
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        if(me.getComponent() == volver){
+            this.dispose();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        // Nada
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        // Nada
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        if(me.getComponent() != volver){
+            HashMap<String, String> infoMagia = this.infoMagias.get(Integer.parseInt(me.getComponent().getName()));
+            this.visInfoEl = new SubVistaInfoElemento(
+                    infoMagia.get("Nombre"),
+                    infoMagia.get("NombreArchivoImagen"),
+                    infoMagia.get("Descripcion"));
+            this.add(visInfoEl, 0);
+            
+            this.posicionarVistaInfoElemento(me.getComponent().getX() + 80);
+            
+            timerVisInfoEl = new Timer();
+            timerVisInfoEl.schedule(new TimerTask(){
+                @Override
+                public void run(){
+                    visInfoEl.setVisible(true);
+                    this.cancel();
+                    timerVisInfoEl.cancel();
+                }
+            }, 1000, 1);
+            
+            this.repaint();
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        try{
+            timerVisInfoEl.cancel();
+        }catch(Exception e){
+            // Nada
+        }
+        
+        try{
+            visInfoEl.setVisible(false);
+        }catch(Exception e){
+            // Nada
+        }
+    }
 }

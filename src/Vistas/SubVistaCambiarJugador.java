@@ -8,20 +8,19 @@ package Vistas;
 import Modelos.Jugador;
 import Modelos.Usuario;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.ContenedorScroll;
 import Otros.PanelImagen;
-import java.awt.Color;
+import Otros.VistaPersonalizada;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
+public class SubVistaCambiarJugador extends VistaPersonalizada {
     private final ArrayList<BotonImagen> panelesJugadores;
     private final ArrayList<Jugador> jugadores;
     private final JScrollPane contenedor;
@@ -30,22 +29,13 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form CompCambiarJugador
-     * @param fuente Fuente que se utilizará en esta vista.
      * @param jugPartida Jugadores que están actualmente en la partida
      */
-    public SubVistaCambiarJugador(Font fuente, ArrayList<Jugador> jugPartida) {
+    public SubVistaCambiarJugador(ArrayList<Jugador> jugPartida) {
         initComponents();
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setBorder(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
-                
-        this.volver = new BotonImagen("/Imagenes/Botones/atras.png");
+        this.volver = new BotonImagen(Constantes.BTN_ATRAS);
         this.add(this.volver);
-        this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
-        this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
         this.volver.setLocation(105, 88);
         this.volver.setSize(40, 40);
         
@@ -93,16 +83,14 @@ public class SubVistaCambiarJugador extends javax.swing.JInternalFrame {
         
         this.contenedorJugadores.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
         
-        this.nombre.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
-        this.tipoJugador.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        this.nombre.setFont(Constantes.FUENTE_24PX);
+        this.tipoJugador.setFont(Constantes.FUENTE_24PX);
         
         this.nombre.setText("");
         this.tipoJugador.setText("");
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 24));
+        this.titulo.setFont(Constantes.FUENTE_24PX);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_2);
     }
 
     /**

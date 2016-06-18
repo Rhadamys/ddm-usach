@@ -7,43 +7,35 @@ package Vistas;
 
 import Otros.BotonImagen;
 import Otros.Constantes;
+import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaMenuPausa extends VistaPersonalizada {
-    private final BotonImagen continuarPartida;
-    private final BotonImagen volverMenuPrincipal;
-    private final BotonImagen salirAplicacion;
-
+public class SubVistaFinDelJuego extends VistaPersonalizada {
+    public BotonImagen finalizarPartida;
+    
     /**
-     * Creates new form VistaPausaBatalla
+     * Creates new form SubVistaCambioTurno
+     * @param numJug Número del jugador que ganó.
      */
-    public SubVistaMenuPausa() {
+    public SubVistaFinDelJuego(int numJug) {
         initComponents();
         
-        this.continuarPartida = new BotonImagen(Constantes.BTN_NORMAL);
-        this.volverMenuPrincipal = new BotonImagen(Constantes.BTN_NORMAL);
-        this.salirAplicacion = new BotonImagen(Constantes.BTN_NORMAL);
+        PanelImagen panelAnimacion = new PanelImagen("/Imagenes/Otros/ganador_j" + numJug + ".gif");
+        this.add(panelAnimacion);
+        panelAnimacion.setSize(800, 200);
+        panelAnimacion.setLocation(0, 200);
         
-        this.add(continuarPartida);
-        this.add(volverMenuPrincipal);
-        this.add(salirAplicacion);
+        this.finalizarPartida = new BotonImagen(Constantes.BTN_NORMAL);
+        this.add(finalizarPartida);
+        this.finalizarPartida.setSize(200, 40);
+        this.finalizarPartida.setLocation(300, 500);
+        this.finalizarPartida.setText("Finalizar partida");
         
-        this.continuarPartida.setSize(300, 50);
-        this.continuarPartida.setLocation(250, 205);
-        this.continuarPartida.setText("Continuar partida");
-        
-        this.volverMenuPrincipal.setSize(300, 50);
-        this.volverMenuPrincipal.setLocation(250, 275);
-        this.volverMenuPrincipal.setText("Volver al menú principal");
-        this.salirAplicacion.setSize(300, 50);
-        this.salirAplicacion.setLocation(250, 345);
-        this.salirAplicacion.setText("Salir de la aplicación");
-    
-        this.setImagenFondo(Constantes.FONDO_MENU_PAUSA);
+        this.setImagenFondo(Constantes.VACIO_GRIS);
     }
 
     /**
@@ -74,16 +66,8 @@ public class SubVistaMenuPausa extends VistaPersonalizada {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public BotonImagen getContinuarPartida() {
-        return continuarPartida;
-    }
-
-    public BotonImagen getVolverMenuPrincipal() {
-        return volverMenuPrincipal;
-    }
-
-    public BotonImagen getSalirAplicacion() {
-        return salirAplicacion;
+    public BotonImagen getFinalizarPartida() {
+        return finalizarPartida;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,17 +7,16 @@ package Vistas;
 
 import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
-import java.awt.Color;
-import java.awt.Font;
+import Otros.VistaPersonalizada;
 import java.util.ArrayList;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaNuevaPartida extends javax.swing.JInternalFrame {
+public class VistaNuevaPartida extends VistaPersonalizada {
     private SubVistaSeleccionEquipos visSelEq;
     private SubVistaCambiarJugador visCamJug;
     private final ArrayList<SubVistaResumenJugador> vistasResJug;
@@ -31,20 +30,14 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form VistaNuevaPartida
-     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public VistaNuevaPartida(Font fuente) {
+    public VistaNuevaPartida() {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.vistasResJug = new ArrayList();
         
-        this.agregar = new BotonImagen("/Imagenes/Botones/boton_redondo.png");
-        this.add(agregar);
-        
-        agregar.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
-        agregar.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
+        this.agregar = new BotonImagen(Constantes.BTN_REDONDO);
+        this.add(agregar);        
         agregar.setSize(100, 100);
         agregar.setLocation(40, 475);
         agregar.setLayout(null);
@@ -55,14 +48,9 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         iconoAgregar.setLocation((agregar.getWidth() - iconoAgregar.getWidth()) / 2, 
                 (agregar.getHeight() - iconoAgregar.getHeight()) / 2);
         
-        this.enEquipos = new BotonCheckImagen("/Imagenes/Botones/boton_redondo.png");
+        this.enEquipos = new BotonCheckImagen(Constantes.BTN_REDONDO);
         this.add(enEquipos);
         
-        enEquipos.setImagenSobre("/Imagenes/Botones/boton_redondo_sobre.png");
-        enEquipos.setImagenPresionado("/Imagenes/Botones/boton_redondo_presionado.png");
-        enEquipos.setImagenSelNormal("/Imagenes/Botones/boton_redondo_sel.png");
-        enEquipos.setImagenSelSobre("/Imagenes/Botones/boton_redondo_sel_sobre.png");
-        enEquipos.setImagenSelPresionado("/Imagenes/Botones/boton_redondo_sel_presionado.png");
         enEquipos.setSize(100, 100);
         enEquipos.setLocation(160, 475);
         enEquipos.setLayout(null);
@@ -73,36 +61,24 @@ public class VistaNuevaPartida extends javax.swing.JInternalFrame {
         iconoEnEquipos.setLocation((enEquipos.getWidth() - iconoEnEquipos.getWidth()) / 2, 
                 (enEquipos.getHeight() - iconoEnEquipos.getHeight()) / 2);
                 
-        this.volver = new BotonImagen("/Imagenes/Botones/atras.png");
+        this.volver = new BotonImagen(Constantes.BTN_ATRAS);
         this.add(this.volver);
-        this.volver.setImagenSobre("/Imagenes/Botones/atras_sobre.png");
-        this.volver.setImagenPresionado("/Imagenes/Botones/atras_presionado.png");
         this.volver.setLocation(35, 35);
         this.volver.setSize(40, 40);   
                 
-        this.registrar = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.registrar = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(this.registrar);
-        this.registrar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.registrar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         this.registrar.setLocation(85, 35);
         this.registrar.setSize(160, 40);     
         this.registrar.setText("Registrar jugador");
-        this.registrar.setForeground(Color.white);
-        this.registrar.setFont(fuente);
                 
-        this.comenzar = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.comenzar = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(this.comenzar);
-        this.comenzar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.comenzar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         this.comenzar.setLocation(255, 35);
         this.comenzar.setSize(160, 40);     
         this.comenzar.setText("Comenzar partida");
-        this.comenzar.setForeground(Color.white);
-        this.comenzar.setFont(fuente);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_1);
     }
 
     /**

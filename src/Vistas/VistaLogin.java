@@ -5,71 +5,76 @@
  */
 package Vistas;
 
-import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.CajaPassImagen;
 import Otros.CajaTextoImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
+import Otros.VistaPersonalizada;
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaLogin extends javax.swing.JInternalFrame {
+public class VistaLogin extends VistaPersonalizada {
     private final BotonImagen ingresar;
     private final CajaTextoImagen usuario;
     private final CajaPassImagen pass;
+    private final BotonImagen salir;
     
     /**
      * Creates new form VistaLogin
-     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public VistaLogin(Font fuente) {
+    public VistaLogin() {
         initComponents();
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
+        this.add(L1);
+        this.add(L2);
+        this.add(L3);
+        this.add(mensaje);
+        this.add(registrarse);
         
         usuario = new CajaTextoImagen();
         this.add(usuario);
         usuario.setSize(190, 30);
         usuario.setLocation(350, 435);
-        usuario.setFont(fuente);
-        usuario.setForeground(Color.white);
         
         pass = new CajaPassImagen();
         this.add(pass);
         pass.setSize(190, 30);
         pass.setLocation(350, 475);
-        pass.setFont(fuente);
-        pass.setForeground(Color.white);
                 
-        this.ingresar = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.ingresar = new BotonImagen(Constantes.BTN_NORMAL);
         this.ingresar.setLocation(310, 515);
         this.ingresar.setSize(190, 40);
         this.ingresar.setText("Ingresar");
-        this.ingresar.setForeground(Color.white);
-        this.ingresar.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.ingresar.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        this.ingresar.setFont(fuente);
         this.add(this.ingresar);
+                
+        this.salir = new BotonImagen(Constantes.BTN_REDONDO);
+        this.salir.setLocation(740, 10);
+        this.salir.setSize(50, 50);
+        this.salir.setLayout(null);
+        this.add(this.salir);
         
-        this.L1.setFont(fuente);
-        this.L2.setFont(fuente);
-        this.L3.setFont(fuente);
-        this.mensaje.setFont(fuente);
-        this.usuario.setFont(fuente);
-        this.pass.setFont(fuente);
-        this.registrarse.setFont(fuente);
+        PanelImagen iconoSalir = new PanelImagen("/Imagenes/Otros/equis.png");
+        salir.add(iconoSalir);
+        iconoSalir.setSize(salir.getWidth() / 2, salir.getHeight() / 2);
+        iconoSalir.setLocation((salir.getWidth() - iconoSalir.getWidth()) / 2, 
+                (salir.getHeight() - iconoSalir.getHeight()) / 2);
+        
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
+        this.mensaje.setFont(Constantes.FUENTE_14PX);
+        this.usuario.setFont(Constantes.FUENTE_14PX);
+        this.pass.setFont(Constantes.FUENTE_14PX);
+        this.registrarse.setFont(Constantes.FUENTE_14PX);
         
         this.mensaje.setText("");
         
-        PanelImagen fondo = new PanelImagen("/Imagenes/Fondos/fondo_login.png");
-        fondo.setSize(this.getSize());
-        this.add(fondo);
+        this.setImagenFondo("/Imagenes/Fondos/fondo_login.png");
     }
     
     /**
@@ -138,7 +143,7 @@ public class VistaLogin extends javax.swing.JInternalFrame {
         if("".equals(this.getUsuario())){
             this.usuarioErroneo();
         }else{
-            this.usuarioErroneo();
+            this.usuarioCorrecto();
         }
 
         if("".equals(this.getPass())){
@@ -188,6 +193,10 @@ public class VistaLogin extends javax.swing.JInternalFrame {
     
     public CajaPassImagen getCajaPass(){
         return this.pass;
+    }
+
+    public BotonImagen getSalir() {
+        return salir;
     }
     
     public String getUsuario(){

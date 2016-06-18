@@ -7,18 +7,15 @@ package Vistas;
 
 import Modelos.Jugador;
 import Otros.BotonImagen;
-import Otros.PanelImagen;
-import java.awt.Color;
-import java.awt.Font;
+import Otros.Constantes;
+import Otros.VistaPersonalizada;
 import java.util.ArrayList;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class VistaBatalla extends javax.swing.JInternalFrame {
-    private final Font fuente;
+public class VistaBatalla extends VistaPersonalizada {
     private final BotonImagen ataque;
     private final BotonImagen invocacion;
     private final BotonImagen magia;
@@ -35,28 +32,25 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
     private SubVistaSeleccionTrampa visSelTram;
     private SubVistaCriaturaRevivir visCriRev;
     private SubVistaSeleccionMagia visSelMag;
+    private final SubVistaMagiasActivadas visMagAc;
     private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
     
     /**
      * Creates new form VistaBatalla
-     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public VistaBatalla(Font fuente) {
+    public VistaBatalla() {
         initComponents();
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.fuente = fuente;
-        this.visSelDesp = new SubVistaSeleccionDespliegue(fuente);
+        this.visSelDesp = new SubVistaSeleccionDespliegue();
         this.vistasJugador = new ArrayList();
         
-        this.ataque = new BotonImagen("/Imagenes/Botones/ataque.png");
-        this.invocacion = new BotonImagen("/Imagenes/Botones/invocacion.png");
-        this.magia = new BotonImagen("/Imagenes/Botones/magia.png");
-        this.movimiento = new BotonImagen("/Imagenes/Botones/movimiento.png");
-        this.trampa = new BotonImagen("/Imagenes/Botones/trampa.png");
-        this.pausa = new BotonImagen("/Imagenes/Botones/pausa.png");
-        this.terminarTurno = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.ataque = new BotonImagen(Constantes.BTN_ATAQUE);
+        this.invocacion = new BotonImagen(Constantes.BTN_INVOCACION);
+        this.magia = new BotonImagen(Constantes.BTN_MAGIA);
+        this.movimiento = new BotonImagen(Constantes.BTN_MOVIMIENTO);
+        this.trampa = new BotonImagen(Constantes.BTN_TRAMPA);
+        this.pausa = new BotonImagen(Constantes.BTN_PAUSA);
+        this.terminarTurno = new BotonImagen(Constantes.BTN_NORMAL);
         
         this.add(ataque);
         this.add(invocacion);
@@ -82,29 +76,6 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.pausa.setLocation(600, 560);
         this.terminarTurno.setLocation(370, 560);
         
-        this.ataque.setImagenSobre("/Imagenes/Botones/ataque_sobre.png");
-        this.invocacion.setImagenSobre("/Imagenes/Botones/invocacion_sobre.png");
-        this.magia.setImagenSobre("/Imagenes/Botones/magia_sobre.png");
-        this.movimiento.setImagenSobre("/Imagenes/Botones/movimiento_sobre.png");
-        this.trampa.setImagenSobre("/Imagenes/Botones/trampa_sobre.png");
-        this.pausa.setImagenSobre("/Imagenes/Botones/pausa_sobre.png");
-        this.terminarTurno.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        
-        this.ataque.setImagenPresionado("/Imagenes/Botones/ataque_presionado.png");
-        this.invocacion.setImagenPresionado("/Imagenes/Botones/invocacion_presionado.png");
-        this.magia.setImagenPresionado("/Imagenes/Botones/magia_presionado.png");
-        this.movimiento.setImagenPresionado("/Imagenes/Botones/movimiento_presionado.png");
-        this.trampa.setImagenPresionado("/Imagenes/Botones/trampa_presionado.png");
-        this.pausa.setImagenPresionado("/Imagenes/Botones/pausa_presionado.png");
-        this.terminarTurno.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
-        
-        this.ataque.setImagenDeshabilitado("/Imagenes/Botones/ataque_deshabilitado.png");
-        this.invocacion.setImagenDeshabilitado("/Imagenes/Botones/invocacion_deshabilitado.png");
-        this.magia.setImagenDeshabilitado("/Imagenes/Botones/magia_deshabilitado.png");
-        this.movimiento.setImagenDeshabilitado("/Imagenes/Botones/movimiento_deshabilitado.png");
-        this.trampa.setImagenDeshabilitado("/Imagenes/Botones/trampa_deshabilitado.png");
-        this.terminarTurno.setImagenDeshabilitado("/Imagenes/Botones/boton_deshabilitado.png");
-        
         this.ataque.setEnabled(false);
         this.invocacion.setEnabled(false);
         this.magia.setEnabled(false);
@@ -112,15 +83,14 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.trampa.setEnabled(false);
         
         this.terminarTurno.setText("Terminar turno");
-        this.terminarTurno.setFont(fuente);
-        this.terminarTurno.setForeground(Color.white);
         
         mensaje.setText("");
-        mensaje.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 16));
+        mensaje.setFont(Constantes.FUENTE_14PX);
+        
+        this.visMagAc = new SubVistaMagiasActivadas();
+        this.add(visMagAc);
                         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_batalla.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_BATALLA);
     }
 
     /**
@@ -146,7 +116,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         mensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mensaje.setText("Mensaje");
         getContentPane().add(mensaje);
-        mensaje.setBounds(180, 10, 450, 30);
+        mensaje.setBounds(180, 0, 450, 50);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -156,7 +126,7 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
      * @param jug Jugador para el cual se creará la vista.
      */
     public void agregarJugador(Jugador jug){
-        this.vistasJugador.add(new SubVistaInfoJugadorBatalla(this.fuente));
+        this.vistasJugador.add(new SubVistaInfoJugadorBatalla());
         int i = this.vistasJugador.size() - 1;
         
         this.vistasJugador.get(i).setImagen(
@@ -168,11 +138,28 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         this.vistasJugador.get(i).setIconoJugador("/Imagenes/Jefes/" +
                 jug.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         
-        this.vistasJugador.get(i).setVidaMaximaJugador(jug.getJefeDeTerreno().getVidaMaxima());
-        
-        this.tablero.actualizarCasillas();
-        
+        this.vistasJugador.get(i).setVidaMaximaJugador(jug.getJefeDeTerreno().getVidaMaxima());        
         this.add(this.vistasJugador.get(i), 0);
+    }
+    
+    public void habilitarBotones(){
+        this.getAtaque().setEnabled(true);
+        this.getMagia().setEnabled(true);
+        this.getMovimiento().setEnabled(true);
+        this.getTrampa().setEnabled(true);
+        this.getTerminarTurno().setEnabled(true);
+        this.getPausa().setEnabled(true);
+    }
+    
+    public void deshabilitarBotones(){
+        this.getAtaque().setEnabled(false);
+        this.getInvocacion().setEnabled(false);
+        this.getMagia().setEnabled(false);
+        this.getMovimiento().setEnabled(false);
+        this.getTrampa().setEnabled(false);
+        this.getTerminarTurno().setEnabled(false);
+        this.getPausa().setEnabled(false);
+        this.getTablero().getCasilla(0, 0).requestFocus();
     }
     
     public SubVistaTablero getTablero() {
@@ -239,12 +226,16 @@ public class VistaBatalla extends javax.swing.JInternalFrame {
         return visSelMag;
     }
 
+    public SubVistaMagiasActivadas getVisMagAc() {
+        return visMagAc;
+    }
+
     public void setTablero(SubVistaTablero tablero) {
         this.tablero = tablero;
     }
     
     public void setMensaje(String mensaje){
-        this.mensaje.setText(mensaje);
+        this.mensaje.setText("<html><center>" + mensaje + "</center></html>");
     }
 
     public void setVisSelDados(SubVistaSeleccionDados visSelDados) {

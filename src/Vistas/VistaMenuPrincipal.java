@@ -6,11 +6,11 @@
 package Vistas;
 
 import Modelos.Jugador;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
+import Otros.VistaPersonalizada;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.LineBorder;
@@ -19,7 +19,7 @@ import javax.swing.border.LineBorder;
  *
  * @author mam28
  */
-public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
+public class VistaMenuPrincipal extends VistaPersonalizada {
     private final BotonImagen nuevaPartida;
     private final BotonImagen nuevoTorneo;
     private final BotonImagen modificarPuzzle;
@@ -28,18 +28,15 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form VistaMenuPrincipal
-     * @param fuente Fuente que se utilizará en esta vista.
      * @param jugador Jugador que ha iniciado sesión
      */
-    public VistaMenuPrincipal(Font fuente, Jugador jugador) {
+    public VistaMenuPrincipal(Jugador jugador) {
         initComponents();
         
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.nuevaPartida = new BotonImagen("/Imagenes/Botones/partida.png");
-        this.nuevoTorneo = new BotonImagen("/Imagenes/Botones/torneo.png");
-        this.modificarPuzzle = new BotonImagen("/Imagenes/Botones/modificar_puzzle.png");
-        this.salir = new BotonImagen("/Imagenes/Botones/salir.png");
+        this.nuevaPartida = new BotonImagen(Constantes.BTN_NUEVA_PARTIDA);
+        this.nuevoTorneo = new BotonImagen(Constantes.BTN_NUEVO_TORNEO);
+        this.modificarPuzzle = new BotonImagen(Constantes.BTN_MODIFICAR_PUZZLE);
+        this.salir = new BotonImagen(Constantes.BTN_SALIR);
         
         BotonImagen[] botones = {nuevaPartida, nuevoTorneo, modificarPuzzle, salir};
         
@@ -48,18 +45,6 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         final int CANTIDAD = botones.length;
         final int SEP = (this.getWidth() - ANCHO * CANTIDAD) / (CANTIDAD + 1);
         
-        String[] imagenBotonSobre = {
-            "/Imagenes/Botones/partida_sobre.png", 
-            "/Imagenes/Botones/torneo_sobre.png", 
-            "/Imagenes/Botones/modificar_puzzle_sobre.png",
-            "/Imagenes/Botones/salir_sobre.png"};
-        
-        String[] imagenBotonPresionado = {
-            "/Imagenes/Botones/partida_presionado.png", 
-            "/Imagenes/Botones/torneo_presionado.png", 
-            "/Imagenes/Botones/modificar_puzzle_presionado.png",
-            "/Imagenes/Botones/salir_presionado.png"};
-        
         String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Modificar puzzle", "Salir"};
         
         for (int i = 0; i < CANTIDAD; i ++){
@@ -67,8 +52,6 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
             
             botones[i].setSize(ANCHO, ALTO);
             botones[i].setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
-            botones[i].setImagenSobre(imagenBotonSobre[i]);
-            botones[i].setImagenPresionado(imagenBotonPresionado[i]);
             botones[i].addMouseListener(new MouseAdapter(){
                 @Override
                 public void mouseEntered(MouseEvent e){
@@ -114,15 +97,11 @@ public class VistaMenuPrincipal extends javax.swing.JInternalFrame {
         iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
         iconoJugador.setBorder(new LineBorder(Color.darkGray, 2));
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_menu_principal.png");
-        panelFondo.setSize(this.getSize());
-        this.add(panelFondo);
+        this.setImagenFondo(Constantes.FONDO_MENU_PRINCIPAL);
         
         this.mensaje.setText("");
-        this.mensaje.setFont(new Font(fuente.getName(), 
-                Font.TRUETYPE_FONT, 36));
-        this.mensajeBienvenida.setFont(new Font(fuente.getName(), 
-                Font.TRUETYPE_FONT, 24));
+        this.mensaje.setFont(Constantes.FUENTE_36PX);
+        this.mensajeBienvenida.setFont(Constantes.FUENTE_24PX);
         
         this.mensajeBienvenida.setText("<html>¡Bienvenid@ <i><b style=\"color:orange;\">" + jugador.getNombreJugador() + "</b></i>!</html>");
     }

@@ -5,9 +5,9 @@
  */
 package Controladores;
 
-import Modelos.Dado;
 import Modelos.Jugador;
 import Modelos.Usuario;
+import Otros.Constantes;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -35,7 +35,7 @@ public class ControladorPrincipal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        // TODO code application logic here        
         // Instancia a este controlador
         ControladorPrincipal contPrin = new ControladorPrincipal();
         contPrin.elementosPersonalizados();
@@ -43,7 +43,7 @@ public class ControladorPrincipal {
         // Se instancian los otros controladores
         contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
         contPrin.crearControladorLogin();
-        contPrin.contLog.mostrarVistaLogin();;
+        contPrin.contLog.mostrarVistaLogin();
     }
     
     /**
@@ -56,19 +56,13 @@ public class ControladorPrincipal {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Fuentes/pixel.ttf")));
-            this.fuente = customFont;
+            Constantes.FUENTE_14PX = customFont;
+            Constantes.FUENTE_18PX = new Font(customFont.getName(), Font.TRUETYPE_FONT, 18);
+            Constantes.FUENTE_24PX = new Font(customFont.getName(), Font.TRUETYPE_FONT, 24);
+            Constantes.FUENTE_36PX = new Font(customFont.getName(), Font.TRUETYPE_FONT, 36);
         }catch(IOException | FontFormatException e){
-            e.printStackTrace();
+            // Nada
         }
-        
-    }
-
-    /**
-     * Devuelve la fuente personalizada de la aplicación
-     * @return Tipografía personalizada
-     */
-    public Font getFuente() {
-        return fuente;
     }
     
     /**

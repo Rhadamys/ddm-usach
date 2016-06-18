@@ -6,6 +6,7 @@
 package Vistas;
 
 import Otros.BotonCheckImagen;
+import Otros.Constantes;
 import Otros.PanelImagen;
 
 /**
@@ -20,12 +21,8 @@ public class SubVistaPosicion extends BotonCheckImagen {
     public SubVistaPosicion(int fila, int columna, int ancho, int alto){
         this.setSize(ancho, alto);
         
-        setImagenNormal("/Imagenes/Botones/casilla.png");
-        setImagenSobre("/Imagenes/Botones/casilla.png");
-        setImagenPresionado("/Imagenes/Botones/casilla.png");
-        setImagenSelNormal("/Imagenes/Botones/casilla_seleccionada.png");
-        setImagenSelSobre("/Imagenes/Botones/casilla_seleccionada.png");
-        setImagenSelPresionado("/Imagenes/Botones/casilla_seleccionada.png");
+        setImagenNormal(Constantes.CASILLA);
+        setImagenSelNormal(Constantes.CASILLA_SELECCIONADA);
         setImagenActual(0);
         
         this.fila = fila;
@@ -41,9 +38,14 @@ public class SubVistaPosicion extends BotonCheckImagen {
         this.add(this.iconoElemento);
     }
     
-    @Override
-    public void agregarListeners(){
-        // Los listeners se definen en el controlador.
+    public void casillaCorrecta(){
+        this.setImagenSobre(Constantes.CASILLA_CORRECTA);
+        this.setImagenActual(1);
+    }
+    
+    public void casillaIncorrecta(){
+        this.setImagenSobre(Constantes.CASILLA_INCORRECTA);
+        this.setImagenActual(1);
     }
 
     public int getFila() {
@@ -53,12 +55,8 @@ public class SubVistaPosicion extends BotonCheckImagen {
     public int getColumna() {
         return columna;
     }
-
-    public PanelImagen getIconoElemento() {
-        return iconoElemento;
-    }
     
-    public void setImagenIconoElemento(String imagen){
+    public void setImagenElemento(String imagen){
         this.iconoElemento.setImagen(imagen);
     }
 }

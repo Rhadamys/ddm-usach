@@ -5,19 +5,21 @@
  */
 package Otros;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author mam28
  */
-public class BotonImagen extends JButton {
+public final class BotonImagen extends JButton implements MouseListener, ChangeListener{
     private Image imagenActual;
     private Image imagenMouseNormal;
     private Image imagenMouseSobre;
@@ -29,82 +31,101 @@ public class BotonImagen extends JButton {
         this.setBorder(null);
         this.setOpaque(false);
         repaint();
-        agregarListeners();
+        
+        this.addMouseListener(this);
+        this.addChangeListener(this);
     }
     
     /**
      * Inicializar un botón con imagen de fondo.
-     * @param imagen String - Nombre del archivo.
+     * @param numBoton Numero del botón que se creará (Ver en Constantes)
      */
-    public BotonImagen(String imagen){
-        //Inicializar panel de fondo        
-        imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
-        imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
-        imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
-        imagenDeshabilitado = new ImageIcon(getClass().getResource(imagen)).getImage();
-        this.imagenActual = imagenMouseSobre;
+    public BotonImagen(int numBoton){ 
+        String imgNormal = Constantes.VACIO;
+        String imgSobre = Constantes.VACIO;
+        String imgPresionado = Constantes.VACIO;
+        String imgDeshabilitado = Constantes.VACIO;
+        
+        switch(numBoton){
+            case Constantes.BTN_NORMAL: imgNormal = Constantes.BOTON;
+                                        imgSobre = Constantes.BOTON_SOBRE;
+                                        imgPresionado = Constantes.BOTON_PRESIONADO;
+                                        imgDeshabilitado = Constantes.BOTON_DESHABILITADO;
+                                        break;
+            case Constantes.BTN_REDONDO:    imgNormal = Constantes.BOTON_REDONDO;
+                                            imgSobre = Constantes.BOTON_REDONDO_SOBRE;
+                                            imgPresionado = Constantes.BOTON_REDONDO_PRESIONADO;
+                                            break;
+            case Constantes.BTN_ATAQUE: imgNormal = Constantes.ATAQUE;
+                                        imgSobre = Constantes.ATAQUE_SOBRE;
+                                        imgPresionado = Constantes.ATAQUE_PRESIONADO;
+                                        imgDeshabilitado = Constantes.ATAQUE_DESHABILITADO;
+                                        break;
+            case Constantes.BTN_INVOCACION: imgNormal = Constantes.INVOCACION;
+                                            imgSobre = Constantes.INVOCACION_SOBRE;
+                                            imgPresionado = Constantes.INVOCACION_PRESIONADO;
+                                            imgDeshabilitado = Constantes.INVOCACION_DESHABILITADO;
+                                            break;
+            case Constantes.BTN_MAGIA:  imgNormal = Constantes.MAGIA;
+                                        imgSobre = Constantes.MAGIA_SOBRE;
+                                        imgPresionado = Constantes.MAGIA_PRESIONADO;
+                                        imgDeshabilitado = Constantes.MAGIA_DESHABILITADO;
+                                        break;  
+            case Constantes.BTN_MOVIMIENTO: imgNormal = Constantes.MOVIMIENTO;
+                                            imgSobre = Constantes.MOVIMIENTO_SOBRE;
+                                            imgPresionado = Constantes.MOVIMIENTO_PRESIONADO;
+                                            imgDeshabilitado = Constantes.MOVIMIENTO_DESHABILITADO;
+                                            break;
+            case Constantes.BTN_TRAMPA: imgNormal = Constantes.TRAMPA;
+                                        imgSobre = Constantes.TRAMPA_SOBRE;
+                                        imgPresionado = Constantes.TRAMPA_PRESIONADO;
+                                        imgDeshabilitado = Constantes.TRAMPA_DESHABILITADO;
+                                        break;
+            case Constantes.BTN_PAUSA:  imgNormal = Constantes.PAUSA;
+                                        imgSobre = Constantes.PAUSA_SOBRE;
+                                        imgPresionado = Constantes.PAUSA_PRESIONADO;
+                                        imgDeshabilitado = Constantes.PAUSA_DESHABILITADO;
+                                        break;
+            case Constantes.BTN_ATRAS:  imgNormal = Constantes.ATRAS;
+                                        imgSobre = Constantes.ATRAS_SOBRE;
+                                        imgPresionado = Constantes.ATRAS_PRESIONADO;
+                                        break;
+            case Constantes.BTN_MARCO:  imgSobre = Constantes.MARCO_SELECCION;
+                                        break;
+            case Constantes.BTN_NUEVA_PARTIDA:  imgNormal = Constantes.NUEVA_PARTIDA;
+                                                imgSobre = Constantes.NUEVA_PARTIDA_SOBRE;
+                                                imgPresionado = Constantes.NUEVA_PARTIDA_PRESIONADO;
+                                                break;
+            case Constantes.BTN_NUEVO_TORNEO:   imgNormal = Constantes.TORNEO;
+                                                imgSobre = Constantes.TORNEO_SOBRE;
+                                                imgPresionado = Constantes.TORNEO_PRESIONADO;
+                                                break;
+            case Constantes.BTN_MODIFICAR_PUZZLE:   imgNormal = Constantes.MODIFICAR_PUZZLE;
+                                                    imgSobre = Constantes.MODIFICAR_PUZZLE_SOBRE;
+                                                    imgPresionado = Constantes.MODIFICAR_PUZZLE_PRESIONADO;
+                                                    break;
+            case Constantes.BTN_SALIR:  imgNormal = Constantes.SALIR;
+                                        imgSobre = Constantes.SALIR_SOBRE;
+                                        imgPresionado = Constantes.SALIR_PRESIONADO;
+                                        break;
+        }
+        
+        imagenMouseNormal = new ImageIcon(getClass().getResource(imgNormal)).getImage();
+        imagenMouseSobre = new ImageIcon(getClass().getResource(imgSobre)).getImage();
+        imagenMousePresionado = new ImageIcon(getClass().getResource(imgPresionado)).getImage();
+        imagenDeshabilitado = new ImageIcon(getClass().getResource(imgDeshabilitado)).getImage();
+        
+        this.imagenActual = imagenMouseNormal;
+        
         this.setContentAreaFilled(false);
         this.setBorder(null);
         this.setOpaque(false);
+        this.setFont(Constantes.FUENTE_14PX);
+        this.setForeground(Color.white);
         repaint();
-        agregarListeners();
-    }
-    
-    /**
-     * Especifíca el comportamiento del botón (cambiar imagen) cuando se
-     * producen eventos de mouse.
-     */
-    public void agregarListeners(){
-        this.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseEntered(MouseEvent e){
-                if(isEnabled()){
-                    setImagenActual(1);
-                }else{
-                    setImagenActual(3);
-                }
-            }
-            
-            @Override
-            public void mouseExited(MouseEvent e){
-                if(isEnabled()){
-                    setImagenActual(0);
-                }else{
-                    setImagenActual(3);
-                }
-            }
-            
-            @Override
-            public void mousePressed(MouseEvent e){
-                if(isEnabled()){
-                    setImagenActual(2);
-                }else{
-                    setImagenActual(3);
-                }
-            }
-            
-            @Override
-            public void mouseReleased(MouseEvent e){
-                if(e.getX() > 0 && e.getX() < e.getComponent().getWidth() &&
-                   e.getY() > 0 && e.getY() < e.getComponent().getHeight()){
-                    if(isEnabled()){
-                        setImagenActual(1);
-                    }else{
-                        setImagenActual(3);
-                    }
-                }else{
-                    mouseExited(e);
-                }
-            }
-        });
         
-        this.addChangeListener((ChangeEvent e) -> {
-            if(isEnabled()){
-                setImagenActual(0);
-            }else{
-                setImagenActual(3);
-            }
-        });
+        this.addMouseListener(this);
+        this.addChangeListener(this);
     }
     
     @Override
@@ -114,37 +135,11 @@ public class BotonImagen extends JButton {
     }
     
     /**
-     * Entrega la imagen que se mostrará cuando el mouse se encuentre sobre
-     * el botón.
-     * @return Image - Imagen cuando el mouse está sobre el botón
-     */
-    public Image getImagenSobre(){
-        return imagenMouseSobre;
-    }
-    
-    /**
-     * Entrega la imagen que se mostrará cuando el mouse salga del botón.
-     * @return Image - Imagen cuando el mouse sale del botón
-     */
-    public Image getImagenNormal(){
-        return imagenMouseNormal;
-    }
-    
-    /**
-     * Entrega la imagen que se mostrará cuando el botón se encuentra
-     * presionado.
-     * @return Image - Imagen cuando el mouse está presionado.
-     */
-    public Image getImagenPresionado(){
-        return imagenMousePresionado;
-    }
-    
-    /**
      * Define la imagen que se mostrará cuando el mouse se encuentre sobre
      * el botón
      * @param imagen String - Nombre del archivo
      */
-    public void setImagenSobre(String imagen){
+    public final void setImagenSobre(String imagen){
         imagenMouseSobre = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
@@ -152,7 +147,7 @@ public class BotonImagen extends JButton {
      * Define la imagen que se mostrará cuando el mouse salga del botón.
      * @param imagen String - Nombre del archivo
      */
-    public void setImagenNormal(String imagen){
+    public final void setImagenNormal(String imagen){
         imagenMouseNormal = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
@@ -160,7 +155,7 @@ public class BotonImagen extends JButton {
      * Define la imagen que se mostrará cuando se presiona el botón.
      * @param imagen String - Nombre del archivo
      */
-    public void setImagenPresionado(String imagen){
+    public final void setImagenPresionado(String imagen){
         imagenMousePresionado = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
@@ -168,11 +163,11 @@ public class BotonImagen extends JButton {
      * Define la imagen que se mostrará cuando el botón esté deshabilitado.
      * @param imagen String - Nombre del archivo
      */
-    public void setImagenDeshabilitado(String imagen){
+    public final void setImagenDeshabilitado(String imagen){
         imagenDeshabilitado = new ImageIcon(getClass().getResource(imagen)).getImage();
     }
     
-    public void setImagenActual(int i){
+    public final void setImagenActual(int i){
         switch(i){
             case 0: this.imagenActual = this.imagenMouseNormal;
                     break;
@@ -183,5 +178,60 @@ public class BotonImagen extends JButton {
             default: this.imagenActual = this.imagenDeshabilitado;
         }
         this.repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        // Nada
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        if(isEnabled()){
+            setImagenActual(2);
+        }else{
+            setImagenActual(3);
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if(e.getX() > 0 && e.getX() < e.getComponent().getWidth() &&
+           e.getY() > 0 && e.getY() < e.getComponent().getHeight()){
+            if(isEnabled()){
+                setImagenActual(1);
+            }else{
+                setImagenActual(3);
+            }
+        }else{
+            mouseExited(e);
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        if(isEnabled()){
+            setImagenActual(1);
+        }else{
+            setImagenActual(3);
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        if(isEnabled()){
+            setImagenActual(0);
+        }else{
+            setImagenActual(3);
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent ce) {
+        if(isEnabled()){
+            setImagenActual(0);
+        }else{
+            setImagenActual(3);
+        }
     }
 }

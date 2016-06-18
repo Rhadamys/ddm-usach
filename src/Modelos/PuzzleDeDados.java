@@ -5,6 +5,8 @@
  ***********************************************************************/
 package Modelos;
 
+import ModelosDAO.PuzzleDeDadosDAO;
+import java.sql.SQLException;
 import java.util.*;
 
 /** @pdOid 859bcc3d-e128-4446-8809-e9f0961ece7a */
@@ -13,6 +15,15 @@ public class PuzzleDeDados {
     
     public PuzzleDeDados(ArrayList<Dado> dados){
         this.dados = dados;
+    }
+    
+    public static boolean actualizarPuzzleJugador(int idJugador, ArrayList<Dado> dados){
+        try {
+            PuzzleDeDadosDAO.actualizarPuzzleJugador(idJugador, dados);
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
     }
 
     public ArrayList<Dado> getDados() {

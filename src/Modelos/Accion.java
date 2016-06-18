@@ -12,16 +12,18 @@ public class Accion {
     private Criatura criaturaAInvocar;
     private Criatura criaturaAMover;
     private Criatura criaturaAtacante;
-    private final ArrayList<Posicion> posicionesMovimiento;
+    private ArrayList<Posicion> posicionesMovimiento;
     private int pasoActualMovimiento;
     private Trampa trampaAColocar;
-    private ArrayList<Criatura> criaturasAfectadas;
+    private final ArrayList<Criatura> criaturasAfectadas;
     private ArrayList<Posicion> areaDeEfecto;
     private final ArrayList<int[]> magias;
 
     public Accion(){
         this.posicionesMovimiento = new ArrayList();
         
+        // Las magias son un Array de enteros
+        // [ <Numero de magia>, <Turnos restantes>, <Numero del jugador que la activó> , <Costo de la trampa> ]
         this.magias = new ArrayList();
         int[] costos = {10, 15, 30};
         for(int i = 1; i <= 3; i++){
@@ -44,26 +46,25 @@ public class Accion {
         }
     }
     
-    public void moverCriatura(){
-        Posicion posicionInicial = this.posicionesMovimiento.get(0);
-        if(posicionInicial.trampaRespaldada()){
-            posicionInicial.devolverTrampa();
+    public ElementoEnCampo moverCriatura(int pasoActual){
+        this.pasoActualMovimiento = pasoActual;
+        
+        Posicion posAnt = this.posicionesMovimiento.get(pasoActual - 1);
+        Posicion posAct = this.posicionesMovimiento.get(pasoActual);
+        ElementoEnCampo elemento = posAct.getElemento();
+        
+        if(posAnt.trampaRespaldada()){
+            posAnt.devolverTrampa();
         }else{
-            posicionInicial.setElemento(null);
+            posAnt.setElemento(null);
         }
         
-        Posicion posicionFinal = this.posicionesMovimiento.get(pasoActualMovimiento);
-        if(posicionFinal.getElemento() instanceof Trampa &&
-           ((Trampa) posicionFinal.getElemento()).getDueno() == this.criaturaAMover.getDueno()){
-            posicionFinal.respaldarTrampa();
+        if(posAct.getElemento() instanceof Trampa){
+            posAct.respaldarTrampa();
         }
+        posAct.setElemento(this.criaturaAMover);
         
-        posicionFinal.setElemento(criaturaAMover);
-    }
-    
-    public void finalizarMovimiento(){
-        this.moverCriatura();
-        this.posicionesMovimiento.clear();
+        return elemento;
     }
     
     public void colocarTrampa(Posicion posicion, Jugador jugador){
@@ -82,6 +83,8 @@ public class Accion {
             
             if(puntosDefensaEnemigo < puntosAtaque){
                 ((Criatura) elementoAtacado).restarVida(puntosAtaque - puntosDefensaEnemigo);
+            }else{
+                criaturaAtacante.restarVida(puntosDefensaEnemigo - puntosAtaque);
             }
             return ((Criatura) elementoAtacado).getVida();
         }
@@ -118,6 +121,10 @@ public class Accion {
     
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con magias">  
     
+    public ArrayList<int[]> getMagias(){
+        return this.magias;
+    }
+    
     /**
      * Devuelve las magias disponibles.
      * @return Magias.
@@ -148,11 +155,7 @@ public class Accion {
     
     public void activarMagia(int numMagia, int quienActiva){
         this.magias.get(numMagia - 1)[2] = quienActiva;
-        if(numMagia == 1){
-            this.magias.get(numMagia - 1)[1] = 1;
-        }else{
-            this.magias.get(numMagia - 1)[1] = 3;
-        }
+        this.magias.get(numMagia - 1)[1] = 3;
     }
     
     public void desactivarMagia(int numMagia){
@@ -167,6 +170,10 @@ public class Accion {
         this.criaturasAfectadas.remove(criatura);
     }
     
+    public void reiniciarMagia2(){
+        this.criaturasAfectadas.clear();
+    }
+    
     public int cantidadCriaturasAfectadas(){
         return this.criaturasAfectadas.size();
     }
@@ -177,12 +184,7 @@ public class Accion {
     
 // </editor-fold>
     
-// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el movimiento de criatura">  
-    
-    public ElementoEnCampo siguientePosicion(int posAct){
-        this.pasoActualMovimiento = posAct;        
-        return this.posicionesMovimiento.get(posAct).getElemento();
-    }
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el movimiento de criatura">
 
     public void setCriaturaAInvocar(Criatura criaturaAInvocar) {
         this.criaturaAInvocar = criaturaAInvocar;
@@ -194,6 +196,7 @@ public class Accion {
 
     public void setCriaturaAMover(Criatura criaturaAMover) {
         this.criaturaAMover = criaturaAMover;
+        this.posicionesMovimiento = new ArrayList();
     }
        
     public void agregarPosicionAlCamino(Posicion posicion){
@@ -202,10 +205,6 @@ public class Accion {
     
     public void eliminarPosicionDelCamino(Posicion posicion){
         this.posicionesMovimiento.remove(posicion);
-    }
-    
-    public Posicion getPosicionCamino(int i){
-        return this.posicionesMovimiento.get(i);
     }
 
     public int largoDelCamino() {
@@ -216,18 +215,38 @@ public class Accion {
         return this.posicionesMovimiento.contains(posicion);
     }
     
+    public Posicion getPosicionActual(){
+        return this.posicionesMovimiento.get(pasoActualMovimiento);
+    }
+    
+    public Posicion getPosicionAnterior(){
+        return this.posicionesMovimiento.get(pasoActualMovimiento - 1);
+    }
+    
     public Posicion getUltimaPosicionAgregada(){
         return this.posicionesMovimiento.get(this.posicionesMovimiento.size() - 1);
     }
-
-    public int getPasoActualMovimiento() {
-        return pasoActualMovimiento;
+    
+    public ArrayList<Posicion> getPosicionesMovimiento(){
+        return this.posicionesMovimiento;
     }
             
 // </editor-fold>
 
     public void setTrampaAColocar(Trampa trampaAColocar) {
         this.trampaAColocar = trampaAColocar;
+    }
+    
+    public void modificarCaminoTrampaParaLadrones(){
+        ArrayList<Posicion> nuevoCamino = new ArrayList();
+        nuevoCamino.add(this.posicionesMovimiento.get(pasoActualMovimiento));
+        nuevoCamino.add(this.posicionesMovimiento.get(pasoActualMovimiento - 1));
+        
+        this.posicionesMovimiento = nuevoCamino;
+    }
+
+    public Criatura getCriaturaAtacante() {
+        return criaturaAtacante;
     }
 
     public void setCriaturaAtacante(Criatura criaturaAtacante) {

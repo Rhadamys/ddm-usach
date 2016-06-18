@@ -9,8 +9,6 @@ import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaPrincipal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 /**
  *
@@ -26,22 +24,10 @@ public final class ControladorVistaPrincipal {
         
         this.visPrin = new VistaPrincipal();
         this.visPrin.setVisible(true);
-        this.agregarListenersVistaPrincipal();
         
-        this.visMen = new SubVistaCuadroDialogo(
-                "¿Deseas salir de la aplicación?",
-                "Si", "No", this.contPrin.getFuente());
+        this.visMen = new SubVistaCuadroDialogo("¿Deseas salir de la aplicación?", "Si", "No");
         this.visPrin.agregarVista(visMen);
         this.agregarListenersVistaMensaje();
-    }
-    
-    public void agregarListenersVistaPrincipal(){
-        this.visPrin.addWindowListener(new WindowAdapter(){
-            @Override
-            public void windowClosing(WindowEvent e){
-                mostrarMensajeSalir();
-            }
-        });
     }
 
     public VistaPrincipal getVisPrin() {

@@ -6,14 +6,13 @@
 package Vistas;
 
 import Otros.PanelImagen;
-import java.awt.Color;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
+import Otros.VistaPersonalizada;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaCambioTurno extends javax.swing.JInternalFrame {
+public class SubVistaCambioTurno extends VistaPersonalizada {
 
     /**
      * Creates new form SubVistaCambioTurno
@@ -21,13 +20,6 @@ public class SubVistaCambioTurno extends javax.swing.JInternalFrame {
      */
     public SubVistaCambioTurno(int turno) {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setLayout(null);
-        this.setBorder(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));   
         
         PanelImagen panelAnimacion = new PanelImagen("/Imagenes/Otros/turno_j" + (turno + 1) + ".gif");
         this.add(panelAnimacion);

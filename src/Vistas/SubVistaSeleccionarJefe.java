@@ -7,21 +7,20 @@ package Vistas;
 
 import Modelos.JefeDeTerreno;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.ContenedorScroll;
 import Otros.PanelImagen;
-import java.awt.Color;
+import Otros.VistaPersonalizada;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
-import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaSeleccionarJefe extends JInternalFrame {
+public class SubVistaSeleccionarJefe extends VistaPersonalizada {
     private final ArrayList<BotonImagen> panelesJefes;
     private final ArrayList<JefeDeTerreno> jefes;
     private final JScrollPane contenedor;
@@ -30,15 +29,9 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         
     /**
      * Inicializa una nueva instancia de esta vista.
-     * @param fuente Fuente que se utilizará en esta vista.
      */
-    public SubVistaSeleccionarJefe(Font fuente) {
+    public SubVistaSeleccionarJefe() {
         initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
         
         this.panelesJefes = new ArrayList();
         
@@ -65,14 +58,13 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         for (JefeDeTerreno jefe: jefes){
             fila = columna == 0 ? ++fila : fila;
             
-            BotonImagen marcoJefe = new BotonImagen("/Imagenes/vacio.png");
+            BotonImagen marcoJefe = new BotonImagen(Constantes.BTN_MARCO);
             this.contenedorJefes.add(marcoJefe);
             marcoJefe.setSize(LADO + MARCO, LADO + MARCO);
-            marcoJefe.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
             marcoJefe.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
             
-            PanelImagen iconoJefe = new PanelImagen("/Imagenes/Jefes/"
-                    + jefe.getNomArchivoImagen() + ".png");
+            PanelImagen iconoJefe = new PanelImagen(Constantes.RUTA_JEFES
+                    + jefe.getNomArchivoImagen() + Constantes.EXT1);
             this.contenedorJefes.add(iconoJefe);
             iconoJefe.setSize(LADO, LADO);
             iconoJefe.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
@@ -84,11 +76,9 @@ public class SubVistaSeleccionarJefe extends JInternalFrame {
         
         this.contenedorJefes.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
         
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 18));
+        this.titulo.setFont(Constantes.FUENTE_18PX);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_3.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_3);
     }
 
     /**

@@ -6,20 +6,19 @@
 package Controladores;
 
 import Modelos.Dado;
+import Modelos.PuzzleDeDados;
 import Modelos.Usuario;
-import ModelosDAO.PuzzleDeDadosDAO;
 import Otros.BotonCheckImagen;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaModificarPuzzle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
 /**
  *
  * @author mam28
  */
-public class ControladorModificarPuzzle {
+public final class ControladorModificarPuzzle {
     private final ControladorPrincipal contPrin;
     private final VistaModificarPuzzle visModPuzz;
     private final Usuario usuario;
@@ -27,7 +26,7 @@ public class ControladorModificarPuzzle {
     public ControladorModificarPuzzle(ControladorPrincipal contPrin, Usuario usuario){
         this.contPrin = contPrin;
         
-        this.visModPuzz = new VistaModificarPuzzle(contPrin.getFuente(), usuario.getDados());
+        this.visModPuzz = new VistaModificarPuzzle(usuario.getDados());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visModPuzz);
         
         this.usuario = usuario;
@@ -102,18 +101,17 @@ public class ControladorModificarPuzzle {
     }
     
     public void guardarCambios(){
-        try {
-            PuzzleDeDadosDAO.actualizarPuzzleJugador(usuario.getId(), visModPuzz.getPuzzleModificado());
+        if(PuzzleDeDados.actualizarPuzzleJugador(usuario.getId(), visModPuzz.getPuzzleModificado())){
             this.visModPuzz.puzzleGuardado();
             this.mostrarMensaje("Se han guardado los cambios.");
-        } catch (SQLException ex) {
-            this.mostrarMensaje("Ocurrió un error al guardar. Inténtalo nuevamente.");
+        }else{
+            this.mostrarMensaje("Ha ocurrido un error. Inténtalo nuevamente.");
         }
     }
     
     public void mostrarMensaje(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo("<html><center>" + mensaje + "</center></html>",
-                "Aceptar", this.contPrin.getFuente());
+                "Aceptar");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
     }

@@ -10,7 +10,6 @@ import Modelos.Jugador;
 import Modelos.Usuario;
 import ModelosDAO.JugadorDAO;
 import Otros.BotonImagen;
-import Otros.PanelImagen;
 import Vistas.SubVistaCambiarJugador;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaResumenJugador;
@@ -26,7 +25,7 @@ import java.util.Random;
  *
  * @author mam28
  */
-public class ControladorNuevaPartida {
+public final class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
     private final VistaNuevaPartida visNuePar;
     private final ArrayList<Jugador> jugadores;
@@ -35,7 +34,7 @@ public class ControladorNuevaPartida {
     ControladorNuevaPartida(ControladorPrincipal contPrin) {
         this.contPrin = contPrin;
                        
-        this.visNuePar = new VistaNuevaPartida(this.contPrin.getFuente());
+        this.visNuePar = new VistaNuevaPartida();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar);
         this.agregarListenersVistaNuevaPartida();
         
@@ -107,7 +106,7 @@ public class ControladorNuevaPartida {
     public void agregarJugador(Jugador jug){
         if(this.jugadores.size() < 4){
             this.jugadores.add(jug);
-            SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jug, this.contPrin.getFuente());
+            SubVistaResumenJugador visInfoJug = new SubVistaResumenJugador(jug);
             this.visNuePar.agregarVisResJug(visInfoJug);
             this.visNuePar.add(visInfoJug, 0);
             visInfoJug.setName(String.valueOf(this.jugadores.size() - 1));
@@ -209,7 +208,7 @@ public class ControladorNuevaPartida {
      */
     public void mostrarMensaje(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
+                "<html><center>" +mensaje + "</center></html>", "Aceptar");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
     }
@@ -336,7 +335,7 @@ public class ControladorNuevaPartida {
      * @param quienCambia Índice del jugador que cambia en la partida.
      */
     public void crearVistaCambiarJugador(SubVistaResumenJugador quienCambia){
-        this.visNuePar.setVisCamJug(new SubVistaCambiarJugador(this.contPrin.getFuente(), this.jugadores));
+        this.visNuePar.setVisCamJug(new SubVistaCambiarJugador(this.jugadores));
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visNuePar.getVisCamJug());
         
         for(int i = 0; i < this.visNuePar.getVisCamJug().getIconosJugadores().size(); i++){

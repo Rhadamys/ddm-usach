@@ -24,15 +24,11 @@ public final class ControladorMenuPrincipal {
     public ControladorMenuPrincipal(ControladorPrincipal contPrin){
         this.contPrin = contPrin;
         
-        this.visMenuPrin = new VistaMenuPrincipal(
-                this.contPrin.getFuente(),
-                this.contPrin.getUsuarioActivo());
+        this.visMenuPrin = new VistaMenuPrincipal(this.contPrin.getUsuarioActivo());
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visMenuPrin);
         this.agregarListenersVistaMenuPrincipal();
         
-        this.visMen = new SubVistaCuadroDialogo(
-                "¿Deseas cerrar sesión?",
-                "Si", "No", this.contPrin.getFuente());
+        this.visMen = new SubVistaCuadroDialogo("¿Deseas cerrar sesión?", "Si", "No");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         this.agregarListenersVistaMensaje();
     }
@@ -143,7 +139,7 @@ public final class ControladorMenuPrincipal {
      */
     public void mostrarMensaje(String mensaje){
         SubVistaCuadroDialogo visMen = new SubVistaCuadroDialogo(
-                "<html><center>" +mensaje + "</center></html>", "Aceptar", this.contPrin.getFuente());
+                "<html><center>" +mensaje + "</center></html>", "Aceptar");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
     }

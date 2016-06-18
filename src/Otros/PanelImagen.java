@@ -36,7 +36,7 @@ public class PanelImagen extends JPanel {
         super.paintComponent(g);
     }
     
-    public void setImagen(String imagen){
+    public final void setImagen(String imagen){
         this.imagen = new ImageIcon(getClass().getResource(imagen)).getImage();
         if(imagen.endsWith(".gif")){
             this.imagen.flush();

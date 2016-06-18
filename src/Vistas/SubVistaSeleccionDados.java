@@ -8,20 +8,19 @@ package Vistas;
 import Modelos.Dado;
 import Otros.BotonCheckImagen;
 import Otros.BotonImagen;
+import Otros.Constantes;
 import Otros.ContenedorScroll;
 import Otros.PanelImagen;
-import java.awt.Color;
+import Otros.VistaPersonalizada;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
+public class SubVistaSeleccionDados extends VistaPersonalizada {
     private SubVistaInfoElemento visInfo;
     private final ArrayList<BotonCheckImagen> panelesDados;
     private final ArrayList<Dado> dados;
@@ -32,18 +31,10 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form CompSelDados
-     * @param fuente Fuente que se utilizará en esta vista.
      * @param dados Dados del jugador.
      */
-    public SubVistaSeleccionDados(Font fuente, ArrayList<Dado> dados) {   
-        initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setLayout(null);
-        this.setBorder(null);
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));   
+    public SubVistaSeleccionDados(ArrayList<Dado> dados) {   
+        initComponents(); 
         
         this.panelesDados = new ArrayList();
         this.dados = dados;
@@ -53,13 +44,13 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         this.iconoDado.setSize(150, 150);
         this.iconoDado.setLocation(90, 375);
         
-        this.L1.setFont(fuente);
-        this.L2.setFont(fuente);
-        this.L3.setFont(fuente);
-        this.nivel.setFont(fuente);
-        this.nombreCriatura.setFont(fuente);
-        this.cantidadDados.setFont(fuente);
-        this.titulo.setFont(new Font(fuente.getName(), Font.TRUETYPE_FONT, 18));
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
+        this.nivel.setFont(Constantes.FUENTE_14PX);
+        this.nombreCriatura.setFont(Constantes.FUENTE_14PX);
+        this.cantidadDados.setFont(Constantes.FUENTE_14PX);
+        this.titulo.setFont(Constantes.FUENTE_18PX);
         
         this.nivel.setText("");
         this.nombreCriatura.setText("");
@@ -75,50 +66,41 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
         this.contenedor.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.contenedor.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        final int N_COLUMNAS = 4;
-        final int LADO = 100;
-        final int SEP = (this.contenedor.getWidth() - N_COLUMNAS * LADO) / (N_COLUMNAS + 1);
-        final int MARCO = 20;
+        final int nColumnas = 4;
+        final int lado = Constantes.LADO;
+        final int sep = (this.contenedor.getWidth() - nColumnas * lado) / (nColumnas + 1);
+        final int marco = Constantes.MARCO;
         int columna = 0;
         int fila = -1;
         
         for (Dado dado: dados){
             fila = columna == 0 ? ++fila : fila;
             
-            BotonCheckImagen marcoDado = new BotonCheckImagen("/Imagenes/vacio.png");
+            BotonCheckImagen marcoDado = new BotonCheckImagen(Constantes.BTN_MARCO);
             this.contenedorDados.add(marcoDado);
-            marcoDado.setSize(LADO + MARCO, LADO + MARCO);
-            marcoDado.setImagenSobre("/Imagenes/Otros/marco_seleccion.png");
-            marcoDado.setImagenSelNormal("/Imagenes/Otros/marco_seleccion.png");
-            marcoDado.setImagenSelSobre("/Imagenes/Otros/marco_seleccion.png");
-            marcoDado.setLocation((SEP + LADO) * columna + SEP - MARCO / 2, (SEP + LADO) * fila + SEP - MARCO / 2);
+            marcoDado.setSize(lado + marco, lado + marco);
+            marcoDado.setLocation((sep + lado) * columna + sep - marco / 2, (sep + lado) * fila + sep - marco / 2);
             
-            PanelImagen iconoCriatura = new PanelImagen("/Imagenes/Criaturas/"
-                    + dado.getCriatura().getNomArchivoImagen() + ".png");
+            PanelImagen iconoCriatura = new PanelImagen(Constantes.RUTA_CRIATURAS
+                    + dado.getCriatura().getNomArchivoImagen() + Constantes.EXT1);
             this.contenedorDados.add(iconoCriatura);
-            iconoCriatura.setSize(LADO, LADO);
-            iconoCriatura.setLocation((SEP + LADO) * columna + SEP, (SEP + LADO) * fila + SEP);
+            iconoCriatura.setSize(lado, lado);
+            iconoCriatura.setLocation((sep + lado) * columna + sep, (sep + lado) * fila + sep);
             
             panelesDados.add(marcoDado);
 
-            columna = columna == (N_COLUMNAS - 1)? 0: ++columna;
+            columna = columna == (nColumnas - 1)? 0: ++columna;
         }
         
-        this.contenedorDados.setPreferredSize(new Dimension(640, (LADO + SEP) * (fila + 1) + SEP));
+        this.contenedorDados.setPreferredSize(new Dimension(640, (lado + sep) * (fila + 1) + sep));
         
-        this.lanzarDados = new BotonImagen("/Imagenes/Botones/boton.png");
+        this.lanzarDados = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(lanzarDados);
         this.lanzarDados.setText("Lanzar dados");
-        this.lanzarDados.setFont(fuente);
-        this.lanzarDados.setForeground(Color.white);
         this.lanzarDados.setSize(200, 50);
         this.lanzarDados.setLocation(480, 455);
-        this.lanzarDados.setImagenSobre("/Imagenes/Botones/boton_sobre.png");
-        this.lanzarDados.setImagenPresionado("/Imagenes/Botones/boton_presionado.png");
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/Fondos/fondo_seleccion_2.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo(Constantes.FONDO_SELECCION_2);
     }
 
     /**
@@ -230,9 +212,9 @@ public class SubVistaSeleccionDados extends javax.swing.JInternalFrame {
     
     public int cantidadSeleccionados(){
         int seleccionados = 0;
-        for(int i = 0; i < panelesDados.size(); i++){
-            if(panelesDados.get(i).isSelected()){
-                seleccionados += 1;
+        for(BotonCheckImagen panelDado: panelesDados){
+            if(panelDado.isSelected()){
+                seleccionados++;
             }
         }
         return seleccionados;

@@ -94,6 +94,16 @@ public abstract class Jugador {
     public void agregarDado(Dado dado){
         this.puzzle.agregarDado(dado);
     }
+    
+    public int cantidadDadosDisponibles(){
+        int cantidadDados = 0;
+        for(Dado dado: this.puzzle.getDados()){
+            if(dado.isParaLanzar()){
+                cantidadDados++;
+            }
+        }
+        return cantidadDados;
+    }
 
     public String getNombreJugador() {
         return nombreJugador;

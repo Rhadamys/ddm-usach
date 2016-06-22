@@ -343,14 +343,18 @@ public class Tablero {
      */
     public boolean estaConectadoAlTerreno(int[][] idxCasillas, int jugador){
         for(int[] coord: idxCasillas){
-            for(int[] vecino: getIdxVecinos(this.getPosicion(coord[0], coord[1]))){
-                try{
-                    if(this.posiciones[vecino[0]][vecino[1]].getDueno() == jugador){
-                       return true;
+            try{
+                for(int[] vecino: getIdxVecinos(this.getPosicion(coord[0], coord[1]))){
+                    try{
+                        if(this.posiciones[vecino[0]][vecino[1]].getDueno() == jugador){
+                           return true;
+                        }
+                    }catch(Exception e){
+                        // Nada
                     }
-                }catch(Exception e){
-                    // Nada
                 }
+            }catch(Exception e){
+                // Nada
             }
         }
         

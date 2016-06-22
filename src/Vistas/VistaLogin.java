@@ -11,7 +11,6 @@ import Otros.CajaTextoImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
-import java.awt.Color;
 import javax.swing.JLabel;
 
 /**

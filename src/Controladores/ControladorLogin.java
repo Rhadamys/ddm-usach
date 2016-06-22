@@ -6,6 +6,8 @@
 package Controladores;
 
 import Modelos.Usuario;
+import Otros.Constantes;
+import Otros.Reproductor;
 import Vistas.VistaLogin;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -31,6 +33,8 @@ public final class ControladorLogin {
         this.visLog = new VistaLogin();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visLog);
         this.agregarListenersVistaLogin();
+        
+        Reproductor.reproducir(Constantes.M_LOGIN);
     }
     
     /**
@@ -45,7 +49,7 @@ public final class ControladorLogin {
         this.visLog.getRegistrarse().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Registrarse".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 registrarse();
             }
         });
@@ -57,7 +61,7 @@ public final class ControladorLogin {
         this.visLog.getIngresar().addMouseListener(new MouseAdapter(){
             // Cuando se presione el botón de "Ingresar"
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 // Se inicia el proceso de login
                 iniciarSesion(visLog.getUsuario(), visLog.getPass());
             }
@@ -96,7 +100,7 @@ public final class ControladorLogin {
         this.visLog.getSalir().addMouseListener(new MouseAdapter(){
             // Cuando se presione el botón de "Ingresar"
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 contPrin.getContVisPrin().mostrarMensajeSalir();
             }
         });

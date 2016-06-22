@@ -5,6 +5,7 @@
  */
 package Controladores;
 
+import Otros.Reproductor;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaPrincipal;
 import java.awt.event.MouseAdapter;
@@ -43,20 +44,21 @@ public final class ControladorVistaPrincipal {
     }
     
     public void salir(){
+        Reproductor.finalizarReproductor();
         this.contPrin.getContVisPrin().getVisPrin().dispose();
     }
     
     public void agregarListenersVistaMensaje() {
         this.visMen.getBoton1().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 salir();
             }
         });
         
         this.visMen.getBoton2().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 visMen.setVisible(false);
             }
         });

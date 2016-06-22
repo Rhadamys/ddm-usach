@@ -53,6 +53,17 @@ public class Turno {
     public int[] getResultadoLanzamiento() {
         return resultadoLanzamiento;
     }
+    
+    public int cantidadCarasInvocacion(){
+        int cantidadInvocacion = 0;
+        for(int cara: this.getResultadoLanzamiento()){
+            if(cara == 2){
+                cantidadInvocacion++;
+            }
+        }
+        
+        return cantidadInvocacion;
+    }
 
     public int getPuntosAtaque() {
         return puntosAtaque;

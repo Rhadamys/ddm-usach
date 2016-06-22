@@ -10,6 +10,8 @@ import Modelos.Jugador;
 import Modelos.Usuario;
 import ModelosDAO.JugadorDAO;
 import Otros.BotonImagen;
+import Otros.Constantes;
+import Otros.Reproductor;
 import Vistas.SubVistaCambiarJugador;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaResumenJugador;
@@ -43,6 +45,8 @@ public final class ControladorNuevaPartida {
         
         this.agregarJugador((Jugador) this.contPrin.getUsuarioActivo());
         this.agregarJugador(this.obtenerJugadorAleatorio());
+        
+        Reproductor.reproducir(Constantes.M_NUEVA_PARTIDA);
     }
     
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista de nueva partida">  
@@ -54,7 +58,7 @@ public final class ControladorNuevaPartida {
     public void agregarListenersVistaNuevaPartida(){
         this.visNuePar.getAgregar().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 if(restanJugadores()){
                     agregarJugador(obtenerJugadorAleatorio());
                 }else{
@@ -65,28 +69,28 @@ public final class ControladorNuevaPartida {
         
         this.visNuePar.getEnEquipos().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 enEquipos();
             }
         });
         
         this.visNuePar.getVolver().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 volver();
             }
         });
         
         this.visNuePar.getRegistrar().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 registrarJugador();
             }
         });
         
         this.visNuePar.getComenzar().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 comenzarPartida();
             }
         });
@@ -225,7 +229,7 @@ public final class ControladorNuevaPartida {
     public void agregarListenersVistaInfoJugador(SubVistaResumenJugador visInfoJug){
         visInfoJug.getCambiarJugador().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 if(restanJugadores()){
                     crearVistaCambiarJugador((SubVistaResumenJugador) e.getComponent().getParent());
                 }else{
@@ -236,14 +240,14 @@ public final class ControladorNuevaPartida {
         
         visInfoJug.getEliminar().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 eliminarJugador(Integer.parseInt(e.getComponent().getParent().getName()));
             }
         });
         
         visInfoJug.getModificarPuzle().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 modificarPuzzle(Integer.parseInt(e.getComponent().getParent().getName()));
             }
         });
@@ -277,7 +281,7 @@ public final class ControladorNuevaPartida {
     public void agregarListenersVistaSeleccionEquipos(int i){
         this.visNuePar.getVisSelEq().getIconosJugadores().get(i).addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 visNuePar.getVisSelEq().cambiarEquipo(e.getComponent());
             }
         });
@@ -353,7 +357,7 @@ public final class ControladorNuevaPartida {
     public void agregarListenersVistaCambiarJugador(int i){
         this.visNuePar.getVisCamJug().getIconosJugadores().get(i).addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 cambiarJugador(Integer.parseInt(
                         visNuePar.getVisCamJug().getName()),
                         visNuePar.getVisCamJug().getIconosJugadores().indexOf((BotonImagen) e.getComponent()));
@@ -373,7 +377,7 @@ public final class ControladorNuevaPartida {
         
         this.visNuePar.getVisCamJug().getVolver().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 visNuePar.getVisCamJug().dispose();
             }
         });

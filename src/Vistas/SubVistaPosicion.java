@@ -8,6 +8,8 @@ package Vistas;
 import Otros.BotonCheckImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -58,5 +60,9 @@ public class SubVistaPosicion extends BotonCheckImagen {
     
     public void setImagenElemento(String imagen){
         this.iconoElemento.setImagen(imagen);
+    }
+    
+    public void parpadearIcono(){
+        this.iconoElemento.setVisible(!this.iconoElemento.isVisible());
     }
 }

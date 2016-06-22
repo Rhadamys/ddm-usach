@@ -5,7 +5,9 @@
  */
 package Vistas;
 
+import Otros.Constantes;
 import Otros.PanelImagen;
+import Otros.Reproductor;
 import Otros.VistaPersonalizada;
 
 /**
@@ -26,9 +28,9 @@ public class SubVistaCambioTurno extends VistaPersonalizada {
         panelAnimacion.setSize(800, 200);
         panelAnimacion.setLocation(0, 200);
         
-        PanelImagen panelFondo = new PanelImagen("/Imagenes/vacio_oscuro.png");
-        this.add(panelFondo);
-        panelFondo.setSize(this.getSize());
+        this.setImagenFondo("/Imagenes/vacio_oscuro.png");
+        
+        Reproductor.reproducirEfecto(Constantes.CAMBIO_TURNO);
     }
 
     /**

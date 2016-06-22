@@ -9,6 +9,7 @@ import Modelos.Dado;
 import Otros.BotonImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
+import Otros.Reproductor;
 import Otros.VistaPersonalizada;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -66,13 +67,25 @@ public class SubVistaLanzamientoDados extends VistaPersonalizada {
             int tic = 0;
             
             @Override
-            public void run(){                
-                acumularPuntos.setVisible(true);
-                realizarAcciones.setVisible(true);
-                vista.repaint();
-                timer.cancel();
+            public void run(){     
+                switch (tic) {
+                    case 5:
+                        Reproductor.reproducirEfecto(Constantes.DADOS_SUBIENDO);
+                        break;
+                    case 25:
+                    case 30:
+                        Reproductor.reproducirEfecto(Constantes.CAE_DADO);
+                        break;
+                    case 34:
+                        acumularPuntos.setVisible(true);
+                        realizarAcciones.setVisible(true);
+                        vista.repaint();
+                        timer.cancel();
+                        break;
+                }
+                tic++;
             }            
-        }, 3500, 1);
+        }, 0, 100);
     }
 
     /**

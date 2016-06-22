@@ -27,8 +27,8 @@ public class SubVistaMagiasActivadas extends PanelImagen {
         initComponents();
         
         this.setLayout(null);
-        this.setSize(70, 160);
-        this.setLocation(0,230);
+        this.setSize(120, 40);
+        this.setLocation(160, 5);
         this.setBorder(null);
         
         this.panelesMagias = new ArrayList();
@@ -39,19 +39,19 @@ public class SubVistaMagiasActivadas extends PanelImagen {
         this.nombresMagias[1] = "Hierbas venenosas";
         this.nombresMagias[2] = "Meteoritos de fuego";
         
-        int[][] posPanelesMagias = {{10, 15}, {10, 60}, {10, 105}};
+        int[][] posPanelesMagias = {{10, 5}, {45, 5}, {80, 5}};
         for(int i = 0; i < 3; i++){            
             JLabel turnosRestantes = new JLabel("0");
             this.add(turnosRestantes);
             turnosRestantes.setForeground(Color.white);
             turnosRestantes.setFont(Constantes.FUENTE_14PX);
-            turnosRestantes.setLocation(40, posPanelesMagias[i][1]);
+            turnosRestantes.setLocation(posPanelesMagias[i][0] + 25, 5);
             turnosRestantes.setSize(10, 10);
             turnosRestantes.setBackground(Color.darkGray);
             
             PanelImagen panelMagia = new PanelImagen(Constantes.RUTA_OTROS + "/magia_" + (i+1) + Constantes.EXT1);
             this.add(panelMagia);
-            panelMagia.setSize(40, 40);
+            panelMagia.setSize(30, 30);
             panelMagia.setLocation(posPanelesMagias[i][0], posPanelesMagias[i][1]);
             panelMagia.setToolTipText("<html><b>" + nombresMagias[i] + "</b><br>No está activada.");
             
@@ -59,7 +59,7 @@ public class SubVistaMagiasActivadas extends PanelImagen {
             etiquetasTurRes.add(turnosRestantes);
         }
         
-        this.setImagen(Constantes.FONDO_MAGIAS_ACTIVADAS);
+        this.setImagen(Constantes.VACIO_CAFE);
     }
 
     /**

@@ -8,6 +8,7 @@ package Controladores;
 import Modelos.Jugador;
 import Modelos.Usuario;
 import Otros.Constantes;
+import Otros.Reproductor;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -29,13 +30,13 @@ public class ControladorPrincipal {
     private ControladorModificarPuzzle contModPuzz;
     private ControladorBatalla contBat;
     private Usuario usuarioActivo;
-    private Font fuente;
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here        
+        Reproductor.agregarListener();
+        
         // Instancia a este controlador
         ControladorPrincipal contPrin = new ControladorPrincipal();
         contPrin.elementosPersonalizados();

@@ -6,6 +6,8 @@
 package Controladores;
 
 import Modelos.Dado;
+import Otros.Constantes;
+import Otros.Reproductor;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaMenuPrincipal;
 import java.awt.event.MouseAdapter;
@@ -31,6 +33,8 @@ public final class ControladorMenuPrincipal {
         this.visMen = new SubVistaCuadroDialogo("¿Deseas cerrar sesión?", "Si", "No");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         this.agregarListenersVistaMensaje();
+        
+        Reproductor.reproducir(Constantes.M_MENU_PRINCIPAL);
     }
 
     public VistaMenuPrincipal getVisMenuPrin() {
@@ -45,7 +49,7 @@ public final class ControladorMenuPrincipal {
         this.visMenuPrin.getNuevaPartida().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 nuevaPartida();
             }
         });
@@ -53,7 +57,7 @@ public final class ControladorMenuPrincipal {
         this.visMenuPrin.getModificarPuzzle().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 if(sePuedeMoficiarPuzzle(contPrin.getUsuarioActivo().getDados())){
                     modificarPuzzle();
                 }else{
@@ -65,7 +69,7 @@ public final class ControladorMenuPrincipal {
         this.visMenuPrin.getSalir().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 contPrin.getContVisPrin().mostrarMensajeSalir();
             }
         });
@@ -73,7 +77,7 @@ public final class ControladorMenuPrincipal {
         this.visMenuPrin.getCerrarSesion().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 mostrarMensajeLogOut();
             }
         });
@@ -82,14 +86,14 @@ public final class ControladorMenuPrincipal {
     public void agregarListenersVistaMensaje(){
         this.visMen.getBoton1().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 logOut();
             }
         });
         
         this.visMen.getBoton2().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 visMen.setVisible(false);
             }
         });

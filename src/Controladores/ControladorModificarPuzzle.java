@@ -48,7 +48,7 @@ public final class ControladorModificarPuzzle {
         for(int i = 0; i < this.visModPuzz.cantidadDadosPuzzle(); i++){
             this.visModPuzz.getPanelDadoPuzzle(i).addMouseListener(new MouseAdapter(){
                 @Override
-                public void mouseClicked(MouseEvent e){
+                public void mouseReleased(MouseEvent e){
                     visModPuzz.verificarPanelDadoPuzzle((BotonCheckImagen) e.getComponent());
                 }
             });
@@ -59,7 +59,7 @@ public final class ControladorModificarPuzzle {
         for(int i = 0; i < this.visModPuzz.cantidadDadosNoEnPuzzle(); i++){
             this.visModPuzz.getPanelDadoNoEnPuzzle(i).addMouseListener(new MouseAdapter(){
                 @Override
-                public void mouseClicked(MouseEvent e){
+                public void mouseReleased(MouseEvent e){
                     visModPuzz.verificarPanelDadoNoEnPuzzle((BotonCheckImagen) e.getComponent());
                 }
             });
@@ -69,7 +69,7 @@ public final class ControladorModificarPuzzle {
     public void agregarListenersVistaModificarPuzzle(){
         this.visModPuzz.getIntercambiarDados().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 if(sePuedenIntercambiar()){
                     visModPuzz.intercambiarDados();
                 }else{
@@ -80,14 +80,14 @@ public final class ControladorModificarPuzzle {
         
         this.visModPuzz.getGuardarCambios().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 guardarCambios();
             }
         });
         
         this.visModPuzz.getVolver().addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 eliminarVistaModificarPuzle();
             }
         });

@@ -196,6 +196,7 @@ public final class BotonImagen extends JButton implements MouseListener, ChangeL
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        Reproductor.reproducirEfecto(Constantes.CLICK);
         if(e.getX() > 0 && e.getX() < e.getComponent().getWidth() &&
            e.getY() > 0 && e.getY() < e.getComponent().getHeight()){
             if(isEnabled()){

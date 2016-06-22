@@ -33,7 +33,7 @@ public class VistaBatalla extends VistaPersonalizada {
     private SubVistaCriaturaRevivir visCriRev;
     private SubVistaSeleccionMagia visSelMag;
     private final SubVistaMagiasActivadas visMagAc;
-    private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 405}, {655, 405}};
+    private final int[][] posInfoJug = {{5, 5}, {655, 5}, {5, 345}, {655, 345}};
     
     /**
      * Creates new form VistaBatalla
@@ -74,7 +74,7 @@ public class VistaBatalla extends VistaPersonalizada {
         this.movimiento.setLocation(290, 560);
         this.trampa.setLocation(330, 560);
         this.pausa.setLocation(600, 560);
-        this.terminarTurno.setLocation(370, 560);
+        this.terminarTurno.setLocation(450, 560);
         
         this.ataque.setEnabled(false);
         this.invocacion.setEnabled(false);
@@ -105,18 +105,16 @@ public class VistaBatalla extends VistaPersonalizada {
         mensaje = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
-        setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(null);
 
         mensaje.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         mensaje.setForeground(new java.awt.Color(255, 255, 255));
         mensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mensaje.setText("Mensaje");
         getContentPane().add(mensaje);
-        mensaje.setBounds(180, 0, 450, 50);
+        mensaje.setBounds(280, 0, 360, 50);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

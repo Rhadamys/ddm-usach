@@ -173,6 +173,7 @@ public class BotonCheckImagen extends JToggleButton implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        Reproductor.reproducirEfecto(Constantes.CLICK);
         if(e.getX() > 0 && e.getX() < getWidth() &&
            e.getY() > 0 && e.getY() < getHeight()){
             if(isSelected()){

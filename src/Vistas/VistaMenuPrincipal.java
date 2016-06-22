@@ -23,6 +23,7 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
     private final BotonImagen nuevaPartida;
     private final BotonImagen nuevoTorneo;
     private final BotonImagen modificarPuzzle;
+    private final BotonImagen infoDelJuego;
     private final BotonImagen salir;
     private final BotonImagen cerrarSesion;
     
@@ -36,16 +37,17 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
         this.nuevaPartida = new BotonImagen(Constantes.BTN_NUEVA_PARTIDA);
         this.nuevoTorneo = new BotonImagen(Constantes.BTN_NUEVO_TORNEO);
         this.modificarPuzzle = new BotonImagen(Constantes.BTN_MODIFICAR_PUZZLE);
+        this.infoDelJuego = new BotonImagen(Constantes.BTN_MODIFICAR_PUZZLE);
         this.salir = new BotonImagen(Constantes.BTN_SALIR);
         
-        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, modificarPuzzle, salir};
+        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, modificarPuzzle, infoDelJuego, salir};
         
-        final int ANCHO = 160;
+        final int ANCHO = 140;
         final int ALTO = ANCHO * 160 / 100;
         final int CANTIDAD = botones.length;
         final int SEP = (this.getWidth() - ANCHO * CANTIDAD) / (CANTIDAD + 1);
         
-        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Modificar puzzle", "Salir"};
+        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Modificar puzzle", "Información del juego", "Salir"};
         
         for (int i = 0; i < CANTIDAD; i ++){
             final int index = i;
@@ -119,25 +121,23 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
         mensajeBienvenida = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(102, 102, 102));
-        setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(null);
 
         mensaje.setFont(new java.awt.Font("Consolas", 0, 36)); // NOI18N
         mensaje.setForeground(new java.awt.Color(255, 255, 255));
         mensaje.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         mensaje.setText("Mensaje");
         getContentPane().add(mensaje);
-        mensaje.setBounds(410, 540, 360, 40);
+        mensaje.setBounds(40, 550, 730, 40);
 
         mensajeBienvenida.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         mensajeBienvenida.setForeground(new java.awt.Color(255, 255, 255));
         mensajeBienvenida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         mensajeBienvenida.setText("Bienvenida");
         getContentPane().add(mensajeBienvenida);
-        mensajeBienvenida.setBounds(350, 20, 360, 30);
+        mensajeBienvenida.setBounds(180, 20, 530, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

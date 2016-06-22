@@ -13,6 +13,9 @@ import java.awt.Font;
  * @author mam28
  */
 public final class Constantes {
+    // Coordenadas
+    public static final int[][] POS_JUG_TAB = {{7, 0}, {7, 14}, {0, 7}, {14, 7}};
+    
     // Fuentes
     public static Font FUENTE_14PX;
     public static Font FUENTE_18PX;
@@ -140,7 +143,6 @@ public final class Constantes {
     public static final String FONDO_INFO_ELEMENTO = RUTA_FONDOS + "fondo_info_elemento" + EXT1;
     public static final String FONDO_LANZAMIENTO_DADOS = RUTA_FONDOS + "fondo_lanzamiento_dados" + EXT1;
     public static final String FONDO_LOGIN = RUTA_FONDOS + "fondo_login" + EXT1;
-    public static final String FONDO_MAGIAS_ACTIVADAS = RUTA_FONDOS + "fondo_magias_activadas" + EXT1;
     public static final String FONDO_MENU_PAUSA = RUTA_FONDOS + "fondo_menu_pausa" + EXT1;
     public static final String FONDO_MENU_PRINCIPAL = RUTA_FONDOS + "fondo_menu_principal" + EXT1;
     public static final String FONDO_REGISTRO = RUTA_FONDOS + "fondo_registro" + EXT1;
@@ -155,4 +157,36 @@ public final class Constantes {
     public static final String MARCO_SELECCION = RUTA_OTROS + "marco_seleccion" + EXT1;
     public static final String VACIO = RUTA + "vacio" + EXT1;
     public static final String VACIO_GRIS = RUTA + "vacio_oscuro" + EXT1;
+    public static final String VACIO_CAFE = RUTA + "vacio_cafe" + EXT1;
+    
+    //*****************************************************
+    //* Sonidos                                           *
+    //*****************************************************
+    // Rutas
+    public static final String RUTA_EFECTOS = "src/Efectos/";
+    public static final String RUTA_MUSICA = "src/Musica/";
+    
+    // Extensiones
+    public static final String EXT_E = ".wav";
+    public static final String EXT_M = ".mp3";
+    
+    // Música
+    public static final String[] M_LOGIN = {"global_menu"};
+    public static final String[] M_MENU_PRINCIPAL = {"menu"};
+    public static final String[] M_NUEVA_PARTIDA = {"free_duel"};
+    public static final String[] M_BATALLA = {"normal", "forest", "sea", "abstract", "destiny", "technology"};
+    public static final String[] M_GANADOR = {"you_win"};
+    
+    // Efectos
+    public static final String ERROR = RUTA_EFECTOS + "error" + EXT_E;
+    public static final String PASO = RUTA_EFECTOS + "paso" + EXT_E;
+    public static final String CLICK = RUTA_EFECTOS + "click" + EXT_E;
+    public static final String DANIO = RUTA_EFECTOS + "ataque" + EXT_E;
+    public static final String DADOS_SUBIENDO = RUTA_EFECTOS + "dados_subiendo" + EXT_E;
+    public static final String CAE_DADO = RUTA_EFECTOS + "cae_dado" + EXT_E;
+    public static final String CAMBIO_TURNO = RUTA_EFECTOS + "cambio_turno" + EXT_E;
+    public static final String E_MUERE = RUTA_EFECTOS + "muere" + EXT_E;
+    public static final String SELECCION = RUTA_EFECTOS + "seleccion" + EXT_E;
+    public static final String MARCA_CAMINO = RUTA_EFECTOS + "camino" + EXT_E;
+    public static final String E_INVOCACION = RUTA_EFECTOS + "invocacion" + EXT_E;
 }

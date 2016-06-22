@@ -67,7 +67,7 @@ public final class ControladorRegistro {
         this.visReg.getVolver().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el botón "Volver atrás".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 cerrarVistaRegistro(false);
             }
         });
@@ -79,7 +79,7 @@ public final class ControladorRegistro {
         this.visReg.getSeleccionarJefe().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el botón "Seleccionar jefe"
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 // Se muestra la vista de selección de jefe de terreno
                 visSelJef.toFront();
                 visSelJef.setVisible(true);
@@ -93,7 +93,7 @@ public final class ControladorRegistro {
         this.visReg.getRegistrarse().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 // Se inicia el proceso de registro de usuario
                 registrarUsuario(
                             visReg.getUsuario(), 
@@ -125,7 +125,7 @@ public final class ControladorRegistro {
             }
 
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 setJefe((BotonImagen) e.getComponent());
                 visSelJef.setVisible(false);
             }

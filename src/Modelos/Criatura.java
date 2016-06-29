@@ -5,6 +5,10 @@
  ***********************************************************************/
 package Modelos;
 
+import ModelosDAO.CriaturaDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /** @pdOid dae863aa-62cf-47e0-9a47-196272f29518 */
 public class Criatura extends ElementoEnCampo {
     private final int nivel;
@@ -42,6 +46,14 @@ public class Criatura extends ElementoEnCampo {
         this.turnosInmovilizada = 0;
         this.costoMovimiento = 1;
         this.turnosCostoMovInc = 0;
+    }
+    
+    public static ArrayList<Criatura> getCriaturas() {
+        try {
+            return CriaturaDAO.getCriaturas();
+        } catch (SQLException ex) {
+            return null;
+        }
     }
     
     public void reiniciar(int dueno){

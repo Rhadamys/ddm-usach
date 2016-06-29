@@ -104,6 +104,10 @@ public final class BotonImagen extends JButton implements MouseListener, ChangeL
                                                     imgSobre = Constantes.MODIFICAR_PUZZLE_SOBRE;
                                                     imgPresionado = Constantes.MODIFICAR_PUZZLE_PRESIONADO;
                                                     break;
+            case Constantes.BTN_INFO_CRIATURAS: imgNormal = Constantes.INFO_CRIATURAS;
+                                                imgSobre = Constantes.INFO_CRIATURAS_SOBRE;
+                                                imgPresionado = Constantes.INFO_CRIATURAS_PRESIONADO;
+                                                break;
             case Constantes.BTN_SALIR:  imgNormal = Constantes.SALIR;
                                         imgSobre = Constantes.SALIR_SOBRE;
                                         imgPresionado = Constantes.SALIR_PRESIONADO;
@@ -196,10 +200,10 @@ public final class BotonImagen extends JButton implements MouseListener, ChangeL
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        Reproductor.reproducirEfecto(Constantes.CLICK);
         if(e.getX() > 0 && e.getX() < e.getComponent().getWidth() &&
            e.getY() > 0 && e.getY() < e.getComponent().getHeight()){
             if(isEnabled()){
+                Reproductor.reproducirEfecto(Constantes.CLICK);
                 setImagenActual(1);
             }else{
                 setImagenActual(3);

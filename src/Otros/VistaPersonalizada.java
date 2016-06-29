@@ -20,6 +20,8 @@ public class VistaPersonalizada extends JInternalFrame {
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         
         this.setSize(Constantes.TAMANO_VENTANA);
+        this.setPreferredSize(Constantes.TAMANO_VENTANA);
+        this.setMinimumSize(Constantes.TAMANO_VENTANA);
         this.setLayout(null);
         this.setBorder(null);
         this.setOpaque(false);

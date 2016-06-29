@@ -20,6 +20,7 @@ public class PanelImagen extends JPanel {
     public PanelImagen(){
         this.imagen = new ImageIcon(getClass().getResource("/Imagenes/vacio.png")).getImage();
         this.setOpaque(false);
+        this.setLayout(null);
     }
     
     public PanelImagen(String imagen){
@@ -28,6 +29,7 @@ public class PanelImagen extends JPanel {
             this.imagen.flush();
         }
         this.setOpaque(false);
+        this.setLayout(null);
     }
     
     @Override

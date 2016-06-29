@@ -7,17 +7,17 @@ package Vistas;
 
 import Modelos.Jugador;
 import Otros.PanelImagen;
+import Otros.VistaPersonalizada;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
-import javax.swing.JInternalFrame;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author mam28
  */
-public class SubVistaSeleccionEquipos extends JInternalFrame{
+public class SubVistaSeleccionEquipos extends VistaPersonalizada{
     private final PanelImagen marcoIzq;
     private final PanelImagen marcoDer;
     private final PanelImagen equipo1;
@@ -26,12 +26,6 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
     private final ArrayList<PanelImagen> iconosJugadores;
     
     public SubVistaSeleccionEquipos(){
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        
-        this.setOpaque(false);
-        this.setBackground(new Color(0,0,0,0));
-        this.setBorder(null);
-        this.setLayout(null);
         this.setSize(460, 100);
         
         this.marcoIzq = new PanelImagen("/Imagenes/Fondos/marco_e1.png");
@@ -51,8 +45,6 @@ public class SubVistaSeleccionEquipos extends JInternalFrame{
         this.marcoDer.setLocation(410, 0);
         
         this.equipo1.setLocation(50, 0);
-        this.equipo1.setLayout(null);
-        this.equipo2.setLayout(null);
         
         this.jugadores = new ArrayList();
         this.iconosJugadores = new ArrayList();

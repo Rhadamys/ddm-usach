@@ -7,6 +7,7 @@ package Controladores;
 
 import Modelos.Dado;
 import Otros.Constantes;
+import Otros.Registro;
 import Otros.Reproductor;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaMenuPrincipal;
@@ -51,6 +52,14 @@ public final class ControladorMenuPrincipal {
             @Override
             public void mouseReleased(MouseEvent e){
                 nuevaPartida();
+            }
+        });
+        
+        this.visMenuPrin.getInfoCriaturas().addMouseListener(new MouseAdapter(){
+            // Cuando se haga clic sobre el label "Volver atrÃ¡s".
+            @Override
+            public void mouseReleased(MouseEvent e){
+                infoDelJuego();
             }
         });
         
@@ -115,9 +124,19 @@ public final class ControladorMenuPrincipal {
         this.contPrin.crearControladorNuevaPartida();
         this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
         eliminarVistaMenuPrincipal();
+        
+        Registro.registrarAccion(Registro.NUEVA_PARTIDA, null);
+    }
+    
+    public void infoDelJuego() {
+        this.contPrin.crearControladorInfoCriaturas();
+        this.contPrin.getContInfo().mostrarVistaInfoCriaturas();
+        eliminarVistaMenuPrincipal();
     }
     
     public void logOut(){
+        Registro.registrarAccion(Registro.LOGOUT, contPrin.getUsuarioActivo().getNombreJugador());
+        
         this.contPrin.crearControladorLogin();
         this.contPrin.getContLog().mostrarVistaLogin();
         this.contPrin.setUsuarioActivo(null);

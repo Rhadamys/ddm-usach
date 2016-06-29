@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Tablero {
     private final ArrayList<Jugador> perdedores;
-    private ArrayList<Jugador> jugadores;
+    private final ArrayList<Jugador> jugadores;
     private final Posicion[][] posiciones;
     private int turnoActual;
     private final int[] ordenTurnos;
@@ -47,7 +47,8 @@ public class Tablero {
         
         for(int i = 0; i < this.ordenTurnos.length; i++){
             this.ordenTurnos[i] = orden.get(i);
-        }        
+        }       
+        
     }
     
     /**
@@ -94,7 +95,7 @@ public class Tablero {
     public void cambiarTurno(){
         do{
             this.turnoActual = turnoActual == this.jugadores.size() - 1 ? 0 : this.turnoActual + 1;
-        }while(this.perdedores.contains(this.getJugadorActual()));
+        }while(this.estaEnPerdedores(this.getJugadorActual()));
     }
         
     /**
@@ -338,15 +339,15 @@ public class Tablero {
      * Comprueba que la posición actual del despliegue esté conectada al terreno
      * del jugador.
      * @param idxCasillas Índices de las posiciones en el tablero que conforman el despliegue.
-     * @param jugador Jugador que está intentando invocar.
+     * @param numJug Jugador que está intentando invocar.
      * @return Verdadero o falso indicando si está conectado al terreno.
      */
-    public boolean estaConectadoAlTerreno(int[][] idxCasillas, int jugador){
+    public boolean estaConectadoAlTerreno(int[][] idxCasillas, int numJug){
         for(int[] coord: idxCasillas){
             try{
                 for(int[] vecino: getIdxVecinos(this.getPosicion(coord[0], coord[1]))){
                     try{
-                        if(this.posiciones[vecino[0]][vecino[1]].getDueno() == jugador){
+                        if(this.posiciones[vecino[0]][vecino[1]].getDueno() == numJug){
                            return true;
                         }
                     }catch(Exception e){
@@ -355,6 +356,24 @@ public class Tablero {
                 }
             }catch(Exception e){
                 // Nada
+            }
+        }
+        
+        return false;
+    }
+    
+    public boolean estaConectadoAlTerrenoDeOtros(){
+        for(Posicion posJug: this.getJugadorActual().getTerreno().getPosiciones()){
+            for(int[] coord: this.getIdxVecinos(posJug)){
+                try{
+                    Posicion posAct = this.getPosicion(coord[0], coord[1]);
+                    if(posAct.getDueno() != 0 &&
+                            posAct.getDueno() != this.getJugadorActual().getNumJug()){
+                        return true;
+                    }
+                }catch(Exception e){
+                    // Nada
+                }
             }
         }
         
@@ -373,7 +392,7 @@ public class Tablero {
                     return false;
                 }
             }catch(Exception e){
-                // Nada
+                return false;
             }
         }
         
@@ -383,51 +402,51 @@ public class Tablero {
     /**
      * Asigna una casilla a un jugador y la agrega a su terreno.
      * @param idxCasilla
-     * @param jugador 
+     * @param numJug 
      */
-    public void asignarPosicion(int[] idxCasilla, int jugador){
-        this.posiciones[idxCasilla[0]][idxCasilla[1]].setDueno(jugador);
-    }
-    
-    public int cantidadCriaturasInvocadas(int numJug){
-        int cantidadCriaturas = 0;
-        for(int i = 0; i < 15; i++){
-            for(int j = 0; j < 15; j++){
-                Posicion posAct = this.posiciones[i][j];
-                if(posAct.getElemento() instanceof Criatura &&
-                   posAct.getElemento().getDueno() == numJug){
-                    cantidadCriaturas++;
-                }
-            }
-        }
-        return cantidadCriaturas;
+    public void asignarPosicion(int[] idxCasilla, int numJug){
+        Posicion posicion = this.posiciones[idxCasilla[0]][idxCasilla[1]];
+        posicion.setDueno(numJug);
+        this.getJugador(numJug - 1).getTerreno().agregarPosicion(posicion);
     }
     
     public int cantidadJugadoresTienenCriaturas(){
         int cantidadJugadoresTienenCriaturas = 0;
-        for(int i = 0; i < jugadores.size(); i++){
-            if(!perdedores.contains(jugadores.get(i))){
-                if(cantidadCriaturasInvocadas(i+1) > 0){
+        for(Jugador jugador: this.jugadores){
+            if(!estaEnPerdedores(jugador) && cantidadCriaturasInvocadas(jugador.getNumJug()) > 0){
                     cantidadJugadoresTienenCriaturas++;
-                }
             }
         }
         return cantidadJugadoresTienenCriaturas;
     }
     
+    public int cantidadCriaturasInvocadas(int numJug){
+        int cantidadCriaturas = 0;
+        for(Jugador jugador: this.jugadores){
+            cantidadCriaturas += jugador.getTerreno().cantidadCriaturasInvocadas(numJug);
+        }
+        return cantidadCriaturas;
+    }
+    
     public int numInvOtrosJugadores(){
         int numInvOtrosJugadores = 0;
-        for(int i = 0; i < jugadores.size(); i++){
-            if(i != this.getTurnoActual() &&
-               !perdedores.contains(jugadores.get(i))){
-                numInvOtrosJugadores += cantidadCriaturasInvocadas(i+1);
+        for(Jugador jugador: this.jugadores){
+            for(int i = 0; i < jugadores.size(); i++){
+                if(i != this.getTurnoActual()){
+                    numInvOtrosJugadores += jugador.getTerreno().cantidadCriaturasInvocadas(i + 1);
+                }
             }
         }
+        
         return numInvOtrosJugadores;
     }
     
     public void agregarPerdedor(int numJug){
-        this.perdedores.add(this.jugadores.get(numJug));
+        this.perdedores.add(this.jugadores.get(numJug - 1));
+    }
+    
+    public boolean estaEnPerdedores(Jugador jugador){
+        return this.perdedores.contains(jugador);
     }
 
     public int getTurnoActual() {
@@ -470,10 +489,10 @@ public class Tablero {
         return trampaActivada;
     }
     
-    public int cantidadJugadores(){
+    public int cantidadJugadores(boolean todos){
         int numJugadores = 0;
         for(Jugador jugador: this.jugadores){
-            if(jugador.getJefeDeTerreno().getVida() > 0){
+            if(todos == true || (todos == false && !this.estaEnPerdedores(jugador))){
                 numJugadores++;
             }
         }

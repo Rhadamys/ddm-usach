@@ -1,62 +1,114 @@
 package Otros;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
-public class Reproductor implements BasicPlayerListener{
-    private static final BasicPlayer REPRODUCTOR = new BasicPlayer();
-    private static final BasicPlayer REP_EFECTOS = new BasicPlayer();
-    private static String[] listaReproduccion;
-    private static int actual = 0;
-    private static int[] ordenReproduccion;
-    public static boolean loop = true;
+public class Reproductor {
+    private static final ReproductorMusica REPRODUCTOR = new ReproductorMusica();
+    private static final ReproductorEfecto REP_EFECTOS = new ReproductorEfecto();
     
     public static void reproducir(String[] lista){
+        REPRODUCTOR.reproducir(lista);
+    }
+    
+    public static void siguiente() throws BasicPlayerException{
+        REPRODUCTOR.siguiente();
+    }
+    
+    public static void pausar(){
+        REPRODUCTOR.pausar();
+    }
+    
+    public static void continuar(){
+        REPRODUCTOR.continuar();
+    }
+    
+    public static void definirOrdenAleatorio(){
+        REPRODUCTOR.definirOrdenAleatorio();
+    }
+    
+    public static void finalizarReproductor(){
+        REPRODUCTOR.finalizarReproductor();
+    }
+    
+    public static void volumenMusica(double volumen) {
+        REPRODUCTOR.setVolumen(volumen);
+    }
+    
+    public static void reproducirEfecto(String efecto){
+        REP_EFECTOS.reproducirEfecto(efecto);
+    }
+}
+
+class ReproductorMusica implements BasicPlayerListener{
+    private final BasicPlayer reproductor;
+    private final BasicController controlRep;
+    private String[] listaReproduccion;
+    private int actual;
+    private int[] ordenReproduccion;
+    
+    public ReproductorMusica(){
+        this.reproductor = new BasicPlayer();
+        this.controlRep = (BasicController) this.reproductor;
+        
+        this.actual = 0;
+        this.reproductor.addBasicPlayerListener(this);
+    }
+    
+    public void reproducir(String[] lista){
         try {
-            if(REPRODUCTOR.getStatus() == BasicPlayer.PLAYING){
-                REPRODUCTOR.stop();
+            if(reproductor.getStatus() == BasicPlayer.PLAYING){
+                controlRep.stop();
             }
             
             listaReproduccion = lista;
             definirOrdenAleatorio();
-            loop = true;
             
             siguiente();
         } catch(Exception e) {
-            System.out.print("-------Error-----" + e.getMessage());
+            System.out.print("-------Error----- | " + e.getMessage());
         }
     }
     
-    public static void siguiente() throws BasicPlayerException{
-        REPRODUCTOR.open(new File(Constantes.RUTA_MUSICA + listaReproduccion[ordenReproduccion[actual]] + Constantes.EXT_M));
+    public void siguiente() throws BasicPlayerException{
+        controlRep.open(new File(Constantes.RUTA_MUSICA + listaReproduccion[ordenReproduccion[actual]] + Constantes.EXT_M));
         actual = actual == listaReproduccion.length - 1 ? 0 : actual + 1;
-        REPRODUCTOR.play();
+        controlRep.play();
     }
     
-    public static void pausar(){
+    public void pausar(){
         try {
-            REPRODUCTOR.pause();
+            controlRep.pause();
         } catch (BasicPlayerException ex) {
             // Nada
         }
     }
     
-    public static void continuar(){
+    public void continuar(){
         try {
-            REPRODUCTOR.resume();
+            controlRep.resume();
         } catch (BasicPlayerException ex) {
             // Nada
         }
     }
     
-    public static void definirOrdenAleatorio(){
+    public void definirOrdenAleatorio(){
         actual = 0;
         ordenReproduccion = new int[listaReproduccion.length];
         
@@ -77,29 +129,24 @@ public class Reproductor implements BasicPlayerListener{
         }
     }
     
-    public static void finalizarReproductor(){
+    public void finalizarReproductor(){
         try {
-            REPRODUCTOR.stop();
+            controlRep.stop();
         } catch (BasicPlayerException ex) {
             // Nada
         }
     }
     
-    public static void reproducirEfecto(String efecto){
+    public void setVolumen(double volumen){
         try {
-            REP_EFECTOS.open(new File(efecto));
-            REP_EFECTOS.play();
+            this.controlRep.setGain(volumen);
         } catch (BasicPlayerException ex) {
             // Nada
         }
-    }
-    
-    public static void agregarListener(){
-        REPRODUCTOR.addBasicPlayerListener(new Reproductor());
     }
 
     @Override
-    public void opened(Object o, Map map) {
+    public void opened(Object o, Map map){
     }
 
     @Override
@@ -108,7 +155,7 @@ public class Reproductor implements BasicPlayerListener{
 
     @Override
     public void stateUpdated(BasicPlayerEvent bpe) {
-        if(bpe.getCode() == BasicPlayerEvent.EOM && loop){
+        if(bpe.getCode() == BasicPlayerEvent.EOM){
             try {
                 siguiente();
             } catch (BasicPlayerException ex) {
@@ -120,5 +167,31 @@ public class Reproductor implements BasicPlayerListener{
     @Override
     public void setController(BasicController bc) {
     }
+}
+
+class ReproductorEfecto {
+    private final BasicPlayer reproductor;
+    private final BasicController controlRep;
     
+    public ReproductorEfecto(){
+        this.reproductor = new BasicPlayer();
+        this.controlRep = (BasicController) this.reproductor;
+    }
+    
+    public void reproducirEfecto(String efecto){
+        try {
+            reproductor.open(new File(efecto));
+            reproductor.play();
+        } catch (Exception ex) {
+            // Nada
+        }
+    }
+    
+    public void setVolumen(double volumen){
+        try {
+            this.controlRep.setGain(volumen);
+        } catch (BasicPlayerException ex) {
+            // Nada
+        }
+    }
 }

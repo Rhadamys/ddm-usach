@@ -8,11 +8,12 @@ package Controladores;
 import Modelos.Jugador;
 import Modelos.Usuario;
 import Otros.Constantes;
-import Otros.Reproductor;
+import Otros.Registro;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
@@ -28,14 +29,16 @@ public class ControladorPrincipal {
     private ControladorMenuPrincipal contMenuPrin;
     private ControladorNuevaPartida contNuePar;
     private ControladorModificarPuzzle contModPuzz;
+    private ControladorInfoCriaturas contInfo;
     private ControladorBatalla contBat;
     private Usuario usuarioActivo;
     
     /**
      * @param args the command line arguments
+     * @throws java.io.FileNotFoundException
      */
-    public static void main(String[] args) {
-        Reproductor.agregarListener();
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        Registro.iniciarRegistro();
         
         // Instancia a este controlador
         ControladorPrincipal contPrin = new ControladorPrincipal();
@@ -75,6 +78,7 @@ public class ControladorPrincipal {
     
     /**
      * Crea una nueva instancia del controlador registro
+     * @param quienLlama Vista desde la que se "llama" al controlador de registro
      */
     public void crearControladorRegistro(JInternalFrame quienLlama){
         this.contReg = new ControladorRegistro(this, quienLlama);
@@ -156,6 +160,21 @@ public class ControladorPrincipal {
      */
     public ControladorModificarPuzzle getContModPuzz() {
         return contModPuzz;
+    }
+    
+    /**
+     * Devuelve el controlador de infoCrituras
+     * @return Controlador de infoCrituras
+     */
+    public ControladorInfoCriaturas getContInfo(){
+        return contInfo;
+    }
+    
+    /**
+     * Crea una nueva instancia del controlador infoCriaturas
+     */
+    public void crearControladorInfoCriaturas(){
+        this.contInfo = new ControladorInfoCriaturas (this);
     }
 
     /**

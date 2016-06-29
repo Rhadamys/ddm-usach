@@ -23,7 +23,7 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
     private final BotonImagen nuevaPartida;
     private final BotonImagen nuevoTorneo;
     private final BotonImagen modificarPuzzle;
-    private final BotonImagen infoDelJuego;
+    private final BotonImagen infoCriaturas;
     private final BotonImagen salir;
     private final BotonImagen cerrarSesion;
     
@@ -37,17 +37,17 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
         this.nuevaPartida = new BotonImagen(Constantes.BTN_NUEVA_PARTIDA);
         this.nuevoTorneo = new BotonImagen(Constantes.BTN_NUEVO_TORNEO);
         this.modificarPuzzle = new BotonImagen(Constantes.BTN_MODIFICAR_PUZZLE);
-        this.infoDelJuego = new BotonImagen(Constantes.BTN_MODIFICAR_PUZZLE);
+        this.infoCriaturas = new BotonImagen(Constantes.BTN_INFO_CRIATURAS);
         this.salir = new BotonImagen(Constantes.BTN_SALIR);
         
-        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, modificarPuzzle, infoDelJuego, salir};
+        BotonImagen[] botones = {nuevaPartida, nuevoTorneo, modificarPuzzle, infoCriaturas, salir};
         
         final int ANCHO = 140;
         final int ALTO = ANCHO * 160 / 100;
         final int CANTIDAD = botones.length;
         final int SEP = (this.getWidth() - ANCHO * CANTIDAD) / (CANTIDAD + 1);
         
-        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Modificar puzzle", "Información del juego", "Salir"};
+        String[] mensajeBoton = {"Nueva partida", "Nuevo torneo", "Modificar puzzle", "Información de criaturas", "Salir"};
         
         for (int i = 0; i < CANTIDAD; i ++){
             final int index = i;
@@ -67,7 +67,7 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
             });
             this.add(botones[i]);
             
-            PanelImagen panel = new PanelImagen("/Imagenes/Fondos/cajon_menu.png");
+            PanelImagen panel = new PanelImagen(Constantes.CAJON_MENU);
             panel.setSize(ANCHO, ALTO);
             panel.setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
             this.add(panel);
@@ -152,6 +152,10 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
 
     public BotonImagen getModificarPuzzle() {
         return modificarPuzzle;
+    }
+
+    public BotonImagen getInfoCriaturas() {
+        return infoCriaturas;
     }
     
     public BotonImagen getSalir(){

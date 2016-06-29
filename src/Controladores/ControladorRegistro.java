@@ -8,6 +8,9 @@ package Controladores;
 import Modelos.JefeDeTerreno;
 import Modelos.Usuario;
 import Otros.BotonImagen;
+import Otros.Constantes;
+import Otros.Registro;
+import Otros.Reproductor;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaInfoElemento;
 import Vistas.SubVistaSeleccionarJefe;
@@ -53,6 +56,8 @@ public final class ControladorRegistro {
         }
         
         this.quienLlama = quienLlama;
+        
+        Reproductor.reproducir(Constantes.M_OTROS_FORMS);
     }
     
     /**
@@ -159,6 +164,8 @@ public final class ControladorRegistro {
                 if(Usuario.registrarUsuario(usuario, pass, this.jefe)){
                     this.cerrarVistaRegistro(true);
                     this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");
+                    
+                    Registro.registrarAccion(Registro.REGISTRO, usuario);
                 }else{
                     this.visReg.setMensaje("Usuario ya existe");
                     this.visReg.usuarioErroneo();
@@ -175,8 +182,11 @@ public final class ControladorRegistro {
             this.contPrin.crearControladorLogin();
             // Se muestra la vista de login
             this.contPrin.getContLog().mostrarVistaLogin();
-        }else if(quienLlama instanceof VistaNuevaPartida && seCompletoRegistro){
-           this.contPrin.getContNuePar().incrementarCantidadJugadores();
+        }else if(quienLlama instanceof VistaNuevaPartida){
+            if(seCompletoRegistro){
+                this.contPrin.getContNuePar().incrementarCantidadJugadores();
+            }
+            Reproductor.reproducir(Constantes.M_NUEVA_PARTIDA);
         }
         this.visSelJef.dispose();
         // Se elimina la vista de registro
@@ -185,7 +195,7 @@ public final class ControladorRegistro {
     
     public void mostrarVistaInfoJefe(BotonImagen panelJefe){
         this.visSelJef.setVisInfoEl(new SubVistaInfoElemento(
-                this.visSelJef.getJefe(panelJefe)));
+                this.visSelJef.getJefe(panelJefe), null));
         
         timerVisInfoEl = new Timer();
         timerVisInfoEl.schedule(new TimerTask(){
@@ -194,7 +204,7 @@ public final class ControladorRegistro {
                 visSelJef.getVisInfoEl().setVisible(true);
                 timerVisInfoEl.cancel();
             }
-        }, 1500, 10);
+        }, 1000, 10);
     }
     
     public void posicionarVistaInfoCriatura(int x){

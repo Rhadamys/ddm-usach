@@ -12,7 +12,6 @@ import Otros.ContenedorScroll;
 import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
 

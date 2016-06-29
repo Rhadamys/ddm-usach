@@ -17,6 +17,8 @@ public abstract class Jugador {
     protected JefeDeTerreno jefeDeTerreno;
     protected int equipo;
     protected ArrayList<Trampa> trampas;
+    protected Terreno terreno;
+    protected int numJug;
         
     public static ArrayList<Jugador> getJugadores(ArrayList<Jugador> excluidos){
         try {
@@ -36,9 +38,29 @@ public abstract class Jugador {
         return criaturasMuertas;
     }
     
-    public void reiniciar(){
+    public void reiniciar(int numJug){
+        this.numJug = numJug;
         this.turno = new Turno();
         this.trampas = new ArrayList();
+        this.jefeDeTerreno.reiniciar(numJug);
+        
+        // Le asigna dos trampa de cada tipo a este jugador
+        this.trampas = new ArrayList();
+        for(int j = 1; j <= 3; j++){
+            // j: Número de trampa;
+            this.agregarTrampa(new Trampa(j, numJug));
+            this.agregarTrampa(new Trampa(j, numJug));
+        }
+            
+        // Reinicia los valores de los dados y sus criaturas
+        for(Dado dado: this.getDados()){
+            dado.setParaLanzar(true);
+            dado.getCriatura().reiniciar(numJug);
+        }
+    }
+    
+    public Posicion getMiPosicion(){
+        return this.getTerreno().getPosiciones().get(0);
     }
           
     public int cantidadTrampas(){
@@ -121,11 +143,23 @@ public abstract class Jugador {
         return turno;
     }
 
+    public Terreno getTerreno() {
+        return terreno;
+    }
+
+    public int getNumJug() {
+        return numJug;
+    }
+
     public ArrayList<Trampa> getTrampas() {
         return trampas;
     }
 
     public void setEquipo(int equipo) {
         this.equipo = equipo;
+    }
+
+    public void setTerreno(Terreno terreno) {
+        this.terreno = terreno;
     }
 }

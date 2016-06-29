@@ -17,6 +17,7 @@ import javax.swing.JProgressBar;
  * @author mam28
  */
 public class SubVistaInfoJugadorBatalla extends PanelImagen{
+    private final PanelImagen panelTurno;
     private final PanelImagen iconoJugador;
     private final JLabel nombreJugador;
     private final JProgressBar vidaJugador;
@@ -31,17 +32,21 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
     private final ArrayList<JLabel> puntosTrampas;
     
     public SubVistaInfoJugadorBatalla(){
-        this.setLayout(null);
         this.setSize(140, 250);
+        
+        this.panelTurno = new PanelImagen();
+        this.add(panelTurno);
+        this.panelTurno.setSize(35, 35);
+        this.panelTurno.setLocation(70, 45);
         
         this.nombreJugador = new JLabel();
         this.iconoJugador = new PanelImagen();
         this.vidaJugador = new JProgressBar();
         
-        this.ataque = new PanelImagen("/Imagenes/Botones/ataque.png");
-        this.magia = new PanelImagen("/Imagenes/Botones/magia.png");
-        this.movimiento = new PanelImagen("/Imagenes/Botones/movimiento.png");
-        this.trampa = new PanelImagen("/Imagenes/Botones/trampa.png");
+        this.ataque = new PanelImagen(Constantes.ATAQUE);
+        this.magia = new PanelImagen(Constantes.MAGIA);
+        this.movimiento = new PanelImagen(Constantes.MOVIMIENTO);
+        this.trampa = new PanelImagen(Constantes.TRAMPA);
         
         this.puntosAtaque = new JLabel("0");
         this.puntosMagia = new JLabel("0");
@@ -186,7 +191,7 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
     /*
      * Actualiza la vista de información de jugador con la información actual del jugador.
     */
-    public void actualizarVista(int pa, int pmag, int pm, int pt, int vida, int to, int tl, int trm){
+    public void actualizarVista(int pa, int pmag, int pm, int pt, int vida, int to, int tl, int trm, boolean esMiTurno){
         this.setPuntosAtaque(String.valueOf(pa));
         this.setPuntosMagia(String.valueOf(pmag));
         this.setPuntosMovimiento(String.valueOf(pm));
@@ -196,5 +201,17 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.setPuntosTrampa(0, to);
         this.setPuntosTrampa(1, tl);
         this.setPuntosTrampa(2, trm);
+        
+        this.esMiTurno(esMiTurno);
+    }
+    
+    public void esMiTurno(boolean esMiTurno){
+        if(esMiTurno){
+            this.panelTurno.setImagen(Constantes.TURNO_ACTUAL);
+            this.panelTurno.setToolTipText("<html>Es el turno de <b>" + nombreJugador.getText() + "</b></html>");
+        }else{
+            this.panelTurno.setImagen(Constantes.VACIO);
+            this.panelTurno.setToolTipText("");
+        }
     }
 }

@@ -26,7 +26,7 @@ public class SubVistaCuadroDialogo extends VistaPersonalizada{
     
     public SubVistaCuadroDialogo(String mensaje, String textoBoton){
         
-        this.labelMensaje = new JLabel(mensaje);
+        this.labelMensaje = new JLabel("<html><center>" + mensaje + "</center></html>");
         this.boton1 = new BotonImagen(Constantes.BTN_NORMAL);
         
         this.add(labelMensaje);
@@ -56,7 +56,7 @@ public class SubVistaCuadroDialogo extends VistaPersonalizada{
     
     public SubVistaCuadroDialogo(String mensaje, String textoBoton1, String textoBoton2){
         
-        this.labelMensaje = new JLabel(mensaje);
+        this.labelMensaje = new JLabel("<html><center>" + mensaje + "</center></html>");
         this.boton1 = new BotonImagen(Constantes.BTN_NORMAL);
         this.boton2 = new BotonImagen(Constantes.BTN_NORMAL);
         

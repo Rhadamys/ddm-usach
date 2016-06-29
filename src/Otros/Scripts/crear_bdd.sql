@@ -53,6 +53,16 @@ drop index if exists USUARIOS.USUARIOS_PK;
 drop table if exists USUARIOS;
 
 /*==============================================================*/
+/* Table: CONFIGURACION                                         */
+/*==============================================================*/
+create table CONFIGURACION 
+(
+   VOL_MUSICA           integer                        not null default 100,
+   VOL_EFECTO           integer                        not null default 100
+
+);
+
+/*==============================================================*/
 /* Table: CRIATURA                                              */
 /*==============================================================*/
 create table CRIATURA 

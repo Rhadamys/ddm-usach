@@ -11,6 +11,7 @@ import Modelos.Usuario;
 import ModelosDAO.JugadorDAO;
 import Otros.BotonImagen;
 import Otros.Constantes;
+import Otros.Registro;
 import Otros.Reproductor;
 import Vistas.SubVistaCambiarJugador;
 import Vistas.SubVistaCuadroDialogo;
@@ -199,6 +200,8 @@ public final class ControladorNuevaPartida {
      * Comienza la partida con los jugadores agregados en la vista de nueva partida.
      */
     public void comenzarPartida(){
+        Registro.registrarAccion(Registro.COMENZANDO_BATALLA, null);
+        
         this.contPrin.crearControladorBatalla(this.jugadores);
         this.contPrin.getContBat().mostrarVistaBatalla();
         this.contPrin.getContBat().iniciarJuego();

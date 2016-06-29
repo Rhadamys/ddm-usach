@@ -9,9 +9,8 @@ import ModelosDAO.PuzzleDeDadosDAO;
 import java.sql.SQLException;
 import java.util.*;
 
-/** @pdOid 859bcc3d-e128-4446-8809-e9f0961ece7a */
 public class PuzzleDeDados {
-    private ArrayList<Dado> dados;
+    private final ArrayList<Dado> dados;
     
     public PuzzleDeDados(ArrayList<Dado> dados){
         this.dados = dados;

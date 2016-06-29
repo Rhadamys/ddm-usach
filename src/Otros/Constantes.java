@@ -43,7 +43,8 @@ public final class Constantes {
     public static final int BTN_NUEVA_PARTIDA = 11;
     public static final int BTN_NUEVO_TORNEO = 12;
     public static final int BTN_MODIFICAR_PUZZLE = 13;
-    public static final int BTN_SALIR = 14;
+    public static final int BTN_INFO_CRIATURAS = 14;
+    public static final int BTN_SALIR = 15;
     
     //*****************************************************
     //* Imagenes                                          *
@@ -91,6 +92,10 @@ public final class Constantes {
     public static final String CASILLA_INCORRECTA = RUTA_BOTONES + "casilla_error" + EXT1;
     public static final String CASILLA_SELECCIONADA = RUTA_BOTONES + "casilla_seleccionada" + EXT1;
     public static final String CASILLA_JUGADOR = RUTA_BOTONES + "casilla_j";
+    
+    public static final String INFO_CRIATURAS = RUTA_BOTONES + "info_criaturas" + EXT1;
+    public static final String INFO_CRIATURAS_SOBRE = RUTA_BOTONES + "info_criaturas_sobre" + EXT1;
+    public static final String INFO_CRIATURAS_PRESIONADO = RUTA_BOTONES + "info_criaturas_presionado" + EXT1;
     
     public static final String INVOCACION = RUTA_BOTONES + "invocacion" + EXT1;
     public static final String INVOCACION_SOBRE = RUTA_BOTONES + "invocacion_sobre" + EXT1;
@@ -140,6 +145,7 @@ public final class Constantes {
     public static final String FONDO_AZUL_TRANS = RUTA_FONDOS + "fondo_azul_transparente" + EXT1;
     public static final String FONDO_BATALLA = RUTA_FONDOS + "fondo_batalla" + EXT1;
     public static final String FONDO_CUADRO_DIALOGO = RUTA_FONDOS + "fondo_mensaje" + EXT1;
+    public static final String FONDO_INFO_CRIATURAS = RUTA_FONDOS + "fondo_info_criaturas" + EXT1;
     public static final String FONDO_INFO_ELEMENTO = RUTA_FONDOS + "fondo_info_elemento" + EXT1;
     public static final String FONDO_LANZAMIENTO_DADOS = RUTA_FONDOS + "fondo_lanzamiento_dados" + EXT1;
     public static final String FONDO_LOGIN = RUTA_FONDOS + "fondo_login" + EXT1;
@@ -155,6 +161,7 @@ public final class Constantes {
     public static final String IMAGEN_DADO = RUTA_DADOS + "dado_";
     public static final String IMAGEN_DESPLIEGUE = RUTA_OTROS + "despliegue_";
     public static final String MARCO_SELECCION = RUTA_OTROS + "marco_seleccion" + EXT1;
+    public static final String TURNO_ACTUAL = RUTA_OTROS + "turno_actual" + EXT1;
     public static final String VACIO = RUTA + "vacio" + EXT1;
     public static final String VACIO_GRIS = RUTA + "vacio_oscuro" + EXT1;
     public static final String VACIO_CAFE = RUTA + "vacio_cafe" + EXT1;
@@ -176,6 +183,7 @@ public final class Constantes {
     public static final String[] M_NUEVA_PARTIDA = {"free_duel"};
     public static final String[] M_BATALLA = {"normal", "forest", "sea", "abstract", "destiny", "technology"};
     public static final String[] M_GANADOR = {"you_win"};
+    public static final String[] M_OTROS_FORMS = {"other_forms"};
     
     // Efectos
     public static final String ERROR = RUTA_EFECTOS + "error" + EXT_E;

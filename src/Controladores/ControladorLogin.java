@@ -7,6 +7,7 @@ package Controladores;
 
 import Modelos.Usuario;
 import Otros.Constantes;
+import Otros.Registro;
 import Otros.Reproductor;
 import Vistas.VistaLogin;
 import java.awt.event.KeyAdapter;
@@ -142,6 +143,8 @@ public final class ControladorLogin {
                     this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
                     // Se elimina la vista de login
                     this.eliminarVistaLogin();
+                    
+                    Registro.registrarAccion(Registro.LOGIN, usuarioText);
                 }else{
                     this.visLog.usuarioCorrecto();
                     this.visLog.passErronea();

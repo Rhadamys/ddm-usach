@@ -92,11 +92,7 @@ public class VistaLogin extends VistaPersonalizada {
         mensaje = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(102, 102, 102));
-        setBorder(null);
         setMaximumSize(new java.awt.Dimension(800, 600));
-        setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(null);
 
         L1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         L1.setForeground(new java.awt.Color(255, 255, 255));

@@ -5,11 +5,15 @@
  */
 package Controladores;
 
+import Otros.Registro;
 import Otros.Reproductor;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaPrincipal;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 /**
  *
@@ -28,6 +32,7 @@ public final class ControladorVistaPrincipal {
         
         this.visMen = new SubVistaCuadroDialogo("¿Deseas salir de la aplicación?", "Si", "No");
         this.visPrin.agregarVista(visMen);
+        this.agregarListenerVistaPrincipal();
         this.agregarListenersVistaMensaje();
     }
 
@@ -44,8 +49,27 @@ public final class ControladorVistaPrincipal {
     }
     
     public void salir(){
+        try {
+            Registro.cerrarRegistro();
+        } catch (IOException ex) {
+            // Nada
+        }
+                
         Reproductor.finalizarReproductor();
         this.contPrin.getContVisPrin().getVisPrin().dispose();
+    }
+    
+    public void agregarListenerVistaPrincipal(){
+        this.visPrin.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e){
+                try {
+                    Registro.cerrarRegistro();
+                } catch (IOException ex) {
+                    // Nada
+                }
+            }
+        });
     }
     
     public void agregarListenersVistaMensaje() {

@@ -5,6 +5,8 @@
  ***********************************************************************/
 package Modelos;
 
+import Otros.Constantes;
+import Otros.Reproductor;
 import java.util.*;
 
 /** @pdOid 3209e44d-1fcb-494a-b232-5edd8db5452f */
@@ -44,6 +46,8 @@ public class Accion {
                 break;
             }
         }
+        
+        Reproductor.reproducirEfecto(Constantes.E_INVOCACION);
     }
     
     public ElementoEnCampo moverCriatura(int pasoActual){
@@ -252,5 +256,8 @@ public class Accion {
     public void setCriaturaAtacante(Criatura criaturaAtacante) {
         this.criaturaAtacante = criaturaAtacante;
     }
-    
+
+    public Criatura getCriaturaAInvocar() {
+        return criaturaAInvocar;
+    }
 }

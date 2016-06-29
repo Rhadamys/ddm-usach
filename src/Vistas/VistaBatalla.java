@@ -8,6 +8,7 @@ package Vistas;
 import Modelos.Jugador;
 import Otros.BotonImagen;
 import Otros.Constantes;
+import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class VistaBatalla extends VistaPersonalizada {
     private final BotonImagen trampa;
     private final BotonImagen pausa;
     private final BotonImagen terminarTurno;
+    private final PanelImagen panelBotones;
     private final ArrayList<SubVistaInfoJugadorBatalla> vistasJugador;
     private final SubVistaSeleccionDespliegue visSelDesp;
     private SubVistaTablero tablero;
@@ -52,13 +54,18 @@ public class VistaBatalla extends VistaPersonalizada {
         this.pausa = new BotonImagen(Constantes.BTN_PAUSA);
         this.terminarTurno = new BotonImagen(Constantes.BTN_NORMAL);
         
-        this.add(ataque);
-        this.add(invocacion);
-        this.add(magia);
-        this.add(movimiento);
-        this.add(trampa);
-        this.add(pausa);
-        this.add(terminarTurno);
+        this.panelBotones = new PanelImagen();
+        this.add(this.panelBotones);
+        this.panelBotones.setSize(500, 50);
+        this.panelBotones.setLocation(150, 550);
+        
+        this.panelBotones.add(ataque);
+        this.panelBotones.add(invocacion);
+        this.panelBotones.add(magia);
+        this.panelBotones.add(movimiento);
+        this.panelBotones.add(trampa);
+        this.panelBotones.add(pausa);
+        this.panelBotones.add(terminarTurno);
         
         this.ataque.setSize(30, 30);
         this.invocacion.setSize(30, 30);
@@ -68,13 +75,13 @@ public class VistaBatalla extends VistaPersonalizada {
         this.pausa.setSize(30, 30);
         this.terminarTurno.setSize(140, 30);
         
-        this.ataque.setLocation(170, 560);
-        this.invocacion.setLocation(210, 560);
-        this.magia.setLocation(250, 560);
-        this.movimiento.setLocation(290, 560);
-        this.trampa.setLocation(330, 560);
-        this.pausa.setLocation(600, 560);
-        this.terminarTurno.setLocation(450, 560);
+        this.ataque.setLocation(20, 10);
+        this.invocacion.setLocation(60, 10);
+        this.magia.setLocation(100, 10);
+        this.movimiento.setLocation(140, 10);
+        this.trampa.setLocation(180, 10);
+        this.pausa.setLocation(450, 10);
+        this.terminarTurno.setLocation(300, 10);
         
         this.ataque.setEnabled(false);
         this.invocacion.setEnabled(false);
@@ -158,6 +165,14 @@ public class VistaBatalla extends VistaPersonalizada {
         this.getTerminarTurno().setEnabled(false);
         this.getPausa().setEnabled(false);
         this.getTablero().getCasilla(0, 0).requestFocus();
+    }
+    
+    public void mostrarBarraBotones(){
+        this.panelBotones.setVisible(true);
+    }
+    
+    public void ocultarBarraBotones(){
+        this.panelBotones.setVisible(false);
     }
     
     public SubVistaTablero getTablero() {

@@ -8,11 +8,12 @@ package Vistas;
 import Modelos.Criatura;
 import Modelos.ElementoEnCampo;
 import Modelos.JefeDeTerreno;
+import Modelos.Jugador;
 import Modelos.Trampa;
 import Otros.Constantes;
 import Otros.PanelImagen;
 import java.awt.Color;
-import java.awt.Font;
+import javax.swing.JLabel;
 
 /**
  *
@@ -23,13 +24,14 @@ public class SubVistaInfoElemento extends PanelImagen {
     /**
      * Creates new form SubVistaInfoCriatura
      * @param elemento Elemento para el cual se creará la vista.
+     * @param dueno Dueño del elemento mostrado
      */
-    public SubVistaInfoElemento(ElementoEnCampo elemento) {
+    public SubVistaInfoElemento(ElementoEnCampo elemento, Jugador dueno) {
         initComponents();
         
         this.setVisible(false);
         this.setSize(250, 400);
-        this.setImagen("/Imagenes/Fondos/fondo_info_elemento.png");
+        this.setImagen(Constantes.FONDO_INFO_ELEMENTO);
         
         PanelImagen icono = new PanelImagen("/Imagenes/" +
                 (elemento instanceof Criatura ? "Criaturas/" : 
@@ -38,6 +40,22 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.add(icono);
         icono.setSize(80, 80);
         icono.setLocation(85, 10);
+        
+        if(dueno != null){
+            PanelImagen iconoDueno = new PanelImagen(Constantes.RUTA_JEFES +
+                    dueno.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
+            this.add(iconoDueno);
+            iconoDueno.setSize(40, 40);
+            iconoDueno.setLocation(22, 30);
+            
+            JLabel nomDueno = new JLabel(dueno.getNombreJugador());
+            this.add(nomDueno);
+            nomDueno.setSize(80,20);
+            nomDueno.setLocation(2, 70);
+            nomDueno.setForeground(Color.white);
+            nomDueno.setFont(Constantes.FUENTE_14PX);
+            nomDueno.setHorizontalAlignment(JLabel.CENTER);
+        }
         
         this.nombre.setText(elemento.getNombre());
         this.nombre.setFont(Constantes.FUENTE_18PX);

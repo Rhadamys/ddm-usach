@@ -29,9 +29,9 @@ public class SubVistaCambiarJugador extends VistaPersonalizada {
     
     /**
      * Creates new form CompCambiarJugador
-     * @param jugPartida Jugadores que están actualmente en la partida
+     * @param jugDisponibles Jugadores disponibles para el cambio
      */
-    public SubVistaCambiarJugador(ArrayList<Jugador> jugPartida) {
+    public SubVistaCambiarJugador(ArrayList<Jugador> jugDisponibles) {
         initComponents();
         
         this.volver = new BotonImagen(Constantes.BTN_ATRAS);
@@ -52,7 +52,7 @@ public class SubVistaCambiarJugador extends VistaPersonalizada {
         this.contenedor.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.contenedor.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        jugadores = Jugador.getJugadores(jugPartida);
+        this.jugadores = jugDisponibles;
         
         final int N_COLUMNAS = 4;
         final int LADO = 90;

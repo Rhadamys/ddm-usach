@@ -9,6 +9,7 @@ import Modelos.Dado;
 import Modelos.PuzzleDeDados;
 import Modelos.Usuario;
 import Otros.BotonCheckImagen;
+import Otros.Registro;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.VistaModificarPuzzle;
 import java.awt.event.MouseAdapter;
@@ -34,6 +35,8 @@ public final class ControladorModificarPuzzle {
         this.agregarListenersPanelesDadosPuzzle();
         this.agregarListenersPanelesDadosNoEnPuzzle();
         this.agregarListenersVistaModificarPuzzle();
+        
+        Registro.registrarAccion(Registro.MODIFICAR_PUZZLE, usuario.getNombreJugador());
     }
     
     public void mostrarVistaModificarPuzle(){

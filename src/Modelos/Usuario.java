@@ -7,19 +7,27 @@ package Modelos;
 
 import ModelosDAO.UsuarioDAO;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /** @pdOid 5fdf1593-9417-4518-a690-8bb149f077b5 */
 public class Usuario extends Jugador {
-    private final int id;
     private final String pass;
     
-    public Usuario(int id, String username, String pass, JefeDeTerreno jefe, PuzzleDeDados puzzle){
+    public Usuario(
+            int id,
+            String username,
+            String pass,
+            JefeDeTerreno jefe,
+            PuzzleDeDados puzzle,
+            int partidasJugadas,
+            int partidasGanadas){
+        
         this.id = id;
         this.nombreJugador = username;
         this.pass = pass;
         this.puzzle = puzzle;
         this.jefeDeTerreno = jefe;
+        this.partJug = partidasJugadas;
+        this.partGan = partidasGanadas;
     }
     
     /**
@@ -62,9 +70,5 @@ public class Usuario extends Jugador {
     public String getPass() {
         return pass;
     }
-
-    public int getId() {
-        return id;
-    }    
     
 }

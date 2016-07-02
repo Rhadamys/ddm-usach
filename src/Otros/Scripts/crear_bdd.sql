@@ -53,16 +53,6 @@ drop index if exists USUARIOS.USUARIOS_PK;
 drop table if exists USUARIOS;
 
 /*==============================================================*/
-/* Table: CONFIGURACION                                         */
-/*==============================================================*/
-create table CONFIGURACION 
-(
-   VOL_MUSICA           integer                        not null default 100,
-   VOL_EFECTO           integer                        not null default 100
-
-);
-
-/*==============================================================*/
 /* Table: CRIATURA                                              */
 /*==============================================================*/
 create table CRIATURA 
@@ -150,7 +140,9 @@ create table JUGADOR
    NOMBREJUGADOR        varchar(15)                   ,
    PASSUSUARIO          varchar(15)                   ,
    ESHUMANO             boolean                       ,
-   ID_JEFEDETERRENO     integer                       not null
+   ID_JEFEDETERRENO     integer                       not null,
+   PARTIDAS_JUGADAS     integer                       not null default 0,
+   PARTIDAS_GANADAS     integer                       not null default 0
 
 );
 

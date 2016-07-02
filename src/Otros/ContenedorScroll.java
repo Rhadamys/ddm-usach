@@ -33,6 +33,7 @@ public class ContenedorScroll extends JScrollPane {
         this.getVerticalScrollBar().setBlockIncrement(50);
         this.getHorizontalScrollBar().setUnitIncrement(50);
         this.getHorizontalScrollBar().setBlockIncrement(50);
+        this.setCursor(Constantes.CURSOR);
     }
     
     class ScrollbarUI extends BasicScrollBarUI {

@@ -5,9 +5,6 @@
  ***********************************************************************/
 package Modelos;
 
-import java.util.*;
-
-/** @pdOid 86acb453-8a93-4d0f-b73a-4646653b4f7c */
 public class Posicion {
     private final int fila;
     private final int columna;

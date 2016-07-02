@@ -24,6 +24,25 @@ public class PuzzleDeDados {
             return false;
         }
     }
+    
+    public void devolverDado(Criatura criatura){
+        for(Dado dado: this.dados){
+            if(dado.getCriatura().equals(criatura)){
+                dado.setParaLanzar(true);
+                dado.getCriatura().reiniciar(dado.getCriatura().getDueno());
+                return;
+            }
+        }
+    }
+
+    public void quitarDado(Criatura criatura){
+        for(Dado dado: this.dados){
+            if(dado.getCriatura().equals(criatura)){
+                dado.setParaLanzar(false);
+                return;
+            }
+        }
+    }
 
     public ArrayList<Dado> getDados() {
         return dados;

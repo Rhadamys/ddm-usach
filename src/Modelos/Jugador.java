@@ -5,12 +5,17 @@
  ***********************************************************************/
 package Modelos;
 
+import BD.Conection.Conection;
 import ModelosDAO.JugadorDAO;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** @pdOid cbe19438-3292-497c-bc58-a1da1e9c38b6 */
 public abstract class Jugador {
+    protected int id;
     protected Turno turno;
     protected PuzzleDeDados puzzle;
     protected String nombreJugador;
@@ -19,13 +24,62 @@ public abstract class Jugador {
     protected ArrayList<Trampa> trampas;
     protected Terreno terreno;
     protected int numJug;
-        
-    public static ArrayList<Jugador> getJugadores(ArrayList<Jugador> excluidos){
+    protected int partJug;
+    protected int partGan;
+    
+    public static ArrayList<Jugador> getJugadores(){
         try {
-            return JugadorDAO.getJugadores(excluidos);
+            return JugadorDAO.getJugadores();
         } catch (SQLException ex) {
+            // Nada
             return null;
         }
+    }
+    
+    public static void actualizarPartidaGanada (int idJugador, int partidasGanadas) {
+        try {
+            JugadorDAO.actualizarPartidaGanada(idJugador, partidasGanadas);
+        } catch (SQLException ex) {
+            // Nada
+        }
+    }
+    
+    public static void actualizarPartidaJugada (int idJugador, int partidasJugadas) {
+        try {
+            JugadorDAO.actualizarPartidaJugada(idJugador, partidasJugadas);
+        } catch (SQLException ex) {
+            // Nada
+        }
+    }
+    
+    public int cantidadCriaturasInvocadas(){
+        int cantidadCriaturas = 0;
+        for(Dado dado: this.puzzle.getDados()){
+            if(dado.isParaJugar() && !dado.isParaLanzar() &&
+                    dado.getCriatura().getVida() > 0){
+                cantidadCriaturas++;
+            }
+        }
+        
+        return cantidadCriaturas;
+    }
+    
+    public boolean haInvocadoCriaturasDelNivel(int nivel){
+        for(Dado dado: this.puzzle.getDados()){
+            if(dado.isParaJugar() && !dado.isParaLanzar() &&
+                    dado.getCriatura().getNivel() == nivel){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void devolverDadoAlPuzzle(Criatura criatura){
+        this.puzzle.devolverDado(criatura);
+    }
+    
+    public void quitarDadoDelPuzzle(Criatura criatura){
+        this.puzzle.quitarDado(criatura);
     }
     
     public ArrayList<Criatura> getCriaturasMuertas(){
@@ -57,10 +111,10 @@ public abstract class Jugador {
             dado.setParaLanzar(true);
             dado.getCriatura().reiniciar(numJug);
         }
-    }
-    
-    public Posicion getMiPosicion(){
-        return this.getTerreno().getPosiciones().get(0);
+        
+        if(this instanceof PersonajeNoJugable){
+            ((PersonajeNoJugable) this).reiniciar();
+        }
     }
           
     public int cantidadTrampas(){
@@ -104,6 +158,8 @@ public abstract class Jugador {
     public void eliminarTrampa(Trampa trampa){
         this.trampas.remove(trampa);
     }
+    
+// <editor-fold defaultstate="collapsed" desc="Getters && Setters">  
     
     public ArrayList<Dado> getDados(){
         return puzzle.getDados();
@@ -154,6 +210,10 @@ public abstract class Jugador {
     public ArrayList<Trampa> getTrampas() {
         return trampas;
     }
+    
+    public Posicion getMiPosicion(){
+        return this.getTerreno().getPosiciones().get(0);
+    }
 
     public void setEquipo(int equipo) {
         this.equipo = equipo;
@@ -162,4 +222,26 @@ public abstract class Jugador {
     public void setTerreno(Terreno terreno) {
         this.terreno = terreno;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getPartJug() {
+        return partJug;
+    }
+
+    public void aumPartJug() {
+        this.partJug++;
+    }
+
+    public int getPartGan() {
+        return partGan;
+    }
+
+    public void aumPartGan() {
+        this.partGan++;
+    }
+    
+// </editor-fold>
 }

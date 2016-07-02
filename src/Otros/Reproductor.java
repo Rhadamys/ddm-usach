@@ -1,18 +1,9 @@
 package Otros;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
@@ -53,6 +44,10 @@ public class Reproductor {
     
     public static void reproducirEfecto(String efecto){
         REP_EFECTOS.reproducirEfecto(efecto);
+    }
+    
+    public static int getStatusMusica(){
+        return REPRODUCTOR.getStatus();
     }
 }
 
@@ -144,6 +139,10 @@ class ReproductorMusica implements BasicPlayerListener{
             // Nada
         }
     }
+    
+    public int getStatus(){
+        return this.reproductor.getStatus();
+    }
 
     @Override
     public void opened(Object o, Map map){
@@ -180,8 +179,12 @@ class ReproductorEfecto {
     
     public void reproducirEfecto(String efecto){
         try {
-            reproductor.open(new File(efecto));
-            reproductor.play();
+            if(reproductor.getStatus() == BasicPlayer.PLAYING){
+                controlRep.stop();
+            }
+            
+            controlRep.open(new File(efecto));
+            controlRep.play();
         } catch (Exception ex) {
             // Nada
         }

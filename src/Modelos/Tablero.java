@@ -5,6 +5,7 @@
  ***********************************************************************/
 package Modelos;
 
+import Otros.Registro;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -64,7 +65,9 @@ public class Tablero {
         if(!magiasActivadas.isEmpty()){
             for(int[] magia: magiasActivadas){
                 switch(magia[0]){
-                    case 1: accion.lluviaTorrencial(magia[2], this);
+                    case 1: if(magia[1] == 3){
+                                accion.lluviaTorrencial(magia[2], this);
+                            }
                             break;
                     case 2: accion.hierbasVenenosas(magia[2]);
                             break;
@@ -74,7 +77,7 @@ public class Tablero {
 
                 if(magia[0] == 1){
                     // Dura 3 turnos de cada jugador
-                    if(this.turnoActual + 1 == magia[2]){
+                    if(this.getTurnoActual() + 1 == magia[2]){
                         magia[1]--;
                     }
                 }else{
@@ -83,7 +86,7 @@ public class Tablero {
                 }
 
                 if(magia[1] == 0){
-                    accion.desactivarMagia(magia[0]);
+                    accion.desactivarMagia(magia[0], this);
                 }
             }
         }
@@ -326,6 +329,11 @@ public class Tablero {
         return null;
     }
     
+    /**
+     * Devuelve los índices de las posiciones vecinas a la posición indicada.
+     * @param posicion Posición para la cual se obtendrán los vecinos.
+     * @return Arreglo de índices.
+     */
     public int[][] getIdxVecinos(Posicion posicion){
         int[][] vecinos = {{posicion.getFila() - 1, posicion.getColumna()},
                            {posicion.getFila() + 1, posicion.getColumna()},
@@ -362,6 +370,11 @@ public class Tablero {
         return false;
     }
     
+    /**
+     * Comprueba si el terreno del jugador actual está conectado al terreno de otros
+     * jugadores.
+     * @return Verdadero si está conectado al terreno de otros jugadores.
+     */
     public boolean estaConectadoAlTerrenoDeOtros(){
         for(Posicion posJug: this.getJugadorActual().getTerreno().getPosiciones()){
             for(int[] coord: this.getIdxVecinos(posJug)){
@@ -410,25 +423,58 @@ public class Tablero {
         this.getJugador(numJug - 1).getTerreno().agregarPosicion(posicion);
     }
     
+    /**
+     * Comprueba si los jugadores restantes son todos PNJs.
+     * @return Verdadero si sólo quedan PNJs en la partida.
+     */
+    public boolean soloQuedanPNJs(){
+        for(Jugador jug: this.jugadores){
+            if(!this.perdedores.contains(jug) &&
+                jug instanceof Usuario){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Obtiene la cantidad de jugadores.
+     * @param todos Verdadero si se desea obtener el total de jugadores. Falso
+     * si sólo se desea obtener la cantidad restante de jugadores en la partida.
+     * @return Cantidad de jugadores.
+     */
+    public int cantidadJugadores(boolean todos){
+        int numJugadores = 0;
+        for(Jugador jugador: this.jugadores){
+            if(todos == true || (todos == false && !this.estaEnPerdedores(jugador))){
+                numJugadores++;
+            }
+        }
+        return numJugadores;
+    }
+    
+    /**
+     * Devuelve la cantidad de jugadores que poseen criaturas invocadas en el
+     * terreno.
+     * @return Cantidad de jugadores que tienen criaturas invocadas.
+     */
     public int cantidadJugadoresTienenCriaturas(){
         int cantidadJugadoresTienenCriaturas = 0;
         for(Jugador jugador: this.jugadores){
-            if(!estaEnPerdedores(jugador) && cantidadCriaturasInvocadas(jugador.getNumJug()) > 0){
+            if(!estaEnPerdedores(jugador) && jugador.cantidadCriaturasInvocadas() > 0){
                     cantidadJugadoresTienenCriaturas++;
             }
         }
         return cantidadJugadoresTienenCriaturas;
     }
     
-    public int cantidadCriaturasInvocadas(int numJug){
-        int cantidadCriaturas = 0;
-        for(Jugador jugador: this.jugadores){
-            cantidadCriaturas += jugador.getTerreno().cantidadCriaturasInvocadas(numJug);
-        }
-        return cantidadCriaturas;
-    }
-    
-    public int numInvOtrosJugadores(){
+    /**
+     * Devuelve el total de invocaciones realizadas por los otros jugadores (Que
+     * no sea el jugador del turno actual).
+     * @return Cantidad de invocaciones de los otros jugadores.
+     */
+    public int cantidadInvOtrosJugadores(){
         int numInvOtrosJugadores = 0;
         for(Jugador jugador: this.jugadores){
             for(int i = 0; i < jugadores.size(); i++){
@@ -441,13 +487,49 @@ public class Tablero {
         return numInvOtrosJugadores;
     }
     
+    /**
+     * Agrega un perdedor.
+     * @param numJug Número del jugador que perdió.
+     */
     public void agregarPerdedor(int numJug){
         this.perdedores.add(this.jugadores.get(numJug - 1));
+        
+        Registro.registrarAccion(Registro.JUGADOR_PIERDE,
+                this.jugadores.get(numJug - 1).getNombreJugador());
     }
     
+    /**
+     * Comprueba si el jugador señalado está en la lista de perdedores.
+     * @param jugador Jugador que se consultará.
+     * @return Verdadero si el jugador está en la lista de perdedores.
+     */
     public boolean estaEnPerdedores(Jugador jugador){
         return this.perdedores.contains(jugador);
     }
+    
+    /**
+     * Devuelve la posición que ocupa el elemento señalado.
+     * @param elemento Elemento que se buscará en el tablero.
+     * @return Posición del elemento en el tablero.
+     */
+    public Posicion getPosElem(ElementoEnCampo elemento){
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                try{
+                    Posicion posAct = this.posiciones[i][j];
+                    if(posAct.getElemento().equals(elemento)){
+                        return posAct;
+                    }
+                }catch(Exception e){
+                    // Nada
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+// <editor-fold defaultstate="collapsed" desc="Getters && Setters">  
 
     public int getTurnoActual() {
         return this.ordenTurnos[this.turnoActual];
@@ -489,16 +571,6 @@ public class Tablero {
         return trampaActivada;
     }
     
-    public int cantidadJugadores(boolean todos){
-        int numJugadores = 0;
-        for(Jugador jugador: this.jugadores){
-            if(todos == true || (todos == false && !this.estaEnPerdedores(jugador))){
-                numJugadores++;
-            }
-        }
-        return numJugadores;
-    }
-
     public void setNumAccion(int accion) {
         this.numAccion = accion;
     }
@@ -518,5 +590,7 @@ public class Tablero {
     public void setTrampaActivada(Trampa trampaActivada) {
         this.trampaActivada = trampaActivada;
     }
+    
+// </editor-fold>
     
 }

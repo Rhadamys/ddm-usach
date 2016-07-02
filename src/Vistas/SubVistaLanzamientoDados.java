@@ -27,8 +27,11 @@ public class SubVistaLanzamientoDados extends VistaPersonalizada {
      * Creates new form CompLanzamientoDados
      * @param caras Caras resultantes del lanzamiento de dados.
      * @param dados Dados que eligió el jugador.
+     * @param habAcumPuntos Indica si se debe habilitar el botón para acumular puntos
      */
-    public SubVistaLanzamientoDados(int[] caras, ArrayList<Dado> dados) {
+    public SubVistaLanzamientoDados(int[] caras,
+            ArrayList<Dado> dados,
+            boolean habAcumPuntos) {
         initComponents();
         
         this.acumularPuntos = new BotonImagen(Constantes.BTN_NORMAL);
@@ -41,6 +44,7 @@ public class SubVistaLanzamientoDados extends VistaPersonalizada {
         this.acumularPuntos.setLocation(180, 520);
         this.acumularPuntos.setText("Acumular puntos");
         this.acumularPuntos.setVisible(false);
+        this.acumularPuntos.setEnabled(habAcumPuntos);
         
         this.realizarAcciones.setSize(200, 40);
         this.realizarAcciones.setLocation(420, 520);

@@ -31,6 +31,8 @@ public class UsuarioDAO {
                 String password = resultados.getString(3);
                 boolean esHumano = resultados.getBoolean(4);
                 int jefeDeTerreno = resultados.getInt(5);
+                int partJug = resultados.getInt(6);
+                int partGan = resultados.getInt(7);
 
                 if(esHumano){
                     PuzzleDeDados puzzleJugador = PuzzleDeDadosDAO.getPuzzle(id);
@@ -47,7 +49,7 @@ public class UsuarioDAO {
                     stmt.close();
                     conection.desconectar();
 
-                    return new Usuario(id, user, password, jefeJugador, puzzleJugador);
+                    return new Usuario(id, user, password, jefeJugador, puzzleJugador, partJug, partGan);
                 }else{
                     return null;
                 }

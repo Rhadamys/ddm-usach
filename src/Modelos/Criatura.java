@@ -62,7 +62,11 @@ public class Criatura extends ElementoEnCampo {
     }
     
     public void restarVida(int vida){
-        this.vida -= vida;
+        if(vida == -1){
+            this.vida = 0;
+        }else{
+            this.vida -= vida;
+        }
     }
     
     public void aumentarVidaMaxima(int vida){

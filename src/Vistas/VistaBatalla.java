@@ -245,6 +245,8 @@ public class VistaBatalla extends VistaPersonalizada {
 
     public void setTablero(SubVistaTablero tablero) {
         this.tablero = tablero;
+        this.add(this.tablero, 0);
+        this.tablero.setLocation(150, 50);
     }
     
     public void setMensaje(String mensaje){

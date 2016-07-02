@@ -22,7 +22,7 @@ public class Dado {
         this.caras = caras;
         this.paraLanzar = true;
     }
-
+    
     public int getId() {
         return id;
     }

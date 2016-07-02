@@ -5,6 +5,7 @@
  */
 package Otros;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
@@ -20,7 +21,9 @@ public class PanelImagen extends JPanel {
     public PanelImagen(){
         this.imagen = new ImageIcon(getClass().getResource("/Imagenes/vacio.png")).getImage();
         this.setOpaque(false);
+        this.setBackground(new Color(0,0,0,0));
         this.setLayout(null);
+        this.setCursor(Constantes.CURSOR);
     }
     
     public PanelImagen(String imagen){
@@ -29,7 +32,9 @@ public class PanelImagen extends JPanel {
             this.imagen.flush();
         }
         this.setOpaque(false);
+        this.setBackground(new Color(0,0,0,0));
         this.setLayout(null);
+        this.setCursor(Constantes.CURSOR);
     }
     
     @Override

@@ -26,14 +26,15 @@ public class VistaPersonalizada extends JInternalFrame {
         this.setBorder(null);
         this.setOpaque(false);
         this.setBackground(new Color(0, 0, 0, 0));
+        this.setCursor(Constantes.CURSOR);
         
         panelFondo = new PanelImagen();
-        panelFondo.setSize(this.getSize());
         this.add(panelFondo);
     }
     
     public final void setImagenFondo(String imagen){
         this.panelFondo.setImagen(imagen);
+        this.panelFondo.setSize(this.getSize());
         this.add(panelFondo);
     }
     

@@ -59,7 +59,7 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.nombreJugador.setForeground(Color.white);
         this.nombreJugador.setFont(Constantes.FUENTE_18PX);
         
-        this.tipoJugador.setSize(200, 10);
+        this.tipoJugador.setSize(200, 15);
         this.tipoJugador.setLocation(150,50);
         this.tipoJugador.setForeground(Color.white);
         this.tipoJugador.setFont(Constantes.FUENTE_14PX);

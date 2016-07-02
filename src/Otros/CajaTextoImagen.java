@@ -33,6 +33,7 @@ public class CajaTextoImagen extends JTextField {
         this.setForeground(Color.white);
         
         this.imagen = this.imagenNormal;
+        this.setCursor(Constantes.CURSOR);
         this.setBorder(new EmptyBorder(0, 10, 0, 10));
         this.setOpaque(false);
     }

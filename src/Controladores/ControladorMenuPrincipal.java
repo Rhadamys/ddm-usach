@@ -121,7 +121,7 @@ public final class ControladorMenuPrincipal {
     }
     
     public void nuevaPartida(){
-        this.contPrin.crearControladorNuevaPartida();
+        this.contPrin.crearControladorNuevaPartida(this.visMenuPrin);
         this.contPrin.getContNuePar().mostrarVistaNuevaPartida();
         eliminarVistaMenuPrincipal();
         
@@ -132,6 +132,9 @@ public final class ControladorMenuPrincipal {
         this.contPrin.crearControladorInfoCriaturas();
         this.contPrin.getContInfo().mostrarVistaInfoCriaturas();
         eliminarVistaMenuPrincipal();
+        
+        Registro.registrarAccion(Registro.INFO_CRIATURAS,
+                this.contPrin.getUsuarioActivo().getNombreJugador());
     }
     
     public void logOut(){

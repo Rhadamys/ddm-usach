@@ -5,6 +5,7 @@
  */
 package Otros;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -21,6 +22,14 @@ public final class Constantes {
     public static Font FUENTE_18PX;
     public static Font FUENTE_24PX;
     public static Font FUENTE_36PX;
+    
+    // Cursores
+    public static Cursor CURSOR;
+    public static Cursor CUR_NORMAL;
+    public static Cursor CUR_JUG_1;
+    public static Cursor CUR_JUG_2;
+    public static Cursor CUR_JUG_3;
+    public static Cursor CUR_JUG_4;
     
     // Dimensiones
     public static final Dimension TAMANO_VENTANA = new Dimension(800, 600);
@@ -149,6 +158,7 @@ public final class Constantes {
     public static final String FONDO_INFO_ELEMENTO = RUTA_FONDOS + "fondo_info_elemento" + EXT1;
     public static final String FONDO_LANZAMIENTO_DADOS = RUTA_FONDOS + "fondo_lanzamiento_dados" + EXT1;
     public static final String FONDO_LOGIN = RUTA_FONDOS + "fondo_login" + EXT1;
+    public static final String FONDO_MENSAJE_PNJ = RUTA_FONDOS + "fondo_mensaje_pnj" + EXT1;
     public static final String FONDO_MENU_PAUSA = RUTA_FONDOS + "fondo_menu_pausa" + EXT1;
     public static final String FONDO_MENU_PRINCIPAL = RUTA_FONDOS + "fondo_menu_principal" + EXT1;
     public static final String FONDO_REGISTRO = RUTA_FONDOS + "fondo_registro" + EXT1;
@@ -160,6 +170,7 @@ public final class Constantes {
     // Otros
     public static final String IMAGEN_DADO = RUTA_DADOS + "dado_";
     public static final String IMAGEN_DESPLIEGUE = RUTA_OTROS + "despliegue_";
+    public static final String INTRO = RUTA_OTROS + "intro" + EXT2;
     public static final String MARCO_SELECCION = RUTA_OTROS + "marco_seleccion" + EXT1;
     public static final String TURNO_ACTUAL = RUTA_OTROS + "turno_actual" + EXT1;
     public static final String VACIO = RUTA + "vacio" + EXT1;
@@ -178,6 +189,7 @@ public final class Constantes {
     public static final String EXT_M = ".mp3";
     
     // Música
+    public static final String[] M_INTRO = {"intro"};
     public static final String[] M_LOGIN = {"global_menu"};
     public static final String[] M_MENU_PRINCIPAL = {"menu"};
     public static final String[] M_NUEVA_PARTIDA = {"free_duel"};
@@ -197,4 +209,26 @@ public final class Constantes {
     public static final String SELECCION = RUTA_EFECTOS + "seleccion" + EXT_E;
     public static final String MARCA_CAMINO = RUTA_EFECTOS + "camino" + EXT_E;
     public static final String E_INVOCACION = RUTA_EFECTOS + "invocacion" + EXT_E;
+    public static final String METEORITOS = RUTA_EFECTOS + "meteoritos" + EXT_E;
+    
+    public static void cambiarCursor(int numJug){
+            
+        switch(numJug){
+            case 0:
+                CURSOR = CUR_NORMAL;
+                break;
+            case 1:
+                CURSOR = CUR_JUG_1;
+                break;
+            case 2:
+                CURSOR = CUR_JUG_2;
+                break;
+            case 3:
+                CURSOR = CUR_JUG_3;
+                break;
+            default:
+                CURSOR = CUR_JUG_4;
+                break;
+        }
+    }
 }

@@ -9,20 +9,37 @@ import Modelos.Jugador;
 import Modelos.Usuario;
 import Otros.Constantes;
 import Otros.Registro;
+import Vistas.VistaIntroduccion;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
 /**
  *
  * @author mam28
  */
-public class ControladorPrincipal {
+public class ControladorPrincipal extends Application{
     private ControladorVistaPrincipal contVisPrin;
     private ControladorLogin contLog;
     private ControladorRegistro contReg;
@@ -32,6 +49,28 @@ public class ControladorPrincipal {
     private ControladorInfoCriaturas contInfo;
     private ControladorBatalla contBat;
     private Usuario usuarioActivo;
+    
+    @Override
+    public void start(Stage primaryStage) {
+        Button btn = new Button();
+        btn.setText("Say 'Hello World'");
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Hello World!");
+            }
+        });
+        
+        StackPane root = new StackPane();
+        root.getChildren().add(btn);
+        
+        Scene scene = new Scene(root, 300, 250);
+        
+        primaryStage.setTitle("Hello World!");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
     
     /**
      * @param args the command line arguments
@@ -43,11 +82,47 @@ public class ControladorPrincipal {
         // Instancia a este controlador
         ControladorPrincipal contPrin = new ControladorPrincipal();
         contPrin.elementosPersonalizados();
-        
-        // Se instancian los otros controladores
         contPrin.contVisPrin = new ControladorVistaPrincipal(contPrin);
-        contPrin.crearControladorLogin();
-        contPrin.contLog.mostrarVistaLogin();
+        
+        contPrin.mostrarVistaIntro();
+    }
+    
+    public void mostrarVistaIntro(){
+        VistaIntroduccion visIntro = new VistaIntroduccion();
+        contVisPrin.getVisPrin().agregarVista(visIntro);
+        visIntro.setVisible(true);
+        visIntro.requestFocus();
+
+        Timer timerAinmacion = new Timer();
+        timerAinmacion.schedule(new TimerTask(){
+            @Override
+            public void run(){
+                this.cancel();
+                timerAinmacion.cancel();
+                mostrarLogin();
+            }
+        }, 53000, 1);
+
+        visIntro.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(KeyEvent e){
+                visIntro.cerrarVista();
+                timerAinmacion.cancel();
+                mostrarLogin();
+            }
+        });
+        
+        visIntro.addFocusListener(new FocusAdapter(){
+            @Override
+            public void focusLost(FocusEvent e){
+                e.getComponent().requestFocus();
+            }
+        });
+    }
+    
+    public void mostrarLogin(){
+        this.crearControladorLogin();
+        this.contLog.mostrarVistaLogin();
     }
     
     /**
@@ -64,6 +139,20 @@ public class ControladorPrincipal {
             Constantes.FUENTE_18PX = new Font(customFont.getName(), Font.TRUETYPE_FONT, 18);
             Constantes.FUENTE_24PX = new Font(customFont.getName(), Font.TRUETYPE_FONT, 24);
             Constantes.FUENTE_36PX = new Font(customFont.getName(), Font.TRUETYPE_FONT, 36);
+            
+            Toolkit toolKit = Toolkit.getDefaultToolkit();
+            Constantes.CUR_NORMAL = toolKit.createCustomCursor(new ImageIcon(getClass().getResource(
+                "/Imagenes/Cursores/normal.png")).getImage(), new Point(2,2), "normal");
+            Constantes.CUR_JUG_1 = toolKit.createCustomCursor(new ImageIcon(getClass().getResource(
+                "/Imagenes/Cursores/jug_1.png")).getImage(), new Point(2,2), "jug_1");
+            Constantes.CUR_JUG_2 = toolKit.createCustomCursor(new ImageIcon(getClass().getResource(
+                "/Imagenes/Cursores/jug_2.png")).getImage(), new Point(2,2), "jug_2");
+            Constantes.CUR_JUG_3 = toolKit.createCustomCursor(new ImageIcon(getClass().getResource(
+                "/Imagenes/Cursores/jug_3.png")).getImage(), new Point(2,2), "jug_3");
+            Constantes.CUR_JUG_4 = toolKit.createCustomCursor(new ImageIcon(getClass().getResource(
+                "/Imagenes/Cursores/jug_4.png")).getImage(), new Point(2,2), "jug_4");
+            
+            Constantes.CURSOR = Constantes.CUR_NORMAL;
         }catch(IOException | FontFormatException e){
             // Nada
         }
@@ -93,9 +182,10 @@ public class ControladorPrincipal {
     
     /**
      * Crea una nueva instancia del controlador nueva partida
+     * @param quienLlama Vista desde la que se "llama" a este controlador
      */
-    public void crearControladorNuevaPartida(){
-        this.contNuePar = new ControladorNuevaPartida(this);
+    public void crearControladorNuevaPartida(JInternalFrame quienLlama){
+        this.contNuePar = new ControladorNuevaPartida(this, quienLlama);
     }
     
     /**

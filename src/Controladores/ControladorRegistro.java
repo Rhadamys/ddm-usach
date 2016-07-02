@@ -184,7 +184,7 @@ public final class ControladorRegistro {
             this.contPrin.getContLog().mostrarVistaLogin();
         }else if(quienLlama instanceof VistaNuevaPartida){
             if(seCompletoRegistro){
-                this.contPrin.getContNuePar().incrementarCantidadJugadores();
+                this.contPrin.getContNuePar().agregarJugDisponible(Usuario.getUsuario(this.visReg.getUsuario()));
             }
             Reproductor.reproducir(Constantes.M_NUEVA_PARTIDA);
         }

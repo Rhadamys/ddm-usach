@@ -33,30 +33,10 @@ public class SubVistaSeleccionMagia extends VistaPersonalizada implements MouseL
      * @param magias Magias disponibles.
      * @param puntosMagia Puntos de magia que tiene el jugador.
      */
-    public SubVistaSeleccionMagia(ArrayList<int[]> magias, int puntosMagia) {
+    public SubVistaSeleccionMagia(ArrayList<int[]> magias, int puntosMagia, ArrayList<HashMap<String, String>> infoMagias) {
         initComponents();
         
-        infoMagias = new ArrayList();
-        HashMap<String, String> lluviaTorrencial = new HashMap();
-        lluviaTorrencial.put("Nombre", "Lluvia torrencial");
-        lluviaTorrencial.put("NombreArchivoImagen", "magia_1");
-        lluviaTorrencial.put("Descripcion", "<html><p align=\"justify\">Hace que las criaturas enemigas gasten dos unidades de movimiento por cada cuadro que deseen desplazarse durante los próximos 3 turnos del juego.</p></html>");
-        lluviaTorrencial.put("Costo", "10");
-        infoMagias.add(lluviaTorrencial);
-        
-        HashMap<String, String> hierbasVenenosas = new HashMap();
-        hierbasVenenosas.put("Nombre", "Hierbas venenosas");
-        hierbasVenenosas.put("NombreArchivoImagen", "magia_2");
-        hierbasVenenosas.put("Descripcion", "<html><p align=\"justify\">El jugador puede seleccionar a 3 criaturas oponentes, durante los próximos 3 turnos estas criaturas recibirán un daño igual al 20% de la vida máxima que estas posean.</p></html>");
-        hierbasVenenosas.put("Costo", "15");
-        infoMagias.add(hierbasVenenosas);
-        
-        HashMap<String, String> meteoritosDeFuego = new HashMap();
-        meteoritosDeFuego.put("Nombre", "Meteoritos de fuego");
-        meteoritosDeFuego.put("NombreArchivoImagen", "magia_3");
-        meteoritosDeFuego.put("Descripcion", "<html><p align=\"justify\">El jugador selecciona un lugar del terreno, dentro de un radio de 5 cuadros del terreno, cualquier criatura enemiga que esté ubicada en esta sección recibirá un daño de 30% de la vida máxima que posea. Este efecto dura 3 turnos.</p></html>");
-        meteoritosDeFuego.put("Costo", "30");
-        infoMagias.add(meteoritosDeFuego);
+        this.infoMagias = infoMagias;
         
         this.panelesMagias = new ArrayList();
         this.magias = magias;

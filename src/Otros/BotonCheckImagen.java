@@ -29,6 +29,7 @@ public class BotonCheckImagen extends JToggleButton implements MouseListener {
         this.setContentAreaFilled(false);
         this.setBorder(null);
         this.setOpaque(false);
+        this.setCursor(Constantes.CURSOR);
     }
     
     /**
@@ -66,6 +67,7 @@ public class BotonCheckImagen extends JToggleButton implements MouseListener {
         imagenSelMousePresionado = new ImageIcon(getClass().getResource(imgSelPresionado)).getImage();
         
         this.imagen = imagenMouseNormal;
+        this.setCursor(Constantes.CURSOR);
         this.setContentAreaFilled(false);
         this.setBorder(null);
         this.setOpaque(false);

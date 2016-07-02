@@ -11,7 +11,7 @@ import java.util.*;
 public class Trampa extends ElementoEnCampo {
     private final int numTrampa;
     private final int costo;
-    private Posicion posicionReemplazo;
+    private Posicion posReemplazo;
     private Criatura criaturaAReemplazar;
     
     public Trampa(int numTrampa, int dueno){
@@ -46,16 +46,10 @@ public class Trampa extends ElementoEnCampo {
         accion.modificarCaminoTrampaParaLadrones();
     }
     
-    public void renacerDeLosMuertos(Criatura criaturaResucitada, Jugador duenoCriaturaReemplazada){        
-        for(Dado dado: duenoCriaturaReemplazada.getDados()){
-            if(dado.getCriatura().equals(this.criaturaAReemplazar)){
-                dado.setParaLanzar(true);
-                break;
-            }
-        }
-        
-        criaturaResucitada.reiniciar(criaturaResucitada.getDueno());
-        posicionReemplazo.setElemento(criaturaResucitada);
+    public void renacerDeLosMuertos(Criatura criRes, Jugador duenoCriReemp){   
+        duenoCriReemp.quitarDadoDelPuzzle((Criatura) posReemplazo.getElemento());
+        duenoCriReemp.devolverDadoAlPuzzle(criRes);
+        posReemplazo.setElemento(criRes);
     }
 
     public int getNumTrampa() {
@@ -67,7 +61,7 @@ public class Trampa extends ElementoEnCampo {
     }
 
     public Posicion getPosicionReemplazo() {
-        return posicionReemplazo;
+        return posReemplazo;
     }
 
     public Criatura getCriaturaAReemplazar() {
@@ -75,7 +69,7 @@ public class Trampa extends ElementoEnCampo {
     }
 
     public void setPosicionReemplazo(Posicion posicionReemplazo) {
-        this.posicionReemplazo = posicionReemplazo;
+        this.posReemplazo = posicionReemplazo;
     }
 
     public void setCriaturaAReemplazar(Criatura criaturaAReemplazar) {

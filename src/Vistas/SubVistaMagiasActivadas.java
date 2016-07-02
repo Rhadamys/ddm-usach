@@ -49,7 +49,7 @@ public class SubVistaMagiasActivadas extends PanelImagen {
             turnosRestantes.setSize(10, 10);
             turnosRestantes.setBackground(Color.darkGray);
             
-            PanelImagen panelMagia = new PanelImagen(Constantes.RUTA_OTROS + "/magia_" + (i+1) + Constantes.EXT1);
+            PanelImagen panelMagia = new PanelImagen(Constantes.RUTA_OTROS + "magia_" + (i+1) + Constantes.EXT1);
             this.add(panelMagia);
             panelMagia.setSize(30, 30);
             panelMagia.setLocation(posPanelesMagias[i][0], posPanelesMagias[i][1]);

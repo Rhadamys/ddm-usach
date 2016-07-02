@@ -30,6 +30,7 @@ public final class BotonImagen extends JButton implements MouseListener, ChangeL
         this.setContentAreaFilled(false);
         this.setBorder(null);
         this.setOpaque(false);
+        this.setCursor(Constantes.CURSOR);
         repaint();
         
         this.addMouseListener(this);
@@ -125,6 +126,7 @@ public final class BotonImagen extends JButton implements MouseListener, ChangeL
         this.setBorder(null);
         this.setOpaque(false);
         this.setFont(Constantes.FUENTE_14PX);
+        this.setCursor(Constantes.CURSOR);
         this.setForeground(Color.white);
         repaint();
         

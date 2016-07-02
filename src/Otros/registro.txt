@@ -1,9 +1,251 @@
 ==========      INICIO DEL REGISTRO      ==========
+30/06/2016::01:10:17=metodos ha iniciado sesión
+30/06/2016::01:10:19=metodos está viendo información de las criaturas del juego
+30/06/2016::01:10:26=metodos está modificando su puzzle de dados
+30/06/2016::01:10:30=metodos se ha unido a la partida
+30/06/2016::01:10:31=mario se ha unido a la partida
+30/06/2016::01:10:31=Creando una nueva partida
+30/06/2016::01:10:34=metodos2 se ha unido a la partida
+30/06/2016::01:10:35=metodos2 ha sido removido de la partida
+30/06/2016::01:10:40=veronica se ha unido a la partida
+30/06/2016::01:10:41=veronica está modificando su puzzle de dados
+30/06/2016::01:10:49=veronica ha sido removido de la partida
+30/06/2016::01:10:50=¡La batalla ha comenzado!
+30/06/2016::01:10:50=Es el turno de metodos
+30/06/2016::01:11:00=Es el turno de mario
+30/06/2016::01:11:08=Es el turno de metodos
+30/06/2016::01:11:20=metodos ha invocado un Goomba
+30/06/2016::01:11:21=Es el turno de mario
+30/06/2016::01:11:33=mario ha activado la magia Lluvia torrencial
+30/06/2016::01:11:38=mario ha activado la magia Meteoritos de fuego
+30/06/2016::01:11:43=mario ha colocado la trampa Trampa para ladrones sobre el terreno
+30/06/2016::01:11:48=mario ha colocado la trampa Trampa de osos sobre el terreno
+30/06/2016::01:11:53=Es el turno de metodos
+30/06/2016::01:12:07=metodos ha invocado un Bokoblin
+30/06/2016::01:12:08=Es el turno de mario
+30/06/2016::01:12:15=mario ha atacado a Bokoblin con la criatura Bokoblin
+30/06/2016::01:12:17=mario ha atacado a Bokoblin con la criatura Bokoblin
+30/06/2016::01:12:18=mario ha atacado a Bokoblin con la criatura Bokoblin
+30/06/2016::01:12:20=mario ha atacado a Bokoblin con la criatura Bokoblin
+30/06/2016::01:12:21=mario ha atacado a Bokoblin con la criatura Bokoblin
+30/06/2016::01:12:26=mario ha atacado a Goomba con la criatura Bokoblin
+30/06/2016::01:12:28=mario ha atacado a Goomba con la criatura Bokoblin
+30/06/2016::01:12:34=mario ha atacado a metodos con la criatura Bokoblin
+30/06/2016::01:12:35=mario ha atacado a metodos con la criatura Bokoblin
+30/06/2016::01:12:35=metodos ha sido derrotado
+30/06/2016::01:12:35=¡mario ha ganado la partida!
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+30/06/2016::14:58:27=metodos ha iniciado sesión
+30/06/2016::14:58:34=metodos se ha unido a la partida
+30/06/2016::14:58:35=mario se ha unido a la partida
+30/06/2016::14:58:35=Creando una nueva partida
+30/06/2016::14:58:38=¡La batalla ha comenzado!
+30/06/2016::14:58:39=Es el turno de metodos
+30/06/2016::14:58:52=Es el turno de mario
+30/06/2016::14:59:03=mario ha activado la magia Meteoritos de fuego
+30/06/2016::14:59:08=mario ha activado la magia Lluvia torrencial
+30/06/2016::14:59:13=mario ha colocado la trampa Renacer de los muertos sobre el terreno
+30/06/2016::14:59:18=Es el turno de metodos
+30/06/2016::14:59:29=Es el turno de mario
+30/06/2016::14:59:40=Es el turno de metodos
+30/06/2016::14:59:52=Es el turno de mario
+30/06/2016::15:00:06=mario ha atacado a metodos con la criatura Bokoblin
+30/06/2016::15:00:07=mario ha atacado a metodos con la criatura Bokoblin
+30/06/2016::15:00:07=metodos ha sido derrotado
+30/06/2016::15:00:07=¡mario ha ganado la partida!
+30/06/2016::15:00:17=metodos está viendo información de las criaturas del juego
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+01/07/2016::01:02:14=metodos ha iniciado sesión
+01/07/2016::01:02:16=metodos se ha unido a la partida
+01/07/2016::01:02:16=luigi se ha unido a la partida
+01/07/2016::01:02:16=Creando una nueva partida
+01/07/2016::01:02:23=metodos2 se ha unido a la partida
+01/07/2016::01:02:26=mario se ha unido a la partida
+01/07/2016::01:02:40=metodos está modificando su puzzle de dados
+01/07/2016::01:03:01=Se ha registrado a ganondorf
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+01/07/2016::02:03:10=metodos ha iniciado sesión
+01/07/2016::02:03:12=metodos se ha unido a la partida
+01/07/2016::02:03:12=ganondorf se ha unido a la partida
+01/07/2016::02:03:12=Creando una nueva partida
+01/07/2016::02:03:16=ganondorf se ha unido a la partida
+01/07/2016::02:03:21=¡La batalla ha comenzado!
+01/07/2016::02:03:22=Es el turno de metodos2
+01/07/2016::02:03:33=metodos2 ha colocado la trampa Trampa de osos sobre el terreno
+01/07/2016::02:03:39=metodos2 ha colocado la trampa Trampa para ladrones sobre el terreno
+01/07/2016::02:03:44=Es el turno de mario
+01/07/2016::02:03:55=mario ha colocado la trampa Trampa de osos sobre el terreno
+01/07/2016::02:04:00=mario ha colocado la trampa Renacer de los muertos sobre el terreno
+01/07/2016::02:04:05=Es el turno de metodos
+01/07/2016::02:05:01=metodos ha invocado un Goomba
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+01/07/2016::02:42:19=metodos ha iniciado sesión
 ==========      FINAL DEL REGISTRO       ==========
 
 ==========      INICIO DEL REGISTRO      ==========
 ==========      FINAL DEL REGISTRO       ==========
 
 ==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+02/07/2016::02:44:15=metodos ha iniciado sesión
+02/07/2016::02:44:17=metodos se ha unido a la partida
+02/07/2016::02:44:17=veronica se ha unido a la partida
+02/07/2016::02:44:17=Creando una nueva partida
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+02/07/2016::02:55:32=metodos ha iniciado sesión
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+02/07/2016::15:39:56=Se ha registrado a metodos
+02/07/2016::15:40:04=Se ha registrado a mario
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+02/07/2016::15:50:33=metodos ha iniciado sesión
+02/07/2016::15:50:34=metodos se ha unido a la partida
+02/07/2016::15:50:34=mario se ha unido a la partida
+02/07/2016::15:50:34=Creando una nueva partida
+02/07/2016::15:50:36=¡La batalla ha comenzado!
+02/07/2016::15:50:36=Es el turno de mario
+02/07/2016::15:50:48=mario ha colocado la trampa Trampa de osos sobre el terreno
+02/07/2016::15:50:53=mario ha colocado la trampa Renacer de los muertos sobre el terreno
+02/07/2016::15:50:58=mario ha colocado la trampa Trampa de osos sobre el terreno
+02/07/2016::15:51:03=Es el turno de metodos
+02/07/2016::15:51:15=metodos ha invocado un Goomba
+02/07/2016::15:51:16=Es el turno de mario
+02/07/2016::15:51:27=mario ha atacado a Goomba con la criatura Boo
+02/07/2016::15:51:29=mario ha atacado a Goomba con la criatura Boo
+02/07/2016::15:51:30=mario ha atacado a Goomba con la criatura Boo
+02/07/2016::15:51:35=mario ha atacado a metodos con la criatura Boo
+02/07/2016::15:51:35=metodos ha sido derrotado
+02/07/2016::15:51:35=¡mario ha ganado la partida!
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+02/07/2016::15:54:40=metodos ha iniciado sesión
+02/07/2016::15:54:42=metodos se ha unido a la partida
+02/07/2016::15:54:42=mario se ha unido a la partida
+02/07/2016::15:54:42=Creando una nueva partida
+02/07/2016::15:54:43=¡La batalla ha comenzado!
+02/07/2016::15:54:44=Es el turno de metodos
+02/07/2016::15:54:57=metodos ha invocado un Goomba
+02/07/2016::15:54:57=Es el turno de mario
+02/07/2016::15:55:09=mario ha colocado la trampa Trampa de osos sobre el terreno
+02/07/2016::15:55:14=mario ha colocado la trampa Renacer de los muertos sobre el terreno
+02/07/2016::15:55:19=mario ha colocado la trampa Trampa de osos sobre el terreno
+02/07/2016::15:55:24=Es el turno de metodos
+02/07/2016::15:55:34=Es el turno de mario
+02/07/2016::15:55:45=mario ha atacado a Goomba con la criatura Goomba
+02/07/2016::15:55:47=mario ha atacado a Goomba con la criatura Goomba
+02/07/2016::15:55:48=mario ha atacado a Goomba con la criatura Goomba
+02/07/2016::15:55:50=mario ha atacado a Goomba con la criatura Goomba
+02/07/2016::15:55:54=mario ha atacado a metodos con la criatura Goomba
+02/07/2016::15:55:55=Es el turno de metodos
+02/07/2016::15:56:07=Es el turno de mario
+02/07/2016::15:56:14=mario ha atacado a metodos con la criatura Goomba
+02/07/2016::15:56:14=metodos ha sido derrotado
+02/07/2016::15:56:14=¡mario ha ganado la partida!
 ==========      FINAL DEL REGISTRO       ==========
 

@@ -12,7 +12,6 @@ import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
@@ -31,9 +30,7 @@ public class VistaRegistro extends VistaPersonalizada {
      * Creates new form VistaRegistro
      */
     public VistaRegistro() {
-        initComponents();
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);    
+        initComponents(); 
         
         this.registrarse = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(this.registrarse);

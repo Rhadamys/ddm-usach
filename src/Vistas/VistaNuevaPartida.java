@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class VistaNuevaPartida extends VistaPersonalizada {
     private SubVistaSeleccionEquipos visSelEq;
     private SubVistaCambiarJugador visCamJug;
+    private SubVistaCambiarNivel visCamNiv;
     private final ArrayList<SubVistaResumenJugador> vistasResJug;
     private final BotonImagen agregar;
     private final BotonCheckImagen enEquipos;
@@ -34,7 +35,7 @@ public class VistaNuevaPartida extends VistaPersonalizada {
     public VistaNuevaPartida() {
         initComponents();
         
-        this.vistasResJug = new ArrayList();
+        this.vistasResJug = new ArrayList<SubVistaResumenJugador>();
         
         this.agregar = new BotonImagen(Constantes.BTN_REDONDO);
         this.add(agregar);        
@@ -145,12 +146,20 @@ public class VistaNuevaPartida extends VistaPersonalizada {
         return visCamJug;
     }
 
+    public SubVistaCambiarNivel getVisCamNiv() {
+        return visCamNiv;
+    }
+
     public void setVisSelEq(SubVistaSeleccionEquipos visSelEq) {
         this.visSelEq = visSelEq;
     }
 
     public void setVisCamJug(SubVistaCambiarJugador visCamJug) {
         this.visCamJug = visCamJug;
+    }
+
+    public void setVisCamNiv(SubVistaCambiarNivel visCamNiv) {
+        this.visCamNiv = visCamNiv;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

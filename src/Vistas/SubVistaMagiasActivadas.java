@@ -31,8 +31,8 @@ public class SubVistaMagiasActivadas extends PanelImagen {
         this.setLocation(160, 5);
         this.setBorder(null);
         
-        this.panelesMagias = new ArrayList();
-        this.etiquetasTurRes = new ArrayList();
+        this.panelesMagias = new ArrayList<PanelImagen>();
+        this.etiquetasTurRes = new ArrayList<JLabel>();
         
         this.nombresMagias = new String[3];
         this.nombresMagias[0] = "Lluvia torrencial";

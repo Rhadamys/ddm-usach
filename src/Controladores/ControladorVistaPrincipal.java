@@ -52,7 +52,7 @@ public final class ControladorVistaPrincipal {
         try {
             Registro.cerrarRegistro();
         } catch (IOException ex) {
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
         }
                 
         Reproductor.finalizarReproductor();
@@ -66,7 +66,7 @@ public final class ControladorVistaPrincipal {
                 try {
                     Registro.cerrarRegistro();
                 } catch (IOException ex) {
-                    // Nada
+                    System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + e);
                 }
             }
         });

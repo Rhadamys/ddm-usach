@@ -9,14 +9,13 @@ import Modelos.Jugador;
 import Modelos.Usuario;
 import Otros.Constantes;
 import Otros.Registro;
+import Otros.Reproductor;
 import Vistas.VistaIntroduccion;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -26,11 +25,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
@@ -45,6 +39,7 @@ public class ControladorPrincipal extends Application{
     private ControladorRegistro contReg;
     private ControladorMenuPrincipal contMenuPrin;
     private ControladorNuevaPartida contNuePar;
+    private ControladorTorneo contTor;
     private ControladorModificarPuzzle contModPuzz;
     private ControladorInfoCriaturas contInfo;
     private ControladorBatalla contBat;
@@ -52,24 +47,7 @@ public class ControladorPrincipal extends Application{
     
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        // Nada
     }
     
     /**
@@ -87,39 +65,39 @@ public class ControladorPrincipal extends Application{
         contPrin.mostrarVistaIntro();
     }
     
+    /**
+     * Muestra el video de introducción del juego y agrega los listeners a la vista
+     * para poder saltar la intro al presionar cualquier tecla.
+     */
     public void mostrarVistaIntro(){
         VistaIntroduccion visIntro = new VistaIntroduccion();
         contVisPrin.getVisPrin().agregarVista(visIntro);
-        visIntro.setVisible(true);
-        visIntro.requestFocus();
+        visIntro.getPanel().requestFocus();
 
         Timer timerAinmacion = new Timer();
         timerAinmacion.schedule(new TimerTask(){
             @Override
             public void run(){
+                mostrarLogin();
+                visIntro.cerrarVista();
                 this.cancel();
                 timerAinmacion.cancel();
-                mostrarLogin();
             }
-        }, 53000, 1);
+        }, 51000, 1);
 
-        visIntro.addKeyListener(new KeyAdapter(){
+        visIntro.getPanel().addKeyListener(new KeyAdapter(){
             @Override
             public void keyReleased(KeyEvent e){
+                mostrarLogin();
                 visIntro.cerrarVista();
                 timerAinmacion.cancel();
-                mostrarLogin();
-            }
-        });
-        
-        visIntro.addFocusListener(new FocusAdapter(){
-            @Override
-            public void focusLost(FocusEvent e){
-                e.getComponent().requestFocus();
             }
         });
     }
     
+    /**
+     * Instancia y muestra la vista de login.
+     */
     public void mostrarLogin(){
         this.crearControladorLogin();
         this.contLog.mostrarVistaLogin();
@@ -154,7 +132,7 @@ public class ControladorPrincipal extends Application{
             
             Constantes.CURSOR = Constantes.CUR_NORMAL;
         }catch(IOException | FontFormatException e){
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + e);
         }
     }
     
@@ -189,6 +167,13 @@ public class ControladorPrincipal extends Application{
     }
     
     /**
+     * Crea una nueva instancia del controlador nuevo torneo
+     */
+    public void crearControladorTorneo(){
+        this.contTor = new ControladorTorneo(this);
+    }
+    
+    /**
      * Crea una nueva instancia del controlador mofidicar puzzle
      * @param usuario Usuario que modificará el puzzle de dados.
      */
@@ -197,11 +182,20 @@ public class ControladorPrincipal extends Application{
     }
     
     /**
+     * Crea una nueva instancia del controlador infoCriaturas
+     */
+    public void crearControladorInfoCriaturas(){
+        this.contInfo = new ControladorInfoCriaturas (this);
+    }
+    
+    /**
      * Crea una nueva instancia del controlador batalla
      * @param jugadores Jugadores de la partida
+     * @param esEnEquipos Indica si la partida es en equipos.
+     * @param esTorneo Indica si la partida pertenece a un torneo.
      */
-    public void crearControladorBatalla(ArrayList<Jugador> jugadores){
-        this.contBat = new ControladorBatalla(this, jugadores);
+    public void crearControladorBatalla(ArrayList<Jugador> jugadores, boolean esEnEquipos, boolean esTorneo){
+        this.contBat = new ControladorBatalla(this, jugadores, esEnEquipos, esTorneo);
     }
     
     /**
@@ -245,6 +239,14 @@ public class ControladorPrincipal extends Application{
     }
 
     /**
+     * Devuelve el controlador de torneo
+     * @return Controlador de nueva partida
+     */
+    public ControladorTorneo getContTor() {
+        return contTor;
+    }
+
+    /**
      * Devuelve el controlador de modificar puzzle
      * @return Controlador de nueva partida
      */
@@ -258,13 +260,6 @@ public class ControladorPrincipal extends Application{
      */
     public ControladorInfoCriaturas getContInfo(){
         return contInfo;
-    }
-    
-    /**
-     * Crea una nueva instancia del controlador infoCriaturas
-     */
-    public void crearControladorInfoCriaturas(){
-        this.contInfo = new ControladorInfoCriaturas (this);
     }
 
     /**

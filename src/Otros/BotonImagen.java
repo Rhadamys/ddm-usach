@@ -48,71 +48,96 @@ public final class BotonImagen extends JButton implements MouseListener, ChangeL
         String imgDeshabilitado = Constantes.VACIO;
         
         switch(numBoton){
-            case Constantes.BTN_NORMAL: imgNormal = Constantes.BOTON;
-                                        imgSobre = Constantes.BOTON_SOBRE;
-                                        imgPresionado = Constantes.BOTON_PRESIONADO;
-                                        imgDeshabilitado = Constantes.BOTON_DESHABILITADO;
-                                        break;
-            case Constantes.BTN_REDONDO:    imgNormal = Constantes.BOTON_REDONDO;
-                                            imgSobre = Constantes.BOTON_REDONDO_SOBRE;
-                                            imgPresionado = Constantes.BOTON_REDONDO_PRESIONADO;
-                                            break;
-            case Constantes.BTN_ATAQUE: imgNormal = Constantes.ATAQUE;
-                                        imgSobre = Constantes.ATAQUE_SOBRE;
-                                        imgPresionado = Constantes.ATAQUE_PRESIONADO;
-                                        imgDeshabilitado = Constantes.ATAQUE_DESHABILITADO;
-                                        break;
-            case Constantes.BTN_INVOCACION: imgNormal = Constantes.INVOCACION;
-                                            imgSobre = Constantes.INVOCACION_SOBRE;
-                                            imgPresionado = Constantes.INVOCACION_PRESIONADO;
-                                            imgDeshabilitado = Constantes.INVOCACION_DESHABILITADO;
-                                            break;
-            case Constantes.BTN_MAGIA:  imgNormal = Constantes.MAGIA;
-                                        imgSobre = Constantes.MAGIA_SOBRE;
-                                        imgPresionado = Constantes.MAGIA_PRESIONADO;
-                                        imgDeshabilitado = Constantes.MAGIA_DESHABILITADO;
-                                        break;  
-            case Constantes.BTN_MOVIMIENTO: imgNormal = Constantes.MOVIMIENTO;
-                                            imgSobre = Constantes.MOVIMIENTO_SOBRE;
-                                            imgPresionado = Constantes.MOVIMIENTO_PRESIONADO;
-                                            imgDeshabilitado = Constantes.MOVIMIENTO_DESHABILITADO;
-                                            break;
-            case Constantes.BTN_TRAMPA: imgNormal = Constantes.TRAMPA;
-                                        imgSobre = Constantes.TRAMPA_SOBRE;
-                                        imgPresionado = Constantes.TRAMPA_PRESIONADO;
-                                        imgDeshabilitado = Constantes.TRAMPA_DESHABILITADO;
-                                        break;
-            case Constantes.BTN_PAUSA:  imgNormal = Constantes.PAUSA;
-                                        imgSobre = Constantes.PAUSA_SOBRE;
-                                        imgPresionado = Constantes.PAUSA_PRESIONADO;
-                                        imgDeshabilitado = Constantes.PAUSA_DESHABILITADO;
-                                        break;
-            case Constantes.BTN_ATRAS:  imgNormal = Constantes.ATRAS;
-                                        imgSobre = Constantes.ATRAS_SOBRE;
-                                        imgPresionado = Constantes.ATRAS_PRESIONADO;
-                                        break;
-            case Constantes.BTN_MARCO:  imgSobre = Constantes.MARCO_SELECCION;
-                                        break;
-            case Constantes.BTN_NUEVA_PARTIDA:  imgNormal = Constantes.NUEVA_PARTIDA;
-                                                imgSobre = Constantes.NUEVA_PARTIDA_SOBRE;
-                                                imgPresionado = Constantes.NUEVA_PARTIDA_PRESIONADO;
-                                                break;
-            case Constantes.BTN_NUEVO_TORNEO:   imgNormal = Constantes.TORNEO;
-                                                imgSobre = Constantes.TORNEO_SOBRE;
-                                                imgPresionado = Constantes.TORNEO_PRESIONADO;
-                                                break;
-            case Constantes.BTN_MODIFICAR_PUZZLE:   imgNormal = Constantes.MODIFICAR_PUZZLE;
-                                                    imgSobre = Constantes.MODIFICAR_PUZZLE_SOBRE;
-                                                    imgPresionado = Constantes.MODIFICAR_PUZZLE_PRESIONADO;
-                                                    break;
-            case Constantes.BTN_INFO_CRIATURAS: imgNormal = Constantes.INFO_CRIATURAS;
-                                                imgSobre = Constantes.INFO_CRIATURAS_SOBRE;
-                                                imgPresionado = Constantes.INFO_CRIATURAS_PRESIONADO;
-                                                break;
-            case Constantes.BTN_SALIR:  imgNormal = Constantes.SALIR;
-                                        imgSobre = Constantes.SALIR_SOBRE;
-                                        imgPresionado = Constantes.SALIR_PRESIONADO;
-                                        break;
+            case Constantes.BTN_NORMAL: 
+                imgNormal = Constantes.BOTON;
+                imgSobre = Constantes.BOTON_SOBRE;
+                imgPresionado = Constantes.BOTON_PRESIONADO;
+                imgDeshabilitado = Constantes.BOTON_DESHABILITADO;
+                break;
+            case Constantes.BTN_REDONDO:    
+                imgNormal = Constantes.BOTON_REDONDO;
+                imgSobre = Constantes.BOTON_REDONDO_SOBRE;
+                imgPresionado = Constantes.BOTON_REDONDO_PRESIONADO;
+                break;
+            case Constantes.BTN_ATAQUE: 
+                imgNormal = Constantes.ATAQUE;
+                imgSobre = Constantes.ATAQUE_SOBRE;
+                imgPresionado = Constantes.ATAQUE_PRESIONADO;
+                imgDeshabilitado = Constantes.ATAQUE_DESHABILITADO;
+                break;
+            case Constantes.BTN_INVOCACION: 
+                imgNormal = Constantes.INVOCACION;
+                imgSobre = Constantes.INVOCACION_SOBRE;
+                imgPresionado = Constantes.INVOCACION_PRESIONADO;
+                imgDeshabilitado = Constantes.INVOCACION_DESHABILITADO;
+                break;
+            case Constantes.BTN_MAGIA:  
+                imgNormal = Constantes.MAGIA;
+                imgSobre = Constantes.MAGIA_SOBRE;
+                imgPresionado = Constantes.MAGIA_PRESIONADO;
+                imgDeshabilitado = Constantes.MAGIA_DESHABILITADO;
+                break;  
+            case Constantes.BTN_MOVIMIENTO: 
+                imgNormal = Constantes.MOVIMIENTO;
+                imgSobre = Constantes.MOVIMIENTO_SOBRE;
+                imgPresionado = Constantes.MOVIMIENTO_PRESIONADO;
+                imgDeshabilitado = Constantes.MOVIMIENTO_DESHABILITADO;
+                break;
+            case Constantes.BTN_TRAMPA: 
+                imgNormal = Constantes.TRAMPA;
+                imgSobre = Constantes.TRAMPA_SOBRE;
+                imgPresionado = Constantes.TRAMPA_PRESIONADO;
+                imgDeshabilitado = Constantes.TRAMPA_DESHABILITADO;
+                break;
+            case Constantes.BTN_PAUSA:  
+                imgNormal = Constantes.PAUSA;
+                imgSobre = Constantes.PAUSA_SOBRE;
+                imgPresionado = Constantes.PAUSA_PRESIONADO;
+                imgDeshabilitado = Constantes.PAUSA_DESHABILITADO;
+                break;
+            case Constantes.BTN_ATRAS:  
+                imgNormal = Constantes.ATRAS;
+                imgSobre = Constantes.ATRAS_SOBRE;
+                imgPresionado = Constantes.ATRAS_PRESIONADO;
+                break;
+            case Constantes.BTN_MARCO:  
+                imgSobre = Constantes.MARCO_SELECCION;
+                break;
+            case Constantes.BTN_NUEVA_PARTIDA:  
+                imgNormal = Constantes.NUEVA_PARTIDA;
+                imgSobre = Constantes.NUEVA_PARTIDA_SOBRE;
+                imgPresionado = Constantes.NUEVA_PARTIDA_PRESIONADO;
+                break;
+            case Constantes.BTN_NUEVO_TORNEO:   
+                imgNormal = Constantes.TORNEO;
+                imgSobre = Constantes.TORNEO_SOBRE;
+                imgPresionado = Constantes.TORNEO_PRESIONADO;
+                break;
+            case Constantes.BTN_MODIFICAR_PUZZLE:   
+                imgNormal = Constantes.MODIFICAR_PUZZLE;
+                imgSobre = Constantes.MODIFICAR_PUZZLE_SOBRE;
+                imgPresionado = Constantes.MODIFICAR_PUZZLE_PRESIONADO;
+                break;
+            case Constantes.BTN_INFO_CRIATURAS: 
+                imgNormal = Constantes.INFO_CRIATURAS;
+                imgSobre = Constantes.INFO_CRIATURAS_SOBRE;
+                imgPresionado = Constantes.INFO_CRIATURAS_PRESIONADO;
+                break;
+            case Constantes.BTN_SALIR: 
+                imgNormal = Constantes.SALIR;
+                imgSobre = Constantes.SALIR_SOBRE;
+                imgPresionado = Constantes.SALIR_PRESIONADO;
+                break;
+            case Constantes.BTN_TODOS_CONTRA_TODOS:
+                imgNormal = Constantes.TODOS_CONTRA_TODOS;
+                imgSobre = Constantes.TODOS_CONTRA_TODOS_SOBRE;
+                imgPresionado = Constantes.TODOS_CONTRA_TODOS_PRESIONADO;
+                break;
+            case Constantes.BTN_SOBREVIVIENTE:
+                imgNormal = Constantes.SOBREVIVIENTE;
+                imgSobre = Constantes.SOBREVIVIENTE_SOBRE;
+                imgPresionado = Constantes.SOBREVIVIENTE_PRESIONADO;
+                break;
         }
         
         imagenMouseNormal = new ImageIcon(getClass().getResource(imgNormal)).getImage();

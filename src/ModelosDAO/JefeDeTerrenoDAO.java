@@ -23,7 +23,7 @@ public class JefeDeTerrenoDAO {
             if(stmt != null){
                 ResultSet resultados = stmt.executeQuery(consulta);
 
-                ArrayList<JefeDeTerreno> jefes = new ArrayList();
+                ArrayList<JefeDeTerreno> jefes = new ArrayList<JefeDeTerreno>();
                 while(resultados.next()){
                  int idJefe = resultados.getInt(1);
                     String nombre = resultados.getString(2);

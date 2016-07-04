@@ -5,6 +5,10 @@
  ***********************************************************************/
 package Modelos;
 
+import ModelosDAO.DadoDAO;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /** @pdOid 62ea5a63-657a-44c3-a1da-852adcc35713 */
 public class Dado {
     private final int id;
@@ -21,6 +25,15 @@ public class Dado {
         this.nivel = nivel;
         this.caras = caras;
         this.paraLanzar = true;
+    }
+    
+    public static ArrayList<Dado> getDados(){
+        try {
+            return DadoDAO.getDados();
+        } catch (SQLException ex) {
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
+            return null;
+        }
     }
     
     public int getId() {

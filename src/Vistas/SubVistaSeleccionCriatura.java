@@ -10,7 +10,6 @@ import Otros.BotonImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
-import java.awt.Font;
 import java.util.ArrayList;
 
 /**
@@ -29,7 +28,7 @@ public class SubVistaSeleccionCriatura extends VistaPersonalizada {
         initComponents();
         
         this.criaturas = criaturas;
-        this.panelesCriaturas = new ArrayList();
+        this.panelesCriaturas = new ArrayList<BotonImagen>();
         
         final int N_COLUMNAS = criaturas.size();
         final int LADO = 100;
@@ -73,14 +72,11 @@ public class SubVistaSeleccionCriatura extends VistaPersonalizada {
 
         setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(800, 600));
-        setMinimumSize(new java.awt.Dimension(800, 600));
-        setPreferredSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(null);
 
         titulo.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         titulo.setForeground(new java.awt.Color(255, 255, 255));
         titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo.setText("Acción obligada: Selecciona una criatura para invocar");
+        titulo.setText("Selecciona una criatura para invocar");
         getContentPane().add(titulo);
         titulo.setBounds(0, 10, 790, 40);
 

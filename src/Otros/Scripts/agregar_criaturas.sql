@@ -1,10 +1,63 @@
+--Nivel 1
 INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
-	VALUES ('Goomba', '<html><p align="justify">Como textualmente su manual describía “Pequeño Goomba: Un Champiñón que engaño al rey Champiñón. Se salta encima y muere… 100 puntos”, parecen ser una especie de Champiñón con pies, señas, y en ocasiones, colmillos (hacia arriba).</p></html>', 'criatura1', 100, 40, 5, 1);
+	VALUES ('Goomba', '<html><p align="justify">Como textualmente su manual describï¿½a. Pequeï¿½o Goomba: Un Champiï¿½ï¿½n que engaï¿½ï¿½ al rey Champiï¿½ï¿½n. Se salta encima y muere, parecen ser una especie de Champiï¿½ï¿½n con pies, y en ocasiones, colmillos (hacia arriba).</p></html>', 'goomba', 50, 35, 20, 1);
 INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
-	VALUES ('Bokoblin', '<html><p align="justify">Los orígenes de estos monstruos se pierden en la Noche de los Tiempos. Pueden realizar tareas sencillas y manejar distintas armas; prefieren atacar en grupo, quizá por su escaso intelecto. Su extraña obsesión por la ropa interior merece mención aparte.</p</html>', 'criatura2', 120, 30, 7, 1);
+	VALUES ('Bokoblin', '<html><p align="justify">Los orï¿½genes de estos monstruos se pierden en la Noche de los Tiempos. Pueden realizar tareas sencillas y manejar distintas armas; prefieren atacar en grupo, quizï¿½ por su escaso intelecto.</p</html>', 'bokoblin', 60, 20, 15, 1);
 INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
-	VALUES ('Boo', '<html><p align="justify">Una característica esencial de este enemigo es que cuando lo miran, se queda quieto, se tapa la cara con sus manos o se hace invisible, pero si no lo están viendo, comienza a moverse para atacar al jugador</p></html>', 'criatura3', 200, 60, 12, 2);
+	VALUES ('Blooper', '<html><p align="justify"> Los Bloopers son calamares que se encuentran en el ocï¿½ano, aunque pueden sobrevvivir fuera del agua; tambiï¿½n pueden tener entre 4 a 10 extremidades, y si ... cuidado con su tinta.</p></html>', 'blooper', 55, 30, 15, 1);
 INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
-	VALUES ('Lizalfos', '<html><p align="justify">Son muy ágiles en combate y tienden a oscilar su arma en Link en un momento determinado, pero siempre hay pequeñas oportunidades para atacar cuando ellos bajan la guardia. </p></html>', 'criatura4', 280, 50, 18, 3);
+	VALUES ('Yoshi', '<html><p align="justify"> Es un dormilï¿½n dinosaurio con un gran potencial de batalla; atrapa al enemigo con su lengua extensible para luego lanzarlo convertido en huevo.</p></html>', 'yoshi', 55, 25, 18, 1);
 INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
-	VALUES ('Magikoopa', '<html><p align="justify">Es una criatura que viste un sombrero de hechicero color azul, una túnica azul, usa anteojos y tiene una varita mágica para lanzar hechizos, a veces vuela sobre una escoba.</p></html>', 'criatura5', 500, 150, 40, 4);
+	VALUES ('Toadette', '<html><p align="justify"> Como cualquier Toad lleva un Champiï¿½ï¿½n como sombrero pero, en color rosado con manchas blancas y con dos trenzas de los mismos colores. Es compositora y posee un conservatorio.</p></html>', 'toadette', 65, 20, 10, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Shy Guy', '<html><p align="justify"> Los Shy Guy son enemigos tï¿½midos que van siempre con mÃ¡scaras. Estos son muy famosos por llevarlas. A pesar de eso, ten cuidado con Ã©l, suelen ser muy listos.</p></html>', 'shyguy', 50, 35, 15, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Koopa Troopa', '<html><p align="justify"> Una tortuga muy Ã¡gil, de seguro ganarÃ¡ si se trata de carreras.</p></html>', 'koopatroopa', 55, 30, 18, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Ucayaya', '<html><p align="justify"> Ella es un Uca, una raza con cuerpo de Cucco y cabeza de Humano. Ahora ha decidido luchar, ï¿½sala inteligentemente!</p></html>', 'ucayaya', 50, 20, 18, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Navi', '<html><p align="justify"> HEY ... HEY LISTEN!!</p></html>', 'navi', 50, 20, 30, 1);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Skull-Kid', '<html><p align="justify"> Se trata de un miembro de la raza Skull Kid, de una personalidad traviesa, jugando y gastando bromas a los demï¿½s.</p></html>', 'skullkid', 65, 20, 15, 1);
+
+--Nivel 2
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Boo', '<html><p align="justify">Una caracterï¿½stica esencial de este enemigo es que cuando lo miran, se queda quieto, se tapa la cara con sus manos o se hace invisible, pero si no lo estï¿½n viendo, comienza a moverse para atacar al jugador</p></html>', 'boo', 120, 40, 25, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Toad', '<html><p align="justify"> Los Toad son habitantes del hermoso Reino Champiï¿½ï¿½n, su mayor caracterï¿½stica son esos grandes sombreros de setas y su gran devociï¿½n por la princesa Peach.</p></html>', 'toad', 115, 45, 25, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Lakitu', '<html><p align="justify"> Son unos koopa con lentes montados en una nube, son una sub-especie de los Koopa Troopa, y su ataque principal es lanzar pinchones.</p></html>', 'lakitu', 120, 45, 30, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Bob-Omb', '<html><p align="justify"> Ten mucho cuidado, en cualquier momento encienden su mecha y explotan!!! Todo sea por el Rey Bomb-Omb.</p></html>', 'bobomb', 100, 40, 25, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Birdo', '<html><p align="justify"> Vive en Subcon, la tierra de los sueï¿½os; es un dinosaurio de color rosado, muy femenina, fï¿½cil de reconocer gracias a su gran lazo rojo.</p></html>', 'birdo', 110, 50, 20, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Ruto', '<html><p align="justify"> A pesar de ser egoï¿½sta en su juventud, al crecer llega a ser mucho mï¿½s benï¿½vola, sobre todo despuï¿½s de saber que es la Sabia del Agua que guarda el Templo del Agua por debajo del Lago Hylia.</p></html>', 'ruto', 100, 45, 20, 2); 
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Impa', '<html><p align="justify"> Es una Sheikah, niï¿½era o guardaespaldas de la princesa Zelda, por lo que tiene una estrecha relaciï¿½n con la familia real.</p></html>', 'impa', 100, 45, 25, 2);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Darunia', '<html><p align="justify"> ï¿½l es el patriarca de la tribu Goron que vive en Ciudad Goron en la Montaï¿½a de la Muerte. Es definido como un gobernante fuerte, a menudo puede parecer algo grosero, sin embargo, siempre se preocupa profundamente por su pueblo.</p></html>', 'darunia', 100, 40, 25, 2);
+
+--Nivel 3
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Lizalfos', '<html><p align="justify">Son muy ï¿½giles en combate y tienden a oscilar su arma en Link en un momento determinado, pero siempre hay peque?as oportunidades para atacar cuando ellos bajan la guardia. </p></html>', 'lizalfos', 145, 55, 35, 3);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Ludwig', '<html><p align="justify"> Es el mï¿½s grande de todos los Koopalings, pese a ser el mayor de edad no es el mï¿½s fuerte de sus compaï¿½eros, ahora bien, es el mï¿½s inteligente de sus 8 hermanos, y probablemente mï¿½s que el propio Bowser.</p></html>', 'ludwig', 180, 60, 30, 3);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Larry', '<html><p align="justify"> Es el mï¿½s joven de los Koopalings despuï¿½s de Bowsy; muy inocente, alegre y amante de las plantas, tal vez sea un poco miedoso.</p></html>', 'larry', 170, 65, 35, 3);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Roy', '<html><p align="justify"> Tambiï¿½n se le conoce como el Bravucï¿½n Koopa; utiliza mï¿½s los mï¿½sculos que el cerebro, prefiriendo la fuerza bruta al entendimiento. Su caparazï¿½n y lentes son rosados/morados porque encuentra los colores "muy varoniles".</p></html>',  'roy', 140, 80, 30, 3);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Midna', '<html><p align="justify"> Es la originaria de la raza twili, al igual que todos todas las criaturas del Reino Crepuscular, no puede tolerar la luz, por lo que se esconde en las sombras.</p></html>', 'midna', 160, 70, 35, 3);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Fay', '<html><p align="justify"> Ella es un espï¿½ritu que reside dentro de la Espada Divina, creada por Hylia para guiar al hï¿½roe elegido en su periplo. Su forma de hablar sigue el modelo de un ser de inteligencia artificial.</p></html>', 'fay', 150, 70, 35, 3);
+
+--Nivel 4
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Magikoopa', '<html><p align="justify">Es una criatura que viste un sombrero de hechicero color azul, una tï¿½nica azul, usa anteojos y tiene una varita mï¿½gica para lanzar hechizos, a veces vuela sobre una escoba.</p></html>', 'magikoopa', 260, 105, 40, 4);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Bowsy', '<html><p align="justify"> Tambiï¿½n conocido como Bowser Jr. es el hijo de Bowser, y como su fiel sucesor sï¿½lo quiere capturar a Peach y librarse de Mario. Sin dudas su padre debe estar orgulloso.</p></html>', 'bowsy', 230, 110, 50, 4);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Sheik', '<html><p align="justify"> De la cultura Sheikah, con grandes habilidades de combate "ninja", aparece en momentos claves siempre acompaï¿½ada(o) por su lira; su gï¿½nero no estï¿½ reconocido.</p></html>', 'sheik', 220, 140, 45, 4);
+INSERT INTO GRUPO2.CRIATURA (NOMBRE, INFORMACION, IMAGENC, VIDA, ATAQUE, DEFENSA, NIVEL) 
+	VALUES ('Grahim', '<html><p align="justify"> ï¿½l, autoproclamado seï¿½or de los demonios, desatï¿½ a una horda de monstruos en las Tierras Inferiores. Busca activamente a Zelda, y es capaz de detectar su presencia.</p></html>', 'grahim', 250, 100, 40, 4);

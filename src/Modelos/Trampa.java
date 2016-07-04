@@ -21,7 +21,7 @@ public class Trampa extends ElementoEnCampo {
         switch(numTrampa){
             case 1: this.nombre = "Trampa de osos";
                     this.descripcion = "<html><p align =\"jutify\">Inmoviliza durante 3 turnos a la criatura enemiga que caiga en esta trampa.</p></html>";
-                    this.nomArchivoImagen = "/trampa_1";
+                    this.nomArchivoImagen = "trampa_1";
                     this.costo = 10;
                     break;
             case 2: this.nombre = "Trampa para ladrones";

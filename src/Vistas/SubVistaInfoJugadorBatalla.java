@@ -5,9 +5,12 @@
  */
 package Vistas;
 
+import Modelos.Jugador;
+import Otros.BarraVida;
 import Otros.Constantes;
 import Otros.PanelImagen;
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -29,9 +32,10 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
     private final JLabel puntosMagia;
     private final JLabel puntosMovimiento;
     private final JLabel puntosTrampa;
+    private final PanelImagen panelEquipo;
     private final ArrayList<JLabel> puntosTrampas;
     
-    public SubVistaInfoJugadorBatalla(){
+    public SubVistaInfoJugadorBatalla(Jugador jug, Point ubicacion){
         this.setSize(140, 250);
         
         this.panelTurno = new PanelImagen();
@@ -39,9 +43,14 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.panelTurno.setSize(35, 35);
         this.panelTurno.setLocation(70, 45);
         
+        this.panelEquipo = new PanelImagen();
+        this.add(this.panelEquipo);
+        this.panelEquipo.setSize(40, 20);
+        this.panelEquipo.setLocation(35, 95);
+        
         this.nombreJugador = new JLabel();
         this.iconoJugador = new PanelImagen();
-        this.vidaJugador = new JProgressBar();
+        this.vidaJugador = new BarraVida();
         
         this.ataque = new PanelImagen(Constantes.ATAQUE);
         this.magia = new PanelImagen(Constantes.MAGIA);
@@ -118,11 +127,7 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.nombreJugador.setForeground(Color.white);
         this.nombreJugador.setFont(Constantes.FUENTE_14PX);
         
-        this.vidaJugador.setBorder(null);
-        this.vidaJugador.setForeground(Color.green);
-        this.vidaJugador.setBackground(Color.yellow);
-        
-        this.puntosTrampas = new ArrayList();
+        this.puntosTrampas = new ArrayList<JLabel>();
         
         final int SEP = 65 / 4;
         String[] nombreTrampa = {"Trampa de oso", "Trampa para ladrones", "Renacer de los muertos"};
@@ -144,23 +149,27 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
             
             puntosTrampas.add(ptosTrampa);
         }
+        
+        this.setImagen(Constantes.RUTA_FONDOS + "fondo_j" + jug.getNumJug() + Constantes.EXT1);
+        this.setLocation(ubicacion);
+        this.nombreJugador.setText(jug.getNombreJugador());
+        this.iconoJugador.setImagen(Constantes.RUTA_JEFES +
+                jug.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
+        this.vidaJugador.setMaximum(jug.getJefeDeTerreno().getVidaMaxima());
+        this.vidaJugador.setValue(jug.getJefeDeTerreno().getVida());
+        
+        switch(jug.getEquipo()){
+            case 1:
+                this.panelEquipo.setImagen(Constantes.EQUIPO_MARIO);
+                break;
+            case 2:
+                this.panelEquipo.setImagen(Constantes.EQUIPO_ZELDA);
+                break;
+        }
     }
 
     public JProgressBar getVidaJugador() {
         return vidaJugador;
-    }
-    
-    public void setNombreJugador(String nombre){
-        this.nombreJugador.setText(nombre);
-    }
-    
-    public void setIconoJugador(String imagen){
-        this.iconoJugador.setImagen(imagen);
-    }
-    
-    public void setVidaMaximaJugador(int vidaMaximaJugador){
-        this.vidaJugador.setMaximum(vidaMaximaJugador);
-        this.vidaJugador.setValue(vidaMaximaJugador);
     }
 
     public void setVidaJugador(int vidaJugador) {
@@ -188,8 +197,17 @@ public class SubVistaInfoJugadorBatalla extends PanelImagen{
         this.puntosTrampas.get(i).setText(String.valueOf(puntosTrampa));
     }
     
-    /*
+    /**
      * Actualiza la vista de información de jugador con la información actual del jugador.
+     * @param pa Puntos de ataque
+     * @param pmag Puntos de magia
+     * @param pm Puntos de movimiento
+     * @param pt Puntos de trampa
+     * @param vida Vida restante del jugador
+     * @param to Cantidad de trampas de oso
+     * @param tl Cantidad de trampas para ladrones
+     * @param trm Cantidad de trampas renacer de los muertos
+     * @param esMiTurno Indica si es el turno del jugador
     */
     public void actualizarVista(int pa, int pmag, int pm, int pt, int vida, int to, int tl, int trm, boolean esMiTurno){
         this.setPuntosAtaque(String.valueOf(pa));

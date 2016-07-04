@@ -16,11 +16,20 @@ public class PuzzleDeDados {
         this.dados = dados;
     }
     
+    public static void agregarDadosAlPuzzle(int idJugador, ArrayList<Dado> dados){
+        try {
+            PuzzleDeDadosDAO.agregarDadosAlPuzzle(idJugador, dados);
+        } catch (SQLException ex) {
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
+        }
+    }
+    
     public static boolean actualizarPuzzleJugador(int idJugador, ArrayList<Dado> dados){
         try {
             PuzzleDeDadosDAO.actualizarPuzzleJugador(idJugador, dados);
             return true;
         } catch (SQLException ex) {
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
             return false;
         }
     }

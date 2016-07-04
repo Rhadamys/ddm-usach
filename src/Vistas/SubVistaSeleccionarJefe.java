@@ -32,7 +32,7 @@ public class SubVistaSeleccionarJefe extends VistaPersonalizada {
     public SubVistaSeleccionarJefe() {
         initComponents();
         
-        this.panelesJefes = new ArrayList();
+        this.panelesJefes = new ArrayList<BotonImagen>();
         
         this.contenedorJefes = new PanelImagen();
         this.contenedorJefes.setLayout(null);

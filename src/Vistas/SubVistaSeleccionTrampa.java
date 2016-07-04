@@ -31,7 +31,7 @@ public class SubVistaSeleccionTrampa extends VistaPersonalizada implements Mouse
     public SubVistaSeleccionTrampa(ArrayList<Trampa> trampas, int puntosTrampa) {
         initComponents();
         
-        this.panelesTrampas = new ArrayList();
+        this.panelesTrampas = new ArrayList<BotonImagen>();
         this.trampas = trampas;
         
         this.volver = new BotonImagen(Constantes.BTN_ATRAS);

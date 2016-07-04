@@ -28,7 +28,7 @@ public class SubVistaCriaturaRevivir extends VistaPersonalizada {
         initComponents();
         
         this.criaturas = criaturas;
-        this.panelesCriaturas = new ArrayList();
+        this.panelesCriaturas = new ArrayList<BotonImagen>();
         
         final int N_COLUMNAS = criaturas.size();
         final int LADO = 100;

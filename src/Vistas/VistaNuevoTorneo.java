@@ -5,19 +5,79 @@
  */
 package Vistas;
 
+import Otros.BotonImagen;
+import Otros.Constantes;
+import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 
 /**
  *
  * @author mam28
  */
 public class VistaNuevoTorneo extends VistaPersonalizada {
+    private final BotonImagen todosContraTodos;
+    private final BotonImagen sobreviviente;
+    private final BotonImagen volver;
 
     /**
      * Creates new form VistaNuevoTorneo
      */
     public VistaNuevoTorneo() {
         initComponents();
+        
+        this.todosContraTodos = new BotonImagen(Constantes.BTN_TODOS_CONTRA_TODOS);
+        this.sobreviviente = new BotonImagen(Constantes.BTN_SOBREVIVIENTE);
+        this.volver = new BotonImagen(Constantes.BTN_SALIR);
+        
+        BotonImagen[] botones = {todosContraTodos, sobreviviente, volver};
+        
+        final int ANCHO = 140;
+        final int ALTO = ANCHO * 160 / 100;
+        final int CANTIDAD = botones.length;
+        final int SEP = (this.getWidth() - ANCHO * CANTIDAD) / (CANTIDAD + 1);
+        
+        String[] mensajeBoton = {"Todos contra todos", "Sobreviviente", "Volver al menú principal"};
+        
+        for (int i = 0; i < CANTIDAD; i ++){
+            final int index = i;
+            
+            botones[i].setSize(ANCHO, ALTO);
+            botones[i].setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
+            botones[i].addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    mensaje.setText(mensajeBoton[index]);
+                }
+                
+                @Override
+                public void mouseExited(MouseEvent e){
+                    mensaje.setText("");
+                }
+            });
+            this.add(botones[i]);
+            
+            PanelImagen panel = new PanelImagen(Constantes.CAJON_MENU);
+            panel.setSize(ANCHO, ALTO);
+            panel.setLocation((SEP + ANCHO) * i + SEP, (this.getHeight() - ALTO) / 2);
+            this.add(panel);
+        }
+        
+        JLabel titulo = new JLabel("<html><b><i>NUEVO TORNEO</i></b></html>");
+        this.add(titulo);
+        titulo.setFont(Constantes.FUENTE_36PX);
+        titulo.setForeground(Color.orange);
+        titulo.setSize(800, 50);
+        titulo.setLocation(0, 100);
+        titulo.setHorizontalAlignment(JLabel.CENTER);
+        
+        this.mensaje.setText("");
+        this.mensaje.setFont(Constantes.FUENTE_36PX);
+        
+        this.setImagenFondo(Constantes.FONDO_MENU_PRINCIPAL);
     }
 
     /**
@@ -29,21 +89,31 @@ public class VistaNuevoTorneo extends VistaPersonalizada {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        mensaje = new javax.swing.JLabel();
+
+        mensaje.setFont(new java.awt.Font("Consolas", 0, 36)); // NOI18N
+        mensaje.setForeground(new java.awt.Color(255, 255, 255));
+        mensaje.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        mensaje.setText("Mensaje");
+        getContentPane().add(mensaje);
+        mensaje.setBounds(40, 550, 730, 40);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public BotonImagen getTodosContraTodos() {
+        return todosContraTodos;
+    }
+
+    public BotonImagen getSobreviviente() {
+        return sobreviviente;
+    }
+
+    public BotonImagen getVolver() {
+        return volver;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel mensaje;
     // End of variables declaration//GEN-END:variables
 }

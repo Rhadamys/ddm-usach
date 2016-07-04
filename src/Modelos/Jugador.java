@@ -5,13 +5,9 @@
  ***********************************************************************/
 package Modelos;
 
-import BD.Conection.Conection;
 import ModelosDAO.JugadorDAO;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /** @pdOid cbe19438-3292-497c-bc58-a1da1e9c38b6 */
 public abstract class Jugador {
@@ -26,12 +22,13 @@ public abstract class Jugador {
     protected int numJug;
     protected int partJug;
     protected int partGan;
+    protected int puntaje;
     
     public static ArrayList<Jugador> getJugadores(){
         try {
             return JugadorDAO.getJugadores();
         } catch (SQLException ex) {
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
             return null;
         }
     }
@@ -40,7 +37,7 @@ public abstract class Jugador {
         try {
             JugadorDAO.actualizarPartidaGanada(idJugador, partidasGanadas);
         } catch (SQLException ex) {
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
         }
     }
     
@@ -48,7 +45,7 @@ public abstract class Jugador {
         try {
             JugadorDAO.actualizarPartidaJugada(idJugador, partidasJugadas);
         } catch (SQLException ex) {
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
         }
     }
     
@@ -83,7 +80,7 @@ public abstract class Jugador {
     }
     
     public ArrayList<Criatura> getCriaturasMuertas(){
-        ArrayList<Criatura> criaturasMuertas = new ArrayList();
+        ArrayList<Criatura> criaturasMuertas = new ArrayList<Criatura>();
         for(Dado dado: getDados()){
             if(dado.getCriatura().getVida() <= 0){
                 criaturasMuertas.add(dado.getCriatura());
@@ -95,11 +92,10 @@ public abstract class Jugador {
     public void reiniciar(int numJug){
         this.numJug = numJug;
         this.turno = new Turno();
-        this.trampas = new ArrayList();
         this.jefeDeTerreno.reiniciar(numJug);
         
         // Le asigna dos trampa de cada tipo a este jugador
-        this.trampas = new ArrayList();
+        this.trampas = new ArrayList<Trampa>();
         for(int j = 1; j <= 3; j++){
             // j: Número de trampa;
             this.agregarTrampa(new Trampa(j, numJug));
@@ -159,6 +155,10 @@ public abstract class Jugador {
         this.trampas.remove(trampa);
     }
     
+    public void agregarPuntaje(int puntaje){
+        this.puntaje += puntaje;
+    }
+    
 // <editor-fold defaultstate="collapsed" desc="Getters && Setters">  
     
     public ArrayList<Dado> getDados(){
@@ -173,14 +173,14 @@ public abstract class Jugador {
         this.puzzle.agregarDado(dado);
     }
     
-    public int cantidadDadosDisponibles(){
-        int cantidadDados = 0;
+    public ArrayList<Dado> getDadosDisponibles(){
+        ArrayList<Dado> dadosDisponibles = new ArrayList<Dado>();
         for(Dado dado: this.puzzle.getDados()){
             if(dado.isParaLanzar()){
-                cantidadDados++;
+                dadosDisponibles.add(dado);
             }
         }
-        return cantidadDados;
+        return dadosDisponibles;
     }
 
     public String getNombreJugador() {
@@ -241,6 +241,14 @@ public abstract class Jugador {
 
     public void aumPartGan() {
         this.partGan++;
+    }
+
+    public int getPuntaje() {
+        return puntaje;
+    }
+
+    public void setPuntaje(int puntaje) {
+        this.puntaje = puntaje;
     }
     
 // </editor-fold>

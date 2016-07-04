@@ -24,7 +24,7 @@ public class PuzzleDeDadosDAO {
             if(stmtPuzzle != null){
                 ResultSet resultadosPuzzle = stmtPuzzle.executeQuery(consulta);            
 
-                ArrayList<Dado> dadosJugador = new ArrayList();
+                ArrayList<Dado> dadosJugador = new ArrayList<Dado>();
                 while(resultadosPuzzle.next()){
                     int idRegPuzzDado = resultadosPuzzle.getInt(1);
                     int idDadoPuzzle = resultadosPuzzle.getInt(3);
@@ -72,7 +72,7 @@ public class PuzzleDeDadosDAO {
                 if(stmtDado != null){
                     ResultSet resultados = stmtDado.executeQuery(consulta);
 
-                    ArrayList<Integer> idDados = new ArrayList();
+                    ArrayList<Integer> idDados = new ArrayList<Integer>();
                     while(resultados.next()){
                         idDados.add(resultados.getInt(1));
                     }

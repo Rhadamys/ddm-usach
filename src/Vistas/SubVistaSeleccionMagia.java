@@ -38,7 +38,7 @@ public class SubVistaSeleccionMagia extends VistaPersonalizada implements MouseL
         
         this.infoMagias = infoMagias;
         
-        this.panelesMagias = new ArrayList();
+        this.panelesMagias = new ArrayList<BotonImagen>();
         this.magias = magias;
         
         this.volver = new BotonImagen(Constantes.BTN_ATRAS);

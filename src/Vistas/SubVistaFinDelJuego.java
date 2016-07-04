@@ -18,21 +18,25 @@ public class SubVistaFinDelJuego extends VistaPersonalizada {
     public BotonImagen finalizarPartida;
     
     /**
-     * Creates new form SubVistaCambioTurno
-     * @param numJug Número del jugador que ganó.
+     * Creates new form SubVistaFinDelJuego
+     * @param numGanador Número del jugador o equipo que ganó.
+     * @param esEnEquipos Indica si la partida es en equipos para saber si se mostrará
+     * el gif de un jugador individual o de un equipo.
      */
-    public SubVistaFinDelJuego(int numJug) {
+    public SubVistaFinDelJuego(int numGanador, boolean esEnEquipos) {
         initComponents();
         
-        PanelImagen panelAnimacion = new PanelImagen("/Imagenes/Otros/ganador_j" + numJug + ".gif");
+        PanelImagen panelAnimacion = new PanelImagen(esEnEquipos ? 
+                Constantes.RUTA_OTROS + "ganador_equipo_" + numGanador + Constantes.EXT2:
+                Constantes.RUTA_OTROS + "ganador_j" + numGanador + Constantes.EXT2);
         this.add(panelAnimacion);
-        panelAnimacion.setSize(800, 200);
-        panelAnimacion.setLocation(0, 200);
+        panelAnimacion.setSize(800, esEnEquipos ? 400 : 200);
+        panelAnimacion.setLocation(0, esEnEquipos ? 100 : 200);
         
         this.finalizarPartida = new BotonImagen(Constantes.BTN_NORMAL);
         this.add(finalizarPartida);
         this.finalizarPartida.setSize(200, 40);
-        this.finalizarPartida.setLocation(300, 500);
+        this.finalizarPartida.setLocation(300, 540);
         this.finalizarPartida.setText("Finalizar partida");
         
         this.setImagenFondo(Constantes.VACIO_GRIS);

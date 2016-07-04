@@ -39,6 +39,7 @@ public class Usuario extends Jugador {
         try {
             return UsuarioDAO.getUsuario(usuario);
         } catch (SQLException ex) {
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + ex);
             return null;
         }
     }

@@ -16,7 +16,7 @@ public class Terreno {
     private final ArrayList<Posicion> posiciones;
     
     public Terreno(){
-        this.posiciones = new ArrayList();
+        this.posiciones = new ArrayList<Posicion>();
     }
 
     public ArrayList<Posicion> getPosiciones() {
@@ -29,18 +29,6 @@ public class Terreno {
     
     public void agregarPosicion(Posicion posicion){
         this.posiciones.add(posicion);
-    }
-    
-    public int cantidadCriaturasInvocadas(int numJug){
-        int cantidadCriaturas = 0;
-        for(Posicion posAct: this.posiciones){
-            if(posAct.getElemento() instanceof Criatura &&
-                    posAct.getElemento().getDueno() == numJug){
-                cantidadCriaturas++;
-            }
-        }
-        
-        return cantidadCriaturas;
     }
     
     public boolean contienePosicion(Posicion posicion){

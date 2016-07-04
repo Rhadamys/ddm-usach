@@ -36,7 +36,7 @@ public class SubVistaMensajePNJ extends VistaPersonalizada {
         iconoPNJ.setSize(100, 100);
         iconoPNJ.setLocation(650, 0);
         
-        this.mensaje.setText("<html><p align=\"justify\">" + mensaje + "</p></html>");
+        this.mensaje.setText("<html><b>" + pnj.getNombreJugador() + ":</b><br>" + mensaje + "</html>");
         
         Timer timerAnimacion = new Timer();
         timerAnimacion.schedule(new TimerTask(){
@@ -74,14 +74,13 @@ public class SubVistaMensajePNJ extends VistaPersonalizada {
         mensaje = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
-        getContentPane().setLayout(null);
 
         mensaje.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         mensaje.setForeground(new java.awt.Color(255, 255, 255));
         mensaje.setText("Mensaje");
         mensaje.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         getContentPane().add(mensaje);
-        mensaje.setBounds(40, 70, 520, 50);
+        mensaje.setBounds(40, 60, 560, 100);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

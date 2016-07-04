@@ -5,10 +5,13 @@
  ***********************************************************************/
 package Modelos;
 
+import Controladores.InteligenciaArtificial;
 import Otros.Constantes;
 import Otros.Registro;
 import Otros.Reproductor;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** @pdOid 3209e44d-1fcb-494a-b232-5edd8db5452f */
 public class Accion {
@@ -24,36 +27,36 @@ public class Accion {
     private final ArrayList<HashMap<String, String>> infoMagias;
 
     public Accion(){
-        this.posicionesMovimiento = new ArrayList();
+        this.posicionesMovimiento = new ArrayList<Posicion>();
         
         // Las magias son un Array de enteros
         // [ <Numero de magia>, <Turnos restantes>, <Numero del jugador que la activó> , <Costo de la trampa> ]
-        this.magias = new ArrayList();
+        this.magias = new ArrayList<int[]>();
         int[] costos = {10, 15, 30};
         for(int i = 1; i <= 3; i++){
             int[] magia = {i, 0, 0, costos[i - 1]};
             magias.add(magia);
         }
         
-        this.areaDeEfecto = new ArrayList();
-        this.criaturasAfectadas = new ArrayList();
+        this.areaDeEfecto = new ArrayList<Posicion>();
+        this.criaturasAfectadas = new ArrayList<Criatura>();
         
-        this.infoMagias = new ArrayList();
-        HashMap<String, String> lluviaTorrencial = new HashMap();
+        this.infoMagias = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> lluviaTorrencial = new HashMap<String, String>();
         lluviaTorrencial.put("Nombre", "Lluvia torrencial");
         lluviaTorrencial.put("NombreArchivoImagen", "magia_1");
         lluviaTorrencial.put("Descripcion", "<html><p align=\"justify\">Hace que las criaturas enemigas gasten dos unidades de movimiento por cada cuadro que deseen desplazarse durante los próximos 3 turnos del juego.</p></html>");
         lluviaTorrencial.put("Costo", "10");
         infoMagias.add(lluviaTorrencial);
         
-        HashMap<String, String> hierbasVenenosas = new HashMap();
+        HashMap<String, String> hierbasVenenosas = new HashMap<String, String>();
         hierbasVenenosas.put("Nombre", "Hierbas venenosas");
         hierbasVenenosas.put("NombreArchivoImagen", "magia_2");
         hierbasVenenosas.put("Descripcion", "<html><p align=\"justify\">El jugador puede seleccionar a 3 criaturas oponentes, durante los próximos 3 turnos estas criaturas recibirán un daño igual al 20% de la vida máxima que estas posean.</p></html>");
         hierbasVenenosas.put("Costo", "15");
         infoMagias.add(hierbasVenenosas);
         
-        HashMap<String, String> meteoritosDeFuego = new HashMap();
+        HashMap<String, String> meteoritosDeFuego = new HashMap<String, String>();
         meteoritosDeFuego.put("Nombre", "Meteoritos de fuego");
         meteoritosDeFuego.put("NombreArchivoImagen", "magia_3");
         meteoritosDeFuego.put("Descripcion", "<html><p align=\"justify\">El jugador selecciona un lugar del terreno, dentro de un radio de 5 cuadros del terreno, cualquier criatura enemiga que esté ubicada en esta sección recibirá un daño de 30% de la vida máxima que posea. Este efecto dura 3 turnos.</p></html>");
@@ -124,7 +127,10 @@ public class Accion {
             if(puntosDefensaEnemigo < puntosAtaque){
                 ((Criatura) elementoAtacado).restarVida(puntosAtaque - puntosDefensaEnemigo);
             }else{
-                criaturaAtacante.restarVida(puntosDefensaEnemigo - puntosAtaque);
+                int ataque = criaturaAtacante.getDefensa() - puntosAtaque;
+                if(ataque > 0){
+                    criaturaAtacante.restarVida(ataque);
+                }
             }
             return ((Criatura) elementoAtacado).getVida();
         }
@@ -134,10 +140,17 @@ public class Accion {
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
                 Posicion posAct = tablero.getPosicion(i, j);
-                if(posAct.getElemento() instanceof Criatura &&
-                   posAct.getElemento().getDueno() != quienActivo){
-                    ((Criatura) posAct.getElemento()).setCostoMovimiento(2);
+                if(posAct.getElemento() instanceof Criatura){
+                    if(tablero.isEnEquipos() &&
+                            tablero.getJugador(posAct.getElemento().getDueno() - 1).getEquipo() !=
+                            tablero.getJugador(quienActivo - 1).getEquipo()){
+                        ((Criatura) posAct.getElemento()).setCostoMovimiento(2);
+                    }else if(!tablero.isEnEquipos() &&
+                            posAct.getElemento().getDueno() != quienActivo){
+                        ((Criatura) posAct.getElemento()).setCostoMovimiento(2);
+                    }
                 }
+                   
             }
         }
     }
@@ -148,12 +161,17 @@ public class Accion {
         }
     }
     
-    public void meteoritosDeFuego(int quienActivo){
-        for(Posicion posicion: this.areaDeEfecto){
-            if(posicion.getElemento() != null &&
-               posicion.getElemento() instanceof Criatura &&
-               posicion.getElemento().getDueno() != quienActivo){
-                ((Criatura) posicion.getElemento()).restarVida(((Criatura) posicion.getElemento()).getVidaMaxima() * 30 / 100);
+    public void meteoritosDeFuego(int quienActivo, Tablero tablero){
+        for(Posicion posAct: this.areaDeEfecto){
+            if(posAct.getElemento() instanceof Criatura){
+                if(tablero.isEnEquipos() &&
+                        tablero.getJugador(posAct.getElemento().getDueno() - 1).getEquipo() !=
+                        tablero.getJugador(quienActivo - 1).getEquipo()){
+                    ((Criatura) posAct.getElemento()).restarVida(((Criatura) posAct.getElemento()).getVidaMaxima() * 30 / 100);
+                }else if(!tablero.isEnEquipos() &&
+                        posAct.getElemento().getDueno() != quienActivo){
+                    ((Criatura) posAct.getElemento()).restarVida(((Criatura) posAct.getElemento()).getVidaMaxima() * 30 / 100);
+                }
             }
         }
     }
@@ -169,7 +187,7 @@ public class Accion {
      * @return Magias.
      */
     public ArrayList<int[]> getMagiasDisponibles(){
-        ArrayList<int[]> magiasDisponibles = new ArrayList();
+        ArrayList<int[]> magiasDisponibles = new ArrayList<int[]>();
         for(int[] magia: magias){
             if(magia[1] == 0){
                 magiasDisponibles.add(magia);
@@ -179,7 +197,7 @@ public class Accion {
     }
     
     public ArrayList<int[]> getMagiasActivadas(){
-        ArrayList<int[]> magiasActivadas = new ArrayList();
+        ArrayList<int[]> magiasActivadas = new ArrayList<int[]>();
         for(int[] magia: magias){
             if(magia[2] != 0){
                 magiasActivadas.add(magia);
@@ -260,7 +278,7 @@ public class Accion {
 
     public void setCriaturaAMover(Criatura criaturaAMover) {
         this.criaturaAMover = criaturaAMover;
-        this.posicionesMovimiento = new ArrayList();
+        this.posicionesMovimiento = new ArrayList<Posicion>();
     }
        
     public void agregarPosicionAlCamino(Posicion posicion){
@@ -290,7 +308,10 @@ public class Accion {
     public Posicion getPosicionSiguiente(){
         try{
             return this.posicionesMovimiento.get(pasoActualMovimiento + 1);
-        }catch(Exception e){
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Fuera de los límites del ArrayList de camino.";
+            Logger.getLogger(Accion.class.getName()).log(Level.SEVERE, msg, e);
             return null;
         }
     }
@@ -310,7 +331,7 @@ public class Accion {
     }
     
     public void modificarCaminoTrampaParaLadrones(){
-        ArrayList<Posicion> nuevoCamino = new ArrayList();
+        ArrayList<Posicion> nuevoCamino = new ArrayList<Posicion>();
         nuevoCamino.add(this.posicionesMovimiento.get(pasoActualMovimiento));
         nuevoCamino.add(this.posicionesMovimiento.get(pasoActualMovimiento - 1));
         

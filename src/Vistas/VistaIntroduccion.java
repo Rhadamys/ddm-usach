@@ -5,12 +5,8 @@
  */
 package Vistas;
 
-import Otros.Constantes;
-import Otros.Reproductor;
 import Otros.VistaPersonalizada;
 import java.io.File;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -21,6 +17,7 @@ import javafx.scene.web.WebView;
  * @author mam28
  */
 public class VistaIntroduccion extends VistaPersonalizada {
+    private JFXPanel panel;
     private WebView webView;
     
     /**
@@ -28,30 +25,19 @@ public class VistaIntroduccion extends VistaPersonalizada {
      */
     public VistaIntroduccion() {
         initComponents();
-        
-        Reproductor.reproducirEfecto(Constantes.SELECCION);
 
-        JFXPanel panel = new JFXPanel();
+        panel = new JFXPanel();
         this.add(panel);
-        panel.setVisible(false);
-        
         panel.setSize(this.getSize());
+        
         Platform.runLater(() -> {
             webView = new WebView();
             panel.setScene(new Scene(webView));
             
             File html = new File("src/Imagenes/Intro/intro.html");
             webView.getEngine().load(html.toURI().toString());
-            
-            Timer timerEspera = new Timer();
-            timerEspera.schedule(new TimerTask(){
-                @Override
-                public void run(){
-                    panel.setVisible(true);
-                    this.cancel();
-                    timerEspera.cancel();
-                }
-            }, 2500, 1);
+        
+            this.setVisible(true);
         });
     }
 
@@ -83,6 +69,10 @@ public class VistaIntroduccion extends VistaPersonalizada {
             webView.getEngine().load("");
         });
         this.dispose();
+    }
+
+    public JFXPanel getPanel() {
+        return panel;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

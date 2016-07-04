@@ -17,6 +17,8 @@ import Vistas.SubVistaSeleccionarJefe;
 import Vistas.VistaLogin;
 import Vistas.VistaNuevaPartida;
 import Vistas.VistaRegistro;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -103,8 +105,43 @@ public final class ControladorRegistro {
                 registrarUsuario(
                             visReg.getUsuario(), 
                             visReg.getPass(), 
-                            visReg.getPassRepetida(),
-                            jefe);
+                            visReg.getPassRepetida());
+            }
+        });
+        
+        this.visReg.getCajaUsuario().addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(KeyEvent e){
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    registrarUsuario(
+                            visReg.getUsuario(),
+                            visReg.getPass(),
+                            visReg.getPassRepetida());
+                }
+            }
+        });
+        
+        this.visReg.getCajaPass().addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(KeyEvent e){
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    registrarUsuario(
+                            visReg.getUsuario(),
+                            visReg.getPass(),
+                            visReg.getPassRepetida());
+                }
+            }
+        });
+        
+        this.visReg.getCajaPassRepetida().addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyReleased(KeyEvent e){
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    registrarUsuario(
+                            visReg.getUsuario(),
+                            visReg.getPass(),
+                            visReg.getPassRepetida());
+                }
             }
         });
     }
@@ -154,9 +191,8 @@ public final class ControladorRegistro {
      * @param usuario Usuario ingresado.
      * @param pass Contraseña ingresada.
      * @param passRepetida Confirmación de contraseña.
-     * @param jefe Jefe de terreno seleccionado.
      */
-    public void registrarUsuario(String usuario, String pass, String passRepetida, JefeDeTerreno jefe) {
+    public void registrarUsuario(String usuario, String pass, String passRepetida) {
         // Se comprueba que los campos estén completos (escritos)
         if(this.visReg.comprobarCampos()){
             this.visReg.usuarioCorrecto();                
@@ -171,6 +207,7 @@ public final class ControladorRegistro {
                     this.visReg.usuarioErroneo();
                 }
             } catch (SQLException ex) {
+                System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información: " + ex);
                 this.mostrarMensaje("No se pudo completar el registro. Inténtalo nuevamente.");
             }
         }
@@ -216,13 +253,13 @@ public final class ControladorRegistro {
         try{
             timerVisInfoEl.cancel();
         }catch(Exception e){
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + e);
         }
         
         try{
             visSelJef.getVisInfoEl().setVisible(false);
         }catch(Exception e){
-            // Nada
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + e);
         }
     }
     

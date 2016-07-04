@@ -6,10 +6,12 @@
 package Vistas;
 
 import Modelos.Criatura;
+import Modelos.Dado;
 import Modelos.ElementoEnCampo;
 import Modelos.JefeDeTerreno;
 import Modelos.Jugador;
 import Modelos.Trampa;
+import Otros.BarraVida;
 import Otros.Constantes;
 import Otros.PanelImagen;
 import java.awt.Color;
@@ -20,6 +22,7 @@ import javax.swing.JLabel;
  * @author mam28
  */
 public class SubVistaInfoElemento extends PanelImagen {
+    private final BarraVida barraVida;
 
     /**
      * Creates new form SubVistaInfoCriatura
@@ -67,9 +70,10 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.descripcion.setFont(Constantes.FUENTE_14PX);
         this.descripcion.setText(elemento.getDescripcion());
         
-        this.barraVida.setBorder(null);
-        this.barraVida.setForeground(Color.green);
-        this.barraVida.setBackground(Color.yellow);
+        this.barraVida = new BarraVida();
+        this.add(this.barraVida);
+        this.barraVida.setSize(120, 15);
+        this.barraVida.setLocation(100, 140);
         
         String aumento = "";
         if(!(elemento instanceof Trampa)){
@@ -143,9 +147,10 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.descripcion.setFont(Constantes.FUENTE_14PX);
         this.descripcion.setText(descripcion);
         
-        this.barraVida.setBorder(null);
-        this.barraVida.setForeground(Color.green);
-        this.barraVida.setBackground(Color.yellow);
+        this.barraVida = new BarraVida();
+        this.add(this.barraVida);
+        this.barraVida.setSize(120, 15);
+        this.barraVida.setLocation(100, 140);
         
         this.barraVida.setMaximum(0);
         this.barraVida.setValue(0);
@@ -157,6 +162,78 @@ public class SubVistaInfoElemento extends PanelImagen {
         this.defensa.setFont(Constantes.FUENTE_14PX);
         this.ataque.setFont(Constantes.FUENTE_14PX);
         this.vida.setFont(Constantes.FUENTE_14PX);
+    }
+
+    /**
+     * Creates new form SubVistaInfoCriatura
+     * @param dado Dado para el que se creará la vista
+     */
+    public SubVistaInfoElemento(Dado dado) {
+        initComponents();
+        
+        this.setVisible(false);
+        this.setSize(250, 400);
+        this.setImagen(Constantes.FONDO_INFO_ELEMENTO);
+        
+        PanelImagen icono = new PanelImagen(Constantes.RUTA_DADOS + "dado_" + 
+                dado.getNivel() + Constantes.EXT2);
+        this.add(icono);
+        icono.setSize(80, 80);
+        icono.setLocation(85, 10);
+        
+        this.nombre.setText(dado.getCriatura().getNombre());
+        this.nombre.setFont(Constantes.FUENTE_18PX);
+        
+        this.L1.setFont(Constantes.FUENTE_14PX);
+        this.L2.setFont(Constantes.FUENTE_14PX);
+        this.L3.setFont(Constantes.FUENTE_14PX);
+        
+        int carasAtk = 0, carasInv = 0, carasMag = 0, carasMov = 0;
+        for(int cara: dado.getCaras()){
+            switch(cara){
+                case 1:
+                    carasAtk++;
+                    break;
+                case 2:
+                    carasInv++;
+                    break;
+                case 3:
+                    carasMag++;
+                    break;
+                case 4:
+                    carasMov++;
+                    break;
+            }
+        }
+        
+        int probAtk = carasAtk * 100 / 6;
+        int probInv = carasInv * 100 / 6;
+        int probMag = carasMag * 100 / 6;
+        int probMov = carasMov * 100 / 6;
+        int probTra = 100 - probAtk - probInv - probMag - probMov;
+        
+        this.descripcion.setFont(Constantes.FUENTE_14PX);
+        this.descripcion.setText(
+                "<html>Nivel: " + dado.getNivel() +
+                "<br>Prob. Atk.: " + probAtk + "%" +
+                "<br>Prob. Inv.: " + probInv + "%" +
+                "<br>Prob. Mag.: " + probMag + "%" +
+                "<br>Prob. Mov.: " + probMov + "%" +
+                "<br>Prob. Tra.: " + probTra + "%</html>");
+        
+        this.barraVida = new BarraVida();
+        this.add(this.barraVida);
+        this.barraVida.setSize(120, 15);
+        this.barraVida.setLocation(100, 140);
+        
+        this.barraVida.setMaximum(dado.getCriatura().getVidaMaxima());
+        this.barraVida.setValue(this.barraVida.getMaximum());
+            
+        this.defensa.setFont(Constantes.FUENTE_14PX);
+        this.ataque.setFont(Constantes.FUENTE_14PX);
+
+        this.vida.setFont(Constantes.FUENTE_14PX);
+        this.vida.setText(String.valueOf(dado.getCriatura().getVidaMaxima()));
     }
 
     /**
@@ -173,7 +250,6 @@ public class SubVistaInfoElemento extends PanelImagen {
         L2 = new javax.swing.JLabel();
         L3 = new javax.swing.JLabel();
         descripcion = new javax.swing.JLabel();
-        barraVida = new javax.swing.JProgressBar();
         vida = new javax.swing.JLabel();
         defensa = new javax.swing.JLabel();
         ataque = new javax.swing.JLabel();
@@ -181,7 +257,6 @@ public class SubVistaInfoElemento extends PanelImagen {
         setBackground(new java.awt.Color(51, 51, 51));
         setMaximumSize(new java.awt.Dimension(360, 400));
         setMinimumSize(new java.awt.Dimension(360, 400));
-        setLayout(null);
 
         nombre.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         nombre.setForeground(new java.awt.Color(255, 255, 255));
@@ -215,10 +290,6 @@ public class SubVistaInfoElemento extends PanelImagen {
         add(descripcion);
         descripcion.setBounds(20, 240, 210, 150);
 
-        barraVida.setValue(50);
-        add(barraVida);
-        barraVida.setBounds(100, 140, 120, 14);
-
         vida.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         vida.setForeground(java.awt.Color.yellow);
         vida.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -245,7 +316,6 @@ public class SubVistaInfoElemento extends PanelImagen {
     private javax.swing.JLabel L2;
     private javax.swing.JLabel L3;
     private javax.swing.JLabel ataque;
-    private javax.swing.JProgressBar barraVida;
     private javax.swing.JLabel defensa;
     private javax.swing.JLabel descripcion;
     private javax.swing.JLabel nombre;

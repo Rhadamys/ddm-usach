@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+* { cursor: none; }
+
 body {
     overflow-x: hidden;
     overflow-y: hidden;

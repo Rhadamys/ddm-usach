@@ -11,9 +11,12 @@ import Modelos.Usuario;
 import Otros.BotonCheckImagen;
 import Otros.Registro;
 import Vistas.SubVistaCuadroDialogo;
+import Vistas.SubVistaInfoElemento;
 import Vistas.VistaModificarPuzzle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -22,6 +25,8 @@ import java.awt.event.MouseEvent;
 public final class ControladorModificarPuzzle {
     private final ControladorPrincipal contPrin;
     private final VistaModificarPuzzle visModPuzz;
+    private SubVistaInfoElemento visInfoDado;
+    private Timer timerVisInfoDado;
     private final Usuario usuario;
     
     public ControladorModificarPuzzle(ControladorPrincipal contPrin, Usuario usuario){
@@ -54,6 +59,17 @@ public final class ControladorModificarPuzzle {
                 public void mouseReleased(MouseEvent e){
                     visModPuzz.verificarPanelDadoPuzzle((BotonCheckImagen) e.getComponent());
                 }
+                
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    mostrarVistaInfoDado(visModPuzz.getDadoEnPuzzle((BotonCheckImagen) e.getComponent()),
+                            e.getComponent().getX());
+                }
+                
+                @Override
+                public void mouseExited(MouseEvent e){
+                    ocultarVistaInfoDado();
+                }
             });
         }
     }
@@ -64,6 +80,17 @@ public final class ControladorModificarPuzzle {
                 @Override
                 public void mouseReleased(MouseEvent e){
                     visModPuzz.verificarPanelDadoNoEnPuzzle((BotonCheckImagen) e.getComponent());
+                }
+                
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    mostrarVistaInfoDado(visModPuzz.getDadoNoEnPuzzle((BotonCheckImagen) e.getComponent()),
+                            e.getComponent().getX());
+                }
+                
+                @Override
+                public void mouseExited(MouseEvent e){
+                    ocultarVistaInfoDado();
                 }
             });
         }
@@ -117,5 +144,51 @@ public final class ControladorModificarPuzzle {
                 "Aceptar");
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visMen);
         visMen.setVisible(true);
+    }
+    
+    /**
+     * Muestra la vista de información del dado señalado.
+     * @param dado Dado para el que se creará la vista.
+     * @param x Posición x del botón en la vista (en pixeles).
+     */
+    public void mostrarVistaInfoDado(Dado dado, int x){
+        // Instancia una nueva vista de información de elemento.
+        this.visInfoDado = new SubVistaInfoElemento(dado);
+        
+        // Agrega la vista a la vista batalla.
+        this.visModPuzz.add(this.visInfoDado, 0);
+
+        // Crea un timer para hacer visible la vista luego de 1 segundo.
+        this.timerVisInfoDado = new Timer();
+        this.timerVisInfoDado.schedule(new TimerTask(){
+            @Override
+            public void run(){
+                visInfoDado.setVisible(true);
+                visInfoDado.setLocation(x > 400 ? 10: 540, 100);
+                this.cancel();
+                timerVisInfoDado.cancel();
+            }
+        }, 1000, 1);
+    }
+    
+    /**
+     * Oculta la vista de información de elemento. Esto se produce cuando el mouse
+     * sale del botón.
+     */
+    public void ocultarVistaInfoDado(){
+        if(this.visInfoDado != null){
+            try{
+                // Se cancela el timer que mostrará la vista (en caso de que esté
+                // programado que se muestre la vista).
+                this.timerVisInfoDado.cancel();
+            }catch(Exception e){
+                System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información:  " + e);
+            }
+            
+            // Oculta la vista
+            this.visInfoDado.setVisible(false);
+            
+            this.contPrin.getContVisPrin().getVisPrin().repaint();
+        }
     }
 }

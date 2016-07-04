@@ -55,6 +55,14 @@ public final class ControladorMenuPrincipal {
             }
         });
         
+        this.visMenuPrin.getNuevoTorneo().addMouseListener(new MouseAdapter(){
+            // Cuando se haga clic sobre el label "Volver atrás".
+            @Override
+            public void mouseReleased(MouseEvent e){
+                nuevoTorneo();
+            }
+        });
+        
         this.visMenuPrin.getInfoCriaturas().addMouseListener(new MouseAdapter(){
             // Cuando se haga clic sobre el label "Volver atrÃ¡s".
             @Override
@@ -126,6 +134,12 @@ public final class ControladorMenuPrincipal {
         eliminarVistaMenuPrincipal();
         
         Registro.registrarAccion(Registro.NUEVA_PARTIDA, null);
+    }
+    
+    public void nuevoTorneo(){
+        this.contPrin.crearControladorTorneo();
+        this.contPrin.getContTor().mostrarVistaNuevoTorneo();
+        this.eliminarVistaMenuPrincipal();
     }
     
     public void infoDelJuego() {

@@ -13,6 +13,8 @@ import Otros.ContenedorScroll;
 import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
 
@@ -39,7 +41,7 @@ public class SubVistaCambiarJugador extends VistaPersonalizada {
         this.volver.setLocation(105, 88);
         this.volver.setSize(40, 40);
         
-        this.panelesJugadores = new ArrayList();
+        this.panelesJugadores = new ArrayList<BotonImagen>();
         
         this.contenedorJugadores = new PanelImagen();
         this.contenedorJugadores.setLayout(null);
@@ -91,6 +93,13 @@ public class SubVistaCambiarJugador extends VistaPersonalizada {
         this.titulo.setFont(Constantes.FUENTE_24PX);
         
         this.setImagenFondo(Constantes.FONDO_SELECCION_2);
+        
+        this.volver.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseReleased(MouseEvent e){
+                dispose();
+            }
+        });
     }
 
     /**
@@ -150,10 +159,6 @@ public class SubVistaCambiarJugador extends VistaPersonalizada {
 
     public ArrayList<Jugador> getJugadores() {
         return jugadores;
-    }
-
-    public BotonImagen getVolver() {
-        return volver;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

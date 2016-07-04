@@ -43,11 +43,19 @@ public class PersonajeNoJugable extends Jugador {
         for(int i = 0; i < tablero.cantidadJugadores(true); i++){
             if(i != this.getNumJug() - 1){
                 Jugador jugAct = tablero.getJugador(i);
-                if(!tablero.estaEnPerdedores(jugAct) && (
-                        numJugMenorVida == -1 || jugAct.getJefeDeTerreno().getVida() <
-                        tablero.getJugador(numJugMenorVida - 1).getJefeDeTerreno().getVida())){
+                if(!tablero.estaEnPerdedores(jugAct)){
+                    if(tablero.isEnEquipos() &&
+                            jugAct.getEquipo() != this.getEquipo() &&
+                            (numJugMenorVida == -1 || jugAct.getJefeDeTerreno().getVida() <
+                            tablero.getJugador(numJugMenorVida - 1).getJefeDeTerreno().getVida())){
 
-                    numJugMenorVida = i + 1;
+                        numJugMenorVida = i + 1;
+                    }else if(!tablero.isEnEquipos() &&
+                            (numJugMenorVida == -1 || jugAct.getJefeDeTerreno().getVida() <
+                            tablero.getJugador(numJugMenorVida - 1).getJefeDeTerreno().getVida())){
+
+                        numJugMenorVida = i + 1;
+                    }
                 }
             }
         }
@@ -61,36 +69,31 @@ public class PersonajeNoJugable extends Jugador {
     
     public boolean estoyConectadoAlTerrenoJugMenorVida(Tablero tablero){
         Terreno terrenoJugMenorVida = tablero.getJugador(this.numJugMenorVida(tablero) - 1).getTerreno();
-        ArrayList<Integer> numJugConectados = new ArrayList();
+        ArrayList<Integer> numJugConectados = new ArrayList<Integer>();
         
         for(Posicion posJug: this.getTerreno().getPosiciones()){
             for(int[] coord: tablero.getIdxVecinos(posJug)){
-                try{
-                    Posicion posAct = tablero.getPosicion(coord[0], coord[1]);
+                Posicion posAct = tablero.getPosicion(coord[0], coord[1]);
+                if(posAct != null){
                     if(terrenoJugMenorVida.contienePosicion(posAct)){
                         return true;
                     }else if(posAct.getDueno() != 0 && posAct.getDueno() != this.getNumJug() &&
                             !numJugConectados.contains(posAct.getDueno())){
                         numJugConectados.add(posAct.getDueno());
                     }
-                }catch(Exception e){
-                    // Nada
                 }
             }
         }
         
-        ArrayList<Integer> numJugConectadosOtroJug = new ArrayList();
+        ArrayList<Integer> numJugConectadosOtroJug = new ArrayList<Integer>();
         
         for(Posicion posJug: terrenoJugMenorVida.getPosiciones()){
             for(int[] coord: tablero.getIdxVecinos(posJug)){
-                try{
-                    Posicion posAct = tablero.getPosicion(coord[0], coord[1]);
-                    if(posAct.getDueno() != 0 && posAct.getDueno() != this.getNumJug() &&
-                            !numJugConectadosOtroJug.contains(posAct.getDueno())){
-                        numJugConectadosOtroJug.add(posAct.getDueno());
-                    }
-                }catch(Exception e){
-                    // Nada
+                Posicion posAct = tablero.getPosicion(coord[0], coord[1]);
+                if(posAct != null && posAct.getDueno() != 0 && 
+                        posAct.getDueno() != this.getNumJug() &&
+                        !numJugConectadosOtroJug.contains(posAct.getDueno())){
+                    numJugConectadosOtroJug.add(posAct.getDueno());
                 }
             }
         }
@@ -105,31 +108,20 @@ public class PersonajeNoJugable extends Jugador {
     }
     
     public boolean estoyEnPeligro(Tablero tablero){
-        return this.posicionEnemigoPeligroso(tablero) != null;
+        return this.posEnemigoPeligroso(tablero) != null;
     }
     
-    public Posicion posicionEnemigoPeligroso(Tablero tablero){
+    public Posicion posEnemigoPeligroso(Tablero tablero){
         for(int[] vecino: tablero.getIdxVecinos(this.getMiPosicion())){
-            try{
-                Posicion posVecino = tablero.getPosicion(vecino[0], vecino[1]);
-                if(posVecino.getElemento() instanceof Criatura &&
-                        posVecino.getElemento().getDueno() != this.getNumJug()){
-                    return posVecino;
-                }
-            }catch(Exception e){
-                // Nada
+            Posicion posVecino = tablero.getPosicion(vecino[0], vecino[1]);
+            if(posVecino != null && posVecino.getElemento() instanceof Criatura &&
+                    (tablero.isEnEquipos() && tablero.getJugador(posVecino.getElemento().getDueno() - 1).getEquipo() != this.getEquipo()) ||
+                    (!tablero.isEnEquipos() && posVecino.getElemento().getDueno() != this.getNumJug())){
+                return posVecino;
             }
         }
         
         return null;
-    }
-
-    public int getNumMagia() {
-        return numMagia;
-    }
-
-    public int getNumTrampa() {
-        return numTrampa;
     }
     
     public Trampa getTrampa(int numTrampa){
@@ -167,6 +159,43 @@ public class PersonajeNoJugable extends Jugador {
         }
     }
     
+    public boolean tengoCriaturasNivel(int nivel){
+        for(Dado dado: this.getDados()){
+            if(!dado.isParaLanzar() &&
+                    dado.getCriatura().getVida() > 0 &&
+                    dado.getNivel() == nivel){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+// <editor-fold defaultstate="collapsed" desc="Getters && Setters">  
+
+    public int getNumMagia() {
+        return numMagia;
+    }
+
+    public int getNumTrampa() {
+        return numTrampa;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getNumAtaques() {
+        return numAtaques;
+    }
+
+    public void setNumAtaques(int numAtaques) {
+        this.numAtaques = numAtaques;
+    }
+    
     public void cambiarNumMagia(){
         int nuevoNumMagia;
         do{
@@ -190,21 +219,7 @@ public class PersonajeNoJugable extends Jugador {
             this.numTrampa = nuevoNumTrampa;
         }
     }
-
-    public int getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
-    }
-
-    public int getNumAtaques() {
-        return numAtaques;
-    }
-
-    public void setNumAtaques(int numAtaques) {
-        this.numAtaques = numAtaques;
-    }
+    
+// </editor-fold>
     
 }

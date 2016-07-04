@@ -36,7 +36,7 @@ public class SubVistaSeleccionDados extends VistaPersonalizada {
     public SubVistaSeleccionDados(ArrayList<Dado> dados) {   
         initComponents(); 
         
-        this.panelesDados = new ArrayList();
+        this.panelesDados = new ArrayList<BotonCheckImagen>();
         this.dados = dados;
         
         this.iconoDado = new PanelImagen();
@@ -192,7 +192,7 @@ public class SubVistaSeleccionDados extends VistaPersonalizada {
     }
 
     public ArrayList<Dado> getDadosSeleccionados() {
-        ArrayList<Dado> dadosSeleccionados = new ArrayList();
+        ArrayList<Dado> dadosSeleccionados = new ArrayList<Dado>();
         for(int i = 0; i < panelesDados.size(); i++){
             if(panelesDados.get(i).isSelected()){
                 dadosSeleccionados.add(dados.get(i));

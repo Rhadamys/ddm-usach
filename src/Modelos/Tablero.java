@@ -8,6 +8,8 @@ package Modelos;
 import Otros.Registro;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Tablero {
     private final ArrayList<Jugador> perdedores;
@@ -19,11 +21,15 @@ public class Tablero {
     private int direccion;
     private int numDespliegue;
     private Trampa trampaActivada;
+    private final boolean enEquipos;
+    private final boolean torneo;
     
-    public Tablero(ArrayList<Jugador> jugadores){
+    public Tablero(ArrayList<Jugador> jugadores, boolean esEnEquipos, boolean esTorneo){
         this.posiciones = new Posicion[15][15];
         this.turnoActual = 0;
         this.numAccion = 0;
+        this.enEquipos = esEnEquipos;
+        this.torneo = esTorneo;
         
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
@@ -32,10 +38,10 @@ public class Tablero {
         }
         
         this.jugadores = jugadores;
-        this.perdedores = new ArrayList();        
+        this.perdedores = new ArrayList<Jugador>();        
         this.ordenTurnos = new int[this.jugadores.size()];
         
-        ArrayList<Integer> orden = new ArrayList();
+        ArrayList<Integer> orden = new ArrayList<Integer>();
         Random rnd = new Random();
         for(int i = 0; i < this.ordenTurnos.length; i++){
             int numJug = 0;
@@ -71,7 +77,7 @@ public class Tablero {
                             break;
                     case 2: accion.hierbasVenenosas(magia[2]);
                             break;
-                    default:    accion.meteoritosDeFuego(magia[2]);
+                    default:    accion.meteoritosDeFuego(magia[2], this);
                                 break;
                 }
 
@@ -352,18 +358,14 @@ public class Tablero {
      */
     public boolean estaConectadoAlTerreno(int[][] idxCasillas, int numJug){
         for(int[] coord: idxCasillas){
-            try{
-                for(int[] vecino: getIdxVecinos(this.getPosicion(coord[0], coord[1]))){
-                    try{
-                        if(this.posiciones[vecino[0]][vecino[1]].getDueno() == numJug){
-                           return true;
-                        }
-                    }catch(Exception e){
-                        // Nada
+            Posicion posAct = this.getPosicion(coord[0], coord[1]);
+            if(posAct != null){
+                for(int[] vecino: getIdxVecinos(posAct)){
+                    Posicion posVecino = this.posiciones[vecino[0]][vecino[1]];
+                    if(posVecino != null && posVecino.getDueno() == numJug){
+                       return true;
                     }
                 }
-            }catch(Exception e){
-                // Nada
             }
         }
         
@@ -378,14 +380,10 @@ public class Tablero {
     public boolean estaConectadoAlTerrenoDeOtros(){
         for(Posicion posJug: this.getJugadorActual().getTerreno().getPosiciones()){
             for(int[] coord: this.getIdxVecinos(posJug)){
-                try{
-                    Posicion posAct = this.getPosicion(coord[0], coord[1]);
-                    if(posAct.getDueno() != 0 &&
-                            posAct.getDueno() != this.getJugadorActual().getNumJug()){
-                        return true;
-                    }
-                }catch(Exception e){
-                    // Nada
+                Posicion posAct = this.getPosicion(coord[0], coord[1]);
+                if(posAct != null && posAct.getDueno() != 0 &&
+                        posAct.getDueno() != this.getJugadorActual().getNumJug()){
+                    return true;
                 }
             }
         }
@@ -399,12 +397,9 @@ public class Tablero {
      * @return Verdadedo o falso dependiendo de si está disponible el terreno.
      */
     public boolean estaDisponible(int[][] idxCasillas){
-        for(int[] coord: idxCasillas){      
-            try{
-                if(this.posiciones[coord[0]][coord[1]].getDueno() != 0){
-                    return false;
-                }
-            }catch(Exception e){
+        for(int[] coord: idxCasillas){  
+            Posicion posAct = this.posiciones[coord[0]][coord[1]];
+            if(posAct != null && posAct.getDueno() != 0){
                 return false;
             }
         }
@@ -476,10 +471,13 @@ public class Tablero {
      */
     public int cantidadInvOtrosJugadores(){
         int numInvOtrosJugadores = 0;
-        for(Jugador jugador: this.jugadores){
-            for(int i = 0; i < jugadores.size(); i++){
-                if(i != this.getTurnoActual()){
-                    numInvOtrosJugadores += jugador.getTerreno().cantidadCriaturasInvocadas(i + 1);
+        for(Jugador jug: this.jugadores){
+            if(jug != this.getJugadorActual()){
+                if(enEquipos &&
+                        jug.getEquipo() != this.getJugadorActual().getEquipo()){
+                    numInvOtrosJugadores += jug.cantidadCriaturasInvocadas();
+                }else if(!enEquipos){
+                    numInvOtrosJugadores += jug.cantidadCriaturasInvocadas();
                 }
             }
         }
@@ -515,13 +513,9 @@ public class Tablero {
     public Posicion getPosElem(ElementoEnCampo elemento){
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
-                try{
-                    Posicion posAct = this.posiciones[i][j];
-                    if(posAct.getElemento().equals(elemento)){
-                        return posAct;
-                    }
-                }catch(Exception e){
-                    // Nada
+                Posicion posAct = this.posiciones[i][j];
+                if(posAct != null && posAct.getElemento().equals(elemento)){
+                    return posAct;
                 }
             }
         }
@@ -554,7 +548,10 @@ public class Tablero {
     public Posicion getPosicion(int fila, int columna){
         try{
             return posiciones[fila][columna];
-        }catch(Exception e){
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Fuera de los límites del tablero.";
+            Logger.getLogger(Tablero.class.getName()).log(Level.SEVERE, msg, e);
             return null;
         }
     }
@@ -589,6 +586,14 @@ public class Tablero {
 
     public void setTrampaActivada(Trampa trampaActivada) {
         this.trampaActivada = trampaActivada;
+    }
+
+    public boolean isEnEquipos() {
+        return enEquipos;
+    }
+
+    public boolean isTorneo() {
+        return torneo;
     }
     
 // </editor-fold>

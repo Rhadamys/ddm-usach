@@ -57,7 +57,7 @@ public class CriaturaDAO {
             if(stmt != null){
                 ResultSet resultadosCriatura = stmt.executeQuery(consulta);
 
-                ArrayList<Criatura> criaturas = new ArrayList();
+                ArrayList<Criatura> criaturas = new ArrayList<Criatura>();
                 while(resultadosCriatura.next()){
                         String nombre = resultadosCriatura.getString(2);
                         String informacion = resultadosCriatura.getString(3);

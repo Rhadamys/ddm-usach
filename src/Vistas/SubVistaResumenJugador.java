@@ -7,6 +7,7 @@ package Vistas;
 
 import Modelos.Dado;
 import Modelos.Jugador;
+import Modelos.PersonajeNoJugable;
 import Modelos.Usuario;
 import Otros.BotonImagen;
 import Otros.Constantes;
@@ -26,21 +27,23 @@ public class SubVistaResumenJugador extends PanelImagen {
     private ArrayList<Dado> dadosJugador;
     private final BotonImagen modificarPuzle;
     private final BotonImagen cambiarJugador;
+    private final BotonImagen cambiarNivel;
     private final BotonImagen eliminar;
     
-    public SubVistaResumenJugador(Jugador jugador){
+    public SubVistaResumenJugador(Jugador jug){
         initComponents();
         
         this.setLayout(null);
         this.setBorder(null);
         this.setSize(340, 170);
-        this.dadosJugador = jugador.getDados();
+        this.dadosJugador = jug.getDados();
         
-        this.nombreJugador = new JLabel(jugador.getNombreJugador());
-        this.tipoJugador = new JLabel(jugador instanceof Usuario ? "Humano": "Personaje no jugable");
+        this.nombreJugador = new JLabel(jug.getNombreJugador());
+        this.tipoJugador = new JLabel(jug instanceof Usuario ? "Humano": "PNJ (Nivel " + ((PersonajeNoJugable) jug).getNivel() + ")");
         this.iconoJugador = new PanelImagen(Constantes.RUTA_JEFES +
-                jugador.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
+                jug.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
         this.cambiarJugador = new BotonImagen(Constantes.BTN_NORMAL);
+        this.cambiarNivel = new BotonImagen(Constantes.BTN_NORMAL);
         this.modificarPuzle = new BotonImagen(Constantes.BTN_NORMAL);
         this.eliminar = new BotonImagen(Constantes.BTN_REDONDO);
         
@@ -48,6 +51,7 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.add(tipoJugador);
         this.add(iconoJugador);
         this.add(cambiarJugador);
+        this.add(cambiarNivel);
         this.add(modificarPuzle);
         this.add(eliminar);
         
@@ -55,25 +59,31 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.iconoJugador.setLocation(20, 25);
         
         this.nombreJugador.setSize(200, 20);
-        this.nombreJugador.setLocation(150, 25);
+        this.nombreJugador.setLocation(150, 10);
         this.nombreJugador.setForeground(Color.white);
         this.nombreJugador.setFont(Constantes.FUENTE_18PX);
         
         this.tipoJugador.setSize(200, 15);
-        this.tipoJugador.setLocation(150,50);
-        this.tipoJugador.setForeground(Color.white);
+        this.tipoJugador.setLocation(150, 35);
+        this.tipoJugador.setForeground(Color.orange);
         this.tipoJugador.setFont(Constantes.FUENTE_14PX);
         
         this.cambiarJugador.setText("Cambiar jugador");
-        this.cambiarJugador.setSize(160, 30);
-        this.cambiarJugador.setLocation(160, 75);
+        this.cambiarJugador.setSize(170, 30);
+        this.cambiarJugador.setLocation(150, 60);
         
         this.modificarPuzle.setText("Modificar puzle");
-        this.modificarPuzle.setSize(160, 30);
-        this.modificarPuzle.setLocation(160, 115);
+        this.modificarPuzle.setSize(170, 30);
+        this.modificarPuzle.setLocation(150, 95);
+        this.modificarPuzle.setEnabled(jug instanceof Usuario);
+        
+        this.cambiarNivel.setText("Cambiar nivel");
+        this.cambiarNivel.setSize(170, 30);
+        this.cambiarNivel.setLocation(150, 130);
+        this.cambiarNivel.setEnabled(jug instanceof PersonajeNoJugable);
         
         this.eliminar.setSize(30, 30);
-        this.eliminar.setLocation(290, 20);
+        this.eliminar.setLocation(290, 10);
         this.eliminar.setLayout(null);
         
         PanelImagen iconoEliminar = new PanelImagen("/Imagenes/Otros/eliminar.png");
@@ -106,11 +116,11 @@ public class SubVistaResumenJugador extends PanelImagen {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void actualizarInfoJug(Jugador jugador){
-        this.dadosJugador = jugador.getDados();
-        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
-        this.nombreJugador.setText(jugador.getNombreJugador());
-        this.tipoJugador.setText(jugador instanceof Usuario ? "Humano": "Personaje no jugable");
+    public void actualizarInfoJug(Jugador jug){
+        this.dadosJugador = jug.getDados();
+        this.iconoJugador.setImagen("/Imagenes/Jefes/" + jug.getJefeDeTerreno().getNomArchivoImagen() + ".png");
+        this.nombreJugador.setText(jug.getNombreJugador());
+        this.tipoJugador.setText(jug instanceof Usuario ? "Humano": "PNJ (Nivel "+ ((PersonajeNoJugable) jug).getNivel() + ")");
     }
 
     public JLabel getNombreJugador() {
@@ -135,6 +145,10 @@ public class SubVistaResumenJugador extends PanelImagen {
 
     public BotonImagen getCambiarJugador() {
         return cambiarJugador;
+    }
+
+    public BotonImagen getCambiarNivel() {
+        return cambiarNivel;
     }
 
     public BotonImagen getEliminar() {

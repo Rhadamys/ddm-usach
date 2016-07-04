@@ -5,24 +5,29 @@
  */
 package Controladores;
 
+import Modelos.Accion;
 import Modelos.Dado;
 import Modelos.Jugador;
+import Modelos.PersonajeNoJugable;
 import Modelos.Usuario;
-import ModelosDAO.JugadorDAO;
 import Otros.BotonImagen;
 import Otros.Constantes;
 import Otros.Registro;
 import Otros.Reproductor;
 import Vistas.SubVistaCambiarJugador;
+import Vistas.SubVistaCambiarNivel;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaResumenJugador;
 import Vistas.SubVistaSeleccionEquipos;
+import Vistas.VistaMenuPrincipal;
 import Vistas.VistaNuevaPartida;
 import Vistas.VistaNuevoTorneo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 
 /**
@@ -31,18 +36,20 @@ import javax.swing.JInternalFrame;
  */
 public final class ControladorNuevaPartida {
     private final ControladorPrincipal contPrin;
+    private final JInternalFrame quienLlama;
     private final VistaNuevaPartida visNuePar;
     private final ArrayList<Jugador> todosLosJugadores;
     private final ArrayList<Jugador> jugadores;
     
     ControladorNuevaPartida(ControladorPrincipal contPrin, JInternalFrame quienLlama) {
         this.contPrin = contPrin;
+        this.quienLlama = quienLlama;
                        
         this.visNuePar = new VistaNuevaPartida();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visNuePar);
         this.agregarListenersVistaNuevaPartida();
         
-        this.jugadores = new ArrayList();
+        this.jugadores = new ArrayList<Jugador>();
         this.todosLosJugadores = Jugador.getJugadores();
         
         for(Jugador jug: this.todosLosJugadores){
@@ -52,11 +59,21 @@ public final class ControladorNuevaPartida {
             }
         }
         
-        this.agregarJugador(this.obtenerJugadorAleatorio());
-        
         if(quienLlama instanceof VistaNuevoTorneo){
             this.visNuePar.getEnEquipos().setVisible(false);
+            
+            if(quienLlama.getName().equals("Sobreviviente")){
+                this.visNuePar.getRegistrar().setEnabled(false);
+                for(int i = 1; i < this.todosLosJugadores.size(); i++){
+                    if(this.todosLosJugadores.get(i) instanceof Usuario){
+                        this.todosLosJugadores.remove(i);
+                        i--;
+                    }
+                }
+            }
         }
+        
+        this.agregarJugador(this.obtenerJugadorAleatorio());
         
         Reproductor.reproducir(Constantes.M_NUEVA_PARTIDA);
     }
@@ -96,7 +113,9 @@ public final class ControladorNuevaPartida {
         this.visNuePar.getRegistrar().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseReleased(MouseEvent e){
-                registrarJugador();
+                if(e.getComponent().isEnabled()){
+                    registrarJugador();
+                }
             }
         });
         
@@ -134,8 +153,10 @@ public final class ControladorNuevaPartida {
                 this.visNuePar.getVisSelEq().agregarJugador(jug);
                 this.agregarListenersVistaSeleccionEquipos(
                         this.visNuePar.getVisSelEq().getIconosJugadores().size() - 1);
-            }catch(Exception e){
-                // Nada
+            }catch(NullPointerException e){
+                System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+                String msg = "No se ha creado la vista de selección de equipos.";
+                Logger.getLogger(ControladorNuevaPartida.class.getName()).log(Level.SEVERE, msg, e);
             }
 
             this.actualizarPosicionVistasResJug();
@@ -168,8 +189,10 @@ public final class ControladorNuevaPartida {
                 if(this.jugadores.size() == 2){
                     this.enSolitario();
                 }
-            }catch(Exception e){
-                // Nada
+            }catch(NullPointerException e){
+                System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+                String msg = "No se ha creado la vista de selección de equipos.";
+                Logger.getLogger(ControladorNuevaPartida.class.getName()).log(Level.SEVERE, msg, e);
             }
             
             this.actualizarPosicionVistasResJug();
@@ -179,7 +202,7 @@ public final class ControladorNuevaPartida {
     }
     
     public ArrayList<Jugador> getJugDisponibles(){
-        ArrayList<Jugador> jugDisponibles = new ArrayList();
+        ArrayList<Jugador> jugDisponibles = new ArrayList<Jugador>();
         for(Jugador jug: this.todosLosJugadores){
             if(!this.jugadores.contains(jug)){
                 jugDisponibles.add(jug);
@@ -201,9 +224,15 @@ public final class ControladorNuevaPartida {
      * Vuelve a la vista de menú principal.
      */
     public void volver(){
+        if(quienLlama instanceof VistaMenuPrincipal){
+            contPrin.crearControladorMenuPrincipal();
+            contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+        }else if(quienLlama instanceof VistaNuevoTorneo){
+            contPrin.crearControladorTorneo();
+            contPrin.getContTor().mostrarVistaNuevoTorneo();
+        }
+        
         this.visNuePar.dispose();
-        contPrin.crearControladorMenuPrincipal();
-        contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
     }
     
     /**
@@ -220,8 +249,14 @@ public final class ControladorNuevaPartida {
     public void comenzarPartida(){
         Registro.registrarAccion(Registro.COMENZANDO_BATALLA, null);
         
-        this.contPrin.crearControladorBatalla(this.jugadores);
-        this.contPrin.getContBat().mostrarVistaBatalla();
+        if(quienLlama instanceof VistaNuevoTorneo){
+            this.contPrin.getContTor().crearTorneo(this.jugadores);
+        }
+        
+        this.contPrin.crearControladorBatalla(this.jugadores,
+                this.visNuePar.getEnEquipos().isSelected(),
+                this.quienLlama instanceof VistaNuevoTorneo);
+        
         this.contPrin.getContBat().iniciarJuego();
                 
         visNuePar.dispose();
@@ -269,7 +304,18 @@ public final class ControladorNuevaPartida {
         visInfoJug.getModificarPuzle().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseReleased(MouseEvent e){
-                modificarPuzzle(Integer.parseInt(e.getComponent().getParent().getName()));
+                if(e.getComponent().isEnabled()){
+                    modificarPuzzle(Integer.parseInt(e.getComponent().getParent().getName()));
+                }
+            }
+        });
+        
+        visInfoJug.getCambiarNivel().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseReleased(MouseEvent e){
+                if(e.getComponent().isEnabled()){
+                    crearVistaCambiarNivel((SubVistaResumenJugador) e.getComponent().getParent());
+                }
             }
         });
     }
@@ -315,7 +361,11 @@ public final class ControladorNuevaPartida {
     public void enEquipos(){
         try{
             this.enSolitario();
-        }catch(Exception e){
+            }catch(NullPointerException e){
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "No se ha creado la vista de selección de equipos.";
+            Logger.getLogger(ControladorNuevaPartida.class.getName()).log(Level.SEVERE, msg, e);
+            
             if(this.jugadores.size() >= 3){
                 Registro.registrarAccion(Registro.EN_EQUIPOS, null);
                 this.crearVistaSeleccionEquipos();
@@ -368,7 +418,7 @@ public final class ControladorNuevaPartida {
         
         this.agregarListenersVistaCambiarJugador();
         
-        this.visNuePar.getVisCamJug().setName(String.valueOf(quienCambia.getName()));
+        this.visNuePar.getVisCamJug().setName(quienCambia.getName());
         this.visNuePar.getVisCamJug().setVisible(true);
     }
     
@@ -398,13 +448,6 @@ public final class ControladorNuevaPartida {
                 }
             });
         }
-        
-        this.visNuePar.getVisCamJug().getVolver().addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseReleased(MouseEvent e){
-                visNuePar.getVisCamJug().dispose();
-            }
-        });
     }
     
     /**
@@ -419,8 +462,10 @@ public final class ControladorNuevaPartida {
         try{
             this.visNuePar.getVisSelEq().getJugadores().set(quienCambia, this.visNuePar.getVisCamJug().getJugadores().get(porQuienCambia));
             this.visNuePar.getVisSelEq().actualizarIconos();
-        }catch(Exception e){
-            // Nada
+        }catch(NullPointerException e){
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "No se ha creado la vista de selección de equipos.";
+            Logger.getLogger(ControladorNuevaPartida.class.getName()).log(Level.SEVERE, msg, e);
         }
         
         this.visNuePar.getVisCamJug().dispose();
@@ -432,20 +477,76 @@ public final class ControladorNuevaPartida {
     
 // </editor-fold>
     
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con la vista para cambiar el nivel de un PNJ">  
+
+    /**
+     * Crea una vista para cambiar el nivel de dificultad de un PNJ
+     * @param quienCambia Índice del PNJ al que se le cambiará el nivel
+     */
+    
+    public void crearVistaCambiarNivel(SubVistaResumenJugador quienCambia){
+        PersonajeNoJugable pnj = (PersonajeNoJugable) this.jugadores.get(Integer.parseInt(quienCambia.getName()));
+        this.visNuePar.setVisCamNiv(new SubVistaCambiarNivel(pnj.getNivel()));
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visNuePar.getVisCamNiv());
+        
+        this.agregarListenersVistaCambiarNivel();
+        
+        this.visNuePar.getVisCamNiv().setName(quienCambia.getName());
+        this.visNuePar.getVisCamNiv().setVisible(true);
+    }
+    
+    public void agregarListenersVistaCambiarNivel(){
+        this.visNuePar.getVisCamNiv().getNivel1().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseReleased(MouseEvent e){
+                cambiarNivelPNJ(1);
+            }
+        });
+        
+        this.visNuePar.getVisCamNiv().getNivel2().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseReleased(MouseEvent e){
+                cambiarNivelPNJ(2);
+            }
+        });
+        
+        this.visNuePar.getVisCamNiv().getNivel3().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseReleased(MouseEvent e){
+                cambiarNivelPNJ(3);
+            }
+        });
+    }
+    
+    public void cambiarNivelPNJ(int nivel){
+        // Cerrar la vista de cambiar nivel
+        this.visNuePar.getVisCamNiv().dispose();
+        
+        // Obtener el índice del PNJ en la lista de jugadores
+        int i = Integer.parseInt(this.visNuePar.getVisCamNiv().getName());
+        
+        // Obtener el PNJ
+        PersonajeNoJugable pnj = (PersonajeNoJugable) this.jugadores.get(i);
+        
+        // Actualizar el nivel
+        pnj.setNivel(nivel);
+        
+        // Actualizar la vista del PNJ
+        this.visNuePar.getVisResJug(i).actualizarInfoJug(pnj);
+    }
+    
+// </editor-fold>
+    
     public boolean sePuedeModificarPuzzle(ArrayList<Dado> dados){
         return dados.size() > 15;
     }
     
     public void modificarPuzzle(int i){
-        if(this.jugadores.get(i) instanceof Usuario){
-            if(sePuedeModificarPuzzle(this.jugadores.get(i).getDados())){
-                this.contPrin.crearControladorModificarPuzzle((Usuario) this.jugadores.get(i));
-                this.contPrin.getContModPuzz().mostrarVistaModificarPuzle();
-            }else{
-                mostrarMensaje("El jugador tiene 15 dados. No puede modificar su puzzle.");
-            }
+        if(sePuedeModificarPuzzle(this.jugadores.get(i).getDados())){
+            this.contPrin.crearControladorModificarPuzzle((Usuario) this.jugadores.get(i));
+            this.contPrin.getContModPuzz().mostrarVistaModificarPuzle();
         }else{
-            mostrarMensaje("No se puede modificar el puzzle de dados de personajes no jugables.");
+            mostrarMensaje("El jugador tiene 15 dados. No puede modificar su puzzle.");
         }
     }
     

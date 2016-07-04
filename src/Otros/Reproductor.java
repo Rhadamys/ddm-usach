@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
@@ -38,10 +40,6 @@ public class Reproductor {
         REPRODUCTOR.finalizarReproductor();
     }
     
-    public static void volumenMusica(double volumen) {
-        REPRODUCTOR.setVolumen(volumen);
-    }
-    
     public static void reproducirEfecto(String efecto){
         REP_EFECTOS.reproducirEfecto(efecto);
     }
@@ -64,6 +62,14 @@ class ReproductorMusica implements BasicPlayerListener{
         
         this.actual = 0;
         this.reproductor.addBasicPlayerListener(this);
+        
+        try {
+            this.controlRep.setGain(0.8);
+        } catch (BasicPlayerException e) {
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "No se pudo ajustar el volumen del reproductor.";
+            Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
+        }
     }
     
     public void reproducir(String[] lista){
@@ -76,8 +82,10 @@ class ReproductorMusica implements BasicPlayerListener{
             definirOrdenAleatorio();
             
             siguiente();
-        } catch(Exception e) {
-            System.out.print("-------Error----- | " + e.getMessage());
+        } catch(BasicPlayerException e) {
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Error al intentar reproducir el siguiente archivo de audio.";
+            Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
         }
     }
     
@@ -90,16 +98,20 @@ class ReproductorMusica implements BasicPlayerListener{
     public void pausar(){
         try {
             controlRep.pause();
-        } catch (BasicPlayerException ex) {
-            // Nada
+        } catch (BasicPlayerException e) {
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Error al intentar pausar la reproducción.";
+            Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
         }
     }
     
     public void continuar(){
         try {
             controlRep.resume();
-        } catch (BasicPlayerException ex) {
-            // Nada
+        } catch (BasicPlayerException e) {
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Error al intentar reanudar la reproducción.";
+            Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
         }
     }
     
@@ -107,7 +119,7 @@ class ReproductorMusica implements BasicPlayerListener{
         actual = 0;
         ordenReproduccion = new int[listaReproduccion.length];
         
-        ArrayList<Integer> orden = new ArrayList();
+        ArrayList<Integer> orden = new ArrayList<Integer>();
         Random rnd = new Random();
         
         for(int i = 0; i < ordenReproduccion.length; i++){
@@ -127,16 +139,10 @@ class ReproductorMusica implements BasicPlayerListener{
     public void finalizarReproductor(){
         try {
             controlRep.stop();
-        } catch (BasicPlayerException ex) {
-            // Nada
-        }
-    }
-    
-    public void setVolumen(double volumen){
-        try {
-            this.controlRep.setGain(volumen);
-        } catch (BasicPlayerException ex) {
-            // Nada
+        } catch (BasicPlayerException e) {
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Error al detener la reproducción.";
+            Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
         }
     }
     
@@ -157,8 +163,10 @@ class ReproductorMusica implements BasicPlayerListener{
         if(bpe.getCode() == BasicPlayerEvent.EOM){
             try {
                 siguiente();
-            } catch (BasicPlayerException ex) {
-                // Nada
+            } catch (BasicPlayerException e) {
+                System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+                String msg = "Error al intentar reproducir el siguiente archivo de audio.";
+                Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
             }
         }
     }
@@ -169,32 +177,39 @@ class ReproductorMusica implements BasicPlayerListener{
 }
 
 class ReproductorEfecto {
-    private final BasicPlayer reproductor;
-    private final BasicController controlRep;
+    private final ArrayList<BasicPlayer> efectos;
+    private final String[] listaEfectos = Constantes.EFECTOS;
     
     public ReproductorEfecto(){
-        this.reproductor = new BasicPlayer();
-        this.controlRep = (BasicController) this.reproductor;
+        this.efectos = new ArrayList<BasicPlayer>();
+        
+        int idx = 0;
+        final int cantEfectos = listaEfectos.length;
+        do{
+            this.efectos.add(new BasicPlayer());
+            try {
+                this.efectos.get(idx).open(new File(listaEfectos[idx]));
+            } catch (BasicPlayerException e) {
+                System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+                String msg = "Error al abrir el archivo de audio especificado.";
+                Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
+            }
+            idx++;
+        }while(idx < cantEfectos);
     }
     
     public void reproducirEfecto(String efecto){
-        try {
-            if(reproductor.getStatus() == BasicPlayer.PLAYING){
-                controlRep.stop();
+        for(int i = 0; i < listaEfectos.length; i++){
+            if(listaEfectos[i].equals(efecto)){
+                try {
+                    this.efectos.get(i).play();
+                } catch (BasicPlayerException e) {
+                    System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+                    String msg = "No se ha podido reproducir el efecto.";
+                    Logger.getLogger(Reproductor.class.getName()).log(Level.SEVERE, msg, e);
+                }
             }
-            
-            controlRep.open(new File(efecto));
-            controlRep.play();
-        } catch (Exception ex) {
-            // Nada
         }
     }
     
-    public void setVolumen(double volumen){
-        try {
-            this.controlRep.setGain(volumen);
-        } catch (BasicPlayerException ex) {
-            // Nada
-        }
-    }
 }

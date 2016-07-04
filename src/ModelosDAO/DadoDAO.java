@@ -11,6 +11,7 @@ import Modelos.Dado;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /** @pdOid 62ea5a63-657a-44c3-a1da-852adcc35713 */
 public class DadoDAO {
@@ -82,6 +83,48 @@ public class DadoDAO {
                 conection.desconectar();
                 
                 return new Dado(idDado, criaturaDado, nivelDado, caras); 
+            }else{
+                conection.desconectar();
+                return null;
+            }
+        }else{
+            return null;
+        }
+    }
+    
+    public static ArrayList<Dado> getDados() throws SQLException{
+        Conection conection = new Conection();
+        if(conection.conectar()){
+            String consulta = "SELECT * FROM DADO";
+            Statement stmtDado = conection.crearConsulta();
+
+            if(stmtDado != null){
+                ResultSet resultadosDado = stmtDado.executeQuery(consulta);
+                
+                ArrayList<Dado> dados = new ArrayList<Dado>();
+                while(resultadosDado.next()){
+                    int idDado = resultadosDado.getInt(1);
+                    int idCriaturaDado = resultadosDado.getInt(2);
+                    int nivelDado = resultadosDado.getInt(3);
+                    int cara1 = resultadosDado.getInt(4);
+                    int cara2 = resultadosDado.getInt(5);
+                    int cara3 = resultadosDado.getInt(6);
+                    int cara4 = resultadosDado.getInt(7);
+                    int cara5 = resultadosDado.getInt(8);
+                    int cara6 = resultadosDado.getInt(9);
+
+                    int[] caras = {cara1, cara2, cara3, cara4, cara5, cara6};
+
+                    Criatura criaturaDado = CriaturaDAO.getCriatura(idCriaturaDado);
+
+                    dados.add(new Dado(idDado, criaturaDado, nivelDado, caras)); 
+                }
+
+                resultadosDado.close();
+                stmtDado.close();
+                conection.desconectar();
+                
+                return dados;
             }else{
                 conection.desconectar();
                 return null;

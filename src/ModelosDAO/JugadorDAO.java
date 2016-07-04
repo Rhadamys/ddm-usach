@@ -37,7 +37,7 @@ public class JugadorDAO {
             if(stmt != null){
                 ResultSet resultados = stmt.executeQuery(consulta);
 
-                ArrayList<Jugador> jugadores = new ArrayList();
+                ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
                 while(resultados.next()){
                     int id = resultados.getInt(1);
                     String user = resultados.getString(2);
@@ -84,7 +84,6 @@ public class JugadorDAO {
         Conection conection = new Conection();
         if(conection.conectar()){
             String consulta = "UPDATE JUGADOR SET PARTIDAS_GANADAS="+partidasGanadas+ "WHERE ID_JUGADOR ="+ idJugador;
-            System.out.println(consulta);
             Statement stmtPartGanadas = conection.crearConsulta();
             stmtPartGanadas.executeUpdate(consulta);
             stmtPartGanadas.close();
@@ -96,7 +95,6 @@ public class JugadorDAO {
         Conection conection = new Conection();
         if(conection.conectar()){
             String consulta = "UPDATE JUGADOR SET PARTIDAS_JUGADAS=" + partidasJugadas + "WHERE ID_JUGADOR ="+ idJugador;
-            System.out.println(consulta);
             Statement stmtPartJugadas = conection.crearConsulta();
             stmtPartJugadas.executeUpdate(consulta);
             stmtPartJugadas.close();

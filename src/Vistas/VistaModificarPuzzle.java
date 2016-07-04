@@ -48,12 +48,12 @@ public class VistaModificarPuzzle extends VistaPersonalizada {
         this.volver.setLocation(20, 20);
         this.volver.setSize(50, 50); 
         
-        this.panelesDados1 = new ArrayList();
-        this.panelesDados2 = new ArrayList();
-        this.dadosPuzzle = new ArrayList();
-        this.dadosNoEnPuzzle = new ArrayList();
-        this.iconosDados1 = new ArrayList();
-        this.iconosDados2 = new ArrayList();
+        this.panelesDados1 = new ArrayList<BotonCheckImagen>();
+        this.panelesDados2 = new ArrayList<BotonCheckImagen>();
+        this.dadosPuzzle = new ArrayList<Dado>();
+        this.dadosNoEnPuzzle = new ArrayList<Dado>();
+        this.iconosDados1 = new ArrayList<PanelImagen>();
+        this.iconosDados2 = new ArrayList<PanelImagen>();
         
         this.contenedorDados1 = new PanelImagen();
         this.contenedorDados1.setLayout(null);
@@ -269,6 +269,14 @@ public class VistaModificarPuzzle extends VistaPersonalizada {
     public BotonCheckImagen getPanelDadoNoEnPuzzle(int i){
         return this.panelesDados2.get(i);
     }
+    
+    public Dado getDadoEnPuzzle(BotonCheckImagen panelDado){
+        return this.dadosPuzzle.get(this.panelesDados1.indexOf(panelDado));
+    }
+    
+    public Dado getDadoNoEnPuzzle(BotonCheckImagen panelDado){
+        return this.dadosNoEnPuzzle.get(this.panelesDados2.indexOf(panelDado));
+    }
 
     public BotonImagen getIntercambiarDados() {
         return intercambiarDados;
@@ -420,7 +428,7 @@ public class VistaModificarPuzzle extends VistaPersonalizada {
     }
     
     public ArrayList<Dado> getPuzzleModificado(){
-        ArrayList<Dado> nuevoPuzzle = new ArrayList();
+        ArrayList<Dado> nuevoPuzzle = new ArrayList<Dado>();
         nuevoPuzzle.addAll(dadosPuzzle);
         nuevoPuzzle.addAll(dadosNoEnPuzzle);
         return nuevoPuzzle;

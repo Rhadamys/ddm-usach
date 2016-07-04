@@ -6,21 +6,19 @@
 package Controladores;
 
 import Modelos.*;
-import ModelosDAO.JugadorDAO;
-import ModelosDAO.PuzzleDeDadosDAO;
 import Otros.*;
 import Vistas.*;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 
 /**
@@ -39,7 +37,9 @@ public final class ControladorBatalla {
     
     public ControladorBatalla(
             ControladorPrincipal contPrin,
-            ArrayList<Jugador> jugadores){
+            ArrayList<Jugador> jugadores,
+            boolean esEnEquipos,
+            boolean esTorneo){
         
         this.contPrin = contPrin;
         
@@ -47,7 +47,7 @@ public final class ControladorBatalla {
         this.visBat = new VistaBatalla();
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visBat);
         // Instancia y agrega el tablero a la vista batalla
-        this.tablero = new Tablero(jugadores);
+        this.tablero = new Tablero(jugadores, esEnEquipos, esTorneo);
         this.accion = new Accion();
         this.crearVistaTablero();
         // Agrega los listeners a los componentes de la vista batalla
@@ -207,14 +207,6 @@ public final class ControladorBatalla {
         });
     }
     
-    public void mostrarVistaBatalla(){
-        this.visBat.setVisible(true);
-    }
-
-    public VistaBatalla getVisBat() {
-        return visBat;
-    }
-    
     /**
      * Agrega las vistas de resumen de información de jugador para los jugadores
      * que conforman esta partida.
@@ -264,7 +256,7 @@ public final class ControladorBatalla {
      * Inicia el juego comenzando el primer turno.
      */
     public void iniciarJuego(){
-        this.tablero.getJugador(0).getJefeDeTerreno().restarVida(950);
+        this.visBat.setVisible(true);
         
         // Se cambia el turno actual a -1, debido a que luego se sumará 1 al llamar
         // a "cambiarTurno", y entonces el turno será "0".
@@ -424,28 +416,21 @@ public final class ControladorBatalla {
     /**
      * Pinta los botones que conforman el despliegue de dados en la posición indicada
      * por el botón actual sobre el que se encuentra el mouse.
-     * @param botonActual Botón actual sobre el que se encuentra el mouse.
+     * @param casilla Casilla actual sobre el que se encuentra el mouse.
      */
-    public void mostrarDespliegue(SubVistaPosicion botonActual){
+    public void mostrarDespliegue(SubVistaPosicion casilla){
         this.visBat.getTablero().reiniciarCasillas();
         
-        for(int[] coord: this.tablero.getDespliegue(botonActual.getFila(), botonActual.getColumna())){
-            // Se debe utilizar un bloque try debido a que alguna posición podría estar fuera
-            // de los límites del tablero.
-            try{
-                // Obtiene la posición de las coordenadas actuales
-                Posicion posAct = this.tablero.getPosicion(coord[0], coord[1]);
-                if(posAct.getDueno() == 0){ // Si la casilla no pertenece a ningún jugador
-                    this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenSobre(
-                        Constantes.CASILLA_JUGADOR + (this.getTablero().getTurnoActual() + 1) + Constantes.EXT1);
-                    this.visBat.getTablero().getCasilla(coord[0], coord[1]).setImagenActual(1);
-                }else{ // Si la casilla ya pertenece a un jugador
-                    this.visBat.getTablero().getCasilla(coord[0], coord[1]).casillaIncorrecta();
-                }
-                
-            }catch(Exception e){
-                // Nada
-                this.visBat.setMensaje("Fuera de los límites del tablero.");
+        for(int[] coord: this.tablero.getDespliegue(casilla.getFila(), casilla.getColumna())){
+            // Obtiene la posición de las coordenadas actuales
+            Posicion posAct = this.tablero.getPosicion(coord[0], coord[1]);
+            SubVistaPosicion casAct = this.visBat.getTablero().getCasilla(coord[0], coord[1]);
+            if(posAct != null && posAct.getDueno() == 0){ // Si la casilla no pertenece a ningún jugador
+                casAct.setImagenSobre(Constantes.CASILLA_JUGADOR + (this.getTablero().getTurnoActual() + 1) + 
+                        Constantes.EXT1);
+                casAct.setImagenActual(1);
+            }else{ // Si la casilla ya pertenece a un jugador
+                casAct.casillaIncorrecta();
             }
         }
     }
@@ -482,7 +467,8 @@ public final class ControladorBatalla {
      */
     public boolean sePuedeMostrarVistaInfoElemento(SubVistaPosicion casilla){
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
-        return posAct.getElemento() != null && !(posAct.getElemento() instanceof Trampa);
+        return posAct.getElemento() instanceof Criatura ||
+                posAct.getElemento() instanceof JefeDeTerreno;
     }
     
     /**
@@ -513,18 +499,39 @@ public final class ControladorBatalla {
     }
     
     /**
+     * Muestra la vista de información del elemento señalado.
+     * @param dado Dado para el que se creará la vista
+     * @param x Posición x del botón en la vista (en pixeles).
+     * @param vista Vista en la que se mostrará la información
+     */
+    public void mostrarVistaInfoElemento(Dado dado, int x, JInternalFrame vista){
+        // Instancia una nueva vista de información de elemento.
+        this.visInfoEl = new SubVistaInfoElemento(dado);
+        
+        // Agrega la vista a la vista batalla.
+        vista.add(this.visInfoEl, 0);
+
+        // Crea un timer para hacer visible la vista luego de 1 segundo.
+        this.timerVisInfoEl = new Timer();
+        this.timerVisInfoEl.schedule(new TimerTask(){
+            @Override
+            public void run(){
+                visInfoEl.setVisible(true);
+                visInfoEl.setLocation(x > 400 ? 10: 540, 100);
+                this.cancel();
+                timerVisInfoEl.cancel();
+            }
+        }, 1000, 1);
+    }
+    
+    /**
      * Oculta la vista de información de elemento. Esto se produce cuando el mouse
      * sale del botón.
      */
     public void ocultarVistaInfoElemento(){
         if(this.visInfoEl != null){
-            try{
-                // Se cancela el timer que mostrará la vista (en caso de que esté
-                // programado que se muestre la vista).
-                this.timerVisInfoEl.cancel();
-            }catch(Exception e){
-                // Nada
-            }
+            // Se cancela el timer para mostrar la vista
+            this.timerVisInfoEl.cancel();
             
             // Oculta la vista
             this.visInfoEl.setVisible(false);
@@ -543,7 +550,7 @@ public final class ControladorBatalla {
      * @param jugador Jugador para el que se creará la vista.
      */
     public void crearVistaSeleccionDados(Jugador jugador){
-        ArrayList<Dado> dadosParaLanzar = new ArrayList();
+        ArrayList<Dado> dadosParaLanzar = new ArrayList<Dado>();
         
         // Se obtiene una lista de los dados disponibles
         for(Dado dado: jugador.getDados()){
@@ -572,7 +579,7 @@ public final class ControladorBatalla {
                 @Override
                 public void mouseEntered(MouseEvent e){
                     mostrarVistaInfoElemento(
-                            visBat.getVisSelDados().getDado((BotonCheckImagen) e.getComponent()).getCriatura(),
+                            visBat.getVisSelDados().getDado((BotonCheckImagen) e.getComponent()),
                             e.getComponent().getX() + 101, visBat.getVisSelDados());
                     visBat.getVisSelDados().setInfoDado((BotonCheckImagen) e.getComponent());
                 }
@@ -644,14 +651,16 @@ public final class ControladorBatalla {
         this.visBat.getVisLanDados().getAculumarPuntos().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseReleased(MouseEvent e){
-                if(cantidadCarasInvocacion() != 0){
-                    // Si salió al menos una cara de invocación, se muestra un mensaje
-                    // indicando que las caras de invocació no se acumulan.
-                    mostrarMensajeCarasInvocacion();
-                }else{
-                    // Se acumulan los puntos y se pasa el turno.
-                    acumularPuntos();
-                    cambiarTurno();
+                if(e.getComponent().isEnabled()){
+                    if(cantidadCarasInvocacion() != 0){
+                        // Si salió al menos una cara de invocación, se muestra un mensaje
+                        // indicando que las caras de invocación no se acumulan.
+                        mostrarMensajeCarasInvocacion();
+                    }else{
+                        // Se acumulan los puntos y se pasa el turno.
+                        acumularPuntos();
+                        cambiarTurno();
+                    }
                 }
             }
         });
@@ -704,7 +713,6 @@ public final class ControladorBatalla {
      * Acumula los puntos y habilita los botones para realizar acciones.
      */
     public void realizarAcciones(){
-        this.acumularPuntos();
         this.visBat.getVisLanDados().dispose();
         this.visBat.habilitarBotones();
     }
@@ -889,23 +897,18 @@ public final class ControladorBatalla {
     public boolean estaEnCondicionesDeAtacar(Posicion posCri){
         // Revisa las casillas alrededor de la criatura
         for(int[] coord: this.tablero.getIdxVecinos(posCri)){
-            // Se encierra en un bloque try en caso de que alguna de estas posiciones esté
-            // fuera de los límites del tablero.
-            try{
-                // Se obtiene la posición vecina actual del ciclo for.
-                Posicion posVecino = this.tablero.getPosicion(coord[0], coord[1]);
+            // Se obtiene la posición vecina actual del ciclo for.
+            Posicion posVecino = this.tablero.getPosicion(coord[0], coord[1]);
 
-                // Si la posición vecina contiene una criatura o un jefe de terreno y el dueño
-                // no es el jugador del turno actual (Es decir, es un enemigo)
-                if((posVecino.getElemento() instanceof Criatura ||
-                        posVecino.getElemento() instanceof JefeDeTerreno) &&
-                        posVecino.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug()){
+            // Si la posición vecina contiene una criatura o un jefe de terreno y el dueño
+            // no es el jugador del turno actual o no es del mismo equipo (Es decir, es un enemigo)
+            if(posVecino != null & (posVecino.getElemento() instanceof Criatura ||
+                    posVecino.getElemento() instanceof JefeDeTerreno) &&
+                    ((this.tablero.isEnEquipos() && this.tablero.getJugador(posVecino.getElemento().getDueno() - 1).getEquipo() != this.tablero.getJugadorActual().getEquipo()) ||
+                    (!this.tablero.isEnEquipos() && posVecino.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug()))){
 
-                    // Se indica que se ha encontrado una criatura en condiciones de atacar.
-                    return true;
-                }
-            }catch(Exception e){
-                // Nada
+                // Se indica que se ha encontrado una criatura en condiciones de atacar.
+                return true;
             }
         }
         
@@ -976,48 +979,64 @@ public final class ControladorBatalla {
         // Si la posición actual contiene una criatura o un jefe de terreno
         if((posAct.getElemento() instanceof Criatura || posAct.getElemento() instanceof JefeDeTerreno) &&
                 posAct.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug()){
-            boolean alrededorCriaturaAtacante = false;
-            for(int[] vecino: this.tablero.getIdxVecinos(posAct)){
-                try{
-                    Posicion posVecino = this.tablero.getPosicion(vecino[0], vecino[1]);
-                    if(posVecino.getElemento().equals(this.accion.getCriaturaAtacante())){
-                        alrededorCriaturaAtacante = true;
-                        break;
-                    }
-                }catch(Exception e){
-                    // Nada
+            if(this.tablero.isEnEquipos()){
+                if(this.tablero.getJugadorActual().getEquipo() != 
+                        this.tablero.getJugador(posAct.getElemento().getDueno() - 1).getEquipo()){
+                    this.criaturaAtacanteAlrededor(casilla, posAct);
+                }else{
+                    Reproductor.reproducirEfecto(Constantes.ERROR);
+                    this.visBat.setMensaje("¡La criatura pertenece a un aliado!");
                 }
-            }
-            
-            if(alrededorCriaturaAtacante){
-                this.tablero.setNumAccion(0);
-                this.visBat.getTablero().actualizarCasillas();
-                Reproductor.reproducirEfecto(Constantes.DANIO);
-
-                // Crea un timer para animar el ataque de la criatura, luego ataca logicamente.
-                Timer timerParpadeo = new Timer();
-                timerParpadeo.schedule(new TimerTask(){
-                        int tic = 0;
-                        @Override
-                        public void run(){
-                            casilla.parpadearIcono();
-                            if(tic == 5){
-                                atacarEnemigo(posAct.getElemento());
-                                this.cancel();
-                                timerParpadeo.cancel();
-                            }
-                            tic++;
-                        }
-                    }, 0, 100);
             }else{
-                Reproductor.reproducirEfecto(Constantes.ERROR);
-                this.visBat.setMensaje("Este enemigo no está al alcance de la criatura seleccionada.");
+                this.criaturaAtacanteAlrededor(casilla, posAct);
             }
         }else{
             Reproductor.reproducirEfecto(Constantes.ERROR);
             this.visBat.setMensaje("Aquí no hay un enemigo que se pueda atacar.");
         }
-}
+    }
+    
+    /**
+     * Revisa si el enemigo seleccionado tiene alrededor la criatura que el usuario
+     * eligió para atacar, y así evitar ataques a distancia.
+     * @param casilla Casilla del enemigo seleccionado.
+     * @param posAct Posición correspondiente a la casilla.
+     */
+    public void criaturaAtacanteAlrededor(SubVistaPosicion casilla, Posicion posAct){
+        boolean alrededorCriaturaAtacante = false;
+        for(int[] vecino: this.tablero.getIdxVecinos(posAct)){
+            Posicion posVecino = this.tablero.getPosicion(vecino[0], vecino[1]);
+            if(posVecino != null && posVecino.getElemento().equals(this.accion.getCriaturaAtacante())){
+                alrededorCriaturaAtacante = true;
+                break;
+            }
+        }
+            
+        if(alrededorCriaturaAtacante){
+            this.tablero.setNumAccion(0);
+            this.visBat.getTablero().actualizarCasillas();
+            Reproductor.reproducirEfecto(Constantes.DANIO);
+
+            // Crea un timer para animar el ataque de la criatura, luego ataca logicamente.
+            Timer timerParpadeo = new Timer();
+            timerParpadeo.schedule(new TimerTask(){
+                    int tic = 0;
+                    @Override
+                    public void run(){
+                        casilla.parpadearIcono();
+                        if(tic == 5){
+                            atacarEnemigo(posAct.getElemento());
+                            this.cancel();
+                            timerParpadeo.cancel();
+                        }
+                        tic++;
+                    }
+                }, 0, 100);
+        }else{
+            Reproductor.reproducirEfecto(Constantes.ERROR);
+            this.visBat.setMensaje("Este enemigo no está al alcance de la criatura seleccionada.");
+        }
+    }
     
     /**
      * Ataca al enemigo seleccionado con la criatura seleccionada.
@@ -1045,7 +1064,8 @@ public final class ControladorBatalla {
                 this.eliminarJugadorPartida(elemAtacado.getDueno());
                 
                 // Si sólo queda un jugador
-                if(this.tablero.cantidadJugadores(false) == 1){
+                if(this.tablero.cantidadJugadores(false) == 1 ||
+                        this.tablero.isEnEquipos()){
                     // Finaliza la partida
                     finalizarPartida();
                     return;
@@ -1118,7 +1138,7 @@ public final class ControladorBatalla {
      * @return Lista de criaturas
      */
     public ArrayList<Criatura> criaturasQueSePuedenInvocar(ArrayList<Dado> dados){
-        ArrayList<Criatura> criaturas = new ArrayList();
+        ArrayList<Criatura> criaturas = new ArrayList<Criatura>();
         
         // Por cada dado lanzado
         for(Dado dado: dados){
@@ -1155,6 +1175,17 @@ public final class ControladorBatalla {
                 @Override
                 public void mouseReleased(MouseEvent e){
                     setCriaturaAInvocar(visBat.getVisSelCri().getCriatura((BotonImagen) e.getComponent()));
+                }
+                
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    mostrarVistaInfoElemento(visBat.getVisSelCri().getCriatura((BotonImagen) e.getComponent()),
+                            e.getComponent().getX() + 101, visBat.getVisSelCri());
+                }
+                
+                @Override
+                public void mouseExited(MouseEvent e){
+                    ocultarVistaInfoElemento();
                 }
             });
         }
@@ -1303,12 +1334,15 @@ public final class ControladorBatalla {
                     // Se reemplaza la criatura.
                     this.reemplazarCriatura(posAct);
                 }else{
+                    Reproductor.reproducirEfecto(Constantes.ERROR);
                     this.visBat.setMensaje("Selecciona una criatura de nivel " + nivel + ".");
                 }
             }else{
+                Reproductor.reproducirEfecto(Constantes.ERROR);
                 this.visBat.setMensaje("Esta criatura no te pertenece.");
             }
         }else{
+            Reproductor.reproducirEfecto(Constantes.ERROR);
             this.visBat.setMensaje("Aquí no hay una criatura.");
         }
     }
@@ -1462,7 +1496,8 @@ public final class ControladorBatalla {
     public void cambiarEstadoCriaturaAfectada(SubVistaPosicion casilla){
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
         if(posAct.getElemento() instanceof Criatura){
-            if(posAct.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug()){
+            if((this.tablero.isEnEquipos() && this.tablero.getJugadorActual().getEquipo() != this.tablero.getJugador(posAct.getElemento().getDueno() - 1).getEquipo()) ||
+                    (!this.tablero.isEnEquipos() && posAct.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug())){
                 if(casilla.isSelected()){
                     accion.agregarCriaturaAfectada((Criatura) posAct.getElemento());
                     if(accion.cantidadCriaturasAfectadas() == 3){
@@ -1502,11 +1537,9 @@ public final class ControladorBatalla {
         
         for(int i = 0; i < 11; i++){
             for(int j = 0; j < 11; j++){
-                try{
-                    this.visBat.getTablero().getCasilla(filaEsqSupIzq + i, columnaEsqSupIzQ + j).setImagenSobre("/Imagenes/Botones/casilla_seleccionada.png");
-                    this.visBat.getTablero().getCasilla(filaEsqSupIzq + i, columnaEsqSupIzQ + j).setImagenActual(1);
-                }catch(Exception e){
-                    // Nada
+                SubVistaPosicion casAct = this.visBat.getTablero().getCasilla(filaEsqSupIzq + i, columnaEsqSupIzQ + j);
+                if(casAct != null){
+                    casAct.seleccionado();
                 }
             }
         }
@@ -1515,7 +1548,7 @@ public final class ControladorBatalla {
     public void setAreaAfectada(SubVistaPosicion casilla){
         int filaEsqSupIzq = casilla.getFila() - 5;
         int columnaEsqSupIzQ = casilla.getColumna() - 5;
-        ArrayList<Posicion> areaAfectada = new ArrayList();
+        ArrayList<Posicion> areaAfectada = new ArrayList<Posicion>();
         
         for(int i = 0; i < 11; i++){
             for(int j = 0; j < 11; j++){
@@ -1616,13 +1649,9 @@ public final class ControladorBatalla {
                 
           (posicion.getElemento() == null || posicion.getElemento() instanceof Trampa) &&
            posicion.getDueno() != 0){
-            for(int[] coord: this.tablero.getIdxVecinos(posicion)){
-                try{                    
-                    if(this.accion.getUltimaPosicionAgregada().equals(this.tablero.getPosicion(coord[0], coord[1]))){
-                        return true;
-                    }
-                }catch(Exception e){
-                    // Nada
+            for(int[] coord: this.tablero.getIdxVecinos(posicion)){                    
+                if(this.accion.getUltimaPosicionAgregada().equals(this.tablero.getPosicion(coord[0], coord[1]))){
+                    return true;
                 }
             }
         }else{
@@ -1669,18 +1698,25 @@ public final class ControladorBatalla {
                     
                     casAct.setImagenElemento("/Imagenes/Criaturas/" + accion.getCriaturaAMover().getNomArchivoImagen() + ".png");
 
-                    if(elemento instanceof Trampa &&
-                       ((elemento.getDueno() != (tablero.getTurnoActual() + 1) &&
-                       ((Trampa) elemento).getNumTrampa() != 3) || 
-                       (elemento.getDueno() == (tablero.getTurnoActual() + 1) &&
-                       ((Trampa) elemento).getNumTrampa() == 3))) {
-                        
-                        activarTrampa((Trampa) elemento);
-                        visBat.setMensaje("Se ha activado una trampa.");
-                        this.cancel();
-                        timerMovimiento.cancel();
-                    }
+                    if(elemento instanceof Trampa){
+                        if(elemento.getDueno() == (tablero.getJugadorActual().getNumJug()) &&
+                               ((Trampa) elemento).getNumTrampa() == 3){
+                            
+                        }else if(tablero.isEnEquipos() &&
+                                tablero.getJugador(elemento.getDueno() - 1).getEquipo() != tablero.getJugadorActual().getEquipo() &&
+                               ((Trampa) elemento).getNumTrampa() != 3){
+                            
+                        }else if(!tablero.isEnEquipos() &&
+                                elemento.getDueno() != tablero.getJugadorActual().getNumJug() &&
+                               ((Trampa) elemento).getNumTrampa() != 3){
 
+                                activarTrampa((Trampa) elemento);
+                                visBat.setMensaje("Se ha activado una trampa.");
+                                this.cancel();
+                                timerMovimiento.cancel();
+                        }
+                    }
+                    
                     Reproductor.reproducirEfecto(Constantes.PASO);
                     
                     tic++;
@@ -1981,7 +2017,7 @@ public final class ControladorBatalla {
         }
     }
     
-    public void finalizarPartida(){
+    public void finalizarPartida(){        
         for(int i = 0; i < this.tablero.cantidadJugadores(true); i++){
             // Obtener el jugador
             Jugador jug = this.tablero.getJugador(i);
@@ -2002,37 +2038,69 @@ public final class ControladorBatalla {
             }
         }
             
-        if(this.tablero.getJugadorActual() instanceof Usuario){
+        if(this.tablero.isEnEquipos()){
+            int numEquipoGanador = this.tablero.getJugadorActual().getEquipo();
+            ArrayList<Jugador> ganadores = new ArrayList<Jugador>();
+            for(int i = 0; i < this.tablero.cantidadJugadores(true); i++){
+                Jugador jugAct = this.tablero.getJugador(i);
+                if(jugAct.getEquipo() != numEquipoGanador && !this.tablero.estaEnPerdedores(jugAct)){
+                    this.eliminarJugadorPartida(jugAct.getNumJug());
+                }else if(jugAct.getEquipo() == numEquipoGanador){
+                    ganadores.add(jugAct);
+                }
+            }
+                
             ArrayList<Jugador> perdedores = this.tablero.getPerdedores();
             Random rnd = new Random();
-            ArrayList<Dado> dadosAgregados = new ArrayList();
+            ArrayList<Dado> dadosAgregados = new ArrayList<Dado>();
             for(Jugador perdedor: perdedores){
                 dadosAgregados.add(perdedor.getDado(rnd.nextInt(perdedor.getDados().size())));
             }
+            
+            for(Jugador ganador: ganadores){
+                if(ganador instanceof Usuario){
+                    PuzzleDeDados.agregarDadosAlPuzzle(ganador.getId(), dadosAgregados);
+                    for(Dado dadoGanado: dadosAgregados){
+                        dadoGanado.setParaJugar(false);
+                        ganador.agregarDado(dadoGanado);
+                    }
+                }
+            }
+        }else{
+            if(this.tablero.getJugadorActual() instanceof Usuario && !this.tablero.isTorneo()){
+                ArrayList<Jugador> perdedores = this.tablero.getPerdedores();
+                Random rnd = new Random();
+                ArrayList<Dado> dadosAgregados = new ArrayList<Dado>();
+                for(Jugador perdedor: perdedores){
+                    dadosAgregados.add(perdedor.getDado(rnd.nextInt(perdedor.getDados().size())));
+                }
 
-            try {
-                PuzzleDeDadosDAO.agregarDadosAlPuzzle(((Usuario) this.tablero.getJugadorActual()).getId(), dadosAgregados);
+                PuzzleDeDados.agregarDadosAlPuzzle(this.tablero.getJugadorActual().getId(), dadosAgregados);
                 for(Dado dado: dadosAgregados){
                     dado.setParaJugar(false);
                     this.tablero.getJugadorActual().agregarDado(dado);
                 }
-            } catch (SQLException ex) {
-                // Nada
             }
-            
         }
         
         Reproductor.reproducir(Constantes.M_GANADOR);
         
-        SubVistaFinDelJuego visFin = new SubVistaFinDelJuego(this.tablero.getJugadorActual().getNumJug());
+        SubVistaFinDelJuego visFin = new SubVistaFinDelJuego(this.tablero.isEnEquipos() ? 
+                this.tablero.getJugadorActual().getEquipo() : this.tablero.getJugadorActual().getNumJug(),
+                this.tablero.isEnEquipos());
+        
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visFin);
         visFin.setVisible(true);
         
         visFin.getFinalizarPartida().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseReleased(MouseEvent e){
-                contPrin.crearControladorMenuPrincipal();
-                contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+                if(tablero.isTorneo()){
+                    contPrin.getContTor().finalizarPartidaTorneo(tablero.getJugadorActual(), tablero.getPerdedores());
+                }else{
+                    contPrin.crearControladorMenuPrincipal();
+                    contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+                }
                 visFin.dispose();
                 visBat.dispose();
             }
@@ -2045,6 +2113,12 @@ public final class ControladorBatalla {
     
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="Getters && Setters"> 
+    
+    public VistaBatalla getVisBat() {
+        return visBat;
+    }
+    
     public Tablero getTablero() {
         return tablero;
     }
@@ -2056,4 +2130,6 @@ public final class ControladorBatalla {
     public ControladorPrincipal getContPrin() {
         return contPrin;
     }
+    
+// </editor-fold>
 }

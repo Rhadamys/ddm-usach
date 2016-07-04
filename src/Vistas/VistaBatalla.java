@@ -10,6 +10,7 @@ import Otros.BotonImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
 import Otros.VistaPersonalizada;
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +45,7 @@ public class VistaBatalla extends VistaPersonalizada {
         initComponents();
         
         this.visSelDesp = new SubVistaSeleccionDespliegue();
-        this.vistasJugador = new ArrayList();
+        this.vistasJugador = new ArrayList<SubVistaInfoJugadorBatalla>();
         
         this.ataque = new BotonImagen(Constantes.BTN_ATAQUE);
         this.invocacion = new BotonImagen(Constantes.BTN_INVOCACION);
@@ -131,20 +132,12 @@ public class VistaBatalla extends VistaPersonalizada {
      * @param jug Jugador para el cual se creará la vista.
      */
     public void agregarJugador(Jugador jug){
-        this.vistasJugador.add(new SubVistaInfoJugadorBatalla());
-        int i = this.vistasJugador.size() - 1;
+        int i = this.vistasJugador.size();
+        SubVistaInfoJugadorBatalla visInfoJug = new SubVistaInfoJugadorBatalla(
+                jug, new Point(posInfoJug[i][0], posInfoJug[i][1]));
         
-        this.vistasJugador.get(i).setImagen(
-                "/Imagenes/Fondos/fondo_j" + (i + 1) + ".png");
-        
-        this.vistasJugador.get(i).setLocation(posInfoJug[i][0], posInfoJug[i][1]);
-        this.vistasJugador.get(i).setNombreJugador(jug.getNombreJugador());
-        
-        this.vistasJugador.get(i).setIconoJugador("/Imagenes/Jefes/" +
-                jug.getJefeDeTerreno().getNomArchivoImagen() + ".png");
-        
-        this.vistasJugador.get(i).setVidaMaximaJugador(jug.getJefeDeTerreno().getVidaMaxima());        
-        this.add(this.vistasJugador.get(i), 0);
+        this.vistasJugador.add(visInfoJug);   
+        this.add(visInfoJug, 0);
     }
     
     public void habilitarBotones(){

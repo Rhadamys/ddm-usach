@@ -36,7 +36,7 @@ public class VistaInfoCriaturas extends VistaPersonalizada {
         this.volver.setLocation(30, 30);
         this.volver.setSize(50, 50);  
         
-        this.iconosCriaturas = new ArrayList();
+        this.iconosCriaturas = new ArrayList<BotonImagen>();
         
         this.contenedorCriatura = new PanelImagen();
         this.contenedorCriatura.setLayout(null);

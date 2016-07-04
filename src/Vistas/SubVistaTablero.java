@@ -7,6 +7,8 @@ package Vistas;
 
 import Otros.PanelImagen;
 import java.awt.GridLayout;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -55,7 +57,14 @@ public class SubVistaTablero extends PanelImagen{
     }
     
     public SubVistaPosicion getCasilla(int fila, int columna){
-        return casillas[fila][columna];
+        try{
+            return casillas[fila][columna];
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("--- SE HA PRODUCIDO UN EXCEPCION ---");
+            String msg = "Fuera de los límites del tablero.";
+            Logger.getLogger(SubVistaTablero.class.getName()).log(Level.SEVERE, msg, e);
+            return null;
+        }
     }
 
     public SubVistaPosicion getBotonActual() {

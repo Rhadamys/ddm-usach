@@ -24,7 +24,7 @@ public class SubVistaSeleccionDespliegue extends VistaPersonalizada {
     public SubVistaSeleccionDespliegue() {
         initComponents();
         
-        this.botonesDespliegue = new ArrayList();
+        this.botonesDespliegue = new ArrayList<BotonImagen>();
         
         String[] nomDespliegues = {"cruz", "escalera", "t", "s", "4", "r"};
         int filas = 2;

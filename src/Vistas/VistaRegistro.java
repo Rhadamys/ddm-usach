@@ -183,59 +183,48 @@ public class VistaRegistro extends VistaPersonalizada {
     }
     
     public boolean comprobarCampos(){
-        boolean estado = true;
-        boolean sePuedeMensaje = true;
-        
-        if(this.getUsuario().length() < 5){
-            if(sePuedeMensaje){
-                this.setMensaje("El usuario debe tener por lo menos 5 caracteres.");
-                sePuedeMensaje = false;
-            }
-            
+        if(!this.getUsuario().matches("\\w+$")){
+            this.setMensaje("El usuario debe contener sólo caracteres alfanuméricos.");
             this.usuarioErroneo();
-            estado = false;
+            return false;
+        }else if(this.getUsuario().length() < 5 || this.getUsuario().length() > 15){
+            this.setMensaje("El usuario debe tener entre 5 y 15 caracteres.");
+            this.usuarioErroneo();
+            return false;
         }else{
             this.usuarioNormal();
         }
         
-        if(this.getPass().length() < 5){
-            if(sePuedeMensaje){
-                this.setMensaje("La contraseña debe tener por lo menos 5 caracteres.");
-                sePuedeMensaje = false;
-            }
-            
+        if(!this.getPass().matches("\\w+$")){
+            this.setMensaje("La contraseña debe contener sólo caracteres alfanuméricos..");
             this.passErronea();
-            estado = false;
+            return false;
+        }else if(this.getPass().length() < 5 || this.getPass().length() > 10){
+            this.setMensaje("La contraseña debe tener entre 5 y 10 caracteres.");
+            this.passErronea();
+            return false;
         }else{
             this.passCorrecta();
         }
         
-        if(this.getPassRepetida().length() < 5 ||
-                !this.getPassRepetida().equals(this.getPass())){
-            if(sePuedeMensaje){
-                this.setMensaje("Las contraseñas no coinciden.");
-                sePuedeMensaje = false;
-            }
+        if(!this.getPassRepetida().equals(this.getPass())){
+            this.setMensaje("Las contraseñas no coinciden.");
             this.passErronea();
             this.passRepetidaErronea();
-            estado = false;
+            return false;
         }else{
             this.passRepetidaCorrecta();
         }
         
         if(this.iconoJefe.getToolTipText().equals("")){
-            if(sePuedeMensaje){
-                this.setMensaje("Selecciona un jefe de terreno.");
-                sePuedeMensaje = false;
-            }
-            
+            this.setMensaje("Selecciona un jefe de terreno.");
             this.jefeErroneo();
-            estado = false;
+            return false;
         }else{
             this.jefeCorrecto();
         }
         
-        return estado;
+        return true;
     }
     
     public BotonImagen getVolver() {
@@ -264,6 +253,18 @@ public class VistaRegistro extends VistaPersonalizada {
     
     public String getPassRepetida(){
         return String.valueOf(this.repitePass.getPassword());
+    }
+    
+    public CajaTextoImagen getCajaUsuario(){
+        return this.usuario;
+    }
+    
+    public CajaPassImagen getCajaPass(){
+        return this.pass;
+    }
+    
+    public CajaPassImagen getCajaPassRepetida(){
+        return this.repitePass;
     }
     
     public void setMensaje(String mensaje){

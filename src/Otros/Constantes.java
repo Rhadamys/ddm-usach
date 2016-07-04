@@ -54,6 +54,8 @@ public final class Constantes {
     public static final int BTN_MODIFICAR_PUZZLE = 13;
     public static final int BTN_INFO_CRIATURAS = 14;
     public static final int BTN_SALIR = 15;
+    public static final int BTN_TODOS_CONTRA_TODOS = 16;
+    public static final int BTN_SOBREVIVIENTE = 17;
     
     //*****************************************************
     //* Imagenes                                          *
@@ -139,6 +141,14 @@ public final class Constantes {
     public static final String SALIR_SOBRE = RUTA_BOTONES + "salir_sobre" + EXT1;
     public static final String SALIR_PRESIONADO = RUTA_BOTONES + "salir_presionado" + EXT1;
     
+    public static final String SOBREVIVIENTE = RUTA_BOTONES + "sobreviviente" + EXT1;
+    public static final String SOBREVIVIENTE_SOBRE = RUTA_BOTONES + "sobreviviente_sobre" + EXT1;
+    public static final String SOBREVIVIENTE_PRESIONADO = RUTA_BOTONES + "sobreviviente_presionado" + EXT1;
+    
+    public static final String TODOS_CONTRA_TODOS = RUTA_BOTONES + "todos_contra_todos" + EXT1;
+    public static final String TODOS_CONTRA_TODOS_SOBRE = RUTA_BOTONES + "todos_contra_todos_sobre" + EXT1;
+    public static final String TODOS_CONTRA_TODOS_PRESIONADO = RUTA_BOTONES + "todos_contra_todos_presionado" + EXT1;
+    
     public static final String TORNEO = RUTA_BOTONES + "torneo" + EXT1;
     public static final String TORNEO_SOBRE = RUTA_BOTONES + "torneo_sobre" + EXT1;
     public static final String TORNEO_PRESIONADO = RUTA_BOTONES + "torneo_presionado" + EXT1;
@@ -150,6 +160,7 @@ public final class Constantes {
     public static final String BOTON_TRAMPA = RUTA_BOTONES + "trampa_";
     
     // Fondos
+    public static final String BARRA_CLASIFICACION = RUTA_FONDOS + "barra_clasificacion" + EXT1;
     public static final String CAJON_MENU = RUTA_FONDOS + "cajon_menu" + EXT1;
     public static final String FONDO_AZUL_TRANS = RUTA_FONDOS + "fondo_azul_transparente" + EXT1;
     public static final String FONDO_BATALLA = RUTA_FONDOS + "fondo_batalla" + EXT1;
@@ -168,6 +179,8 @@ public final class Constantes {
     public static final String FONDO_SELECCION_4 = RUTA_FONDOS + "fondo_seleccion_4" + EXT1;
     
     // Otros
+    public static final String EQUIPO_MARIO = RUTA_OTROS + "equipo_mario" + EXT1;
+    public static final String EQUIPO_ZELDA = RUTA_OTROS + "equipo_zelda" + EXT1;
     public static final String IMAGEN_DADO = RUTA_DADOS + "dado_";
     public static final String IMAGEN_DESPLIEGUE = RUTA_OTROS + "despliegue_";
     public static final String INTRO = RUTA_OTROS + "intro" + EXT2;
@@ -196,6 +209,8 @@ public final class Constantes {
     public static final String[] M_BATALLA = {"normal", "forest", "sea", "abstract", "destiny", "technology"};
     public static final String[] M_GANADOR = {"you_win"};
     public static final String[] M_OTROS_FORMS = {"other_forms"};
+    public static final String[] M_NUEVO_TORNEO = {"tournament_time"};
+    public static final String[] M_TORNEO_FINALIZADO = {"tournament_finished"};
     
     // Efectos
     public static final String ERROR = RUTA_EFECTOS + "error" + EXT_E;
@@ -209,7 +224,8 @@ public final class Constantes {
     public static final String SELECCION = RUTA_EFECTOS + "seleccion" + EXT_E;
     public static final String MARCA_CAMINO = RUTA_EFECTOS + "camino" + EXT_E;
     public static final String E_INVOCACION = RUTA_EFECTOS + "invocacion" + EXT_E;
-    public static final String METEORITOS = RUTA_EFECTOS + "meteoritos" + EXT_E;
+    public static final String[] EFECTOS = {ERROR, PASO, CLICK, DANIO, DADOS_SUBIENDO, CAE_DADO,
+        CAMBIO_TURNO, E_MUERE, SELECCION, MARCA_CAMINO, E_INVOCACION};
     
     public static void cambiarCursor(int numJug){
             

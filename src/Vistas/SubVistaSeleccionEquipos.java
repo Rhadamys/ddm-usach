@@ -46,8 +46,8 @@ public class SubVistaSeleccionEquipos extends VistaPersonalizada{
         
         this.equipo1.setLocation(50, 0);
         
-        this.jugadores = new ArrayList();
-        this.iconosJugadores = new ArrayList();
+        this.jugadores = new ArrayList<Jugador>();
+        this.iconosJugadores = new ArrayList<PanelImagen>();
     }
     
     public void agregarJugador(Jugador jug){        

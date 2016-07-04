@@ -8,8 +8,6 @@ package Vistas;
 import Otros.BotonCheckImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *

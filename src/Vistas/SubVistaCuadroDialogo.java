@@ -39,7 +39,7 @@ public class SubVistaCuadroDialogo extends VistaPersonalizada{
         SubVistaCuadroDialogo visMen = this;
         this.boton1.addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked(MouseEvent e){
+            public void mouseReleased(MouseEvent e){
                 visMen.dispose();
             }
         });

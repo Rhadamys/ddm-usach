@@ -514,7 +514,7 @@ public class Tablero {
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
                 Posicion posAct = this.posiciones[i][j];
-                if(posAct != null && posAct.getElemento().equals(elemento)){
+                if(elemento.equals(posAct.getElemento())){
                     return posAct;
                 }
             }

@@ -98,12 +98,24 @@ public final class InteligenciaArtificial {
         boolean tieneDadoNivel3 = false;
         boolean tieneDadoNivel4 = false;
         
+        for(Dado dado: dadosDisp){
+            switch(dado.getNivel()){
+                case 3:
+                    tieneDadoNivel3 = true;
+                    break;
+                case 4:
+                    tieneDadoNivel4 = true;
+                    break;
+            }
+        }
+        
         for(int i = 0; i < dadosDisp.size(); i++){
             Dado dadoAct = dadosDisp.get(i);
             if(dados.size() < 4 && nivelDado < 5){
                 if(dadoAct.getNivel() == nivelDado && dadoAct.isParaLanzar()){
                     dados.add(dadoAct);
                     dadosDisp.remove(dadoAct);
+                    
                     if(dados.size() == 3 && this.pnj.getNivel() > 1){
                         if(tieneDadoNivel4 && this.pnj.tengoCriaturasNivel(3)){
                             nivelDado = 4;
@@ -117,10 +129,6 @@ public final class InteligenciaArtificial {
                         
                         i = 0;
                     }
-                }else if(dadoAct.getNivel() == 3){
-                    tieneDadoNivel3 = true;
-                }else if(dadoAct.getNivel() == 4){
-                    tieneDadoNivel4 = true;
                 }
                 
                 if(i == (dadosDisp.size() - 1)){
@@ -138,6 +146,8 @@ public final class InteligenciaArtificial {
         timerEspera.schedule(new TimerTask(){
             @Override
             public void run(){
+                contBat.acumularPuntos();
+                
                 if(contBat.cantidadCarasInvocacion() > 0){
                     contBat.realizarAcciones();
                     if(!contBat.getTablero().estaConectadoAlTerrenoDeOtros() ||
@@ -150,6 +160,7 @@ public final class InteligenciaArtificial {
                             numAccion = 1;
                             aplicarAccion();
                         }else{
+                            contBat.realizarAcciones();
                             decidirSiguienteAccion();
                         }
                     }
@@ -157,7 +168,6 @@ public final class InteligenciaArtificial {
                     contBat.realizarAcciones();
                     decidirSiguienteAccion();
                 }else{
-                    contBat.acumularPuntos();
                     numAccion = 100;
                     aplicarAccion();
                 }
@@ -327,13 +337,12 @@ public final class InteligenciaArtificial {
         
         Timer timerEspera = new Timer();
         timerEspera.schedule(new TimerTask(){
-            int tic = 1;
             boolean seActivaraTrampa = false;
             int numTrampaQueSeActivara;
+            Posicion posSig;
             
             @Override
             public void run(){
-                Posicion posSig = contBat.getAccion().getPosicionSiguiente();
                 if(posSig == null){
                     this.cancel();
                     timerEspera.cancel();
@@ -371,7 +380,8 @@ public final class InteligenciaArtificial {
                             break;
                     }
                 }
-                tic++;
+                
+                posSig = contBat.getAccion().getPosicionSiguiente();
             }
             
             public void decidirSigAc(){
@@ -489,13 +499,23 @@ public final class InteligenciaArtificial {
 // <editor-fold defaultstate="collapsed" desc="Otros métodos">
     
     public Posicion getPosMasCercana(Posicion posAcercar){
+        ArrayList<Posicion> terreno = this.pnj.getTerreno().getPosiciones();
+        
         Posicion posMasCercana = null;
         double distancia = 1000;
-        for(Posicion posAct: this.pnj.getTerreno().getPosiciones()){
+        for(int i = terreno.size() - 1; i >= 0; i--){
+            Posicion posAct = terreno.get(i);
             double distanciaPosAct = this.distanciaALaPosicion(posAct, posAcercar);
             if(distanciaPosAct < distancia){
-                posMasCercana = posAct;
-                distancia = distanciaPosAct;
+                
+                // Revisar que la casilla tenga posiciones disponibles a su alrededor
+                for(int[] vecino: this.tablero.getIdxVecinos(posAct)){
+                    Posicion posVecino = this.tablero.getPosicion(vecino[0], vecino[1]);
+                    if(posVecino != null && posVecino.getDueno() == 0){
+                        posMasCercana = posAct;
+                        distancia = distanciaPosAct;
+                    }
+                }
             }
         }
 

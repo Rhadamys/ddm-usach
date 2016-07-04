@@ -426,10 +426,10 @@ public final class ControladorBatalla {
             Posicion posAct = this.tablero.getPosicion(coord[0], coord[1]);
             SubVistaPosicion casAct = this.visBat.getTablero().getCasilla(coord[0], coord[1]);
             if(posAct != null && posAct.getDueno() == 0){ // Si la casilla no pertenece a ningún jugador
-                casAct.setImagenSobre(Constantes.CASILLA_JUGADOR + (this.getTablero().getTurnoActual() + 1) + 
+                casAct.setImagenSobre(Constantes.CASILLA_JUGADOR + (this.getTablero().getJugadorActual().getNumJug()) + 
                         Constantes.EXT1);
                 casAct.setImagenActual(1);
-            }else{ // Si la casilla ya pertenece a un jugador
+            }else if(casAct != null){ // Si la casilla ya pertenece a un jugador
                 casAct.casillaIncorrecta();
             }
         }
@@ -1006,7 +1006,7 @@ public final class ControladorBatalla {
         boolean alrededorCriaturaAtacante = false;
         for(int[] vecino: this.tablero.getIdxVecinos(posAct)){
             Posicion posVecino = this.tablero.getPosicion(vecino[0], vecino[1]);
-            if(posVecino != null && posVecino.getElemento().equals(this.accion.getCriaturaAtacante())){
+            if(posVecino != null && this.accion.getCriaturaAtacante().equals(posVecino.getElemento())){
                 alrededorCriaturaAtacante = true;
                 break;
             }
@@ -1070,10 +1070,10 @@ public final class ControladorBatalla {
                     finalizarPartida();
                     return;
                 }
+            }else{
+                // Elimina al elemento del tablero
+                this.tablero.getPosElem(elemAtacado).setElemento(null);
             }
-            
-            // Elimina al elemento del tablero
-            this.tablero.getPosElem(elemAtacado).setElemento(null);
             
         // Si la criatura atacante murió (El enemigo tenía mayor defensa que el ataque de la criatura)
         }else if(accion.getCriaturaAtacante().getVida() <= 0){

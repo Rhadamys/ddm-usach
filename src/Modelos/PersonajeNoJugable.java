@@ -115,8 +115,8 @@ public class PersonajeNoJugable extends Jugador {
         for(int[] vecino: tablero.getIdxVecinos(this.getMiPosicion())){
             Posicion posVecino = tablero.getPosicion(vecino[0], vecino[1]);
             if(posVecino != null && posVecino.getElemento() instanceof Criatura &&
-                    (tablero.isEnEquipos() && tablero.getJugador(posVecino.getElemento().getDueno() - 1).getEquipo() != this.getEquipo()) ||
-                    (!tablero.isEnEquipos() && posVecino.getElemento().getDueno() != this.getNumJug())){
+                    ((tablero.isEnEquipos() && tablero.getJugador(posVecino.getElemento().getDueno() - 1).getEquipo() != this.getEquipo()) ||
+                    (!tablero.isEnEquipos() && posVecino.getElemento().getDueno() != this.getNumJug()))){
                 return posVecino;
             }
         }

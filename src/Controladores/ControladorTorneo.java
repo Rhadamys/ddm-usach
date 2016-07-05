@@ -7,8 +7,6 @@ package Controladores;
 
 import Modelos.Dado;
 import Modelos.Jugador;
-import Modelos.PersonajeNoJugable;
-import Modelos.PuzzleDeDados;
 import Modelos.Torneo;
 import Modelos.Usuario;
 import Otros.Constantes;
@@ -20,7 +18,6 @@ import Vistas.VistaTorneoFinalizado;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *
@@ -116,9 +113,7 @@ public final class ControladorTorneo {
                 
                 this.iniciarSiguienteBatalla();
                 
-                if(vidaRest > 0){
-                    this.contPrin.getContBat().getTablero().getJugador(0).getJefeDeTerreno().restarVida(vidaRest);
-                }
+                this.contPrin.getContBat().getTablero().getJugador(0).getJefeDeTerreno().setVida(vidaRest);
 
                 this.mostrarMensaje("Se te ha restaurado un 20% de la vida.<br>¡Suerte!");
             }else if(this.torneo.getPartJugadas() == 3){

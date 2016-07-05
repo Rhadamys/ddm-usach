@@ -102,7 +102,7 @@ public final class ControladorRegistro {
             @Override
             public void mouseReleased(MouseEvent e){
                 // Se inicia el proceso de registro de usuario
-                registrarUsuario(
+                comprobarRegistro(
                             visReg.getUsuario(), 
                             visReg.getPass(), 
                             visReg.getPassRepetida());
@@ -113,7 +113,7 @@ public final class ControladorRegistro {
             @Override
             public void keyReleased(KeyEvent e){
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    registrarUsuario(
+                    comprobarRegistro(
                             visReg.getUsuario(),
                             visReg.getPass(),
                             visReg.getPassRepetida());
@@ -125,7 +125,7 @@ public final class ControladorRegistro {
             @Override
             public void keyReleased(KeyEvent e){
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    registrarUsuario(
+                    comprobarRegistro(
                             visReg.getUsuario(),
                             visReg.getPass(),
                             visReg.getPassRepetida());
@@ -137,7 +137,7 @@ public final class ControladorRegistro {
             @Override
             public void keyReleased(KeyEvent e){
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                    registrarUsuario(
+                    comprobarRegistro(
                             visReg.getUsuario(),
                             visReg.getPass(),
                             visReg.getPassRepetida());
@@ -192,24 +192,37 @@ public final class ControladorRegistro {
      * @param pass Contraseña ingresada.
      * @param passRepetida Confirmación de contraseña.
      */
-    public void registrarUsuario(String usuario, String pass, String passRepetida) {
+    public void comprobarRegistro(String usuario, String pass, String passRepetida) {
         // Se comprueba que los campos estén completos (escritos)
-        if(this.visReg.comprobarCampos()){
-            this.visReg.usuarioCorrecto();                
-            try {
-                if(Usuario.registrarUsuario(usuario, pass, this.jefe)){
-                    this.cerrarVistaRegistro(true);
-                    this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");
-                    
-                    Registro.registrarAccion(Registro.REGISTRO, usuario);
-                }else{
-                    this.visReg.setMensaje("Usuario ya existe");
-                    this.visReg.usuarioErroneo();
-                }
-            } catch (SQLException ex) {
-                System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información: " + ex);
-                this.mostrarMensaje("No se pudo completar el registro. Inténtalo nuevamente.");
+        if(this.visReg.comprobarCampos()){           
+            this.registrarUsuario(usuario, pass, passRepetida);
+        }
+    }
+    
+    /**
+     * Proceso de registro de usuario. Realiza comprobaciones previas, como que
+     * se hayan completado los campos, y que las contraseñas coincidan.
+     * @param usuario Usuario ingresado.
+     * @param pass Contraseña ingresada.
+     * @param passRepetida Confirmación de contraseña.
+     */
+    public void registrarUsuario(String usuario, String pass, String passRepetida) {                
+        try {
+            if(Usuario.registrarUsuario(usuario, pass, this.jefe)){
+                this.visReg.usuarioCorrecto();
+                
+                this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");     
+            
+                this.cerrarVistaRegistro(true);
+
+                Registro.registrarAccion(Registro.REGISTRO, usuario);
+            }else{
+                this.visReg.setMensaje("Usuario ya existe");
+                this.visReg.usuarioErroneo();
             }
+        } catch (SQLException ex) {
+            System.out.println("*** SE HA PRODUCIDO UN ERROR *** Información: " + ex);
+            this.mostrarMensaje("No se pudo completar el registro. Inténtalo nuevamente.");
         }
     }
     

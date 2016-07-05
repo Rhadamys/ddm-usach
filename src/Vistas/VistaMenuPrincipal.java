@@ -96,7 +96,8 @@ public class VistaMenuPrincipal extends VistaPersonalizada {
         this.add(iconoJugador);
         iconoJugador.setSize(60, 60);
         iconoJugador.setLocation(730, 10);
-        iconoJugador.setImagen("/Imagenes/Jefes/" + jugador.getJefeDeTerreno().getNomArchivoImagen() + ".png");
+        iconoJugador.setImagen(Constantes.RUTA_JEFES +
+                jugador.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
         iconoJugador.setBorder(new LineBorder(Color.darkGray, 2));
         
         this.setImagenFondo(Constantes.FONDO_MENU_PRINCIPAL);

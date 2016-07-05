@@ -1,0 +1,27 @@
+@startuml
+hide footbox
+title registrar nuevos jugadores a la partida
+
+actor jugador as j
+
+participant VistaNuevaPartida as visNP
+participant ControladorNuevaPartida as contNP
+participant ControladorPrincipal as contPrin
+participant ControladorRegistro as contR
+
+activate visNP
+activate contNP
+j -> visNP :click en registrar jugador
+visNP --> contNP
+contNP -> contNP:registrarJugador()
+activate contNP
+deactivate contNP
+contNP -> contPrin:crearControladorRegistro(visNuePar)
+activate contPrin
+contPrin -> contR:new ControladorRegistro(this, NuevPar)
+deactivate contPrin
+activate contR
+note over contPrin,contR : aqui va el proceso de registro de jguadores
+
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+hide footbox
+
+title Lanzamiento de dados
+actor jugador as j
+
+participant SubVisSeleccionDados as visDados
+participant SubVistaLanzamientoDados as visLan
+participant ControladorBatalla as contB
+participant Turno
+
+
+activate contB
+activate visDados
+
+j -> visDados :click lanzar dados
+visDados --> contB
+contB -> visDados: getDadosSeleccionados()
+visDados --> contB : dados
+contB -> Turno:lanzarDados(dados)
+activate Turno
+
+Turno --> contB
+contB -> Turno :getResultadoLanzamiento()
+Turno --> contB: resultadoLanzamiento
+deactivate Turno
+contB -> visLan:new SubVistaLanzamientoDados
+activate visLan
+visLan -->contB
+contB -> visDados :dispose()
+visDados --> contB
+
+deactivate visDados
+
+
+
+@enduml

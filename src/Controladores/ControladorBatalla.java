@@ -8,20 +8,61 @@ package Controladores;
 import Modelos.*;
 import Otros.*;
 import Vistas.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.event.*;
+import java.util.*;
 import javax.swing.JInternalFrame;
 
 /**
+ * *****************************************************************************
+ * ***                      ALGUNAS CONSIDERACIONES                          ***
+ * *****************************************************************************
+ * 
+ * Diferencia entre casilla y posición: La posición es el elemento lógico (Modelo)
+ * de una posición en el tablero, y la casilla es su vista (SubVistaPosicion).
+ * 
+ * Las interacciones de las casillas con el mouse están dadas por un número de
+ * acción, el cual se detalla a continuación:
+ * 
+ * CUANDO SE HACE CLIC:
+ * *****************************************************************************
+ * * Núm. * Detalle                                                            *
+ * *****************************************************************************
+ * * 0    * No se realiza acción alguna                                        *
+ * *****************************************************************************
+ * * 1    * Intenta invocar una criatura en la posición de la casilla seleccio-*
+ * *      * nada con el despliegue de dados elegido.                           *
+ * *****************************************************************************
+ * * 2    * Intenta reemplazar una criatura en la posición seleccionada. La    *
+ * *      * criatura debe ser de nivel 2.                                      *
+ * *****************************************************************************
+ * * 3    * Intenta reemplazar una criatura en la posición seleccionada. La    *
+ * *      * criatura debe ser de nivel 3.                                      *
+ * *****************************************************************************
+ * * 10   * Selecciona la criatura en la posición marcada para moverla.        *
+ * *****************************************************************************
+ * * 11   * Marcar el camino del movimiento de la criatura.                    *
+ * *****************************************************************************
+ * * 20   * Selecciona a la criatura en la posición marcada para realizar un   *
+ * *      * ataque.                                                            *
+ * *****************************************************************************
+ * * 21   * Selecciona a la criatura o jefe enemigo en la posición marcada para*
+ * *      * atacarlo / a.                                                      *
+ * *****************************************************************************
+ * * 30   * Coloca una trampa en la posición marcada.                          *
+ * *****************************************************************************
+ * * 40   * Agrega o quita la criatura de la posición marcada de la lista de   *
+ * *      * criaturas que serán afectadas por la magia "Hierbas venenosas".    *
+ * *****************************************************************************
+ * * 41   * Marca el área que será afectada por la magia "Meteoritos de fuego" *
+ * *****************************************************************************
+ * 
+ * Estos números de acción se utilizan también en los listeners de "mouseEntered"
+ * para marcar la posición como "Correcta" (En verde) o "Incorrecta" (en rojo)
+ * dependiendo de si se cumplen con las condiciones de cada uno de los casos
+ * anteriores.
+ * 
+ * El número de acción se almacena en el tablero. Se obtiene con el método
+ * "getNumAccion()".
  *
  * @author mam28
  */
@@ -359,7 +400,7 @@ public final class ControladorBatalla {
                                     break;
                             case 3: comprobarSiContieneCriaturaDelNivel((SubVistaPosicion) e.getComponent(), 3);
                                     break;
-                            case 10:    setCriaturaAMover((SubVistaPosicion) e.getComponent());
+                            case 10:    compCriaturaSelecMov((SubVistaPosicion) e.getComponent());
                                         break;
                             case 11:    cambiarEstadoCasillaCamino((SubVistaPosicion) e.getComponent());
                                         break;
@@ -367,7 +408,7 @@ public final class ControladorBatalla {
                                         break;
                             case 21:    comprobarEnemigoSelec((SubVistaPosicion) e.getComponent());
                                         break;
-                            case 30:    colocarTrampa((SubVistaPosicion) e.getComponent());
+                            case 30:    comprobarPosicionTrampa((SubVistaPosicion) e.getComponent());
                                         break;
                             case 40:    cambiarEstadoCriaturaAfectada((SubVistaPosicion) e.getComponent());
                                         break;
@@ -518,6 +559,8 @@ public final class ControladorBatalla {
             public void run(){
                 visInfoEl.setVisible(true);
                 visInfoEl.setLocation(x > 400 ? 10: 540, 100);
+                contPrin.getContVisPrin().getVisPrin().repaint();
+                
                 this.cancel();
                 timerVisInfoEl.cancel();
             }
@@ -815,6 +858,13 @@ public final class ControladorBatalla {
     }
     
     /**
+     * Muestra un mensaje indicando que el jugador no puede mover criaturas.
+     */
+    public void mostrarMensajeNoSePuedeMover(){
+        this.mostrarMensaje("No tienes criaturas para mover o no tienes puntos de movimiento.");
+    }
+    
+    /**
      * Agrega los listeners a la vista mensaje. A esta vista se le asigna un nombre,
      * y dependiendo de ese nombre son las acciones que realizarán los botones.
      */
@@ -902,7 +952,7 @@ public final class ControladorBatalla {
 
             // Si la posición vecina contiene una criatura o un jefe de terreno y el dueño
             // no es el jugador del turno actual o no es del mismo equipo (Es decir, es un enemigo)
-            if(posVecino != null & (posVecino.getElemento() instanceof Criatura ||
+            if(posVecino != null && (posVecino.getElemento() instanceof Criatura ||
                     posVecino.getElemento() instanceof JefeDeTerreno) &&
                     ((this.tablero.isEnEquipos() && this.tablero.getJugador(posVecino.getElemento().getDueno() - 1).getEquipo() != this.tablero.getJugadorActual().getEquipo()) ||
                     (!this.tablero.isEnEquipos() && posVecino.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug()))){
@@ -1058,6 +1108,9 @@ public final class ControladorBatalla {
         if(vida <= 0){
             Reproductor.reproducirEfecto(Constantes.E_MUERE);
             
+            // Elimina al elemento del tablero
+            this.tablero.getPosElem(elemAtacado).setElemento(null);
+                
             // Si el elemento era un jefe de terreno
             if(elemAtacado instanceof JefeDeTerreno){
                 // Se elimina al jugador de la partida
@@ -1070,9 +1123,6 @@ public final class ControladorBatalla {
                     finalizarPartida();
                     return;
                 }
-            }else{
-                // Elimina al elemento del tablero
-                this.tablero.getPosElem(elemAtacado).setElemento(null);
             }
             
         // Si la criatura atacante murió (El enemigo tenía mayor defensa que el ataque de la criatura)
@@ -1493,20 +1543,44 @@ public final class ControladorBatalla {
         }
     }
     
+    /**
+     * Magia 2 (Hierbas venenosas): Agrega o quita una criatura de la lista de
+     * criaturas afectadas por esta magia. Realiza las comprobaciones para
+     * determinar que la criatura es enemiga.
+     * @param casilla Casilla seleccionada por el usuario en el tablero.
+     */
     public void cambiarEstadoCriaturaAfectada(SubVistaPosicion casilla){
+        // Se obtiene la posición correspondiente a la casilla.
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        
+        // Si en la posición hay una criatura.
         if(posAct.getElemento() instanceof Criatura){
+            // Si es en equipos y los equipos son diferentes o si es individual y la criatura
+            // no pertenece al jugador del turno acutal.
             if((this.tablero.isEnEquipos() && this.tablero.getJugadorActual().getEquipo() != this.tablero.getJugador(posAct.getElemento().getDueno() - 1).getEquipo()) ||
                     (!this.tablero.isEnEquipos() && posAct.getElemento().getDueno() != this.tablero.getJugadorActual().getNumJug())){
+                // Si la casilla está seleccionada
                 if(casilla.isSelected()){
+                    // Se agrega la criatura a la lista de criaturas afectadas
                     accion.agregarCriaturaAfectada((Criatura) posAct.getElemento());
+                    
+                    // Si en la lista hay 3 criaturas
                     if(accion.cantidadCriaturasAfectadas() == 3){
+                        // Finaliza la acción
                         this.finalizarAccion();
+                        
+                        // Activa la magia
                         this.accion.activarMagia(2, this.tablero.getJugadorActual());
+                        
+                        // Descuenta los puntos de magia
                         this.tablero.getJugadorActual().getTurno().descontarPuntosMagia(15);
+                        
+                        // Muestra el mensaje de que se ha activado la magia
                         this.mostrarMensaje("Se ha activado la magia.");
                     }
                 }else{
+                    // Si la casilla está desmarcada, se quita la criatura de la lista
+                    // de criaturas afectadas.
                     accion.quitarCriaturaAfectada((Criatura) posAct.getElemento());
                 }
             }else{
@@ -1519,6 +1593,56 @@ public final class ControladorBatalla {
         }
     }
     
+    /**
+     * Define el área que será afectada por la magia 3 (Meteoritos de fuego).
+     * @param casilla Casilla actual sobre la que se encuentra el mouse.
+     */
+    public void setAreaAfectada(SubVistaPosicion casilla){
+        // Se obtiene el cuadrante que afecta la magia
+        
+        // 5 casillas arriba de la posición actual
+        int filaEsqSupIzq = casilla.getFila() - 5;
+        // 5 casillas a la izquierda de la posición actual
+        int columnaEsqSupIzQ = casilla.getColumna() - 5;
+        
+        // Se inicializa el área afectada
+        ArrayList<Posicion> areaAfectada = new ArrayList<Posicion>();
+        
+        for(int i = 0; i < 11; i++){
+            for(int j = 0; j < 11; j++){
+                // Se obtiene la posición actual
+                Posicion posAct = this.tablero.getPosicion(filaEsqSupIzq + i, columnaEsqSupIzQ + j);
+                
+                // Si la posición no es null (Está dentro de los límites del tablero.
+                if(posAct != null){
+                    // Se agrega la posición al área afectada.
+                    areaAfectada.add(posAct);
+                }
+            }
+        }
+        
+        // Se le indica al modelo acción el área afectada.
+        accion.setAreaDeEfecto(areaAfectada);
+        
+        // Se activa la magia
+        accion.activarMagia(3, this.tablero.getJugadorActual());
+        
+        // Se descuentan los puntos de coste de la magia.
+        this.tablero.getJugadorActual().getTurno().descontarPuntosMagia(30);
+        
+        // Finaliza la acción
+        this.finalizarAccion();
+        
+        // Se muestra un mensaje indicando que la magia está activada.
+        this.mostrarMensaje("Se ha activado la magia en el área marcada.");
+    }
+    
+    //VISUALES
+    /**
+     * Marca la casilla como correcta o incorrecta dependiendo de si se cumplen las
+     * condiciones de la magia número 2 (Seleccionar enemigo)
+     * @param casilla Casilla actual sobre la que se encuentra el mouse.
+     */
     public void casillaTieneCriaturaEnemiga(SubVistaPosicion casilla){
         this.visBat.getTablero().actualizarCasillas();
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
@@ -1530,6 +1654,10 @@ public final class ControladorBatalla {
         }
     }
     
+    /**
+     * Muestra el área que será afectada por la magia "Meteoritos de fuego".
+     * @param casilla Casilla actual sobre la que se encuentra el mouse.
+     */
     public void mostrarAreaAfectada(SubVistaPosicion casilla){
         this.visBat.getTablero().reiniciarCasillas();
         int filaEsqSupIzq = casilla.getFila() - 5;
@@ -1545,56 +1673,54 @@ public final class ControladorBatalla {
         }
     }
     
-    public void setAreaAfectada(SubVistaPosicion casilla){
-        int filaEsqSupIzq = casilla.getFila() - 5;
-        int columnaEsqSupIzQ = casilla.getColumna() - 5;
-        ArrayList<Posicion> areaAfectada = new ArrayList<Posicion>();
-        
-        for(int i = 0; i < 11; i++){
-            for(int j = 0; j < 11; j++){
-                Posicion posAct = this.tablero.getPosicion(filaEsqSupIzq + i, columnaEsqSupIzQ + j);
-                if(posAct != null){
-                    areaAfectada.add(posAct);
-                }
-            }
-        }
-        
-        accion.setAreaDeEfecto(areaAfectada);
-        accion.activarMagia(3, this.tablero.getJugadorActual());
-        this.tablero.getJugadorActual().getTurno().descontarPuntosMagia(30);
-        this.finalizarAccion();
-        this.mostrarMensaje("Se ha activado la magia en el área marcada.");
-    }
-    
 // </editor-fold>
 
 // <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el movimiento de criaturas"> 
     
+    /**
+     * Indica si el usuario puede realizar movimiento de criaturas. Devuelve
+     * verdadero si tienepor lo menos un punto de movimiento y por lo menos una
+     * criatura sobre el terreno.
+     * @return Verdadero si puede mover alguna criatura.
+     */
     public boolean sePuedeMover(){
         return this.tablero.getJugadorActual().getTurno().getPuntosMovimiento() >= 1 &&
                this.tablero.getJugadorActual().cantidadCriaturasInvocadas() != 0;
     }
     
+    /**
+     * Cambia la acción del tablero para solicitar al usuario que seleccione la
+     * criatura que desea mover.
+     */
     public void solicitarSeleccionarCriatura(){
+        // Se muestra un mensaje indicando que se seleccione una criatura
         this.visBat.setMensaje("Selecciona una criatura.");
+        
+        // Se cambia el número de acción
         this.tablero.setNumAccion(10);
+        
+        // Deshabilita los botones para evitar que el usuario elija otra acción
+        // mientras se está seleccionando la criatura.
         this.visBat.deshabilitarBotones();
     }
     
-    public boolean criaturaNoEstaInmovilizada(Posicion posicion){
-        return ((Criatura) posicion.getElemento()).getTurnosInmovilizada() == 0;
-    }
-    
-    public void setCriaturaAMover(SubVistaPosicion posicion){
-        Posicion posAct = this.tablero.getPosicion(posicion.getFila(), posicion.getColumna());
+    /**
+     * Comprueba si la casilla seleccionada tiene una criatura del jugador y si
+     * la criatura seleccionada se puede mover.
+     * @param casilla Casilla que seleccionó el usuario.
+     */
+    public void compCriaturaSelecMov(SubVistaPosicion casilla){
+        // Se obtiene la posición correspondiente a la casilla
+        Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        
+        // Si la posición tiene una criatura
         if(posAct.getElemento() instanceof Criatura){
-            if(((Criatura) posAct.getElemento()).getDueno() == this.tablero.getJugadorActual().getNumJug()){
-                if(this.criaturaNoEstaInmovilizada(posAct)){
-                    Reproductor.reproducirEfecto(Constantes.SELECCION);
-                    this.accion.setCriaturaAMover((Criatura) posAct.getElemento());
-                    this.accion.agregarPosicionAlCamino(posAct);
-                    this.visBat.setMensaje("Marca las casillas del camino.");
-                    this.tablero.setNumAccion(11);
+            // Si el dueño de la criatura es el jugador del turno actual
+            if(posAct.getElemento().getDueno() == this.tablero.getJugadorActual().getNumJug()){
+                // Si la craitura no está inmovilizada
+                if(((Criatura) posAct.getElemento()).getTurnosInmovilizada() == 0){
+                    // Define la criatura que se moverá
+                    this.setCriaturaAMover(posAct);
                 }else{
                     Reproductor.reproducirEfecto(Constantes.ERROR);
                     this.visBat.setMensaje("La criatura está inmovilizada. Quedan " +
@@ -1613,43 +1739,88 @@ public final class ControladorBatalla {
         }
     }
     
+    /**
+     * Define la criatura que se moverá.
+     * @param posCri Posición de la criatura.
+     */
+    public void setCriaturaAMover(Posicion posCri){
+        Reproductor.reproducirEfecto(Constantes.SELECCION);
+        
+        // Indica al modelo acción la criatura que se moverá
+        this.accion.setCriaturaAMover((Criatura) posCri.getElemento());
+        
+        // Agrega la posición de la criatura al camino
+        this.accion.agregarPosicionAlCamino(posCri);
+        
+        // Muestra un mensaje indicando que se seleccione el camino
+        this.visBat.setMensaje("Marca las casillas del camino.");
+        
+        // Se cambia el número de acción
+        this.tablero.setNumAccion(11);
+    }
+    
+    /**
+     * Cambia el estado de una casilla del camino, es decir, la agrega o la quita
+     * del camino.
+     * @param casilla Casilla que presionó el usuario. 
+     */
     public void cambiarEstadoCasillaCamino(SubVistaPosicion casilla){
-        Posicion posicionActual = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
-        if(this.accion.caminoContienePosicion(posicionActual)){
-            if(this.sePuedeEliminarCasilla(posicionActual)){
+        // Posición correspondiente a la casilla
+        Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        
+        // Si el camino contiene la posición
+        if(this.accion.caminoContienePosicion(posAct)){
+            // Si se puede eliminar la posición del camino
+            if(this.sePuedeEliminarCasilla(posAct)){
                 Reproductor.reproducirEfecto(Constantes.MARCA_CAMINO);
-                this.accion.eliminarPosicionDelCamino(posicionActual);
+                
+                // Elimina la posición del camino
+                this.accion.eliminarPosicionDelCamino(posAct);
             }else{           
-                Reproductor.reproducirEfecto(Constantes.ERROR);      
-                casilla.seleccionado();
+                Reproductor.reproducirEfecto(Constantes.ERROR);   
             }
-        }else{
-            if(this.accion.largoDelCamino() == 0 ||
-               this.sePuedeAgregarCasilla(posicionActual)){
+        }else{ // Si el camino no contiene la posición
+            // Si se puede agregar la posición al camino
+            if(this.sePuedeAgregarCasilla(posAct)){
                 Reproductor.reproducirEfecto(Constantes.MARCA_CAMINO);
-                this.accion.agregarPosicionAlCamino(posicionActual);
+                
+                // Agrega la posición al camino
+                this.accion.agregarPosicionAlCamino(posAct);
             }else{  
-                Reproductor.reproducirEfecto(Constantes.ERROR);              
-                casilla.deseleccionado();
+                Reproductor.reproducirEfecto(Constantes.ERROR);
             } 
         }
         
+        // Si el camino contiene más de una posición, se habilita el botón "Mover"
+        // para que el usuario pueda mover la criatura.
         if(this.accion.largoDelCamino() > 1){
             this.visBat.getMovimiento().setEnabled(true);
         }else{
             this.visBat.getMovimiento().setEnabled(false);
         }
         
+        // Re-pinta el camino seleccionado por el usuario
         this.pintarCamino();
     }
     
-    public boolean sePuedeAgregarCasilla(Posicion posicion){
-        if((this.accion.largoDelCamino() - 1) * accion.getCriaturaAMover().getCostoMovimiento() <
+    /**
+     * Indica si se puede agregar al camino la posición señalada
+     * @param posAct Posición actual que se intenta añadir.
+     * @return Verdadero si se puede agregar la posición.
+     */
+    public boolean sePuedeAgregarCasilla(Posicion posAct){
+        // Si el largo del camino multiplicado por el coste del movimiento de la criatura
+        // seleccionada es menor o igual a los puntos de movimiento de los que dispone el usuario
+        // y además la posición está vacía o tiene una trampa (oculta) y la posición pertenece
+        // a algún jugador.
+        if((this.accion.largoDelCamino() - 1) * accion.getCriaturaAMover().getCostoMovimiento() <=
                 this.tablero.getJugadorActual().getTurno().getPuntosMovimiento() &&
-                
-          (posicion.getElemento() == null || posicion.getElemento() instanceof Trampa) &&
-           posicion.getDueno() != 0){
-            for(int[] coord: this.tablero.getIdxVecinos(posicion)){                    
+                (posAct.getElemento() == null || posAct.getElemento() instanceof Trampa) &&
+                 posAct.getDueno() != 0){
+            
+            // Comprueba si la posición está al lado de la última posición agregada. Así se 
+            // evita que el camino quede cortado.
+            for(int[] coord: this.tablero.getIdxVecinos(posAct)){                    
                 if(this.accion.getUltimaPosicionAgregada().equals(this.tablero.getPosicion(coord[0], coord[1]))){
                     return true;
                 }
@@ -1661,21 +1832,42 @@ public final class ControladorBatalla {
         return false;
     }
     
-    public boolean sePuedeEliminarCasilla(Posicion posicion){
-        return this.accion.getUltimaPosicionAgregada().equals(posicion) && accion.largoDelCamino() > 1;
+    /**
+     * Indica si se puede eliminar la posición del camino. La única condición que
+     * aquí existe es que la posición seleccionada sea la última posición agregada
+     * al camino (así se evita cortarlo) y que además el largo sea de por lo menos
+     * una casilla (donde esa "una" casilla es la posición de la criatura).
+     * @param posAct Posición actual que se está intentando eliminar
+     * @return Verdadero si se puede eliminar la posición del camino.
+     */
+    public boolean sePuedeEliminarCasilla(Posicion posAct){
+        return this.accion.getUltimaPosicionAgregada().equals(posAct) && accion.largoDelCamino() > 1;
     }
     
+    /**
+     * Pinta el camino seleccionado por el jugador (de color naranja).
+     */
     public void pintarCamino(){
+        // Reiniciar las casillas (las desmarca todas)
         this.visBat.getTablero().reiniciarCasillas();
+        
+        // Por cada posición del camino, la selecciona y queda pintada de color naranja.
         for(Posicion posicion: this.accion.getPosicionesMovimiento()){
             this.visBat.getTablero().getCasilla(posicion.getFila(), posicion.getColumna()).seleccionado();
         }
     }
     
+    /**
+     * Mover a la criatura (Posición por posición). En caso de que en el camino
+     * la criatura active alguna trampa, se corta el proceso y se activan los
+     * efectos de la trampa.
+     */
     public void moverCriatura(){
+        // Esto es para evitar que el usuario pueda interrumpir el movimiento
         this.tablero.setNumAccion(0);
         this.visBat.deshabilitarBotones();
         
+        // Crea un timer que animará el movimiento
         Timer timerMovimiento = new Timer();
         timerMovimiento.schedule(new TimerTask(){
             int pasos = accion.largoDelCamino();
@@ -1683,37 +1875,63 @@ public final class ControladorBatalla {
             
             @Override
             public void run(){
+                // Si aún no se llega a la posición final
                 if(tic != pasos){
+                    // Mueve la criatura a la siguiente posición y obtiene el elemento
+                    // de la posición actual en que se encuentra la criatura.
                     ElementoEnCampo elemento = accion.moverCriatura(tic);
+                    
+                    // Descuenta una cantidad de puntos de movimiento equivalente al
+                    // costo de movimiento de la criatura.
                     tablero.getJugadorActual().getTurno().descontarPuntosMovimiento(accion.getCriaturaAMover().getCostoMovimiento());
 
+                    // Obtiene la posición actual y anterior de la criatura.
                     Posicion posAnt = accion.getPosicionAnterior();
                     Posicion posAct = accion.getPosicionActual();
                     
+                    // Obtiene las casillas correspondientes a las posiciones anteriormente obtenidas.
                     SubVistaPosicion casAnt = visBat.getTablero().getCasilla(posAnt.getFila(), posAnt.getColumna());
                     SubVistaPosicion casAct = visBat.getTablero().getCasilla(posAct.getFila(), posAct.getColumna());
                     
-                    casAnt.setImagenElemento("/Imagenes/vacio.png");
+                    // Elimina el icono de la criatura de la casilla anterior y la deselecciona.
+                    casAnt.setImagenElemento(Constantes.VACIO);
                     casAnt.deseleccionado();
                     
-                    casAct.setImagenElemento("/Imagenes/Criaturas/" + accion.getCriaturaAMover().getNomArchivoImagen() + ".png");
+                    // Pone el icono de la criatura sobre la casilla actual
+                    casAct.setImagenElemento(Constantes.RUTA_CRIATURAS +
+                            accion.getCriaturaAMover().getNomArchivoImagen() + Constantes.EXT1);
 
+                    // Si el elemento en la posición actual de la criatua es una trampa.
                     if(elemento instanceof Trampa){
-                        if(elemento.getDueno() == (tablero.getJugadorActual().getNumJug()) &&
-                               ((Trampa) elemento).getNumTrampa() == 3){
-                            
-                        }else if(tablero.isEnEquipos() &&
+                        // La trampa se activa si y sólo si:
+                        
+                        // Si el número de trampa es 3 (Renacer de los muertos) y quien mueve
+                        // a la criatura es el jugador actual
+                        if((elemento.getDueno() == (tablero.getJugadorActual().getNumJug()) &&
+                               ((Trampa) elemento).getNumTrampa() == 3) ||
+                                
+                                // O el número de trampa es distinto de 3 y:
+                                // La batalla es en equipos y el número de equipo de quien colocó la trampa
+                                // es distinto al número de equipo del jugador que mueve la criatura.
+                                (tablero.isEnEquipos() &&
                                 tablero.getJugador(elemento.getDueno() - 1).getEquipo() != tablero.getJugadorActual().getEquipo() &&
-                               ((Trampa) elemento).getNumTrampa() != 3){
-                            
-                        }else if(!tablero.isEnEquipos() &&
+                               ((Trampa) elemento).getNumTrampa() != 3) ||
+                                
+                                // O la batalla no es en equipos y el número del jugador que mueve la criatura
+                                // es distinto al número de jugador que colocó la trampa.
+                                (!tablero.isEnEquipos() &&
                                 elemento.getDueno() != tablero.getJugadorActual().getNumJug() &&
-                               ((Trampa) elemento).getNumTrampa() != 3){
+                               ((Trampa) elemento).getNumTrampa() != 3)){
 
-                                activarTrampa((Trampa) elemento);
-                                visBat.setMensaje("Se ha activado una trampa.");
-                                this.cancel();
-                                timerMovimiento.cancel();
+                            // Se activa la trampa
+                            activarTrampa((Trampa) elemento);
+                            
+                            // Se muestra un mensaje indicando que se activó una trampa
+                            visBat.setMensaje("Se ha activado una trampa.");
+                            
+                            // Se cancela el movimiento
+                            this.cancel();
+                            timerMovimiento.cancel();
                         }
                     }
                     
@@ -1721,6 +1939,7 @@ public final class ControladorBatalla {
                     
                     tic++;
                 }else{
+                    // Se finalizar el movimiento
                     finalizarAccion();      
                     this.cancel();
                     timerMovimiento.cancel();
@@ -1730,6 +1949,12 @@ public final class ControladorBatalla {
         
     }
     
+    // VISUALES
+    /**
+     * Marca la casilla como correcta o incorrecta dependiendo de si se cumplen
+     * las condiciones de selección de la criatura a mover.
+     * @param casilla Casilla actual sobre la que se encuentra el mouse.
+     */
     public void comprobarCasillaSeleccionCriatura(SubVistaPosicion casilla){
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
         this.visBat.getTablero().reiniciarCasillas();
@@ -1741,6 +1966,11 @@ public final class ControladorBatalla {
         }
     }
     
+    /**
+     * Marca la casilla como correcta o incorrecta dependiendo de si se cumplen
+     * las condiciones de selección de posición para el movimiento.
+     * @param casilla Casilla actual sobre la que se encuentra el mouse.
+     */
     public void comprobarCasillaMovimiento(SubVistaPosicion casilla){
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
         this.pintarCamino();
@@ -1753,30 +1983,61 @@ public final class ControladorBatalla {
         }
     }
     
-    public void mostrarMensajeNoSePuedeMover(){
-        this.mostrarMensaje("No tienes criaturas para mover o no tienes puntos de movimiento.");
-    }
-    
 // </editor-fold>
     
-// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con colocar trampas">  
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con trampas">  
+
+// <editor-fold defaultstate="collapsed" desc="Colocar trampas">  
     
+    /**
+     * Indica si el jugador puede colocar trampas. Las condiciones con que el jugador
+     * tenga una cantidad de puntos de trampa mayor o igual al coste de la trampa de
+     * menor coste dentro de sus trampas disponibles y que tenga por lo menos una trampa
+     * disponible.
+     * @return Verdadero si puede colocar alguna trampa.
+     */
     public boolean sePuedeColocarTrampa(){
-        return this.tablero.getJugadorActual().getTurno().getPuntosTrampa() >= 10 &&
-               this.tablero.getJugadorActual().cantidadTrampas() > 0;
+        ArrayList<Trampa> trampasDisp = this.tablero.getJugadorActual().getTrampas();
+        
+        // Si hay alguna trampa disponible
+        if(!trampasDisp.isEmpty()){
+            int puntosMinimosNecesarios = 30;
+            
+            // Obtener la cantidad mínima de puntos necesarios
+            for(Trampa trampa: trampasDisp){
+                if(trampa.getCosto() < puntosMinimosNecesarios){
+                    puntosMinimosNecesarios = trampa.getCosto();
+                }
+            }
+            
+            // Verdadero si el jugador tiene la cantidad mínima de puntos necesarios
+            return this.tablero.getJugadorActual().getTurno().getPuntosTrampa() >= puntosMinimosNecesarios;
+        }else{
+            return false;
+        }
     }
     
+    /**
+     * Muestra la vista de selección de trampa del jugador, en la cual aparecen
+     * las trampas que tiene disponibles.
+     */
     public  void mostrarVistaSeleccionTrampa(){
+        // Instancia la vista de selección de trampa
         this.visBat.setVisSelTram(new SubVistaSeleccionTrampa(
                 this.tablero.getJugadorActual().getTrampas(),
                 this.tablero.getJugadorActual().getTurno().getPuntosTrampa()));
         
+        // Agrega la vista al formulario principal y la hace visible
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisSelTram());
         this.visBat.getVisSelTram().setVisible(true);
         
+        // Agrega los listeners a la vista
         this.agregarListenersVistaSeleccionTrampa();
     }
     
+    /**
+     * Agrega los listeners a la vista de selección de trampa
+     */
     public void agregarListenersVistaSeleccionTrampa(){
         for(int i = 0; i < this.visBat.getVisSelTram().cantidadTrampas(); i++){
             this.visBat.getVisSelTram().getPanelTrampa(i).addMouseListener(new MouseAdapter(){
@@ -1799,90 +2060,74 @@ public final class ControladorBatalla {
         }
     }
     
+    /**
+     * Define la trampa que se colocará.
+     * @param trampa Trampa seleccionada en la vista de selección de trampa.
+     */
     public void setTrampaAColocar(Trampa trampa){
         this.visBat.getVisSelTram().dispose();
+        
+        // Le indica al modelo acción la trampa que se colocará.
         this.accion.setTrampaAColocar(trampa);
+        
+        // Cambia el número de acción
         this.tablero.setNumAccion(30);
+        
+        // Deshabilita los botones para evitar que el usuario pueda realizar
+        // otra acción mientras selecciona la posición en la que desea colocar
+        // la trampa.
         this.visBat.deshabilitarBotones();
+        
+        // Muestra un mensaje indicando que elija la posición en la que quiere
+        // colocar la trampa.
         this.visBat.setMensaje("Selecciona una posición para colocar la trampa.");
     }
     
-    public void colocarTrampa(SubVistaPosicion casilla){
+    /**
+     * Comprueba si se puede colocar la trampa en la posición indicada.
+     * @param casilla Casilla seleccionada por el usuario.
+     */
+    public void comprobarPosicionTrampa(SubVistaPosicion casilla){
+        // Posición correspondiente a la casilla
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
+        
+        // Si la posición pertenece a algún jugador
         if(posAct.getDueno() != 0){
+            // Si la posición está vacía (No tiene criatura, otra trampa, etc).
             if(posAct.getElemento() == null){
-                accion.colocarTrampa(posAct, this.tablero.getJugadorActual());
-                this.finalizarAccion();
-                this.mostrarMensaje("Se ha colocado la trampa en la posición indicada.");
+                // Coloca la trampa en la posición actual.
+                this.colocarTrampa(posAct);
             }else{
+                Reproductor.reproducirEfecto(Constantes.ERROR);
                 this.visBat.setMensaje("La casilla está ocupada. Selecciona una casilla disponible.");
             }
         }else{
+            Reproductor.reproducirEfecto(Constantes.ERROR);
             this.visBat.setMensaje("Selecciona una casilla que pertenezca a algún jugador.");
         }
     }
     
-    public void activarTrampa(Trampa trampa){
-        switch(trampa.getNumTrampa()){
-            case 1: trampa.trampaDeOsos(accion);
-                    this.finalizarAccion();
-                    break;
-            case 2: trampa.trampaParaLadrones(accion);
-                    this.visBat.getTablero().reiniciarCasillas();
-                    moverCriatura();
-                    this.finalizarAccion();
-                    break;
-            case 3: if(!this.tablero.getJugador(trampa.getDueno() - 1).getCriaturasMuertas().isEmpty()){
-                        Registro.registrarAccion(Registro.ACTIVACION_TRAMPA,
-                                this.tablero.getJugadorActual().getNombreJugador() + ";" +
-                                String.valueOf(true));
-                        
-                        trampa.setPosicionReemplazo(accion.getPosicionActual());
-                        trampa.setCriaturaAReemplazar(accion.getCriaturaAMover());
-                        this.tablero.setTrampaActivada(trampa);
-                        mostrarVistaCriaturaRevivir(trampa.getDueno() - 1);
-                        agregarListenersVistaCriaturaRevivir();
-                    }else{
-                        Registro.registrarAccion(Registro.ACTIVACION_TRAMPA,
-                                this.tablero.getJugadorActual().getNombreJugador() + ";" +
-                                String.valueOf(false));
-                        
-                        this.mostrarMensaje("La trampa \"Renacer de los muertos\" no tuvo efecto porque no tienes criaturas muertas.");
-                    }
-                    this.finalizarAccion();
-                    break;
-        }
-    }
-    
-    public void mostrarVistaCriaturaRevivir(int numJug){
-        this.visBat.setVisCriRev(new SubVistaCriaturaRevivir(this.tablero.getJugador(numJug).getCriaturasMuertas()));
-        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisCriRev());
-        this.visBat.getVisCriRev().setVisible(true);
-    }
-    
-    public void agregarListenersVistaCriaturaRevivir(){
-        for(int i = 0; i < this.visBat.getVisCriRev().getCantidadCriaturas(); i++){
-            this.visBat.getVisCriRev().getPanelCriatura(i).addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseReleased(MouseEvent e){
-                    revivirCriatura(visBat.getVisCriRev().getCriatura((BotonImagen) e.getComponent()));
-                }
-            });
-        }
-    }
-    
-    public void revivirCriatura(Criatura criaturaReemplazo){
-        this.visBat.getVisCriRev().dispose();
+    /**
+     * Coloca la trampa en la posición indicada.
+     * @param posTram Posición en la que se colocará la trampa.
+     */
+    public void colocarTrampa(Posicion posTram){
+        // Indica al modelo acción que coloque la trampa en la posición entregada.
+        accion.colocarTrampa(posTram, this.tablero.getJugadorActual());
         
-        Trampa trampa = this.tablero.getTrampaActivada();
-        trampa.renacerDeLosMuertos(criaturaReemplazo,
-                this.tablero.getJugador(trampa.getCriaturaAReemplazar().getDueno() - 1));
+        // Finaliza la acción
+        this.finalizarAccion();
         
-        Posicion posicion = trampa.getPosicionReemplazo();
-        this.visBat.getTablero().getCasilla(posicion.getFila(), posicion.getColumna()).setImagenElemento(
-                "/Imagenes/Criaturas/" + posicion.getElemento().getNomArchivoImagen() + ".png");
+        // Muestra un mensaje indicando que se ha colocado la trampa
+        this.mostrarMensaje("Se ha colocado la trampa en la posición indicada.");
     }
     
+    // VISUALES
+    /**
+     * Marca la casilla como correcta o incorrecta dependiendo de si se cumplen con
+     * las condiciones de la posición en la que se colocará la trampa.
+     * @param casilla Casilla actual sobre la que se encuentra el mouse.
+     */
     public void comprobarCasillaTrampa(SubVistaPosicion casilla){
         this.visBat.getTablero().reiniciarCasillas();
         Posicion posAct = this.tablero.getPosicion(casilla.getFila(), casilla.getColumna());
@@ -1896,31 +2141,202 @@ public final class ControladorBatalla {
     
 // </editor-fold>
     
-// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el turno">  
+// <editor-fold defaultstate="collapsed" desc="Activar trampas">  
+    
+    /**
+     * Activa una trampa si se pasa sobre ella en el movimiento de criatura.
+     * @param trampa Trampa que se ha activado.
+     */
+    public void activarTrampa(Trampa trampa){
+        // Dependiendo del número de trampa
+        switch(trampa.getNumTrampa()){
+            case 1:  // Si la trampa es "Trampa de osos"
+                Registro.registrarAccion(Registro.ACTIVACION_TRAMPA,
+                                this.tablero.getJugadorActual().getNombreJugador() + ";" +
+                                trampa.getNombre() + ";" +
+                                this.tablero.getJugador(trampa.getDueno() - 1).getNombreJugador());
+                    
+                // Se activa el efecto trampa de osos en la trampa
+                trampa.trampaDeOsos(accion);
+                
+                // Finaliza la acción
+                this.finalizarAccion();
+                break;
+                
+            case 2: // Si la trampa es "Trampa para ladrones"
+                Registro.registrarAccion(Registro.ACTIVACION_TRAMPA,
+                                this.tablero.getJugadorActual().getNombreJugador() + ";" +
+                                trampa.getNombre() + ";" +
+                                this.tablero.getJugador(trampa.getDueno() - 1).getNombreJugador());
+                
+                // Se activa el efecto trampa para ladrones
+                trampa.trampaParaLadrones(accion);
+                this.visBat.getTablero().reiniciarCasillas();
+                
+                // Se hace retroceder una casilla a la criatura
+                moverCriatura();
+                
+                // Finaliza la acción
+                this.finalizarAccion();
+                break;
+                
+            case 3: // Si la trampa es renacer de los muertos
+                // Si el jugador tiene por lo menos una criatura muerta para revivir
+                if(!this.tablero.getJugador(trampa.getDueno() - 1).getCriaturasMuertas().isEmpty()){
+                    Registro.registrarAccion(Registro.ACTIVACION_TRAMPA,
+                            this.tablero.getJugadorActual().getNombreJugador() + ";" +
+                            String.valueOf(true) + ";");
+
+                    // Indica a la trampa la posición en la que se reemplazará la criatura
+                    trampa.setPosicionReemplazo(accion.getPosicionActual());
+                    
+                    // Indica a la trampa la criatura que se reemplazará
+                    trampa.setCriaturaAReemplazar(accion.getCriaturaAMover());
+                    
+                    // Guarda en el tablero la trampa que se ha activado
+                    this.tablero.setTrampaActivada(trampa);
+                    
+                    // Muestra la vista de selección de criatura a revivir
+                    mostrarVistaCriaturaRevivir(trampa.getDueno() - 1);
+                }else{
+                    Registro.registrarAccion(Registro.ACTIVACION_TRAMPA,
+                            this.tablero.getJugadorActual().getNombreJugador() + ";" +
+                            String.valueOf(false) + ";");
+
+                    // Muestra un mensaje indicando que la trampa no tuvo efecto porque
+                    // el jugador no tiene criaturas muertas.
+                    this.mostrarMensaje("La trampa \"Renacer de los muertos\" no tuvo efecto porque no tienes criaturas muertas.");
+                }
+                this.finalizarAccion();
+                break;
+        }
+    }
+    
+    /**
+     * Instancia y muestra la vista para elegir la criatura que se revivirá.
+     * @param numJug Número del jugador que activó la trampa.
+     */
+    public void mostrarVistaCriaturaRevivir(int numJug){
+        // Intancia la vista y la muestra.
+        this.visBat.setVisCriRev(new SubVistaCriaturaRevivir(this.tablero.getJugador(numJug).getCriaturasMuertas()));
+        this.contPrin.getContVisPrin().getVisPrin().agregarVista(this.visBat.getVisCriRev());
+        this.visBat.getVisCriRev().setVisible(true);
+                    
+        // Agrega los listeners a la vista de selección de criatura
+        agregarListenersVistaCriaturaRevivir();
+    }
+    
+    /**
+     * Agrega los listeners a la vista de selección de criatura a revivir.
+     */
+    public void agregarListenersVistaCriaturaRevivir(){
+        for(int i = 0; i < this.visBat.getVisCriRev().getCantidadCriaturas(); i++){
+            this.visBat.getVisCriRev().getPanelCriatura(i).addMouseListener(new MouseAdapter(){
+                @Override
+                public void mouseReleased(MouseEvent e){
+                    revivirCriatura(visBat.getVisCriRev().getCriatura((BotonImagen) e.getComponent()));
+                }
+            });
+        }
+    }
+    
+    /**
+     * Revive la criatura seleccionada en la posición actual de la trampa.
+     * @param criReemp Criatura que se pondrá en la posición. 
+     */
+    public void revivirCriatura(Criatura criReemp){
+        this.visBat.getVisCriRev().dispose();
         
+        // Se recupera la trampa desde el tablero.
+        Trampa trampa = this.tablero.getTrampaActivada();
+        
+        // Se activan los efectos de renacer de los muertos, indicando la criatura
+        // que se deberá poner en la posición.
+        trampa.renacerDeLosMuertos(criReemp,
+                this.tablero.getJugador(trampa.getCriaturaAReemplazar().getDueno() - 1));
+        
+        // Obtiene la posición en la que se realizó el reemplazo
+        Posicion posicion = trampa.getPosicionReemplazo();
+        
+        // Obtiene la casilla correspondiente a la posición y pone la imagen de la criatura
+        // que se ha puesto en esa posición.
+        this.visBat.getTablero().getCasilla(posicion.getFila(), posicion.getColumna()).setImagenElemento(
+                Constantes.RUTA_CRIATURAS + posicion.getElemento().getNomArchivoImagen() + Constantes.EXT1);
+    }
+    
+// </editor-fold>
+    
+// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Todo lo relacionado con el turno">  
+       
+    /**
+     * Revisa las posiciones buscando cambios y actualiza las casillas (vista).
+     * Por ejemplo, si un jugador perdió, todas sus criaturas serán eliminadas
+     * del tablero. Este método borrará las imágenes de las criaturas del tablero
+     * también.
+     */
     public void revisarCasillas(){
+        // Se recorre todo el tablero
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
+                // Se obtiene la posición actual
                 Posicion posAct = this.tablero.getPosicion(i, j);
+                
+                // Se obtiene la casilla correspondiente a la posición
                 SubVistaPosicion casAct = this.visBat.getTablero().getCasilla(i, j);
+                
+                // Si la posición no tiene ningún elemento.
                 if(posAct.getElemento() == null){
+                    // Se pone la imagen vacío (Transparente)
                     casAct.setImagenElemento(Constantes.VACIO);
-                }else if(!(posAct.getElemento() instanceof Trampa)){
-                    if(posAct.getElemento() instanceof Criatura){
-                        casAct.setImagenElemento(Constantes.RUTA_CRIATURAS + posAct.getElemento().getNomArchivoImagen() + Constantes.EXT1);
-                    }else{
-                        casAct.setImagenElemento(Constantes.RUTA_JEFES + posAct.getElemento().getNomArchivoImagen() + Constantes.EXT1);
-                    }
+                }else if(posAct.getElemento() instanceof Criatura){
+                    // Si la posición tiene una criatura, se pone la imagen de la criatura
+                    // en la casilla.
+                    casAct.setImagenElemento(Constantes.RUTA_CRIATURAS + posAct.getElemento().getNomArchivoImagen() + Constantes.EXT1);
+                }else if (posAct.getElemento() instanceof JefeDeTerreno){
+                    // Si la posición tiene un jefe, se pone la imagen del jefe
+                    // en la casilla.
+                    casAct.setImagenElemento(Constantes.RUTA_JEFES + posAct.getElemento().getNomArchivoImagen() + Constantes.EXT1);
                 }
             }
         }
     }
     
+    /**
+     * Finaliza una acción y habilita todo lo necesario para que el usuario pueda
+     * realizar alguna otra acción o pasar el turno.
+     */
+    public void finalizarAccion(){        
+        this.tablero.setNumAccion(0);
+        
+        // Actualiza las vistas de jugador
+        actualizarVistasJugador();
+        visBat.getTablero().reiniciarCasillas();
+        this.revisarCasillas(); 
+        this.visBat.habilitarBotones();
+        
+        // Actualiza la vista de magias que están activadas.
+        ArrayList<int[]> magias = this.accion.getMagias();
+        for(int[] magia: magias){
+            this.visBat.getVisMagAc().actualizarMagia(magia[0] - 1, magia[1]);
+        }
+    }
+    
+    /**
+     * Cambia el turno.
+     */
     public void cambiarTurno(){
+        // Si en la partida quedan sólo PNJs
         if(this.tablero.soloQuedanPNJs()){
+            // Finaliza la partida, pero primero, determina aleatoriamente el ganador
+            // entre los PNJs de la partida.
             do{
                 int numJug = 0;
                 do{
+                    // Obtiene un número de jugador al azar e intenta agregarlo a los
+                    // perdedores. Se hace hasta que el jugador encontrado se pueda
+                    // agregar a los perdedores.
                     numJug = new Random().nextInt(this.tablero.cantidadJugadores(true)) + 1;
                     if(this.tablero.estaEnPerdedores(this.tablero.getJugador(numJug - 1))){
                         numJug = 0;
@@ -1929,24 +2345,36 @@ public final class ControladorBatalla {
                 this.tablero.agregarPerdedor(numJug);
             }while(this.tablero.cantidadJugadores(false) != 1);
             
+            // Cambia el turno lógicamente para indicar quién es el jugador que ganó.
             this.tablero.cambiarTurno();
+            
+            // Finaliza la partida
             this.finalizarPartida();
         }else{
+            // Muestra la barra de botones de acción (Movimiento, ataque, etc)
             this.visBat.mostrarBarraBotones();
 
+            // Cambia el turno lógicamente
             this.tablero.cambiarTurno();
+            
+            // Disminuye a cada criatura la cantidad de turnos que está inmovilizada
+            // o que su movimiento está aumentado.
             for(Dado dado: this.tablero.getJugadorActual().getDados()){
                 dado.getCriatura().disminuirTurnosInmovilizada();
                 dado.getCriatura().disminuirTurnosCostoMovInc();
             }
 
+            // Aplica las magias que estén activadas sobre el tablero.
             this.tablero.aplicarMagias(accion);
 
+            // Finaliza cualquier acción que esté activa y deshabilita los
+            // botones de la barra de botones
             this.finalizarAccion();        
             this.visBat.deshabilitarBotones();
 
             ControladorBatalla contBat = this;
-
+            
+            // Instancia un timer con dos acciones (Distinguidas por el "tic")
             Timer timerAnimacion = new Timer();
             timerAnimacion.schedule(new TimerTask(){
                 SubVistaCambioTurno visCamTur = new SubVistaCambioTurno(tablero.getTurnoActual());
@@ -1955,12 +2383,16 @@ public final class ControladorBatalla {
                 @Override
                 public void run(){
                     if(tic == 0){
+                        // En el primer tic, muestra la vista de cambio de turno (Animación)
                         contPrin.getContVisPrin().getVisPrin().agregarVista(visCamTur);
                         visCamTur.setVisible(true);
                     }else{
+                        // En el segundo tic, oculta la vista
                         visCamTur.dispose();
                         crearVistaSeleccionDados(tablero.getJugadorActual());
 
+                        // Si el jugador del turno actual es un PNJ, instancia una
+                        // nueva InteligenciaArtificial para el PNJ
                         if(tablero.getJugadorActual() instanceof PersonajeNoJugable){
                             visBat.ocultarBarraBotones();
                             new InteligenciaArtificial(contBat, (PersonajeNoJugable) tablero.getJugadorActual());
@@ -1973,42 +2405,48 @@ public final class ControladorBatalla {
                 }
             }, 0, 3500);
             
+            // Cambia el cursor de la aplicación al color del jugador.
             Constantes.cambiarCursor(this.tablero.getJugadorActual().getNumJug());
 
+            // Registra el cambio de turno.
             Registro.registrarAccion(Registro.TURNO, this.tablero.getJugadorActual().getNombreJugador());
         }
     }
     
-    public void finalizarAccion(){        
-        this.tablero.setNumAccion(0);
-        actualizarVistasJugador();
-        visBat.getTablero().reiniciarCasillas();
-        this.revisarCasillas(); 
-        this.visBat.habilitarBotones();
-        
-        ArrayList<int[]> magias = this.accion.getMagias();
-        for(int[] magia: magias){
-            this.visBat.getVisMagAc().actualizarMagia(magia[0] - 1, magia[1]);
-        }
-    }
-    
+    /**
+     * Elimina a un jugador de la partida. Éste método se llama cuando el jugador
+     * muere luego de un ataque.
+     * @param numJug Número del jugador que perdió.
+     */
     public void eliminarJugadorPartida(int numJug){
+        // Agrega al jugador a perdedores.
         this.tablero.agregarPerdedor(numJug);
+        
+        // Recorre todo el tablero para eliminar todos los elementos del jugador
+        // (Jefe de terreno, criaturas y trampas). La única trampa que se elimina
+        // es la trampa 3 (Renacer de los muertos), puesto que necesita del jugador
+        // para poder activarse.
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
+                // Se obtiene la posición actual
                 Posicion posAct = this.tablero.getPosicion(i, j);
-                if(posAct.getElemento() instanceof Criatura &&
-                        (posAct.getElemento().getDueno() == numJug ||
+                
+                // Si la posición actual tiene algún elemento y su dueño es el
+                // jugador que perdió y el elemento es una criatura o es una trampa
+                // y su número de trampa es 3 (Renacer de los muertos)
+                if(posAct.getElemento() != null && posAct.getElemento().getDueno() == numJug &&
+                        (posAct.getElemento() instanceof Criatura ||
                         (posAct.getElemento() instanceof Trampa &&
-                        ((Trampa) posAct.getElemento()).getDueno() == numJug &&
                         ((Trampa) posAct.getElemento()).getNumTrampa() == 3))){
                     posAct.setElemento(null);
                 }
             }
         }
         
+        // Oculta la vista de información del jugador
         this.visBat.getVistaJugador(numJug - 1).setVisible(false);
         
+        // Desactiva todas las magias que haya activado el jugador
         ArrayList<int[]> magiasActivadas = this.accion.getMagiasActivadas();
         for(int[] magia: magiasActivadas){
             if(magia[2] == numJug){
@@ -2017,7 +2455,11 @@ public final class ControladorBatalla {
         }
     }
     
-    public void finalizarPartida(){        
+    /**
+     * Finaliza la partida en curso.
+     */
+    public void finalizarPartida(){       
+        // Actualiza la cantida de partidas jugadas y ganadas para cada jugador
         for(int i = 0; i < this.tablero.cantidadJugadores(true); i++){
             // Obtener el jugador
             Jugador jug = this.tablero.getJugador(i);
@@ -2038,53 +2480,59 @@ public final class ControladorBatalla {
             }
         }
             
+        // Si la batalla es en equipos
         if(this.tablero.isEnEquipos()){
+            // Se obtiene el número del equipo ganador
             int numEquipoGanador = this.tablero.getJugadorActual().getEquipo();
+            
+            // Se crea una lista donde se guardarán los ganadores
             ArrayList<Jugador> ganadores = new ArrayList<Jugador>();
+            
+            // Para cada jugador del tablero
             for(int i = 0; i < this.tablero.cantidadJugadores(true); i++){
+                // Se obtiene el jugador actual
                 Jugador jugAct = this.tablero.getJugador(i);
+                
+                // Si el número de equipo del jugador es distinto del equipo ganador
+                // y además no está en la lista de perdedores.
                 if(jugAct.getEquipo() != numEquipoGanador && !this.tablero.estaEnPerdedores(jugAct)){
+                    // Se elimina al jugador de la partida (Agrega a perdedores)
                     this.eliminarJugadorPartida(jugAct.getNumJug());
                 }else if(jugAct.getEquipo() == numEquipoGanador){
+                    // Sino si el número de equipo del jugador es igual al número
+                    // del equipo ganador, se agrega a la lista de ganadores.
                     ganadores.add(jugAct);
                 }
             }
-                
-            ArrayList<Jugador> perdedores = this.tablero.getPerdedores();
-            Random rnd = new Random();
-            ArrayList<Dado> dadosAgregados = new ArrayList<Dado>();
-            for(Jugador perdedor: perdedores){
-                dadosAgregados.add(perdedor.getDado(rnd.nextInt(perdedor.getDados().size())));
-            }
             
+            // Obtiene una copia de un dado de cada perdedor
+            ArrayList<Dado> dadosAgregados = this.obtenerCopiaDadoDePerdedores();
+            
+            // Ahora, por cada ganador
             for(Jugador ganador: ganadores){
+                // Si el ganador es un usuario
                 if(ganador instanceof Usuario){
+                    // Se actualiza su puzzle agregando los dados ganados
                     PuzzleDeDados.agregarDadosAlPuzzle(ganador.getId(), dadosAgregados);
-                    for(Dado dadoGanado: dadosAgregados){
-                        dadoGanado.setParaJugar(false);
-                        ganador.agregarDado(dadoGanado);
-                    }
+                    
+                    // Comprueba si el jugador actual es el usuario activo y agrega los dados a su puzzle
+                    this.agregarDadosAlPuzzle(ganador, dadosAgregados);
                 }
             }
-        }else{
-            if(this.tablero.getJugadorActual() instanceof Usuario && !this.tablero.isTorneo()){
-                ArrayList<Jugador> perdedores = this.tablero.getPerdedores();
-                Random rnd = new Random();
-                ArrayList<Dado> dadosAgregados = new ArrayList<Dado>();
-                for(Jugador perdedor: perdedores){
-                    dadosAgregados.add(perdedor.getDado(rnd.nextInt(perdedor.getDados().size())));
-                }
+        }else if(this.tablero.getJugadorActual() instanceof Usuario && !this.tablero.isTorneo()){
+            // Si la partida es individual y el jugador actual es un usuario y no se está jugando un torneo
+            
+            // Obtiene una copia de un dado de cada perdedor
+            ArrayList<Dado> dadosAgregados = this.obtenerCopiaDadoDePerdedores();
 
-                PuzzleDeDados.agregarDadosAlPuzzle(this.tablero.getJugadorActual().getId(), dadosAgregados);
-                for(Dado dado: dadosAgregados){
-                    dado.setParaJugar(false);
-                    this.tablero.getJugadorActual().agregarDado(dado);
-                }
-            }
+            // Se agregan los dados al puzzle del jugador (Guardar en BDD)
+            PuzzleDeDados.agregarDadosAlPuzzle(this.tablero.getJugadorActual().getId(), dadosAgregados);
+
+            // Comprueba si el ganador es el usuario activo y agrega los dados a su puzzle
+            this.agregarDadosAlPuzzle(this.contPrin.getUsuarioActivo(), dadosAgregados);
         }
         
-        Reproductor.reproducir(Constantes.M_GANADOR);
-        
+        // Instancia una vista que señala el ganador, ya sea un equipo o un jugador
         SubVistaFinDelJuego visFin = new SubVistaFinDelJuego(this.tablero.isEnEquipos() ? 
                 this.tablero.getJugadorActual().getEquipo() : this.tablero.getJugadorActual().getNumJug(),
                 this.tablero.isEnEquipos());
@@ -2092,12 +2540,17 @@ public final class ControladorBatalla {
         this.contPrin.getContVisPrin().getVisPrin().agregarVista(visFin);
         visFin.setVisible(true);
         
+        // Agrega el listener al botón "Finalizar partida" de la vista de fin de partida.
         visFin.getFinalizarPartida().addMouseListener(new MouseAdapter(){
             @Override
             public void mouseReleased(MouseEvent e){
+                // Si se está jugando un torneo
                 if(tablero.isTorneo()){
+                    // Finaliza la partida del torneo, y le indica el jugador que gano
+                    // y los perdedores.
                     contPrin.getContTor().finalizarPartidaTorneo(tablero.getJugadorActual(), tablero.getPerdedores());
-                }else{
+                }else{ // Si no es un torneo
+                    // Vuelve al menú principal
                     contPrin.crearControladorMenuPrincipal();
                     contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
                 }
@@ -2108,7 +2561,51 @@ public final class ControladorBatalla {
         
         Constantes.cambiarCursor(0);
         
+        // Registra el usuario que ganó la partida.
         Registro.registrarAccion(Registro.JUGADOR_GANA, this.tablero.getJugadorActual().getNombreJugador());
+    }
+    
+    /**
+     * Obtiene una copia de un dado de cada uno de los perdedores de la partida.
+     * @return Lista de copias de dado obtenida desde los perdedores.
+     */
+    public ArrayList<Dado> obtenerCopiaDadoDePerdedores(){
+        // Obtiene la lista de perdedores
+        ArrayList<Jugador> perdedores = this.tablero.getPerdedores();
+        Random rnd = new Random();
+        
+        // Crea una nueva lista donde se pondrán las copias de dado
+        ArrayList<Dado> dadosAgregados = new ArrayList<Dado>();
+        
+        // Por cada perdedor
+        for(Jugador perdedor: perdedores){
+            // Se obtiene una copia de uno de sus dados al azar
+            dadosAgregados.add(perdedor.getDado(rnd.nextInt(perdedor.getDados().size())));
+        }
+        return dadosAgregados;
+    }
+    
+    /**
+     * Agrega dados al puzzle al jugador señalado (Sólo si el jugador es el usuario
+     * activo). Esto con fines de que el jugador pueda ver su puzzle actualizado
+     * al volver al menú. Los otros jugadores no es necesario hacer este proceso puesto
+     * que su puzzle se verá actualizado cuando inicien sesión.
+     * @param jug Jugador actual que se evaluará.
+     * @param dadosAgregados Dados que serán agregados al puzzle del jugador.
+     */
+    public void agregarDadosAlPuzzle(Jugador jug, ArrayList<Dado> dadosAgregados){
+        // Si el nombre del jugador es igual al nombre del usuario activo.
+        if(jug.getNombreJugador().equals(
+                this.contPrin.getUsuarioActivo().getNombreJugador())){
+            // Por cada dado
+            for(Dado dado: dadosAgregados){
+                // Indica que no es para jugar (Fuera del puzzle de 15 dados)
+                dado.setParaJugar(false);
+                
+                // Agrega el dado al puzzle del jugador
+                this.contPrin.getUsuarioActivo().agregarDado(dado);
+            }
+        }
     }
     
 // </editor-fold>

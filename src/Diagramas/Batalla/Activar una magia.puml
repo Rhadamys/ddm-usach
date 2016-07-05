@@ -1,0 +1,49 @@
+@startuml
+title Activar magia
+hide footbox
+
+actor Jugador as j
+
+participant SubVistaSeleccionMagia as visSelMag
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Tablero as tab
+participant Accion as acc
+
+
+activate visBat
+activate contBat
+j -> visBat : clic boton Magia
+visBat --> contBat
+contBat -> contBat : sePuedeActivarMagia()
+alt Se puede activar magia
+
+contBat -> visSelMag : mostrarVistaSeleccionMagia()
+activate visSelMag
+j -> visSelMag : clic Magia a activar
+visSelMag --> contBat
+contBat -> visSelMag : getPanelMagia(int)
+visSelMag --> contBat
+deactivate visSelMag
+activate acc
+contBat -> acc : activarMagias(int[] magia)
+acc -> contBat
+
+... Todas las acciones que pueda realizar el usuario hasta finalizar el turno ...
+
+j -> visBat : clic "Terminar turno"
+visBat --> contBat
+activate tab
+contBat -> tab : aplicarMagia (Accion accion)
+tab -> acc : Nombre de Magia(magia[2])
+acc --> tab
+tab --> contBat
+deactivate acc
+deactivate tab
+contBat -> visBat : Mensaje "Se ha activado la magia" 
+
+
+else Si no se puede activar
+contBat -> visBat : Mensaje "No tienes magias\ndisponibles o no tienes puntos"
+end
+@enduml

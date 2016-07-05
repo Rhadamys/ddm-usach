@@ -1,0 +1,60 @@
+@startuml
+hide footbox
+
+title Seleccionar criatura atacante
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Tablero as tab
+participant Acccion as ac
+
+activate j
+activate visBat
+
+j-> visBat: click en el boton ataque
+visBat--> contBat
+activate contBat
+contBat-> contBat: sePuedeAtacar()
+alt se puede atacar
+contBat-> contBat:solicitarCriaturaAtacante()
+contBat-> tab:setNumAccion(20)
+activate tab
+tab--> contBat
+deactivate tab
+contBat->visBat:deshabilitarBotones()
+visBat--> contBat
+contBat-->visBat:setMensaje("Selecciona la\ncriatura que atacara.")
+visBat--> j: muestra el mensaje al usuario
+j-> visBat: click en la criatura\ncon la que desea atacar
+visBat--> contBat
+contBat-> contBat:comprobarCriaturaSelec
+    alt si en la posicion hay una criatura, pertenece al jugador y puede atacar
+                contBat->contBat:setCriaturaAtacante()
+                contBat->ac:setCriaturaAtacante(\n(Criatura) posAct.getElemento())
+                activate ac
+                ac--> contBat
+                deactivate ac
+                contBat->tab: setNumAccion(21)
+                activate tab
+                tab--> contBat
+                deactivate tab
+                contBat--> visBat:setMensaje("Selecciona\nel enemigo a atacar.")
+                visBat--> j: muestra el mensaje al jugador
+
+                ... Se selecciona el enemigo (Diagrama Selección enemigo a atacar) ...
+
+    else si no hay criautra
+         contBat--> visBat:setMensaje(ERROR ENCONTRADO)
+            visBat--> j: muestra el mensaje\ndel ERROR ENCONTRADO
+        
+    end
+
+else no se puede atacar
+contBat->contBat:mostrarMensaje("No se puede atacar.. ")
+contBat--> j : muestra el mensaje al jugador
+
+end
+
+@enduml

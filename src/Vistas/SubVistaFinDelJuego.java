@@ -8,6 +8,7 @@ package Vistas;
 import Otros.BotonImagen;
 import Otros.Constantes;
 import Otros.PanelImagen;
+import Otros.Reproductor;
 import Otros.VistaPersonalizada;
 
 /**
@@ -40,6 +41,8 @@ public class SubVistaFinDelJuego extends VistaPersonalizada {
         this.finalizarPartida.setText("Finalizar partida");
         
         this.setImagenFondo(Constantes.VACIO_GRIS);
+        
+        Reproductor.reproducir(Constantes.M_GANADOR);
     }
 
     /**

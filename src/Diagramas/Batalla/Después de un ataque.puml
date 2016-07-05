@@ -1,0 +1,74 @@
+@startuml
+
+title Despues de un ataque
+hide footbox
+
+participant SubVistaPosicion as subVisPos
+participant ControladorBatalla as contBat
+participant Tablero as tab
+participant Posicion as pos
+
+activate contBat
+
+alt si vida es menor o igual a cero
+
+contBat -> tab:getPosElem(elemAtacado)
+activate tab
+tab-->contBat:Posicion
+deactivate tab
+
+contBat -> pos:setElemento(null)
+activate pos
+pos-->contBat
+deactivate pos
+
+alt si el elemento atacado es un jefe de terreno
+
+contBat->contBat:eliminarJugadorPartida(numJug)
+activate contBat
+deactivate contBat
+
+contBat->tab:agregarPerdedor(numJug)
+activate tab
+tab-->contBat
+deactivate tab
+
+loop por cada criatura del jugador en el terreno
+
+contBat->pos:setElemento(null)
+activate pos
+pos-->contBat
+deactivate pos
+
+contBat->subVisPos:setImagenElemento(Contantes.VACIO)
+activate subVisPos
+subVisPos-->contBat
+deactivate subVisPos
+
+end loop
+
+alt si queda solo un jugador en la partida o es una partida en equipos
+
+contBat->contBat:finalizarPartida()
+activate contBat
+deactivate contBat
+
+end
+
+end
+
+else Sino si la vida de la criatura atacante es menor o igual a cero
+
+contBat->tab:getPosElem(criaturaAtacante)
+activate tab
+tab-->contBat:Posicion
+deactivate tab
+
+contBat->pos:setElemento(null)
+activate pos
+pos-->contBat
+deactivate pos
+
+end
+
+@enduml

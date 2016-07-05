@@ -9,7 +9,9 @@ import Modelos.Dado;
 import Modelos.PuzzleDeDados;
 import Modelos.Usuario;
 import Otros.BotonCheckImagen;
+import Otros.Constantes;
 import Otros.Registro;
+import Otros.Reproductor;
 import Vistas.SubVistaCuadroDialogo;
 import Vistas.SubVistaInfoElemento;
 import Vistas.VistaModificarPuzzle;
@@ -103,6 +105,7 @@ public final class ControladorModificarPuzzle {
                 if(sePuedenIntercambiar()){
                     visModPuzz.intercambiarDados();
                 }else{
+                    Reproductor.reproducirEfecto(Constantes.ERROR);
                     mostrarMensaje("Los dados no son del mismo nivel o no has seleccionado un dado en cada región.");
                 }
             }
@@ -165,6 +168,8 @@ public final class ControladorModificarPuzzle {
             public void run(){
                 visInfoDado.setVisible(true);
                 visInfoDado.setLocation(x > 400 ? 10: 540, 100);
+                contPrin.getContVisPrin().getVisPrin().repaint();
+                
                 this.cancel();
                 timerVisInfoDado.cancel();
             }

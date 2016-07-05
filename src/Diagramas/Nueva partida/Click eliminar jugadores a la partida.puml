@@ -1,0 +1,62 @@
+@startuml
+hide footbox
+title eliminar jugadores a la partida
+
+actor jugador as j
+
+participant SubVistaResumenJugador as visj
+participant VistaNuevaPartida as visNP
+participant SubVistaSeleccionEquipo as equip
+participant SubVistaCuadroDialogo as visd
+participant ControladorNuevaPartida as contNP
+
+activate visNP
+activate visj
+activate contNP
+j -> visj: click eliminar jugador
+visj --> contNP
+alt jugadores>2
+
+contNP ->contNP :eliminarJugador()
+activate contNP
+deactivate contNP
+contNP -> visNP:getVistasResJug().get(i)
+visNP --> contNP : vistaResJug
+contNP -> visj :setVisible(false)
+visj --> contNP
+contNP -> contNP:actualizarPosicionVistasResJug()
+activate contNP
+deactivate contNP
+contNP -> visNP:getVistasResJug().get(i)
+visNP --> contNP: vistaResJug
+contNP -> visNP: gestPosVisResJug()
+visNP --> contNP : posVisResJug
+loop para cada vista de resumen de jugador
+contNP -> visj :setPosicion(posVisResJug[i][0], posVisResJug[i][1])
+visj --> contNP
+visj --> j:se muestra la nueva posicion de la vista
+
+end loop
+
+alt Vista seleccion equipos activada
+activate equip
+contNP -> equip:eliminarJugador(i)
+
+
+equip -> equip :actualizarEquipos()
+activate equip
+deactivate equip
+equip -> j: muestra actualizacion\n de equipos
+end alt
+deactivate equip
+
+else de lo contrario
+contNP -> contNP : mostrarMensaje("Minimo 2 jugadores.")
+activate contNP
+deactivate contNP
+contNP -> visd :new SubVistaCuadroDialogo()
+activate visd
+visd --> j : muestra mensaje de\n maximo 2 jugadores
+deactivate visd
+end alt
+@enduml

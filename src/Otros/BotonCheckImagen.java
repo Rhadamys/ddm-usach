@@ -11,12 +11,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
  * @author mam28
  */
-public class BotonCheckImagen extends JToggleButton implements MouseListener {
+public class BotonCheckImagen extends JToggleButton implements MouseListener, ChangeListener {
     private Image imagen;
     private Image imagenMouseNormal;
     private Image imagenMouseSobre;
@@ -73,6 +75,7 @@ public class BotonCheckImagen extends JToggleButton implements MouseListener {
         this.setOpaque(false);
         
         this.addMouseListener(this);
+        this.addChangeListener(this);
     }
     
     @Override
@@ -203,6 +206,15 @@ public class BotonCheckImagen extends JToggleButton implements MouseListener {
             setImagenActual(3);
         }else{
             setImagenActual(0);
+        }
+    }
+    
+    @Override
+    public void stateChanged(ChangeEvent ce){
+        if(isSelected()){
+            this.setImagenActual(3);
+        }else{
+            this.setImagenActual(0);
         }
     }
 }

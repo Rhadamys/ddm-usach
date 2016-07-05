@@ -43,3 +43,231 @@
 04/07/2016::15:06:31=metodos ha iniciado sesión
 ==========      FINAL DEL REGISTRO       ==========
 
+==========      INICIO DEL REGISTRO      ==========
+04/07/2016::18:56:20=metodos ha iniciado sesión
+04/07/2016::18:56:24=metodos se ha unido a la partida
+04/07/2016::18:56:24=Wario se ha unido a la partida
+04/07/2016::18:56:24=Creando una nueva partida
+04/07/2016::18:56:25=¡La batalla ha comenzado!
+04/07/2016::18:56:26=Es el turno de metodos
+04/07/2016::18:56:40=metodos ha invocado un Birdo
+04/07/2016::18:56:45=Es el turno de Wario
+04/07/2016::18:56:52=Es el turno de metodos
+04/07/2016::18:57:12=Es el turno de Wario
+04/07/2016::18:57:23=Es el turno de metodos
+04/07/2016::18:57:38=metodos ha invocado un Goomba
+04/07/2016::18:57:40=Es el turno de Wario
+04/07/2016::18:57:48=Wario ha atacado a Goomba con la criatura Bokoblin
+04/07/2016::18:57:49=Wario ha atacado a Goomba con la criatura Bokoblin
+04/07/2016::18:57:51=Wario ha atacado a Goomba con la criatura Bokoblin
+04/07/2016::18:57:53=Wario ha atacado a Goomba con la criatura Bokoblin
+04/07/2016::18:57:54=Wario ha atacado a Goomba con la criatura Bokoblin
+04/07/2016::18:57:57=Es el turno de metodos
+04/07/2016::18:58:20=metodos ha invocado un Bokoblin
+04/07/2016::18:58:28=metodos ha atacado a Wario con la criatura Bokoblin
+04/07/2016::18:58:30=metodos ha atacado a Wario con la criatura Bokoblin
+04/07/2016::18:58:31=Es el turno de Wario
+04/07/2016::18:58:40=Es el turno de metodos
+04/07/2016::18:59:28=metodos ha invocado un Boo
+04/07/2016::18:59:31=Es el turno de Wario
+04/07/2016::18:59:38=Es el turno de metodos
+04/07/2016::19:00:22=metodos ha invocado un Goomba
+04/07/2016::19:00:26=Es el turno de Wario
+04/07/2016::19:00:35=Es el turno de metodos
+04/07/2016::19:01:06=Es el turno de Wario
+04/07/2016::19:01:13=Es el turno de metodos
+04/07/2016::19:02:16=Es el turno de Wario
+04/07/2016::19:02:27=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:02:29=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:02:30=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:02:32=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:02:33=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:02:34=Es el turno de metodos
+04/07/2016::19:03:05=metodos ha atacado a Wario con la criatura Boo
+04/07/2016::19:03:07=Es el turno de Wario
+04/07/2016::19:03:19=Es el turno de metodos
+04/07/2016::19:03:34=Es el turno de Wario
+04/07/2016::19:03:41=Es el turno de metodos
+04/07/2016::19:03:59=metodos ha atacado a Wario con la criatura Larry
+04/07/2016::19:04:01=metodos ha atacado a Wario con la criatura Larry
+04/07/2016::19:04:04=metodos ha atacado a Wario con la criatura Larry
+04/07/2016::19:04:05=Es el turno de Wario
+04/07/2016::19:04:18=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:19=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:21=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:22=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:24=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:25=Es el turno de metodos
+04/07/2016::19:04:42=metodos ha atacado a Wario con la criatura Sheik
+04/07/2016::19:04:44=Es el turno de Wario
+04/07/2016::19:04:52=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:53=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:55=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:56=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:58=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:04:59=Es el turno de metodos
+04/07/2016::19:05:28=Es el turno de Wario
+04/07/2016::19:05:35=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:05:37=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:05:38=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:05:40=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:05:41=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:05:42=Es el turno de metodos
+04/07/2016::19:05:58=Es el turno de Wario
+04/07/2016::19:06:06=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:06:07=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:06:09=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:06:10=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:06:12=Wario ha atacado a Birdo con la criatura Bokoblin
+04/07/2016::19:06:13=Es el turno de metodos
+04/07/2016::19:06:26=metodos ha atacado a Wario con la criatura Sheik
+04/07/2016::19:06:29=metodos ha atacado a Wario con la criatura Sheik
+04/07/2016::19:06:29=Wario ha sido derrotado
+04/07/2016::19:06:29=¡metodos ha ganado la partida!
+04/07/2016::19:06:36=metodos ha cerrado sesión
+04/07/2016::19:06:39=metodos ha iniciado sesión
+04/07/2016::19:06:40=metodos está modificando su puzzle de dados
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+04/07/2016::23:08:35=metodos ha iniciado sesión
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::16:40:47=metodos ha iniciado sesión
+05/07/2016::16:40:50=metodos está modificando su puzzle de dados
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::16:45:34=metodos ha iniciado sesión
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::16:48:39=metodos ha iniciado sesión
+05/07/2016::16:48:41=metodos está modificando su puzzle de dados
+05/07/2016::16:48:56=metodos ha cerrado sesión
+05/07/2016::16:48:59=metodos ha iniciado sesión
+05/07/2016::16:49:00=metodos está modificando su puzzle de dados
+05/07/2016::16:49:20=metodos se ha unido a la partida
+05/07/2016::16:49:20=Ganondorf se ha unido a la partida
+05/07/2016::16:49:21=Creando una nueva partida
+05/07/2016::16:49:23=Daisy se ha unido a la partida
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::17:22:35=metodos ha iniciado sesión
+05/07/2016::17:22:39=metodos se ha unido a la partida
+05/07/2016::17:22:39=Hilda se ha unido a la partida
+05/07/2016::17:22:45=metodos está modificando su puzzle de dados
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::17:23:59=metodos ha iniciado sesión
+05/07/2016::17:24:00=metodos está modificando su puzzle de dados
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::17:25:50=metodos ha iniciado sesión
+05/07/2016::17:25:51=metodos está modificando su puzzle de dados
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::18:19:39=metodos ha iniciado sesión
+05/07/2016::18:19:42=metodos se ha unido a la partida
+05/07/2016::18:19:42=Ganondorf se ha unido a la partida
+05/07/2016::18:19:42=Creando una nueva partida
+05/07/2016::18:19:55=Toon Link se ha unido a la partida
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::18:24:30=metodos ha iniciado sesión
+05/07/2016::18:24:35=metodos se ha unido a la partida
+05/07/2016::18:24:35=Zelda se ha unido a la partida
+05/07/2016::18:24:35=Creando una nueva partida
+05/07/2016::18:24:42=Hilda se ha unido a la partida
+05/07/2016::18:24:44=Daisy se ha unido a la partida
+05/07/2016::18:24:51=Daisy ha sido removido de la partida
+05/07/2016::18:24:52=Vaati se ha unido a la partida
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::18:25:49=metodos ha iniciado sesión
+05/07/2016::18:25:52=metodos se ha unido a la partida
+05/07/2016::18:25:52=Rosalina se ha unido a la partida
+05/07/2016::18:25:52=Creando una nueva partida
+05/07/2016::18:26:13=Zelda se ha unido a la partida
+05/07/2016::18:26:15=Bowser se ha unido a la partida
+05/07/2016::18:26:16=Bowser ha sido removido de la partida
+05/07/2016::18:26:17=Bowser se ha unido a la partida
+05/07/2016::18:26:18=Bowser ha sido removido de la partida
+05/07/2016::18:26:19=Vaati se ha unido a la partida
+05/07/2016::18:26:20=Vaati ha sido removido de la partida
+05/07/2016::18:26:21=Mario se ha unido a la partida
+05/07/2016::18:26:22=Mario ha sido removido de la partida
+05/07/2016::18:26:23=Wario se ha unido a la partida
+05/07/2016::18:26:24=Wario ha sido removido de la partida
+05/07/2016::18:26:25=Toon Link se ha unido a la partida
+05/07/2016::18:26:26=Toon Link ha sido removido de la partida
+05/07/2016::18:26:26=Luigi se ha unido a la partida
+05/07/2016::18:26:27=Luigi ha sido removido de la partida
+05/07/2016::18:26:28=Ganondorf se ha unido a la partida
+05/07/2016::18:26:29=Ganondorf ha sido removido de la partida
+05/07/2016::18:26:29=Bowser se ha unido a la partida
+05/07/2016::18:26:30=Bowser ha sido removido de la partida
+05/07/2016::18:26:31=Hilda se ha unido a la partida
+05/07/2016::18:26:32=Hilda ha sido removido de la partida
+05/07/2016::18:26:33=Hilda se ha unido a la partida
+05/07/2016::18:26:34=Hilda ha sido removido de la partida
+05/07/2016::18:26:34=Luigi se ha unido a la partida
+05/07/2016::18:26:36=Luigi ha sido removido de la partida
+05/07/2016::18:26:36=Daisy se ha unido a la partida
+05/07/2016::18:26:37=Daisy ha sido removido de la partida
+05/07/2016::18:26:38=Zelda ha sido removido de la partida
+05/07/2016::18:26:38=Daisy se ha unido a la partida
+05/07/2016::18:26:39=Bowser se ha unido a la partida
+05/07/2016::18:26:39=Bowser ha sido removido de la partida
+05/07/2016::18:26:40=Daisy ha sido removido de la partida
+05/07/2016::18:26:41=Bowser se ha unido a la partida
+05/07/2016::18:26:41=Luigi se ha unido a la partida
+05/07/2016::18:26:42=Luigi ha sido removido de la partida
+05/07/2016::18:26:43=Bowser ha sido removido de la partida
+05/07/2016::18:26:43=Vaati se ha unido a la partida
+05/07/2016::18:26:43=Bowser se ha unido a la partida
+05/07/2016::18:26:44=Bowser ha sido removido de la partida
+05/07/2016::18:26:45=Vaati ha sido removido de la partida
+05/07/2016::18:26:46=Hilda se ha unido a la partida
+05/07/2016::18:26:46=Ganondorf se ha unido a la partida
+05/07/2016::18:26:47=Ganondorf ha sido removido de la partida
+05/07/2016::18:26:48=Hilda ha sido removido de la partida
+05/07/2016::18:26:48=Link se ha unido a la partida
+05/07/2016::18:26:48=Hilda se ha unido a la partida
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::18:28:07=metodos ha iniciado sesión
+05/07/2016::18:28:10=metodos se ha unido a la partida
+05/07/2016::18:28:10=Luigi se ha unido a la partida
+05/07/2016::18:28:11=Creando una nueva partida
+==========      FINAL DEL REGISTRO       ==========
+

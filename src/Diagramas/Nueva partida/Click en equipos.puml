@@ -1,0 +1,38 @@
+@startuml
+hide footbox
+title click en equipos
+actor jugador as j
+
+participant VistaNuevaPartida as vistNP
+participant SubVistaCuadroDialogo as vistCuadro
+participant SubVistaSeleccionEquipos as vistEquip
+participant ControladorNuevaPartida as contNP
+
+
+j -> vistNP :click en boton en equipos
+
+activate vistNP
+activate contNP
+vistNP --> contNP
+contNP -> contNP : enEquipos()
+activate contNP
+deactivate contNP
+alt si hay menos de 3 jguadores
+contNP -> vistCuadro :new SubVistaCuadroDialogo()
+activate vistCuadro
+vistCuadro --> contNP
+contNP -> vistCuadro:mostrarCuadroDialogo("Se necesitan\n minimo 3 jugadores para formar equipos.")
+vistCuadro --> j :muestra el mensaje
+deactivate vistCuadro
+
+else si hay 3 o mas jugadores
+contNP -> contNP : crearVistaSeleccionEquipos()
+activate contNP
+deactivate contNP
+contNP -> vistEquip : newVistaSeleccionEquipos()
+activate vistEquip
+vistEquip --> contNP: subVistaSeleccionEquipos
+contNP -> vistNP:setVisSelEq(subVistaSeleccionEquipos)
+vistNP -->j :muestra la vista seleccion de \nequipos en la vista nueva partida
+end alt
+@enduml

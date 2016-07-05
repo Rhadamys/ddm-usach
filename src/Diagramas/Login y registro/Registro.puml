@@ -1,0 +1,70 @@
+@startuml
+hide footbox
+title Registro de usuarios
+
+actor Jugador as j
+
+participant VistaRegistro as visReg
+participant ControladorRegistro as contReg
+participant Usuario as u
+
+
+activate visReg
+activate contReg
+j -> visReg : Click boton\nregistrarse
+
+
+visReg --> contReg
+contReg -> contReg :comprobarRegistro(usuario,pass,\npassRepetida)
+activate contReg
+deactivate contReg
+
+contReg -> visReg:comprobarCampos()
+
+alt Si todos los campos están correctos
+
+visReg --> contReg:true
+contReg -> contReg:registrarUsuario(usuario,pass,\npassRepetida)
+activate contReg
+deactivate contReg
+
+contReg->u:registrarUsuario(usuario, pass, jefe)
+activate u
+
+alt Si el registro en la base de datos es exitoso
+
+u-->contReg:true
+
+contReg->contReg:mostrarMensaje("Registro exitoso.\nAhora volveras a la vista anterior)
+activate contReg
+deactivate contReg
+
+contReg->contReg:cerrarVistaRegistro(true)
+activate contReg
+deactivate contReg
+
+else El registro devuelve false
+
+u-->contReg:false
+deactivate u
+
+contReg->contReg:mostrarMensaje("Usuario ya existe.")
+activate contReg
+deactivate contReg
+
+
+end alt
+
+else Alguno de los campos tiene un error
+
+visReg-->contReg:false
+deactivate visReg
+
+contReg->contReg:mostrarMensaje(ERROR ENCONTRADO)
+activate contReg
+deactivate contReg
+
+end alt
+
+@enduml
+

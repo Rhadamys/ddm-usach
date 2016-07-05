@@ -1,0 +1,27 @@
+@startuml
+hide footbox
+title click cambiar jugador 1
+
+actor jugador as j
+participant VistaNuevaPartida as visNP
+participant ControladorNuevaPartida as contNP
+participant SubVistaResJug as visj
+participant SubVistaCambiarJugador as vistc
+
+
+activate contNP
+activate visNP
+activate visj
+j -> visj :click en cambiar jugador
+visj --> contNP
+contNP -> contNP: crearVistaCambiarJugador()
+activate contNP
+deactivate contNP
+contNP -> vistc: newSubVistaCambiarJugador\n(Font fuente, ArrayList<Jugador> jugPartida)
+activate vistc
+vistc --> contNP
+contNP -> visNP :setVisCamJug(SubVistaCambiarJugador)
+visNP --> contNP
+
+
+@enduml

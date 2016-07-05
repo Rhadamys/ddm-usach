@@ -24,6 +24,7 @@ public class SubVistaResumenJugador extends PanelImagen {
     private final JLabel nombreJugador;
     private final JLabel tipoJugador;
     private final PanelImagen iconoJugador;
+    private final JLabel porVic;
     private ArrayList<Dado> dadosJugador;
     private final BotonImagen modificarPuzle;
     private final BotonImagen cambiarJugador;
@@ -42,6 +43,7 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.tipoJugador = new JLabel(jug instanceof Usuario ? "Humano": "PNJ (Nivel " + ((PersonajeNoJugable) jug).getNivel() + ")");
         this.iconoJugador = new PanelImagen(Constantes.RUTA_JEFES +
                 jug.getJefeDeTerreno().getNomArchivoImagen() + Constantes.EXT1);
+        this.porVic = new JLabel("Victorias: " + (jug.getPartJug() != 0 ? jug.getPartGan() * 100 / jug.getPartJug() : 0) + "%");
         this.cambiarJugador = new BotonImagen(Constantes.BTN_NORMAL);
         this.cambiarNivel = new BotonImagen(Constantes.BTN_NORMAL);
         this.modificarPuzle = new BotonImagen(Constantes.BTN_NORMAL);
@@ -50,6 +52,7 @@ public class SubVistaResumenJugador extends PanelImagen {
         this.add(nombreJugador);
         this.add(tipoJugador);
         this.add(iconoJugador);
+        this.add(porVic);
         this.add(cambiarJugador);
         this.add(cambiarNivel);
         this.add(modificarPuzle);
@@ -57,6 +60,12 @@ public class SubVistaResumenJugador extends PanelImagen {
         
         this.iconoJugador.setSize(120, 120);
         this.iconoJugador.setLocation(20, 25);
+        
+        this.porVic.setSize(120, 20);
+        this.porVic.setLocation(20, 145);
+        this.porVic.setForeground(Color.orange);
+        this.porVic.setFont(Constantes.FUENTE_14PX);
+        this.porVic.setHorizontalAlignment(JLabel.CENTER);
         
         this.nombreJugador.setSize(200, 20);
         this.nombreJugador.setLocation(150, 10);
@@ -119,6 +128,7 @@ public class SubVistaResumenJugador extends PanelImagen {
     public void actualizarInfoJug(Jugador jug){
         this.dadosJugador = jug.getDados();
         this.iconoJugador.setImagen("/Imagenes/Jefes/" + jug.getJefeDeTerreno().getNomArchivoImagen() + ".png");
+        this.porVic.setText("Victorias: " + (jug.getPartJug() != 0 ? jug.getPartGan() * 100 / jug.getPartJug() : 0) + "%");
         this.nombreJugador.setText(jug.getNombreJugador());
         this.tipoJugador.setText(jug instanceof Usuario ? "Humano": "PNJ (Nivel "+ ((PersonajeNoJugable) jug).getNivel() + ")");
     }

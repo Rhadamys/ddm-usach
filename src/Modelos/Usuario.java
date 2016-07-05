@@ -18,16 +18,16 @@ public class Usuario extends Jugador {
             String pass,
             JefeDeTerreno jefe,
             PuzzleDeDados puzzle,
-            int partidasJugadas,
-            int partidasGanadas){
+            int partJug,
+            int partGan){
         
         this.id = id;
         this.nombreJugador = username;
         this.pass = pass;
         this.puzzle = puzzle;
         this.jefeDeTerreno = jefe;
-        this.partJug = partidasJugadas;
-        this.partGan = partidasGanadas;
+        this.partJug = partJug;
+        this.partGan = partGan;
     }
     
     /**

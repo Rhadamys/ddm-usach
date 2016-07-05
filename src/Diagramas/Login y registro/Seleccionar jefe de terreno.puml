@@ -1,0 +1,43 @@
+@startuml
+hide footbox
+title Seleccionar Jefe De Terreno
+
+actor Jugador as j
+participant VistaRegistro as VisReg
+participant SubVistaSeleccionarJefe as SubVisSel
+participant ControladorRegistro as ContReg
+participant JefeDeTerreno as Jef
+
+activate j
+activate VisReg
+j-> VisReg: click en seleccionar jefe
+
+VisReg--> ContReg
+activate ContReg
+
+ContReg->SubVisSel:setVisible(true)
+activate SubVisSel
+SubVisSel--> j:Muestra los jefes de terreno que puede seleccionar
+
+j-> SubVisSel: selecciona jefe
+
+SubVisSel-->ContReg
+
+ContReg->ContReg:setJefe()
+activate ContReg
+deactivate ContReg
+
+ContReg-> Jef:getJefe()
+activate Jef
+Jef--> ContReg: new JefeDeTerreno
+deactivate Jef
+
+ContReg->SubVisSel:setVisible(false)
+SubVisSel-->ContReg
+deactivate SubVisSel
+
+ContReg-> VisReg: getIconoJefe().setImagen()
+deactivate ContReg
+VisReg-->j: Muestra icono del jefe seleccionado
+
+@enduml

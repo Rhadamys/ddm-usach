@@ -1,0 +1,43 @@
+@startuml
+hide footbox
+
+title Menu Principal : click nueva partida
+
+actor jugador as j
+
+participant VistaMenuPrincipal as visMP
+participant ControladorMenuPrincipal as contMP
+participant ControladorPrincipal as contPrin
+participant ControladorNuevaPartida as contNP
+participant VistaNuevaPartida as visNP
+
+activate visMP
+activate contMP
+j -> visMP :click boton nueva partida
+visMP --> contMP
+contMP-> contMP :nuevaPartida()
+activate contMP
+deactivate contMP
+contMP -> contPrin:crearControladorNuevaPartida()
+activate contPrin
+contPrin -> contNP:new ControladorNuevaPartida(this)
+activate contNP
+contNP --> contPrin
+contPrin --> contMP
+contMP -> contPrin:getContNuePar()
+contPrin --> contMP:contNuePar
+deactivate contPrin
+contMP -> contNP:mostrarVistaNuevaPartida()
+contNP -> visNP:setVisible(true)
+activate visNP
+visNP --> contNP
+contNP --> contMP
+contMP -> contMP :eliminarVistaMenuPrincipal()
+activate contMP
+deactivate contMP
+
+contMP -> visMP: dispose()
+deactivate visMP
+deactivate contMP
+
+@enduml

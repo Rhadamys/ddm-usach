@@ -254,7 +254,7 @@ public final class ControladorNuevaPartida {
         }
         
         this.contPrin.crearControladorBatalla(this.jugadores,
-                this.visNuePar.getEnEquipos().isSelected(),
+                this.visNuePar.getVisSelEq() != null,
                 this.quienLlama instanceof VistaNuevoTorneo);
         
         this.contPrin.getContBat().iniciarJuego();

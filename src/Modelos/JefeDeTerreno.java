@@ -52,6 +52,10 @@ public class JefeDeTerreno extends ElementoEnCampo {
         this.dueno = dueno;
     }
     
+    public void setVida(int vida){
+        this.vida = vida;
+    }
+    
     public void restarVida(int vida){
         this.vida -= vida;
     }

@@ -1,0 +1,59 @@
+@startuml
+hide footbox
+title Login
+
+actor jugador as j
+
+participant VistaLogin as visLog
+participant ControladorLogin as contLog
+participant Usuario as u
+
+
+loop Hasta que ingrese o un maximo de 3 intentos por usuario
+
+activate visLog
+activate contLog
+
+j -> visLog : Click en ingresar
+
+visLog --> contLog
+contLog -> visLog :getUsuario()
+visLog --> contLog: String usuarioText
+contLog -> visLog:getPass()
+visLog --> contLog: String passText
+
+contLog -> contLog : comprobarLogIn(String usuarioText,\nString passText)
+activate contLog
+deactivate contLog
+contLog -> visLog :comprobarCampos()
+
+alt Si los datos son correctos
+
+contLog -> u:getUsuario(usuarioText)
+activate u
+u-->contLog:Usuario
+deactivate u
+
+alt Si el usuario no es null (Existe en la BDD)
+
+contLog->contLog:iniciarSesion(Usuario)
+activate contLog
+deactivate contLog
+
+else Si el usuario no existe
+
+contLog->visLog:setMensaje("Usuario no existe.")
+visLog-->j:Muestra el mensaje
+visLog-->contLog
+
+end alt
+
+else Si hay algun error en alguno de los campos
+
+contLog->visLog:setMensaje(ERROR ENCONTRADO)
+visLog-->j:Muestra el mensaje del\nERROR ENCONTRADO
+visLog-->contLog
+
+end alt
+end loop
+@enduml

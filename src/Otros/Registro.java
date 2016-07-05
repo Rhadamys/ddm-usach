@@ -65,78 +65,99 @@ public class Registro {
         
         switch(numAccion){
             // Login y registro
-            case LOGIN: registrar(args[0] + " ha iniciado sesión");
-                        break;
+            case LOGIN: 
+                registrar(args[0] + " ha iniciado sesión");
+                break;
                         
-            case LOGOUT:    registrar(args[0] + " ha cerrado sesión");
-                            break;
+            case LOGOUT:    
+                registrar(args[0] + " ha cerrado sesión");
+                break;
                             
-            case REGISTRO:  registrar("Se ha registrado a " + args[0]);
-                            break;
+            case REGISTRO:  
+                registrar("Se ha registrado a " + args[0]);
+                break;
                             
             // Menú principal
-            case NUEVA_PARTIDA: registrar("Creando una nueva partida");
-                                break;
+            case NUEVA_PARTIDA: 
+                registrar("Creando una nueva partida");
+                break;
                                 
-            case NUEVO_TORNEO:  registrar("Creando un nuevo torneo");
-                                break;
+            case NUEVO_TORNEO:  
+                registrar("Creando un nuevo torneo");
+                break;
                                 
-            case MODIFICAR_PUZZLE:  registrar(args[0] + " está modificando su puzzle de dados");
-                                    break;
+            case MODIFICAR_PUZZLE:  
+                registrar(args[0] + " está modificando su puzzle de dados");
+                break;
                                     
-            case INFO_CRIATURAS:    registrar(args[0] + " está viendo información de las criaturas del juego");
-                                    break;
+            case INFO_CRIATURAS:    
+                registrar(args[0] + " está viendo información de las criaturas del juego");
+                break;
                                     
             // Nueva partida
-            case AGREGAR_JUGADOR:   registrar(args[0] + " se ha unido a la partida");
-                                    break;
+            case AGREGAR_JUGADOR: 
+                registrar(args[0] + " se ha unido a la partida");
+                break;
                                     
-            case ELIMINAR_JUGADOR:  registrar(args[0] + " ha sido removido de la partida");
-                                    break;
+            case ELIMINAR_JUGADOR: 
+                registrar(args[0] + " ha sido removido de la partida");
+                break;
                          
-            case EN_EQUIPOS:    registrar("Se ha cambiado a modo batalla en equipos");
-                                break;
+            case EN_EQUIPOS:    
+                registrar("Se ha cambiado a modo batalla en equipos");
+                break;
                                 
-            case EN_SOLITARIO:  registrar("Se ha cambiado a modo batalla en solitario");
-                                break;
+            case EN_SOLITARIO:  
+                registrar("Se ha cambiado a modo batalla en solitario");
+                break;
             
             // Batalla
-            case COMENZANDO_BATALLA:    registrar("¡La batalla ha comenzado!");
-                                        break;
+            case COMENZANDO_BATALLA:    
+                registrar("¡La batalla ha comenzado!");
+                break;
                                         
-            case TURNO: registrar("Es el turno de " + args[0]); 
-                        break;
+            case TURNO: 
+                registrar("Es el turno de " + args[0]); 
+                break;
                         
-            case INVOCACION:    registrar(args[0] + " ha invocado un " + args[1]);
-                                break;
+            case INVOCACION:    
+                registrar(args[0] + " ha invocado un " + args[1]);
+                break;
                                 
-            case ATAQUE:    registrar(args[0] + " ha atacado a " + args[1] + " con la criatura " + args[2]);
-                            break;
+            case ATAQUE:    
+                registrar(args[0] + " ha atacado a " + args[1] + " con la criatura " + args[2]);
+                break;
                             
-            case MOVIMIENTO:    registrar(args[0] + " ha movido la criatura " + args[1]);
-                                break;
+            case MOVIMIENTO:    
+                registrar(args[0] + " ha movido la criatura " + args[1]);
+                break;
                                 
-            case COLOCAR_TRAMPA:    registrar(args[0] + " ha colocado la trampa " + args[1] + " sobre el terreno");
-                                    break;
+            case COLOCAR_TRAMPA:    
+                registrar(args[0] + " ha colocado la trampa " + args[1] + " sobre el terreno");
+                break;
                                     
-            case ACTIVACION_TRAMPA: if(args[0].equals(args[2])){
-                                        registrar(args[0] + " ha activado la trampa Renacer de los Muertos. " +
-                                                (Boolean.getBoolean(args[1]) ? 
-                                                        "Ahora puede seleccionar la criatura que desee revivir." :
-                                                        "Sin embargo, no tiene criaturas muertas que pueda revivir."));
-                                    }else{
-                                        registrar(args[0] + " ha activado la trampa " + args[1] + " del jugador " + args[2]);
-                                    }
-                                    break;
+            case ACTIVACION_TRAMPA: 
+                if(args[0].equals(args[2])){
+                    registrar(args[0] + " ha activado la trampa Renacer de los Muertos. " +
+                            (Boolean.getBoolean(args[1]) ? 
+                                    "Ahora puede seleccionar la criatura que desee revivir." :
+                                    "Sin embargo, no tiene criaturas muertas que pueda revivir."));
+                }else{
+                    registrar(args[0] + " ha activado la trampa " + args[1] + " del jugador " + args[2]);
+                }
+                break;
                                     
-            case ACTIVAR_MAGIA: registrar(args[0] + " ha activado la magia " + args[1]);
-                                break;
+            case ACTIVAR_MAGIA: 
+                registrar(args[0] + " ha activado la magia " + args[1]);
+                break;
             
-            case JUGADOR_PIERDE:    registrar(args[0] + " ha sido derrotado");
-                                    break;
+            case JUGADOR_PIERDE:    
+                registrar(args[0] + " ha sido derrotado");
+                break;
          
-            case JUGADOR_GANA:  registrar("¡" + args[0] + " ha ganado la partida!");
-                                break;
+            case JUGADOR_GANA:  
+                registrar("¡" + args[0] + " ha ganado la partida!");
+                break;
         }
     }
     

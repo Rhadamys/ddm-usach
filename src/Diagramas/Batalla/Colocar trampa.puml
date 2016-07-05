@@ -1,0 +1,41 @@
+@startuml
+hide footbox
+title Colocar una trampa en el terreno
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Accion as ac
+
+activate j
+    j-> visBat:click en la posicion que desea colocar la trampa
+    activate visBat
+    visBat--> contBat
+    activate contBat
+    contBat->contBat:colocarTrampa()
+
+    alt la casilla pertenece al terreno de algun jugador 
+
+        alt la casilla esta disponible
+        contBat-> ac:colocarTrampa(posAct,\nthis.tablero.getJugadorActual())
+        activate ac
+        ac--> contBat
+        deactivate ac
+        
+        contBat->contBat:finalizarAccion()
+        contBat-> contBat: mostrarMensaje("Se ha colocado la\ntrampa en la posicion indicada.")
+
+        else la casilla esta ocupada
+        contBat-> visBat:setMensaje("La casilla esta ocupada.\nSelecciona una casilla disponible.")
+        visBat--> j: muestra el mensaje al jugador
+        end
+
+    else la casilla no pertenece al terreno de algun jugador
+    contBat-> visBat:setMensaje("Selecciona una casilla\nque pertenezca a algun jugador.")
+    deactivate contBat
+    visBat-> j: muestra el mensaje al jugador
+    deactivate visBat
+    end
+
+@enduml

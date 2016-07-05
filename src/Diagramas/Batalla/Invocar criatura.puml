@@ -1,0 +1,45 @@
+@startuml
+hide footbox
+title Invocar criatura
+
+actor jugador as j
+
+participant VistaBatalla as visB
+participant ControladorBatalla as contB
+participant Accion
+
+activate contB
+activate visB
+j-> visB :Click en el tablero
+visB --> contB
+
+contB ->contB:sePuedeInvocar(despliegue,\ntablero.getTurnoActual()
+activate contB
+deactivate contB
+
+alt si se puede invocar
+
+contB -> contB:invocarCriatura(SubVistaPosicion)
+activate contB
+deactivate contB
+
+contB -> Accion:invocarCriatura()
+activate Accion
+Accion --> contB
+deactivate Accion
+contB -> contB:asignarCasillas(despliegue,\ntablero.getTurnoActual())
+activate contB
+deactivate contB
+
+contB -> contB:finalizarAccion()
+activate contB
+deactivate contB
+contB -> visB:reiniciarCasillas()
+visB --> j:muestra el tablero y la vista\n batalla actualizada
+
+else si no se puede invocar
+
+contB -> visB:setMensaje("No se puede\ninvocar en la posicion actual.")
+visB --> j :muestra mensaje
+end alt
+@enduml

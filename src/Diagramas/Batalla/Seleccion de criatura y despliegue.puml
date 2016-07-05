@@ -1,0 +1,42 @@
+@startuml
+hide footbox
+title Seleccion de criatura y despliegue
+
+actor jugador as j
+
+participant SubVistaSeleccionCriatura as visCria
+participant SubVistaSeleccionDesplieque as visDes
+participant ControladorBatalla as contB
+participant Accion as accion
+
+
+activate contB
+activate visCria 
+
+j -> visCria:click en alguna criatura
+visCria --> contB
+contB -> contB :seleccionarCriaturaAInvocar()
+activate contB
+deactivate contB
+contB -> visCria :dispose ()
+visCria --> contB
+deactivate visCria
+contB -> accion:setCriaturaAinvocar()
+activate accion
+accion --> contB
+deactivate accion
+contB -> contB:mostrarVistaSeleccionarDespliegue()
+activate contB
+deactivate contB
+contB -> visDes: setVisible(true)
+activate visDes
+visDes --> j :muestra al jugador los despliegues
+j -> visDes:selecciona un despliegue
+visDes --> contB
+contB -> contB:carmbiarDespliegue()
+activate contB
+deactivate contB
+contB -> visDes:setVisible(false)
+visDes --> contB
+deactivate visDes
+@enduml

@@ -1,0 +1,61 @@
+@startuml
+hide footbox
+title Mover criatura
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant SubVistaPosicion as subVisPos
+participant Posicion as p
+
+activate contBat 
+activate visBat
+
+activate j
+j -> visBat : Elige criatura aliada
+
+visBat -> contBat : setCriaturaAMover()
+
+
+
+contBat-> p: posicionTieneCriaturaDelJugador()
+activate p
+
+alt no selecciona criatura aliada
+p--> contBat: false
+contBat-> visBat:setMensaje("Aqui no hay una\ncriatura o no te pertenece.")
+contBat-> visBat:reiniciarCasillas()
+visBat-> j : mensaje criatura seleccionada\nincorrecta
+ 
+
+else seleccciona criatura aliada
+p--> contBat:true
+deactivate p
+contBat -> subVisPos : setCriaturaAMover()
+activate subVisPos
+
+
+subVisPos -> contBat :cambiarEstadoCasillaCamino(posicion)
+deactivate subVisPos
+
+contBat -> visBat:setMensaje("Marca las casillas\ndel camino.")
+visBat--> j: mensaje marcar casillas camino
+
+j -> visBat : Selecciona camino
+j -> visBat : Presiona el boton Mover
+
+visBat --> contBat
+contBat -> contBat : moverCriatura()
+
+... Se mueve la criatura (Posicion por posicion) ...
+
+contBat --> visBat
+deactivate contBat
+
+visBat --> j : Se muestra resultado del\nmovimiento
+deactivate visBat
+
+end
+
+@enduml

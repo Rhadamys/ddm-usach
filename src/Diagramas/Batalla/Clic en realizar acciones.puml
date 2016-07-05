@@ -1,0 +1,49 @@
+@startuml
+hide footbox
+
+title Clic en boton "Relizar acciones"
+actor jugador as j
+
+participant ControladorBatalla as contB
+participant SubVistaLanzamientoDados as visLan
+
+activate contB
+activate visLan
+
+j -> visLan:Click realizar accion
+visLan --> contB
+
+contB -> contB:acumularPuntos()
+activate contB
+deactivate contB
+
+alt Si hay caras de invocacion 
+
+alt Si esta conectado al terreno de otros jugadores y tiene por lo menos una criatura invocada
+
+contB->contB:mostrarMensajeRealizarInvocacion()
+activate contB
+deactivate contB
+
+else Si no se cumple alguna de las condiciones
+
+contB -> contB :mostrarVistaSeleccionCriaturas()
+activate contB
+deactivate contB
+contB -> visLan:dispose()
+visLan --> contB
+
+end alt
+else si no hay caras de invocacion
+
+contB -> contB:realizarAcciones()
+activate contB
+deactivate contB
+contB -> visLan:dispose()
+visLan --> contB
+deactivate visLan
+
+end alt
+
+
+@enduml

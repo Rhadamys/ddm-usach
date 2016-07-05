@@ -36,15 +36,16 @@ public class Turno {
     }
     
     public void acumularPuntos(){
-        for(int cara: this.resultadoLanzamiento){
-            switch(cara){
-                case 1: this.puntosAtaque++;
+        for(int i = 0; i < this.resultadoLanzamiento.length; i++){
+            int nivelDado = this.dadosLanzados.get(i).getNivel();
+            switch(this.resultadoLanzamiento[i]){
+                case 1: this.puntosAtaque += nivelDado;
                         break;
-                case 3: this.puntosMagia++;
+                case 3: this.puntosMagia += nivelDado;
                         break;
-                case 4: this.puntosMovimiento++;
+                case 4: this.puntosMovimiento += nivelDado;
                         break;
-                case 5: this.puntosTrampa++;
+                case 5: this.puntosTrampa += nivelDado;
                         break;
             }
         }

@@ -75,7 +75,7 @@ public final class ControladorMenuPrincipal {
             // Cuando se haga clic sobre el label "Volver atrás".
             @Override
             public void mouseReleased(MouseEvent e){
-                if(sePuedeMoficiarPuzzle(contPrin.getUsuarioActivo().getDados())){
+                if(sePuedeModificarPuzzle(contPrin.getUsuarioActivo().getDados())){
                     modificarPuzzle();
                 }else{
                     mostrarMensaje("El jugador tiene 15 dados. No puede modificar su puzzle.");
@@ -164,7 +164,7 @@ public final class ControladorMenuPrincipal {
         this.visMen.setVisible(true);
     }
     
-    public boolean sePuedeMoficiarPuzzle(ArrayList<Dado> dados){
+    public boolean sePuedeModificarPuzzle(ArrayList<Dado> dados){
         return dados.size() > 15;
     }
     

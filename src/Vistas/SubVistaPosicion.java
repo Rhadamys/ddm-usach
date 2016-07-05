@@ -36,6 +36,7 @@ public class SubVistaPosicion extends BotonCheckImagen {
                 (this.getHeight() - this.iconoElemento.getHeight()) / 2);
         
         this.add(this.iconoElemento);
+        this.removeChangeListener(this.getChangeListeners()[0]);
     }
     
     public void casillaCorrecta(){

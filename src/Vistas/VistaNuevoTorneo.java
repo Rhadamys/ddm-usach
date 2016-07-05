@@ -66,7 +66,7 @@ public class VistaNuevoTorneo extends VistaPersonalizada {
             this.add(panel);
         }
         
-        JLabel titulo = new JLabel("<html><b><i>NUEVO TORNEO</i></b></html>");
+        JLabel titulo = new JLabel("<html><b style=\"color:orange;\"><i>NUEVO TORNEO</i></b></html>");
         this.add(titulo);
         titulo.setFont(Constantes.FUENTE_36PX);
         titulo.setForeground(Color.orange);

@@ -1,0 +1,55 @@
+@startuml
+hide footbox
+
+title Acumular puntos
+actor jugador as j
+
+participant VistaBatalla as visB
+participant SubVistaLanzamientoDados as visLan
+participant ControladorBatalla as contB
+participant Tablero
+
+activate visB
+activate contB
+activate visLan
+
+j -> visLan: click en acumular puntos
+visLan --> contB
+contB -> contB:cantidadCarasInvocacion()
+activate contB
+deactivate contB
+
+alt si  hay caras de invocacion
+contB -> contB:mostrarMensajeCarasInvocacion()
+activate contB
+deactivate contB
+contB --> j:Alerta al jugador que las caras de\ninvocacion no se acumulan
+note over j : el jugador decide si realiza accion\n o acumula puntos perdiendo la invocacion
+else si no hay caras de invocacion 
+
+contB -> contB :acumularPuntos()
+activate contB
+deactivate contB
+
+contB -> visLan:dispose ()
+visLan --> contB
+deactivate visLan
+contB -> visB:actualizarVistaJugador()
+
+... Actualiza las SubVistas que\ncomponen a la vista batalla ...
+
+visB --> j:muestra actualizacion
+j --> visB
+visB --> contB
+contB -> contB :cambiarTurno()
+activate contB
+deactivate contB
+contB -> Tablero: cambiarTurno()
+activate Tablero
+Tablero --> contB
+deactivate Tablero
+
+end alt
+
+
+@enduml

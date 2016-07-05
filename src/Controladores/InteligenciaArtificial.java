@@ -68,11 +68,10 @@ public final class InteligenciaArtificial {
         if(this.pnj.numJugMenorVida(tablero) == -1){
             System.out.println("Finalizó la partida. He ganado!");
         }else{
-            if(this.pnj.puedoAtacar() &&
-                    ((this.contBat.sePuedeAtacar() && !estoyEnPeligro) ||
-                    (estoyEnPeligro && this.estoyAlLadoDelObjetivo()))){
+            if(this.pnj.puedoAtacar() && this.contBat.sePuedeAtacar() &&
+                    (!estoyEnPeligro || (estoyEnPeligro && this.estoyAlLadoDeEnemigo()))){
                 numAccion = 2;
-            }else if(this.contBat.sePuedeMover() && !this.estoyAlLadoDelObjetivo() &&
+            }else if(this.contBat.sePuedeMover() && !this.estoyAlLadoDeEnemigo() &&
                     (estoyEnPeligro || this.pnj.estoyConectadoAlTerrenoJugMenorVida(tablero))){
                 numAccion = 4;
             }else if(this.pnj.getNivel() == 3 &&
@@ -253,6 +252,11 @@ public final class InteligenciaArtificial {
     }
 
     public void atacarEnemigo(){
+        boolean estoyEnPeligro = this.pnj.estoyEnPeligro(tablero);
+        Posicion posAtacar = estoyEnPeligro ?
+                this.pnj.posEnemigoPeligroso(tablero) :
+                this.pnj.posJugMenorVida(tablero);
+        
         double distancia = 1000;
         Criatura criaturaAtacante = null;
         Posicion elementoAtacado = null;
@@ -260,7 +264,7 @@ public final class InteligenciaArtificial {
         for(int i = 0; i < 15; i++){
             for(int j = 0; j < 15; j++){
                 Posicion posAct = this.contBat.getTablero().getPosicion(i, j);
-                double distAct = this.distanciaALaPosicion(posAct, this.pnj.posJugMenorVida(tablero));
+                double distAct = this.distanciaALaPosicion(posAct, posAtacar);
 
                 if(posAct.getElemento() instanceof Criatura &&
                         posAct.getElemento().getDueno() == this.pnj.getNumJug() &&
@@ -738,14 +742,16 @@ public final class InteligenciaArtificial {
         return false;
     }
     
-    public boolean estoyAlLadoDelObjetivo(){
+    public boolean estoyAlLadoDeEnemigo(){
         boolean estoyEnPeligro = this.pnj.estoyEnPeligro(tablero);
         Posicion posObj = estoyEnPeligro ? this.pnj.posEnemigoPeligroso(tablero) : this.pnj.posJugMenorVida(tablero);
         Posicion posCriMasCercana = this.getPosCriMasCercana(posObj);
         
-        for(int[] vecino: this.contBat.getTablero().getIdxVecinos(posObj)){
-            Posicion posAct = this.contBat.getTablero().getPosicion(vecino[0], vecino[1]);
-            if(posCriMasCercana.equals(posAct)){
+        for(int[] vecino: this.contBat.getTablero().getIdxVecinos(posCriMasCercana)){
+            Posicion posVecino = this.contBat.getTablero().getPosicion(vecino[0], vecino[1]);
+            if((estoyEnPeligro && posVecino.getElemento() instanceof Criatura) ||
+                    (!estoyEnPeligro && (posVecino.getElemento() instanceof JefeDeTerreno ||
+                    posVecino.getElemento() instanceof Criatura))){
                 return true;
             }
         }

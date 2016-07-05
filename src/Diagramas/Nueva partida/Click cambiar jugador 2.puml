@@ -1,0 +1,20 @@
+@startuml
+hide footbox
+title click cambiar jugador 1
+
+actor jugador as j
+participant ControladorNuevaPartida as contNP
+participant SubVistaCambiarJugador as vistc
+participant Jugadores
+
+
+activate vistc
+activate contNP
+j -> vistc :click en jugador que cambiara
+vistc --> contNP
+contNP -> contNP:cambiarJugador(quienCambia,porQuienCambia)
+activate contNP
+deactivate contNP
+
+contNP -> Jugadores: set (quienCambia,porQuienCambia)
+@enduml

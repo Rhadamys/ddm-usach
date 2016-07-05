@@ -39,7 +39,8 @@ public class Torneo {
     public int restaurarVidaJugador(Jugador ganador){
         int vidaMax = ganador.getJefeDeTerreno().getVidaMaxima();
         int vidaAct = ganador.getJefeDeTerreno().getVida();
-        return vidaMax - (vidaAct + vidaMax * 20 / 100);
+        int vidaRest = vidaAct + vidaMax * 20 / 100;
+        return vidaRest <= vidaMax ? vidaRest : vidaMax;
     }
     
     public ArrayList<Dado> agregarDadosGanador(){

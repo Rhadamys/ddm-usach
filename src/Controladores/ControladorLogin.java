@@ -22,7 +22,6 @@ import java.awt.event.MouseEvent;
 public final class ControladorLogin {
     private final ControladorPrincipal contPrin;
     private final VistaLogin visLog;
-    private Usuario usuario;
     
     /**
      * Inicializa una nueva instancia de ControladorLogin.
@@ -64,7 +63,7 @@ public final class ControladorLogin {
             @Override
             public void mouseReleased(MouseEvent e){
                 // Se inicia el proceso de login
-                iniciarSesion(visLog.getUsuario(), visLog.getPass());
+                comprobarLogIn(visLog.getUsuario(), visLog.getPass());
             }
         });
         
@@ -78,7 +77,7 @@ public final class ControladorLogin {
                 // Si se presiona la tecla ENTER en la caja de usuario
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     // Se inicia el proceso de login
-                    iniciarSesion(visLog.getUsuario(), visLog.getPass());
+                    comprobarLogIn(visLog.getUsuario(), visLog.getPass());
                 }
             }
         });
@@ -93,7 +92,7 @@ public final class ControladorLogin {
                 // Si se presiona la tecla ENTER en la caja de contraseña
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     // Se inicia el proceso de login
-                    iniciarSesion(visLog.getUsuario(), visLog.getPass());
+                    comprobarLogIn(visLog.getUsuario(), visLog.getPass());
                 }
             }
         });
@@ -127,24 +126,15 @@ public final class ControladorLogin {
      * @param usuarioText Nombre de usuario ingresado en el campo de texto.
      * @param passText Contraseña ingresada en el campo de contraseña.
      */
-    public void iniciarSesion(String usuarioText, String passText) {
+    public void comprobarLogIn(String usuarioText, String passText) {
         // Se comprueba que los campos estén completos
         if (this.visLog.comprobarCampos()){
             // Se obtiene la instancia de Usuario del usuario ingresado
-            this.usuario = Usuario.getUsuario(usuarioText);
-            if(this.usuario != null){
+            Usuario usuario = Usuario.getUsuario(usuarioText);
+            if(usuario != null){
                 // Se comprueba que los datos ingresados sean correctos
-                if (passText.equals(this.usuario.getPass())){
-                    // Se asigna como el usuario actual al usuario obtenido
-                    this.contPrin.setUsuarioActivo(this.usuario);
-                    // Se instancia el controlador de menú principal
-                    this.contPrin.crearControladorMenuPrincipal();
-                    // Se muestra la vista de menú principal
-                    this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
-                    // Se elimina la vista de login
-                    this.eliminarVistaLogin();
-                    
-                    Registro.registrarAccion(Registro.LOGIN, usuarioText);
+                if (passText.equals(usuario.getPass())){
+                    this.iniciarSesion(usuario);
                 }else{
                     this.visLog.usuarioCorrecto();
                     this.visLog.passErronea();
@@ -158,6 +148,23 @@ public final class ControladorLogin {
         }else{
             this.visLog.setMensaje("Completa todos los campos.");
         }
+    }
+    
+    /**
+     * Loguea al usuario en la aplicación.
+     * @param usuario Usuario que se loguea.
+     */
+    public void iniciarSesion(Usuario usuario) {
+        // Se asigna como el usuario actual al usuario obtenido
+        this.contPrin.setUsuarioActivo(usuario);
+        // Se instancia el controlador de menú principal
+        this.contPrin.crearControladorMenuPrincipal();
+        // Se muestra la vista de menú principal
+        this.contPrin.getContMenuPrin().mostrarVistaMenuPrincipal();
+        // Se elimina la vista de login
+        this.eliminarVistaLogin();
+
+        Registro.registrarAccion(Registro.LOGIN, usuario.getNombreJugador());
     }
     
     public void registrarse(){

@@ -1,0 +1,54 @@
+@startuml
+hide footbox
+
+title Seleccionar enemigo a atacar
+
+actor Jugador as j
+
+participant VistaBatalla as visBat
+participant ControladorBatalla as contBat
+participant Acccion as ac
+
+j-> visBat: click en la ciratura que desea atacar
+activate visBat
+visBat--> contBat
+activate contBat
+contBat->contBat:comprobarEnemigoSelec()
+alt si la posicion contiene a una criatura o un jefe de terreno
+    alt si la partida es en equipos
+        alt si la criatura o jefe de terreno es del equipo enemigo
+            contBat-> contBat:criaturaAtacanteAlrededor()
+            alt el enemigo se encuentra alrededor de la la criatura atacante
+                contBat-> contBat:atacarEnemigo(posAct.getElemento())
+                activate contBat
+                deactivate contBat
+                contBat-> ac:atacarEnemigo(elemAtacado)
+                activate ac
+                ac-->contBat:vida
+                deactivate ac
+
+                ... Se comprueban los efectos del ataque (Diagrama: Despues de un ataque) ...
+
+            else el enemigo no esta al alcance
+                contBat--> visBat:setMensaje("Este enemigo no esta\nal alcance de la criatura seleccionada.")
+                visBat--> j: muestra el mensaje al jugador
+            end
+
+        else si la criatura o jefe de terreno es del mismo equipo
+            contBat--> visBat:setMensaje("La criatura pertenece a\nun aliado")
+            visBat--> j: muestra el mensaje al jugador
+
+        end
+
+    else la partida no es en equipos
+        contBat-> contBat:criaturaAtacanteAlrededor()
+
+    end
+
+else la posicion no contiene una criatura o jefe de terreno
+    contBat--> visBat:setMensaje("Aqui no hay un enemigo que\nse pueda atacar.")
+    visBat--> j: muestra el mensaje al jugador
+
+end
+
+@enduml

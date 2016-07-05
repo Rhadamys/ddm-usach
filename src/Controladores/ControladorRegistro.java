@@ -209,11 +209,11 @@ public final class ControladorRegistro {
     public void registrarUsuario(String usuario, String pass, String passRepetida) {                
         try {
             if(Usuario.registrarUsuario(usuario, pass, this.jefe)){
-                this.visReg.usuarioCorrecto();
-                
-                this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");     
+                this.visReg.usuarioCorrecto();  
             
                 this.cerrarVistaRegistro(true);
+                
+                this.mostrarMensaje("Registro exitoso. Ahora volverás a la vista anterior.");   
 
                 Registro.registrarAccion(Registro.REGISTRO, usuario);
             }else{

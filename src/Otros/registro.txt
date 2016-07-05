@@ -271,3 +271,14 @@
 05/07/2016::18:28:11=Creando una nueva partida
 ==========      FINAL DEL REGISTRO       ==========
 
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::20:34:28=Se ha registrado a metodos
+05/07/2016::20:34:31=metodos ha iniciado sesión
+05/07/2016::20:34:34=metodos ha cerrado sesión
+05/07/2016::20:34:50=Se ha registrado a mario
+==========      FINAL DEL REGISTRO       ==========
+
+==========      INICIO DEL REGISTRO      ==========
+05/07/2016::20:36:03=Se ha registrado a usach
+==========      FINAL DEL REGISTRO       ==========
+
